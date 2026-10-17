@@ -4,4 +4,4 @@
 - [x] Approve a refined visual direction and technical skills wireframe.
 - [x] Restyle all sections, implement purposeful React Bits / Framer Motion and replace About copy exactly.
 - [x] Verify navigation, contact, SSR visibility, images, reduced motion and phone/desktop layouts.
-- [ ] Upload the full source to Danish_portfolio through GitHub and verify the resulting revision; this is a one-time export, not automatic Git sync.
+- [x] Upload the full source to Danish_portfolio through GitHub and verify the resulting revision; this is a one-time export, not automatic Git sync.
