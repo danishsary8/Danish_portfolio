@@ -10,7 +10,7 @@ export const container: Variants = {
 export const item: Variants = {
   // Content must remain readable if hydration or viewport observation stalls.
   hidden: { opacity: 1, transform: "translateY(12px)" },
-  show: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.3, ease: EASE } },
+  show: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.35, ease: EASE } },
 };
 /* Badges / chips: subtle spring pop-in */
 export const badgeContainer: Variants = {
@@ -46,6 +46,17 @@ export function RevealItem({ children, className }: { children: ReactNode; class
   return (
     <motion.div
       className={className}
+      initial={false}
+      whileInView={
+        reduce
+          ? { opacity: 1, transform: "none" }
+          : {
+              opacity: [0.72, 1],
+              transform: ["translateY(16px)", "translateY(0px)"],
+            }
+      }
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.35, ease: EASE }}
       variants={
         reduce
           ? { hidden: { opacity: 1, transform: "none" }, show: { opacity: 1, transform: "none" } }

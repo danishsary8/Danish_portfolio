@@ -21,9 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Reveal, RevealItem, SectionHeader, SplitWords } from "@/components/portfolio/Reveal";
+import { Reveal, RevealItem, SectionHeader } from "@/components/portfolio/Reveal";
+import { TextType } from "@/components/portfolio/TextType";
 import { SpotlightCard } from "@/components/portfolio/SpotlightCard";
 import { TechnicalSkills } from "@/components/portfolio/TechnicalSkills";
+import { getCvLinkProps } from "@/components/portfolio/cv-link";
 // Replace with actual photo: /assets/danish-photo.jpg
 import photo from "@/assets/danish-photo.jpg";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
@@ -51,7 +53,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const CV_HREF = "#"; // CV PDF link here
+// Paste your CV PDF URL here — every CV button picks it up automatically.
+const cvLinkProps = getCvLinkProps();
 const GITHUB = "https://github.com/danishsary8";
 const NAV = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
 
@@ -62,6 +65,7 @@ const PROJECTS = [
     tech: ["Laravel", "React", "TypeScript", "PostgreSQL", "Supabase"],
     live: "https://bookly-frontend-five.vercel.app/",
     docs: "https://bookly-api-zasc.onrender.com/docs",
+    github: "https://github.com/danishsary8/bookly_frontend",
     shot: booklyShot.url,
   },
   {
@@ -69,20 +73,22 @@ const PROJECTS = [
     desc: "Personal routine and habit planner web app. Deployed full-stack application with scheduling features and clean UI.",
     tech: ["React", "JavaScript", "CSS"],
     live: "https://daycraft-vnid.onrender.com/",
+    github: "https://github.com/danishsary8/Loomora_craft",
     shot: loomoraShot.url,
   },
   {
     name: "Diabetes Expert System",
     desc: "Full-stack clinical assistance prototype with bilingual EN/Khmer support, JWT RBAC, rule-based expert system for diabetes risk assessment.",
     tech: ["Flask", "React", "Vite", "Python", "JWT"],
-    live: "https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/",
-    demoProtected: true,
+    live: "https://diabetes-expert-system-chi.vercel.app/",
+    github: "https://github.com/danishsary8/diabetes_expert_system",
   },
   {
     name: "Driving Rules App",
     desc: "Frontend web app for learning Cambodian driving theory and traffic rules. Built for local learners.",
     tech: ["Flutter", "Dart"],
     live: "https://drivingruletest.netlify.app/",
+    github: "https://github.com/danishsary8/driving-rules",
     shot: drivingShot.url,
   },
 ];
@@ -108,9 +114,9 @@ function Index() {
         <Contact />
       </main>
       <Footer />
-      {/* Floating CV button — CV PDF link here */}
+      {/* Floating CV button */}
       <a
-        href={CV_HREF}
+        {...cvLinkProps}
         aria-label="View CV"
         className="pulse-cta tappable fixed bottom-[calc(max(1rem,env(safe-area-inset-bottom))+0.5rem)] right-[max(1rem,env(safe-area-inset-right))] z-40 flex h-11 w-11 items-center justify-center rounded-full bg-cta text-xs font-semibold uppercase tracking-wider text-cta-foreground transition-colors duration-200 ease-quint hover:bg-cta/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:h-auto sm:w-auto sm:justify-start sm:gap-2 sm:px-5 sm:py-3"
       >
@@ -156,15 +162,14 @@ function Navbar() {
             </a>
           ))}
           <Button asChild variant="cta" size="sm" className="pulse-cta">
-            {/* CV PDF link here */}
-            <a href={CV_HREF}>
+            <a {...cvLinkProps}>
               <FileText aria-hidden /> View CV
             </a>
           </Button>
         </div>
         <div className="flex items-center gap-2 lg:hidden">
           <Button asChild variant="cta" size="sm" className="pulse-cta">
-            <a href={CV_HREF}>View CV</a>
+            <a {...cvLinkProps}>View CV</a>
           </Button>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
@@ -198,47 +203,52 @@ function Hero() {
   return (
     <section id="top" className="relative border-b border-border pt-16">
       <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-5 pb-12 pt-8 sm:gap-8 sm:py-16 md:grid-cols-[1.35fr_1fr] md:px-8 lg:min-h-[660px] lg:py-20">
-        <div>
-          <p className="mb-5 inline-flex items-center gap-2 font-mono text-xs text-highlight">
-            <span className="relative flex h-2 w-2">
-              <span className="relative h-2 w-2 rounded-full bg-highlight" />
-            </span>
-            Available for work · Phnom Penh
-          </p>
-          <h1 className="hero-wordmark font-bold">
-            <SplitWords text="Sary" />
-            <br />
-            <span className="text-primary-glow">
-              <SplitWords text="Danish." />
-            </span>
-          </h1>
-          <p className="mt-6 max-w-xl text-base font-medium leading-relaxed sm:text-xl">
-            Junior Software Developer from Cambodia,{" "}
-            <span className="text-muted-foreground">
-              building things that actually work, clean code, real results.
-            </span>
-          </p>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Full-Stack Web Development · REST APIs · React · Laravel · Flask
-          </p>
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Button asChild variant="cta" size="lg">
-              <a href="#projects">
-                View My Work <ArrowUpRight aria-hidden />
-              </a>
-            </Button>
-            <Button asChild variant="blueOutline" size="lg">
-              <a href="#contact">Contact Me</a>
-            </Button>
-            <Button asChild variant="ghost" size="icon">
-              <a href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub profile">
-                <Github />
-              </a>
-            </Button>
-          </div>
-        </div>
+        <Reveal>
+          <RevealItem>
+            <p className="mb-5 inline-flex items-center gap-2 font-mono text-xs text-highlight">
+              <span className="relative flex h-2 w-2">
+                <span className="relative h-2 w-2 rounded-full bg-highlight" />
+              </span>
+              Available for work · Phnom Penh
+            </p>
+            <h1 className="hero-wordmark font-bold">
+              <TextType lines={["Sary", "Danish."]} />
+            </h1>
+          </RevealItem>
+          <RevealItem>
+            <p className="mt-6 max-w-xl text-base font-medium leading-relaxed sm:text-xl">
+              Junior Software Developer from Cambodia,{" "}
+              <span className="text-muted-foreground">
+                building things that actually work, clean code, real results.
+              </span>
+            </p>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Full-Stack Web Development · REST APIs · React · Laravel · Flask
+            </p>
+          </RevealItem>
+          <RevealItem>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Button asChild variant="cta" size="lg">
+                <a href="#projects">
+                  View My Work <ArrowUpRight aria-hidden />
+                </a>
+              </Button>
+              <Button asChild variant="blueOutline" size="lg">
+                <a href="#contact">Contact Me</a>
+              </Button>
+              <Button asChild variant="ghost" size="icon">
+                <a href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub profile">
+                  <Github />
+                </a>
+              </Button>
+            </div>
+          </RevealItem>
+        </Reveal>
         <motion.div
           initial={false}
+          whileInView={{ opacity: [0.8, 1], transform: ["translateY(12px)", "translateY(0px)"] }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           className="hero-portrait relative mx-auto h-[390px] w-full max-w-[370px] overflow-hidden rounded-lg sm:h-[430px] lg:h-[460px]"
         >
           <img
@@ -418,32 +428,30 @@ function Projects() {
                     </Badge>
                   ))}
                 </div>
-                <div className="mt-8 flex flex-wrap gap-3 border-t border-border pt-5">
-                  {!p.demoProtected && (
-                    <Button
-                      asChild
-                      variant="cta"
-                      size="lg"
-                      className="flex-1 text-sm shadow-blue focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                <div className="project-actions mt-8 grid grid-cols-1 gap-3 border-t border-border pt-5 min-[380px]:grid-cols-2">
+                  <Button
+                    asChild
+                    variant="cta"
+                    size="lg"
+                    className="project-action project-action-demo text-sm shadow-blue focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                  >
+                    <a
+                      href={p.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`${p.name} live demo`}
                     >
-                      <a
-                        href={p.live}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${p.name} live demo`}
-                      >
-                        Live Demo <ArrowUpRight aria-hidden />
-                      </a>
-                    </Button>
-                  )}
+                      Live Demo <ArrowUpRight aria-hidden />
+                    </a>
+                  </Button>
                   <Button
                     asChild
                     variant="blueOutline"
                     size="lg"
-                    className="flex-1 border-2 border-primary bg-primary/10 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    className="project-action project-action-github border-2 border-primary bg-primary/10 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                   >
                     <a
-                      href={GITHUB}
+                      href={p.github ?? GITHUB}
                       target="_blank"
                       rel="noreferrer"
                       aria-label={`${p.name} on GitHub`}
@@ -452,7 +460,12 @@ function Projects() {
                     </a>
                   </Button>
                   {p.docs && (
-                    <Button asChild variant="ghost" size="sm" className="basis-full text-sm">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className="project-action text-sm min-[380px]:col-span-2"
+                    >
                       <a
                         href={p.docs}
                         target="_blank"
@@ -675,18 +688,20 @@ function Contact() {
 function Footer() {
   return (
     <footer className="border-t border-border/60">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-5 py-8 text-xs text-muted-foreground sm:flex-row md:px-8">
-        <p>© 2024 Sary Danish. Built with React & ❤️</p>
-        <a
-          href={GITHUB}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="GitHub"
-          className="hover:text-primary-glow"
-        >
-          <Github className="h-5 w-5" />
-        </a>
-      </div>
+      <Reveal className="mx-auto max-w-7xl px-5 py-8 md:px-8">
+        <RevealItem className="flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground sm:flex-row">
+          <p>© 2024 Sary Danish. Built with React & ❤️</p>
+          <a
+            href={GITHUB}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="hover:text-primary-glow"
+          >
+            <Github className="h-5 w-5" />
+          </a>
+        </RevealItem>
+      </Reveal>
     </footer>
   );
 }

@@ -142,6 +142,8 @@
   }
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
   }
   body {
     font-family: var(--font-sans);
@@ -158,6 +160,19 @@
   ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
+  }
+  /* Buttons keep non-selectable labels; plain links keep native long-press
+     so iOS/Android show Copy Link / Open in New Tab callouts. */
+  button,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  a {
+    -webkit-user-select: auto;
+    user-select: auto;
+    -webkit-touch-callout: default;
   }
 }
 .portfolio-shell {
@@ -203,6 +218,82 @@
 .hero-wordmark {
   font-size: 88px;
   line-height: 1.04;
+}
+.text-type-line {
+  display: block;
+  white-space: nowrap;
+}
+.text-type-character {
+  position: relative;
+  display: inline-block;
+}
+.text-type-base {
+  color: var(--muted-foreground);
+}
+.text-type-ink {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+.text-type-character[data-typed="true"] .text-type-ink {
+  opacity: 1;
+}
+.text-type-character[data-cursor="true"]::after {
+  content: "";
+  position: absolute;
+  right: -0.04em;
+  top: 0.12em;
+  width: 2px;
+  height: 0.8em;
+  background: var(--primary);
+  pointer-events: none;
+}
+.project-actions .project-action {
+  min-width: 0;
+  min-height: 52px;
+  height: auto;
+  padding: 12px 16px;
+  gap: 10px;
+  white-space: normal;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 140ms var(--ease-out-quint),
+    background-color 140ms ease,
+    color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+.project-action:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.project-action:active {
+  transform: scale(0.97);
+  box-shadow: none;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+.project-action-demo:active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.project-action-github:active {
+  background: var(--ink);
+  color: var(--on-ink);
+  border-color: var(--ink);
+}
+.portfolio-shell [data-slot="card"] {
+  transition:
+    transform 200ms var(--ease-out-quint),
+    border-color 160ms ease,
+    box-shadow 200ms ease;
+}
+.skill-chip {
+  transition:
+    transform 160ms var(--ease-out-quint),
+    background-color 160ms ease;
 }
 .hero-portrait {
   box-shadow: var(--shadow-portrait);
@@ -376,6 +467,15 @@ footer {
     border-color 160ms ease;
 }
 @media (hover: hover) and (pointer: fine) {
+  .portfolio-shell [data-slot="card"]:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-card);
+  }
+  .skill-chip:hover {
+    transform: translateY(-2px);
+    background: var(--accent);
+  }
   .spotlight-card:hover {
     border-color: var(--primary);
   }
@@ -447,7 +547,17 @@ footer {
     display: none;
   }
   .project-card,
-  .project-card img {
+  .project-card img,
+  .portfolio-shell [style*="transform"],
+  .portfolio-shell [data-slot="card"],
+  .project-action:active,
+  .skill-chip:hover {
     transform: none !important;
+  }
+  .text-type-base {
+    color: inherit;
+  }
+  .text-type-character::after {
+    display: none;
   }
 }
