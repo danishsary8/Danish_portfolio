@@ -3,8 +3,13 @@ import { describe, expect, it } from "vitest";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 
 describe("CV buttons", () => {
-  it("ship as a placeholder until the real CV URL is supplied", () => {
-    expect(CV_HREF).toBe("#");
+  it("point at the bundled CV and open it in a new tab", () => {
+    expect(CV_HREF).toBe("/sary-danish-cv.pdf");
+    expect(getCvLinkProps()).toEqual({
+      href: "/sary-danish-cv.pdf",
+      target: "_blank",
+      rel: "noopener noreferrer",
+    });
   });
 
   it("stay inert while the address is still a placeholder", () => {

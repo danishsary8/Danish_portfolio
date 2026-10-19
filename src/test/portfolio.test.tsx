@@ -97,6 +97,10 @@ describe("Contact", () => {
       "mailto:danishsary4@gmail.com",
     );
     expect(screen.getByRole("button", { name: /Copy email address/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Download CV" })).toHaveAttribute(
+      "href",
+      "/sary-danish-cv.pdf",
+    );
     expect(screen.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
       "href",
       "https://github.com/danishsary8",

@@ -189,7 +189,7 @@ All components must draw strictly from these authentic biographical facts. Never
      - Live: `https://drivingruletest.netlify.app/`
      - GitHub: `https://github.com/danishsary8`
 - **Education & Awards:**
-  - **Norton University** — B.S. in Software Development — 2024 – Present — Phnom Penh, Cambodia *(per CV; confirm if a different start year is correct)*
+  - **Norton University** — B.S. in Software Development — 2024 – Present — Phnom Penh, Cambodia
   - **Award:** AI Expert System and Innovation 2026 — Award Winner (Team), September 2026 — presented the Diabetes Expert System
   - **ACE (Australian Centre for Education)** — General English Program — 2024 – 2026, Completed
   - **ETEC** — Frontend Development Course (HTML, CSS, JavaScript, React.js) — Jan 2025 – Jul 2025, Completed

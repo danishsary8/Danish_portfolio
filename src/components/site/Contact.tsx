@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Check, Copy, Mail, MapPin } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Mail, MapPin } from "lucide-react";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { SiGithub, SiTelegram } from "react-icons/si";
 import { PROFILE } from "@/content/portfolio";
 import { useLocalTime } from "@/lib/use-local-time";
@@ -82,6 +83,15 @@ export function Contact() {
                   <span className="truncate">{PROFILE.email}</span>
                 </a>
                 <CopyEmail />
+                {CV_HREF !== "#" && CV_HREF !== "" ? (
+                  <a
+                    {...getCvLinkProps()}
+                    className="glass-panel inline-flex h-12 items-center gap-2 rounded-control px-4 text-[15px] font-medium text-primaryText transition-[border-color,transform] duration-150 hover:border-gold active:scale-[0.98]"
+                  >
+                    <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+                    Download CV
+                  </a>
+                ) : null}
               </div>
             </RevealItem>
           </div>
