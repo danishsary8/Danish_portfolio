@@ -11,6 +11,8 @@
   --radius-2xl: calc(var(--radius) + 3px);
   --radius-brand: 16px;
   --radius-control: 10px;
+  --blur-card: 18px;
+  --blur-chrome: 28px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -35,6 +37,7 @@
   --color-muted-text: var(--text-muted);
   --color-gold: var(--accent-gold);
   --color-gold-hover: var(--accent-gold-hover);
+  --color-gold-ink: var(--accent-gold-ink);
   --color-border-subtle: var(--border-subtle);
   --color-border-strong: var(--border-strong);
   --color-border-focus: var(--border-focus);
@@ -100,6 +103,7 @@
     --text-muted: #5a554c;
     --accent-gold: #b0822d;
     --accent-gold-hover: #9a6f26;
+    --accent-gold-ink: #85601f;
     --border-subtle: var(--glass-border);
     --border-strong: var(--glass-border-strong);
     --border-focus: #0a0a0a;
@@ -166,6 +170,7 @@
     --text-muted: #9a948a;
     --accent-gold: #c9973a;
     --accent-gold-hover: #dda94b;
+    --accent-gold-ink: #c9973a;
     --border-subtle: var(--glass-border);
     --border-strong: var(--glass-border-strong);
     --border-focus: #c9973a;
@@ -226,12 +231,13 @@
         color-mix(in oklab, var(--accent-gold) 10%, var(--bg-elevated-1)) 0%,
         transparent 60%
       ),
-      radial-gradient(
-        ellipse 900px 900px at 100% 20%,
+      radial-gradient(ellipse 900px 900px at 100% 20%, var(--bg-elevated-1) 0%, transparent 55%),
+      linear-gradient(
+        180deg,
         var(--bg-elevated-1) 0%,
-        transparent 55%
-      ),
-      linear-gradient(180deg, var(--bg-elevated-1) 0%, var(--bg-elevated-2) 45%, var(--bg-base) 100%);
+        var(--bg-elevated-2) 45%,
+        var(--bg-base) 100%
+      );
     background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-body);
@@ -305,35 +311,37 @@
 /* ==========================================================================
    Glassmorphism Surfaces
    ========================================================================== */
-.glass-panel {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--blur-chrome));
-  -webkit-backdrop-filter: blur(var(--blur-chrome));
-  border-radius: var(--radius-brand);
-}
-.glass-card {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(var(--blur-card));
-  -webkit-backdrop-filter: blur(var(--blur-card));
-  border-radius: var(--radius-brand);
-  box-shadow: none;
-  transition:
-    transform 200ms var(--ease-out-quint),
-    border-color 200ms ease,
-    box-shadow 200ms ease,
-    background-color 200ms ease;
-}
-@media (hover: hover) and (pointer: fine) {
-  .glass-card:hover {
-    border-color: var(--accent-gold);
-    box-shadow: var(--shadow-card);
-    background: var(--glass-surface-strong);
+@layer components {
+  .glass-panel {
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--blur-chrome));
+    -webkit-backdrop-filter: blur(var(--blur-chrome));
+    border-radius: var(--radius-brand);
   }
-}
-.glass-elevated {
-  box-shadow: var(--shadow-card);
+  .glass-card {
+    background: var(--glass-surface);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--blur-card));
+    -webkit-backdrop-filter: blur(var(--blur-card));
+    border-radius: var(--radius-brand);
+    box-shadow: none;
+    transition:
+      transform 200ms var(--ease-out-quint),
+      border-color 200ms ease,
+      box-shadow 200ms ease,
+      background-color 200ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .glass-card:hover {
+      border-color: var(--accent-gold);
+      box-shadow: var(--shadow-card);
+      background: var(--glass-surface-strong);
+    }
+  }
+  .glass-elevated {
+    box-shadow: var(--shadow-card);
+  }
 }
 .section-heading {
   position: relative;
@@ -545,8 +553,8 @@
   border-top: 1px solid var(--border);
   padding-top: 28px;
 }
-#contact,
-footer {
+.portfolio-shell #contact,
+.portfolio-shell footer {
   --background: var(--ink);
   --foreground: var(--on-ink);
   --card: oklch(0.265 0.006 80);
@@ -563,8 +571,8 @@ footer {
   background: var(--background);
   color: var(--foreground);
 }
-#contact input,
-#contact textarea {
+.portfolio-shell #contact input,
+.portfolio-shell #contact textarea {
   font-size: 16px;
 }
 .portfolio-shell a {
@@ -661,7 +669,7 @@ footer {
    Swiss Architectural Broadsheet & Exposed Structural Grid Utilities
    ========================================================================== */
 .bg-editorial-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
     linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
   background-size: 64px 64px;
@@ -775,4 +783,3 @@ footer {
     word-break: break-all;
   }
 }
-

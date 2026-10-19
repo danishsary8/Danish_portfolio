@@ -13,6 +13,7 @@ export default {
         gold: {
           DEFAULT: "var(--accent-gold)",
           hover: "var(--accent-gold-hover)",
+          ink: "var(--accent-gold-ink)",
         },
         borderSubtle: "var(--glass-border)",
         borderStrong: "var(--glass-border-strong)",

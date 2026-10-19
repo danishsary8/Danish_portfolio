@@ -63,14 +63,7 @@ const PILLARS: Pillar[] = [
     icon: Cpu,
     summary:
       "Operating modern autonomous development environments, git workflows, and rapid UI prototyping pipelines.",
-    technologies: [
-      "Git",
-      "GitHub",
-      "VS Code",
-      "Docker",
-      "Cloudinary",
-      "Postman",
-    ],
+    technologies: ["Git", "GitHub", "VS Code", "Docker", "Cloudinary", "Postman"],
   },
 ];
 
@@ -101,7 +94,6 @@ export function SystemCapabilities() {
             and TypeScript frontends, my technical foundation is built on writing clean,
             maintainable code that solves real-world operational problems.
           </p>
-
         </div>
 
         {/* Right Exposed 2x2 Architectural Quadrants (lg:col-span-8) */}

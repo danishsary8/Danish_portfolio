@@ -153,14 +153,7 @@ CREATE TABLE order_items (
     subtitle: "Clinical Assistance Prototype & Rule-Based Inference Engine",
     summary:
       "Bilingual (EN/Khmer) system for early diabetes screening with explainable, rule-based risk assessments and care plans. Team project — contributed Google sign-in, UI improvements, and testing. Award Winner, AI Expert System and Innovation 2026.",
-    tech: [
-      "React",
-      "Flask",
-      "PostgreSQL",
-      "JWT RBAC",
-      "Bilingual EN/Khmer",
-      "Google Sign-In",
-    ],
+    tech: ["React", "Flask", "PostgreSQL", "JWT RBAC", "Bilingual EN/Khmer", "Google Sign-In"],
     liveUrl: "https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/",
     githubUrl: "https://github.com/danishsary8",
     schemaSpec: {
@@ -223,14 +216,7 @@ CREATE TABLE auth_roles (
     subtitle: "Personal Routine & Habit Scheduling Web Application",
     summary:
       "Productivity app where users build daily routines and reminders, with secure login, Google sign-in, and email verification, plus daily streak tracking and smooth Framer Motion interactions.",
-    tech: [
-      "React",
-      "Tailwind CSS",
-      "Framer Motion",
-      "Laravel",
-      "PostgreSQL",
-      "Google Sign-In",
-    ],
+    tech: ["React", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL", "Google Sign-In"],
     liveUrl: "https://daycraft-vnid.onrender.com/",
     githubUrl: "https://github.com/danishsary8",
     previewImage: ASSETS.projects.loomora.src,
@@ -496,7 +482,6 @@ export function FeaturedProjects() {
                       <Terminal className="h-4 w-4 text-gold" aria-hidden="true" />
                       <span>Inspect Architecture</span>
                     </button>
-
                   </div>
                 </div>
 
