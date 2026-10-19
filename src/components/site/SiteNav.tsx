@@ -5,6 +5,7 @@ import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { ShinyText } from "@/components/ui/ShinyText";
+import { SlingButton } from "@/components/ui/SlingButton";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -98,15 +99,30 @@ export function SiteNav() {
 
         {/* Right: Theme Toggle & Mobile Menu outside the pill */}
         <div className="flex items-center justify-end gap-2">
-          {/* Theme Switcher Button */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={themeLabel}
-            className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-line bg-surface/80 backdrop-blur-md text-fg-muted transition-all duration-150 hover:text-fg hover:border-line-strong hover:bg-surface shadow-xs active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+          {/* Theme Switcher SlingButton */}
+          <SlingButton
+            onSend={toggle}
+            ariaLabel={themeLabel}
+            padColor={dark ? "#1c1c20" : "#ffffff"}
+            iconColor={dark ? "#EDEDEF" : "#111113"}
+            accentColor={dark ? "#c9973a" : "#b0822d"}
+            wellColor={dark ? "#111113" : "#e4e4e7"}
+            bandColor={dark ? "#c9973a" : "#b0822d"}
+            size={40}
+            strokeWidth={2.5}
+            armAt={32}
+            maxPull={110}
+            launchSpeed={2600}
+            recoil={0.2}
+            flight={100}
+            particles={14}
+            spread={60}
+            axis="any"
+            tapSends={true}
+            className="shadow-2xs"
           >
-            <ThemeIcon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-          </button>
+            <ThemeIcon className="h-4.5 w-4.5 transition-transform duration-200" strokeWidth={2} aria-hidden="true" />
+          </SlingButton>
 
           {/* Mobile Menu trigger (Sheet drawer) */}
           <Sheet open={open} onOpenChange={setOpen}>
