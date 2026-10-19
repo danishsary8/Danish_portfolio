@@ -67,11 +67,13 @@ export function SiteNav() {
           >
             <ShinyText
               text={PROFILE.name}
-              color={dark ? "#b5b5b5" : "#27272a"}
-              shineColor={dark ? "#ffffff" : "#09090b"}
+              color={dark ? "#a1a1aa" : "#18181b"}
+              shineColor={dark ? "#ffffff" : "#c9973a"}
               speed={2}
-              shineWidth={40}
-              softness={0.8}
+              delay={0.5}
+              shineWidth={65}
+              softness={0.5}
+              glow={0.7}
               trigger="loop"
               className="font-display text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
             />

@@ -313,6 +313,9 @@ export const ShinyText = ({
         }
         state.phase = "wait";
         state.resume = now + s.delay * 1000;
+        window.clearTimeout(timer);
+        timer = window.setTimeout(wake, Math.max(20, s.delay * 1000));
+        return;
       }
       if (state.phase === "wait") {
         if (!state.visible) return;
@@ -408,6 +411,9 @@ export const ShinyText = ({
       wake();
     };
     draw();
+    if (settingsRef.current.trigger === "loop" && !reduce) {
+      sweep(entry(), exit(), performance.now());
+    }
     wake();
 
     return () => {
