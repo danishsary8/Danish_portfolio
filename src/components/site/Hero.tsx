@@ -27,13 +27,13 @@ export function Hero() {
         className="pointer-events-none absolute right-[10%] top-28 -z-10 h-[380px] w-[380px] rounded-full bg-gold/10 blur-[120px] dark:bg-gold/15"
       />
 
-      <div className="mx-auto max-w-[1180px] px-5 pb-20 pt-32 sm:px-6 sm:pt-40 lg:pb-28">
+      <div className="mx-auto max-w-[1180px] px-5 pb-20 pt-36 sm:px-6 sm:pt-44 lg:pb-28">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.18fr_auto] lg:gap-14 xl:gap-20">
           {/* Left Column: Headline, RotatingText, Bio, CTAs & Facts */}
           <div className="min-w-0">
             {/* Status & Phnom Penh time */}
-            <div className="enter flex flex-wrap items-center gap-3" style={step(0)}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-line-strong/80 bg-surface/80 px-3 py-1 text-[13px] text-fg-muted shadow-xs backdrop-blur-md">
+            <div className="enter flex flex-wrap items-center gap-3 text-[13px] text-fg-muted" style={step(0)}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-line-strong/80 bg-surface/80 px-3 py-1 shadow-2xs backdrop-blur-md">
                 <span aria-hidden="true" className="relative inline-flex h-2 w-2">
                   <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
                   <span className="relative h-2 w-2 rounded-full bg-gold" />
@@ -43,31 +43,34 @@ export function Hero() {
               <span aria-hidden="true" className="text-fg-subtle">
                 /
               </span>
-              <span className="text-[13px] text-fg-muted">
+              <span>
                 {PROFILE.location.split(",")[0]}{" "}
                 <span className="font-mono text-[12.5px] tabular-nums text-fg">{time ?? "--:--"}</span>{" "}
                 <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
 
-            {/* Medium-large Lead: Software and Web Development */}
-            <div className="enter mt-6 flex items-center gap-3" style={step(1)}>
-              <div className="inline-flex items-center gap-2 rounded-lg border border-gold/30 bg-gold/10 px-3 py-1 dark:border-gold/25 dark:bg-gold/15">
-                <Sparkles className="h-4 w-4 text-gold" aria-hidden="true" />
-                <span className="text-[15px] sm:text-[18px] md:text-[20px] font-semibold tracking-tight text-fg">
-                  Software and Web Development
-                </span>
-              </div>
+            {/* Medium-large Heading: Software and Web Development */}
+            <div className="enter mt-7 flex items-center gap-3" style={step(1)}>
+              <span className="h-2 w-2 rounded-full bg-gold" aria-hidden="true" />
+              <span className="text-[20px] sm:text-[24px] md:text-[27px] font-semibold tracking-[-0.02em] text-fg/90">
+                Software and Web Development
+              </span>
             </div>
 
-            {/* Main Headline with Sary Danish & Dynamic Rotating Roles */}
+            {/* Main Headline: Sary Danish */}
             <h1
               id="hero-title"
-              className="enter mt-4 text-[clamp(2.5rem,6.4vw,4.5rem)] font-semibold leading-[1.04] tracking-[-0.045em]"
+              className="enter mt-2 text-[clamp(2.75rem,6.8vw,4.85rem)] font-extrabold leading-[1.02] tracking-[-0.045em] text-fg"
               style={step(2)}
             >
-              <span className="text-fg">{PROFILE.name}</span>
-              <span className="mt-3 block text-[clamp(1.4rem,3.8vw,2.35rem)] font-medium leading-[1.18] tracking-[-0.03em] text-fg-muted">
+              {PROFILE.name}
+            </h1>
+
+            {/* Dynamic Rotating Roles */}
+            <div className="enter mt-4 flex items-center gap-2.5" style={step(2.5)}>
+              <span className="text-[14.5px] sm:text-[16px] font-medium text-fg-subtle">Focus &mdash;</span>
+              <div className="inline-flex items-center rounded-lg border border-gold/40 bg-gold/10 px-3 py-1 dark:border-gold/30 dark:bg-gold/15">
                 <RotatingText
                   texts={[
                     "Junior Web Developer",
@@ -76,16 +79,15 @@ export function Hero() {
                   ]}
                   effect="slide"
                   direction="up"
-                  highlight={true}
-                  highlightColor="rgba(176, 130, 45, 0.16)"
+                  highlight={false}
                   staggerFrom="last"
                   staggerDuration={0.025}
-                  splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1"
+                  splitLevelClassName="overflow-hidden pb-0.5"
                   rotationInterval={2800}
-                  className="rounded-lg px-2.5 py-0.5 font-semibold text-fg transition-colors"
+                  className="text-[14.5px] sm:text-[16px] font-semibold text-fg"
                 />
-              </span>
-            </h1>
+              </div>
+            </div>
 
             {/* Bio description */}
             <p

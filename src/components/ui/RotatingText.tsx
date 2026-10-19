@@ -89,8 +89,13 @@ const readableText = (color: string) => {
         : hex[1].slice(0, 6);
     rgb = [0, 2, 4].map((i) => parseInt(digits.slice(i, i + 2), 16));
   } else {
-    const fn = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i);
-    if (fn) rgb = fn.slice(1, 4).map(Number);
+    const fn = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?/i);
+    if (fn) {
+      if (fn[4] !== undefined && parseFloat(fn[4]) < 0.6) {
+        return undefined;
+      }
+      rgb = fn.slice(1, 4).map(Number);
+    }
   }
   if (!rgb) return undefined;
   const [r, g, b] = rgb.map((channel) => {
@@ -323,7 +328,7 @@ export const RotatingText = forwardRef<RotatingTextHandle, RotatingTextProps>((p
         ...style,
         width: width as any,
         backgroundColor: highlightColor,
-        color: readableText(highlightColor) ?? style?.color,
+        color: style?.color ?? readableText(highlightColor),
       }
     : style || {};
 

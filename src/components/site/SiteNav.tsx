@@ -48,7 +48,11 @@ export function SiteNav() {
   }));
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6 sm:pt-4 md:px-8 pointer-events-none">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
+        scrolled ? "bg-bg/85 backdrop-blur-md border-b border-line/40 shadow-xs" : "bg-transparent"
+      }`}
+    >
       <nav
         aria-label="Primary"
         className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
