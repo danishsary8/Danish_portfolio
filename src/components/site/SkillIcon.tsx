@@ -14,6 +14,7 @@ import {
   SiJavascript,
   SiJsonwebtokens,
   SiLaravel,
+  SiOpenapiinitiative,
   SiOpenjdk,
   SiPhp,
   SiPostgresql,
@@ -25,12 +26,13 @@ import {
   SiTailwindcss,
   SiTypescript,
 } from "react-icons/si";
-import { Code2, Database, HardDrive, Webhook } from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
+import { TbApi } from "react-icons/tb";
+import { Code2, Database, HardDrive } from "lucide-react";
+import type { ComponentType, CSSProperties, SVGProps } from "react";
 
 type AnyIcon = IconType | ComponentType<SVGProps<SVGSVGElement> & { strokeWidth?: number }>;
 
-// Brand marks from Simple Icons; lucide fallbacks where no brand mark is published.
+// Brand marks from Simple Icons & Tabler; lucide fallbacks where no brand mark is published.
 const ICONS: Record<string, AnyIcon> = {
   JavaScript: SiJavascript,
   TypeScript: SiTypescript,
@@ -53,7 +55,8 @@ const ICONS: Record<string, AnyIcon> = {
   Oracle: Database,
   Git: SiGit,
   GitHub: SiGithub,
-  "REST APIs": Webhook,
+  "REST APIs": TbApi,
+  OpenAPI: SiOpenapiinitiative,
   JWT: SiJsonwebtokens,
   Docker: SiDocker,
   Postman: SiPostman,
@@ -62,11 +65,81 @@ const ICONS: Record<string, AnyIcon> = {
   "Local Storage": HardDrive,
 };
 
+// Authentic brand colors for every supported technology
+export const SKILL_COLORS: Record<string, string> = {
+  React: "#61DAFB",
+  TypeScript: "#3178C6",
+  Laravel: "#FF2D20",
+  PostgreSQL: "#4169E1",
+  "Tailwind CSS": "#06B6D4",
+  "REST APIs": "#0284C7",
+  OpenAPI: "#6BA539",
+  Docker: "#2496ED",
+  JavaScript: "#F7DF1E",
+  PHP: "#777BB4",
+  Python: "#3776AB",
+  Java: "#ED8B00",
+  HTML5: "#E34F26",
+  CSS3: "#1572B6",
+  Bootstrap: "#7952B3",
+  "Framer Motion": "#0055FF",
+  Flutter: "#02569B",
+  Dart: "#0175C2",
+  Supabase: "#3ECF8E",
+  SQLite: "#003B57",
+  Oracle: "#F80000",
+  Git: "#F05032",
+  GitHub: "#EDEDEF",
+  JWT: "#D63AFF",
+  Postman: "#FF6C37",
+  Cloudinary: "#3448C5",
+  "VS Code": "#007ACC",
+  "Local Storage": "#F59E0B",
+};
+
+export function getSkillColor(name: string): string {
+  return SKILL_COLORS[name] ?? "#A1A1AA";
+}
+
+export function getSkillGlow(name: string): string {
+  const color = SKILL_COLORS[name] ?? "#A1A1AA";
+  if (color.startsWith("#") && color.length === 7) {
+    const r = parseInt(color.slice(1, 3), 16);
+    const g = parseInt(color.slice(3, 5), 16);
+    const b = parseInt(color.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, 0.28)`;
+  }
+  return "rgba(255, 255, 255, 0.12)";
+}
+
 export function hasSkillIcon(name: string) {
   return name in ICONS;
 }
 
-export function SkillIcon({ name, className }: { name: string; className?: string }) {
+export function SkillIcon({
+  name,
+  className,
+  useBrandColor = false,
+  style,
+}: {
+  name: string;
+  className?: string;
+  useBrandColor?: boolean;
+  style?: CSSProperties;
+}) {
   const Icon = ICONS[name] ?? Code2;
-  return <Icon className={className} aria-hidden="true" focusable="false" strokeWidth={1.5} />;
+  const brandColor = SKILL_COLORS[name];
+
+  return (
+    <Icon
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+      strokeWidth={name === "REST APIs" ? 1.8 : 1.5}
+      style={{
+        ...(useBrandColor && brandColor ? { color: brandColor } : {}),
+        ...style,
+      }}
+    />
+  );
 }

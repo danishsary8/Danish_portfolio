@@ -9,7 +9,7 @@ import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import { VariableProximity } from "@/components/ui/VariableProximity";
 import { SplitText } from "@/components/ui/SplitText";
-import { SkillIcon } from "./SkillIcon";
+import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
   "React",
@@ -183,18 +183,29 @@ export function Hero() {
                 <span className="font-mono text-[12px] text-fg-subtle">Core Stack</span>
                 <span aria-hidden="true" className="text-fg-subtle/50">/</span>
                 <div className="flex flex-wrap items-center gap-1.5">
-                  {CORE_STACK.map((tech) => (
-                    <span
-                      key={tech}
-                      className="group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/70 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted transition-[border-color,background-color,color] duration-150 hover:border-line-strong hover:bg-surface-1 hover:text-fg"
-                    >
-                      <SkillIcon
-                        name={tech}
-                        className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
-                      />
-                      <span>{tech}</span>
-                    </span>
-                  ))}
+                  {CORE_STACK.map((tech) => {
+                    const brandColor = getSkillColor(tech);
+                    const brandGlow = getSkillGlow(tech);
+                    return (
+                      <span
+                        key={tech}
+                        className="tech-badge group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/80 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted cursor-default select-none hover:bg-surface-1 hover:text-fg"
+                        style={
+                          {
+                            "--badge-color": brandColor,
+                            "--badge-glow": brandGlow,
+                          } as CSSProperties
+                        }
+                      >
+                        <SkillIcon
+                          name={tech}
+                          useBrandColor
+                          className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 ease-out group-hover:scale-110"
+                        />
+                        <span>{tech}</span>
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
 

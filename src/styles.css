@@ -211,6 +211,30 @@
       0 0 28px rgba(201, 151, 58, 0.45),
       0 0 56px rgba(201, 151, 58, 0.2);
   }
+
+  /* Interactive Tech Stack Brand Badges with Colored Glow */
+  .tech-badge {
+    transition:
+      transform 200ms var(--ease-out),
+      border-color 200ms var(--ease-out),
+      box-shadow 200ms var(--ease-out),
+      background-color 200ms var(--ease-out),
+      color 150ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tech-badge:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--badge-color, var(--line-strong)) 45%, transparent);
+      box-shadow:
+        0 4px 14px -2px var(--badge-glow, rgba(0, 0, 0, 0.1)),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  .tech-badge:active {
+    transform: translateY(0) scale(0.97);
+  }
 }
 
 /* First-paint entrance: pure CSS, so it plays before hydration and never depends on JS. */
