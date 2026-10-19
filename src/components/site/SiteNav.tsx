@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun, Volume2, VolumeX } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
-import { SPRING_UI } from "@/lib/motion";
 import { useTheme } from "@/lib/use-theme";
+import { useSoundEffect } from "@/lib/sound";
+import { PillNav } from "@/components/ui/PillNav";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -29,10 +29,10 @@ function useActiveSection() {
 
 export function SiteNav() {
   const { dark, toggle } = useTheme();
-  const reduce = useReducedMotion();
-  const active = useActiveSection();
+  const { soundEnabled, toggleSound, playClick } = useSoundEffect();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const active = useActiveSection();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -41,111 +41,162 @@ export function SiteNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
   const ThemeIcon = dark ? Sun : Moon;
 
-  return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-200 ${
-        scrolled ? "border-line bg-bg/80 backdrop-blur-md" : "border-transparent bg-transparent"
-      }`}
-    >
-      <nav
-        aria-label="Primary"
-        className="mx-auto flex h-16 max-w-[1120px] items-center justify-between gap-4 px-5 sm:px-6"
+  const navItems = NAV_LINKS.map((link) => ({
+    label: link.label,
+    href: link.href,
+  }));
+
+  const logoNode = (
+    <div className="flex items-center gap-2 pr-1.5 select-none">
+      <span
+        aria-hidden="true"
+        className="grid h-7 w-7 place-items-center rounded-full bg-fg font-mono text-[11px] font-semibold text-bg shadow-xs transition-transform duration-200 hover:scale-105"
       >
-        <a
-          href="#home"
-          className="flex min-h-11 items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-fg"
+        SD
+      </span>
+      <span className="font-display text-[13px] sm:text-[14px] font-bold tracking-[0.03em] text-fg uppercase whitespace-nowrap">
+        {PROFILE.name}
+      </span>
+    </div>
+  );
+
+  const rightActionsNode = (
+    <div className="flex items-center gap-1 pl-1">
+      {/* Sound / Equalizer feedback toggle */}
+      <button
+        type="button"
+        onClick={() => {
+          toggleSound();
+        }}
+        aria-label={soundEnabled ? "Mute audio feedback" : "Enable audio feedback"}
+        title={soundEnabled ? "Audio on — click to mute" : "Audio off — click to enable"}
+        className="inline-flex h-8 items-center gap-1.5 rounded-full px-2 text-fg-muted transition-colors hover:bg-surface hover:text-fg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+      >
+        {soundEnabled ? (
+          <Volume2 className="h-3.5 w-3.5 text-gold" strokeWidth={1.75} aria-hidden="true" />
+        ) : (
+          <VolumeX className="h-3.5 w-3.5 opacity-60" strokeWidth={1.75} aria-hidden="true" />
+        )}
+        {/* Tactile animated equalizer bars */}
+        <span
+          className="flex h-3.5 items-end gap-[2px] overflow-hidden px-0.5"
+          aria-hidden="true"
         >
           <span
-            aria-hidden="true"
-            className="grid h-7 w-7 place-items-center rounded-[7px] bg-fg font-mono text-[11px] font-medium text-bg"
-          >
-            SD
-          </span>
-          {PROFILE.name}
-        </a>
+            className={`w-[2px] rounded-full transition-all duration-300 ${
+              soundEnabled ? "bg-gold eq-bar-1" : "h-[3px] bg-fg-muted opacity-40"
+            }`}
+          />
+          <span
+            className={`w-[2px] rounded-full transition-all duration-300 ${
+              soundEnabled ? "bg-gold eq-bar-2" : "h-[3px] bg-fg-muted opacity-40"
+            }`}
+          />
+          <span
+            className={`w-[2px] rounded-full transition-all duration-300 ${
+              soundEnabled ? "bg-gold eq-bar-3" : "h-[3px] bg-fg-muted opacity-40"
+            }`}
+          />
+        </span>
+      </button>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
-          {NAV_LINKS.map((l) => {
-            const id = l.href.slice(1);
-            const isActive = active === id;
-            return (
-              <li key={l.href} className="relative">
-                {isActive ? (
-                  <motion.span
-                    layoutId="nav-pill"
-                    aria-hidden="true"
-                    transition={reduce ? { duration: 0 } : SPRING_UI}
-                    className="absolute inset-0 rounded-[7px] border border-line bg-surface"
-                  />
-                ) : null}
-                <a
-                  href={l.href}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`relative inline-flex h-8 items-center rounded-[7px] px-3 text-[13.5px] transition-colors duration-150 before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-[''] ${
-                    isActive ? "text-fg" : "text-fg-muted hover:text-fg"
-                  }`}
-                >
-                  {l.label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+      <span className="mx-0.5 h-3.5 w-px bg-line opacity-60" aria-hidden="true" />
 
-        <div className="flex items-center gap-1">
+      {/* Theme Switcher */}
+      <button
+        type="button"
+        onClick={() => {
+          playClick();
+          toggle();
+        }}
+        aria-label={themeLabel}
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-surface hover:text-fg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+      >
+        <ThemeIcon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+      </button>
+
+      {/* Quick Get in touch / Contact action on desktop */}
+      <a
+        href="#contact"
+        onClick={() => playClick()}
+        className="hidden xl:inline-flex h-8 items-center rounded-full bg-fg px-3.5 text-[12px] font-semibold tracking-wider uppercase text-bg transition-[background-color,transform] duration-150 hover:opacity-90 active:scale-[0.98] shadow-xs ml-1"
+      >
+        Get in touch
+      </a>
+
+      {/* Mobile Menu trigger */}
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
           <button
             type="button"
-            onClick={toggle}
-            aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-            className="press inline-flex h-11 w-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-150 hover:text-fg"
+            aria-label="Open menu"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg transition-colors hover:bg-surface lg:hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
           >
-            <ThemeIcon className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
+            <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
           </button>
+        </SheetTrigger>
+        <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
+          <SheetTitle className="sr-only">Menu</SheetTitle>
+          <ul className="flex flex-col gap-1">
+            {NAV_LINKS.map((l) => {
+              const isItemActive = active === l.href.slice(1);
+              return (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    onClick={() => {
+                      playClick();
+                      setOpen(false);
+                    }}
+                    className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-tight transition-colors ${
+                      isItemActive ? "text-fg font-semibold" : "text-fg-muted hover:text-fg"
+                    }`}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
           <a
-            href="#contact"
-            className="press hidden h-11 items-center rounded-control bg-fg px-4 lg:h-9 text-[13.5px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90 sm:inline-flex"
+            href={`mailto:${PROFILE.email}`}
+            onClick={() => setOpen(false)}
+            className="mt-auto inline-flex h-11 items-center justify-center rounded-full bg-fg px-5 text-[14px] font-bold tracking-wider uppercase text-bg shadow-md transition-opacity hover:opacity-90"
           >
-            Get in touch
+            Email me
           </a>
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                aria-label="Open menu"
-                className="press inline-flex h-11 w-11 items-center justify-center rounded-control text-fg lg:hidden"
-              >
-                <Menu className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <ul className="flex flex-col">
-                {NAV_LINKS.map((l) => (
-                  <li key={l.href}>
-                    <a
-                      href={l.href}
-                      onClick={() => setOpen(false)}
-                      className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-[-0.02em] ${
-                        active === l.href.slice(1) ? "text-fg" : "text-fg-muted"
-                      }`}
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={`mailto:${PROFILE.email}`}
-                className="press mt-auto inline-flex h-11 items-center justify-center rounded-control bg-fg text-[15px] font-medium text-bg"
-              >
-                Email me
-              </a>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </nav>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:px-6 sm:pt-4 pointer-events-none">
+      <div className="pointer-events-auto">
+        <PillNav
+          logo={logoNode}
+          logoAlt={PROFILE.name}
+          logoHref="#home"
+          items={navItems}
+          activeHref={active ? `#${active}` : undefined}
+          layout="joined"
+          surface="glass"
+          itemStyle="pill"
+          hoverEffect="fill"
+          indicator="dot"
+          theme={dark ? "dark" : "light"}
+          highlightColor={dark ? "#c9973a" : "#b0822d"}
+          highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}
+          onItemClick={() => playClick()}
+          rightActions={rightActionsNode}
+          className={`transition-all duration-300 ${scrolled ? "shadow-float scale-[0.99]" : ""}`}
+        />
+      </div>
     </header>
   );
 }
+
+export default SiteNav;
