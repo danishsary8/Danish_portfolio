@@ -101,9 +101,9 @@ export function Hero() {
               className="enter mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
               style={step(3)}
             >
-              Crafting high-performance web applications where fluid user interfaces
-              meet resilient backend systems. Driven by clean architecture, secure APIs,
-              and turning real ideas into software that just works.
+              Building web apps that feel smooth to use and stay rock-solid behind
+              the scenes. Driven by clean code, secure APIs, and turning real ideas
+              into software that just works.
             </p>
 
             {/* Call to action buttons */}
