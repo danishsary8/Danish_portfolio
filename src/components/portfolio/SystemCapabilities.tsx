@@ -1,23 +1,16 @@
-import React from "react";
+import type { ElementType } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Server, Layout, Database, Cpu, Check, Zap, Cloud } from "lucide-react";
-import { Reveal, RevealItem } from "./Reveal";
+import { Server, Layout, Database, Cpu, Check } from "lucide-react";
 import { CodeCraftCompare } from "./CodeCraftCompare";
-import { EASE_OUT } from "@/lib/motion";
+import { SPRING_ENTRANCE } from "@/lib/motion";
 
 interface Pillar {
   id: string;
   specCode: string;
   title: string;
-  icon: React.ElementType;
+  icon: ElementType;
   summary: string;
   technologies: string[];
-}
-
-export interface SystemCapabilitiesProps {
-  onOpenTopology?: () => void;
-  onOpenQueryPlan?: () => void;
-  onOpenInfra?: () => void;
 }
 
 const PILLARS: Pillar[] = [
@@ -41,11 +34,10 @@ const PILLARS: Pillar[] = [
       "React",
       "TypeScript",
       "Tailwind CSS",
-      "JavaScript",
+      "JavaScript (ES6+)",
       "HTML5 / CSS3",
       "Bootstrap",
-      "Vite",
-      "TanStack Router",
+      "Framer Motion",
     ],
   },
   {
@@ -74,20 +66,15 @@ const PILLARS: Pillar[] = [
     technologies: [
       "Git",
       "GitHub",
-      "Antigravity IDE",
-      "Claude Code CLI",
-      "Gemini Code Assist",
-      "Figma",
-      "Napkin AI",
+      "VS Code",
+      "Docker",
+      "Cloudinary",
+      "Postman",
     ],
   },
 ];
 
-export function SystemCapabilities({
-  onOpenTopology,
-  onOpenQueryPlan,
-  onOpenInfra,
-}: SystemCapabilitiesProps = {}) {
+export function SystemCapabilities() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -115,80 +102,6 @@ export function SystemCapabilities({
             maintainable code that solves real-world operational problems.
           </p>
 
-          {/* Action Bar inside Sticky Spine */}
-          <div className="pt-6 border-t border-borderSubtle space-y-3">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-mutedText block">
-              SYSTEM LEVEL VERIFICATION
-            </span>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (onOpenTopology) {
-                  onOpenTopology();
-                } else {
-                  window.dispatchEvent(new CustomEvent("portfolio:open-topology-modal"));
-                }
-              }}
-              className="w-full inline-flex items-center justify-between rounded-brand border border-borderSubtle bg-card px-4 py-3 font-mono text-xs font-semibold text-primaryText transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
-            >
-              <span className="flex items-center gap-2 text-left">
-                <Database className="h-3.5 w-3.5 text-gold shrink-0" aria-hidden="true" />
-                <span>INSPECT RELATIONAL ERD &amp; REQUEST TOPOLOGY</span>
-              </span>
-              <kbd className="rounded-[2px] border border-borderSubtle bg-base px-1.5 py-0.5 text-[10px] text-mutedText shrink-0">
-                G+S
-              </kbd>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (onOpenQueryPlan) {
-                  onOpenQueryPlan();
-                } else {
-                  window.dispatchEvent(
-                    new CustomEvent("portfolio:open-query-plan-modal", {
-                      detail: { benchmarkId: "bookly" },
-                    }),
-                  );
-                }
-              }}
-              className="w-full inline-flex items-center justify-between rounded-brand border border-borderSubtle bg-card px-4 py-3 font-mono text-xs font-semibold text-primaryText transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
-            >
-              <span className="flex items-center gap-2 text-left">
-                <Zap className="h-3.5 w-3.5 text-gold shrink-0" aria-hidden="true" />
-                <span>BENCHMARK SQL EXPLAIN &amp; N+1 PLANS</span>
-              </span>
-              <kbd className="rounded-[2px] border border-borderSubtle bg-base px-1.5 py-0.5 text-[10px] text-mutedText shrink-0">
-                G+Q
-              </kbd>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (onOpenInfra) {
-                  onOpenInfra();
-                } else {
-                  window.dispatchEvent(
-                    new CustomEvent("portfolio:open-deployment-modal", {
-                      detail: { profileId: "bookly" },
-                    }),
-                  );
-                }
-              }}
-              className="w-full inline-flex items-center justify-between rounded-brand border border-borderSubtle bg-card px-4 py-3 font-mono text-xs font-semibold text-primaryText transition-colors hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
-            >
-              <span className="flex items-center gap-2 text-left">
-                <Cloud className="h-3.5 w-3.5 text-gold shrink-0" aria-hidden="true" />
-                <span>CI/CD PIPELINES &amp; CLOUD TOPOLOGY</span>
-              </span>
-              <kbd className="rounded-[2px] border border-borderSubtle bg-base px-1.5 py-0.5 text-[10px] text-mutedText shrink-0">
-                G+I
-              </kbd>
-            </button>
-          </div>
         </div>
 
         {/* Right Exposed 2x2 Architectural Quadrants (lg:col-span-8) */}
@@ -201,11 +114,7 @@ export function SystemCapabilities({
                 initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{
-                  duration: 0.36,
-                  ease: EASE_OUT,
-                  delay: shouldReduceMotion ? 0 : i * 0.06,
-                }}
+                transition={{ ...SPRING_ENTRANCE, delay: shouldReduceMotion ? 0 : i * 0.06 }}
                 className={`group relative flex flex-col justify-between p-6 sm:p-8 transition-colors duration-150 hover:bg-surface/50 ${
                   i >= 2 ? "border-t border-borderSubtle" : ""
                 }`}

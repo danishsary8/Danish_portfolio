@@ -6,17 +6,22 @@ export default {
     extend: {
       colors: {
         base: "var(--bg-base)",
-        surface: "var(--bg-surface)",
-        card: "var(--bg-card)",
+        surface: "var(--glass-surface)",
+        card: "var(--glass-surface)",
         primaryText: "var(--text-primary)",
         mutedText: "var(--text-muted)",
         gold: {
           DEFAULT: "var(--accent-gold)",
           hover: "var(--accent-gold-hover)",
         },
-        borderSubtle: "var(--border-subtle)",
-        borderStrong: "var(--border-strong)",
+        borderSubtle: "var(--glass-border)",
+        borderStrong: "var(--glass-border-strong)",
         focus: "var(--border-focus)",
+        glass: {
+          surface: "var(--glass-surface)",
+          border: "var(--glass-border)",
+          "border-strong": "var(--glass-border-strong)",
+        },
       },
       fontFamily: {
         display: ["Syne", "sans-serif"],
@@ -24,7 +29,12 @@ export default {
         mono: ['"JetBrains Mono"', "monospace"],
       },
       borderRadius: {
-        brand: "3px" /* Enforce subtle 2px-4px radius, strictly no pill buttons */,
+        brand: "16px" /* Soft iOS-style radius for cards/panels */,
+        control: "10px" /* Buttons, inputs, badges, tabs */,
+      },
+      backdropBlur: {
+        card: "18px",
+        chrome: "28px",
       },
       letterSpacing: {
         tighter: "-0.04em",

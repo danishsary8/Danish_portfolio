@@ -16,6 +16,15 @@ export const EASE_IN_OUT = [0.65, 0, 0.35, 1] as const;
 export const EASE_STD = [0.25, 0.1, 0.25, 1] as const;
 export const EASE_SNAPPY = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * Spring physics presets (iOS-style). These replace cubic-bezier for
+ * entrances, hover lifts, and press feedback; cubic-bezier remains the
+ * fallback for CSS-only color/border transitions.
+ */
+export const SPRING_ENTRANCE: Transition = { type: "spring", stiffness: 300, damping: 30 };
+export const SPRING_HOVER: Transition = { type: "spring", stiffness: 400, damping: 28 };
+export const SPRING_PRESS: Transition = { type: "spring", stiffness: 500, damping: 35 };
+
 // Aliases for compatibility
 export const EASE_OUT_EXPO = EASE_OUT;
 export const EASE_IN_OUT_CUBIC = EASE_IN_OUT;
@@ -100,10 +109,7 @@ export function getHeroItemVariants(shouldReduceMotion?: boolean | null): Varian
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        duration: DURATION.hero,
-        ease: EASE_OUT,
-      },
+      transition: SPRING_ENTRANCE,
     },
   };
 }
@@ -156,10 +162,7 @@ export function getLedgerRowVariants(shouldReduceMotion?: boolean | null): Varia
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.36,
-        ease: EASE_OUT,
-      },
+      transition: SPRING_ENTRANCE,
     },
   };
 }
@@ -190,10 +193,7 @@ export function getSurfaceScaleVariants(shouldReduceMotion?: boolean | null): Va
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.24,
-        ease: EASE_OUT,
-      },
+      transition: SPRING_ENTRANCE,
     },
   };
 }
@@ -223,10 +223,7 @@ export function getFadeUpVariant(shouldReduceMotion?: boolean | null): Variants 
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: DURATION.reveal,
-        ease: EASE_OUT,
-      },
+      transition: SPRING_ENTRANCE,
     },
   };
 }
@@ -256,18 +253,12 @@ export function getDrawerSlideVariant(shouldReduceMotion?: boolean | null): Vari
     visible: {
       x: 0,
       opacity: 1,
-      transition: {
-        duration: DURATION.drawer,
-        ease: EASE_OUT,
-      },
+      transition: SPRING_ENTRANCE,
     },
     exit: {
       x: "100%",
       opacity: 0,
-      transition: {
-        duration: DURATION.drawerExit,
-        ease: EASE_OUT,
-      },
+      transition: { duration: DURATION.drawerExit, ease: EASE_OUT },
     },
   };
 }
@@ -280,14 +271,23 @@ export const drawerSlideVariant: Variants = getDrawerSlideVariant(false);
  */
 export const buttonTapProps = {
   whileTap: {
-    scale: 0.985,
-    transition: { duration: 0.12, ease: EASE_OUT },
+    scale: 0.98,
+    transition: SPRING_PRESS,
   },
 } as const;
 
 export const buttonTapFeedback = {
-  whileTap: { scale: 0.985, transition: { duration: 0.12, ease: EASE_OUT } },
-  whileHover: { transition: { duration: 0.14, ease: EASE_SNAPPY } },
+  whileTap: { scale: 0.98, transition: SPRING_PRESS },
+  whileHover: { y: -2, transition: SPRING_HOVER },
+} as const;
+
+/**
+ * 8. Glass Card Hover Lift
+ * Purpose: iOS-style elevation feedback on glass cards/panels.
+ */
+export const cardHoverLift = {
+  whileHover: { y: -4, scale: 1.01, transition: SPRING_HOVER },
+  whileTap: { scale: 0.99, transition: SPRING_PRESS },
 } as const;
 
 /**

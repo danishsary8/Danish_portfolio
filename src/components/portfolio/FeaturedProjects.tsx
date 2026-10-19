@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -7,13 +7,8 @@ import {
   Database,
   Layers,
   ExternalLink,
-  X,
-  Code2,
-  Play,
-  FileCode,
   Link2,
   Check,
-  Cloud,
 } from "lucide-react";
 import {
   Sheet,
@@ -21,13 +16,11 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-  SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ArchitectureSimulator } from "@/components/portfolio/ArchitectureSimulator";
 import { ASSETS } from "@/lib/assets";
-import { EASE_OUT } from "@/lib/motion";
+import { SPRING_ENTRANCE } from "@/lib/motion";
 
 export interface ProjectData {
   id: string;
@@ -62,8 +55,17 @@ const PROJECTS: ProjectData[] = [
     title: "Bookly Platform",
     subtitle: "Full-Stack Bookstore & REST API Architecture",
     summary:
-      "Online bookstore platform with complete e-commerce lifecycle: tokenized JWT authentication backend in Laravel, normalized PostgreSQL relational catalog, and responsive React/TypeScript frontend.",
-    tech: ["Laravel", "React", "TypeScript", "PostgreSQL", "JWT Auth", "REST API", "Tailwind CSS"],
+      "Full e-commerce platform: OTP and Google login, cart, checkout, order tracking, reviews, an admin dashboard, and a Telegram bot — built on a Laravel REST API, PostgreSQL, and a React/TypeScript frontend.",
+    tech: [
+      "Laravel",
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "JWT Auth",
+      "OTP & Google Login",
+      "Cloudinary",
+      "Telegram Bot",
+    ],
     liveUrl: "https://bookly-frontend-five.vercel.app/",
     githubUrl: "https://github.com/danishsary8",
     apiDocsUrl: "https://bookly-api-zasc.onrender.com/docs",
@@ -140,8 +142,8 @@ CREATE TABLE order_items (
     },
     architectureHighlights: [
       "Decoupled Laravel REST API with standard JSON envelope responses.",
-      "Stateless JWT token issuance with auto-invalidation on logout.",
-      "Optimistic UI cart mutations in React paired with database row locking on checkout.",
+      "OTP verification and Google OAuth alongside stateless JWT sessions.",
+      "Admin dashboard and Telegram bot for order and inventory management, with Cloudinary for media.",
     ],
   },
   {
@@ -150,15 +152,14 @@ CREATE TABLE order_items (
     title: "Diabetes Expert System",
     subtitle: "Clinical Assistance Prototype & Rule-Based Inference Engine",
     summary:
-      "Full-stack clinical assistance prototype featuring bilingual EN/Khmer interface, JWT Role-Based Access Control (RBAC), and deterministic rule-based expert system for diabetes risk assessment. Winner of the AI Expert System Competition 2026 at Norton University.",
+      "Bilingual (EN/Khmer) system for early diabetes screening with explainable, rule-based risk assessments and care plans. Team project — contributed Google sign-in, UI improvements, and testing. Award Winner, AI Expert System and Innovation 2026.",
     tech: [
-      "Full-Stack",
-      "Rule-Based AI",
+      "React",
+      "Flask",
+      "PostgreSQL",
       "JWT RBAC",
       "Bilingual EN/Khmer",
-      "React",
-      "Laravel",
-      "PostgreSQL",
+      "Google Sign-In",
     ],
     liveUrl: "https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/",
     githubUrl: "https://github.com/danishsary8",
@@ -221,14 +222,14 @@ CREATE TABLE auth_roles (
     title: "Loomora Habit Planner",
     subtitle: "Personal Routine & Habit Scheduling Web Application",
     summary:
-      "Personal routine and habit planner web application deployed full-stack with dynamic scheduling features, daily streak calculation, and responsive client-side state synchronization.",
+      "Productivity app where users build daily routines and reminders, with secure login, Google sign-in, and email verification, plus daily streak tracking and smooth Framer Motion interactions.",
     tech: [
-      "Full-Stack",
       "React",
       "Tailwind CSS",
-      "State Management",
-      "Scheduling Logic",
-      "REST API",
+      "Framer Motion",
+      "Laravel",
+      "PostgreSQL",
+      "Google Sign-In",
     ],
     liveUrl: "https://daycraft-vnid.onrender.com/",
     githubUrl: "https://github.com/danishsary8",
@@ -287,8 +288,8 @@ CREATE TABLE habit_logs (
     title: "Driving Rules App",
     subtitle: "Cambodian Road Regulations & Theory Learning Application",
     summary:
-      "Interactive theory and regulatory learning application built with Flutter & Dart, engineered to help Cambodian citizens practice and master road rules, signs, and license test question banks.",
-    tech: ["Flutter", "Dart", "Responsive Web", "Stateful UI", "Question Bank Engine"],
+      "Offline, bilingual (Khmer/English) app for Cambodia's driving theory exam, built with Flutter and local storage — road-sign lessons and practice exams.",
+    tech: ["Flutter", "Dart", "Local Storage", "Offline-First", "Bilingual EN/KH"],
     liveUrl: "https://drivingruletest.netlify.app/",
     githubUrl: "https://github.com/danishsary8",
     previewImage: ASSETS.projects.driving.src,
@@ -342,17 +343,7 @@ CREATE TABLE theory_questions (
   },
 ];
 
-export interface FeaturedProjectsProps {
-  onOpenTopology?: (blueprint?: string) => void;
-  onOpenAdr?: (adrId?: string) => void;
-  onOpenInfra?: (profileId?: string) => void;
-}
-
-export function FeaturedProjects({
-  onOpenTopology,
-  onOpenAdr,
-  onOpenInfra,
-}: FeaturedProjectsProps = {}) {
+export function FeaturedProjects() {
   const shouldReduceMotion = useReducedMotion();
   const [activeInspectorProject, setActiveInspectorProject] = useState<ProjectData | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -361,10 +352,10 @@ export function FeaturedProjects({
     <section
       id="projects"
       data-blueprint-section="FEATURED_PROJECTS // 12-COL_BROADSHEET"
-      className="relative w-full bg-base transition-colors duration-150 border-t border-borderSubtle"
+      className="relative w-full transition-colors duration-150"
     >
       {/* 1. Header Broadsheet Banner with Filter Strip */}
-      <div className="border-b border-borderSubtle p-6 sm:p-10 lg:p-12 xl:p-14 bg-surface/30">
+      <div className="p-6 sm:p-10 lg:p-12 xl:p-14">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3">
             <div className="font-mono text-[11px] text-mutedText uppercase tracking-wider flex items-center gap-2">
@@ -382,8 +373,8 @@ export function FeaturedProjects({
           </div>
 
           {/* Tabular Architectural Filter Strip (All works remain in DOM for Vitest compliance) */}
-          <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] shrink-0 border border-borderSubtle bg-card p-1 rounded-brand">
-            <span className="px-3 py-1.5 bg-primaryText text-base font-semibold rounded-[2px]">
+          <div className="glass-panel flex flex-wrap items-center gap-1.5 font-mono text-[11px] shrink-0 p-1">
+            <span className="px-3 py-1.5 bg-primaryText text-base font-semibold rounded-control">
               ALL WORKS (4)
             </span>
             <span className="px-2.5 py-1.5 text-mutedText hidden sm:inline">[FULL-STACK]</span>
@@ -396,7 +387,7 @@ export function FeaturedProjects({
       </div>
 
       {/* 2. Full-Bleed 12-Column Cellular Project Rows with Hairline Separators */}
-      <div className="divide-y divide-borderSubtle">
+      <div className="divide-y divide-glass-border">
         {PROJECTS.map((project, index) => {
           const isEven = index % 2 === 0;
 
@@ -406,8 +397,8 @@ export function FeaturedProjects({
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.12 }}
-              transition={{ duration: 0.38, ease: EASE_OUT }}
-              className="group p-6 sm:p-10 lg:p-12 xl:p-14 hover:bg-surface/20 transition-colors duration-150 relative"
+              transition={SPRING_ENTRANCE}
+              className="group p-6 sm:p-10 lg:p-12 xl:p-14 transition-colors duration-150 relative"
             >
               {/* Corner crosshairs */}
               <div
@@ -427,8 +418,8 @@ export function FeaturedProjects({
                       {project.domainTag}
                     </span>
                     {project.id === "diabetes" && (
-                      <span className="inline-flex items-center gap-1.5 rounded-[2px] border border-gold/40 bg-gold/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-gold uppercase tracking-wider">
-                        Winner AI Competition 2026
+                      <span className="inline-flex items-center gap-1.5 rounded-control border border-gold/40 bg-gold/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-gold uppercase tracking-wider">
+                        Award Winner — AI Expert System 2026
                       </span>
                     )}
                   </div>
@@ -450,7 +441,7 @@ export function FeaturedProjects({
                     {project.tech.map((t) => (
                       <span
                         key={t}
-                        className="rounded-[2px] border border-borderSubtle bg-card px-2.5 py-1 font-mono text-[11px] text-primaryText transition-colors hover:border-gold/50"
+                        className="glass-panel rounded-control px-2.5 py-1 font-mono text-[11px] text-primaryText transition-colors hover:border-gold/50"
                       >
                         {t}
                       </span>
@@ -464,7 +455,7 @@ export function FeaturedProjects({
                       href={project.liveUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-brand bg-primaryText px-4 py-2.5 font-mono text-xs font-semibold text-base transition-colors duration-150 hover:bg-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus shadow-none"
+                      className="inline-flex items-center gap-2 rounded-control bg-primaryText px-4 py-2.5 font-mono text-xs font-semibold text-base transition-colors duration-150 hover:bg-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus shadow-none"
                     >
                       <span>Live Preview</span>
                       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -475,7 +466,7 @@ export function FeaturedProjects({
                       href={project.githubUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-surface px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus shadow-none"
+                      className="glass-panel inline-flex items-center gap-2 rounded-control px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
                     >
                       <Github className="h-4 w-4" aria-hidden="true" />
                       <span>Source</span>
@@ -488,7 +479,7 @@ export function FeaturedProjects({
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`View API documentation for ${project.title}`}
-                        className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-surface px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus shadow-none"
+                        className="glass-panel inline-flex items-center gap-2 rounded-control px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
                       >
                         <ExternalLink className="h-4 w-4" aria-hidden="true" />
                         <span>API Docs</span>
@@ -500,64 +491,18 @@ export function FeaturedProjects({
                       type="button"
                       onClick={() => setActiveInspectorProject(project)}
                       aria-label={`Inspect technical architecture and schema for ${project.title}`}
-                      className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-card px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
+                      className="glass-panel inline-flex items-center gap-2 rounded-control px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer"
                     >
                       <Terminal className="h-4 w-4 text-gold" aria-hidden="true" />
                       <span>Inspect Architecture</span>
                     </button>
 
-                    {/* Architecture Decision Record (ADR) Trigger */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const adrMap: Record<string, string> = {
-                          bookly: "adr-001",
-                          diabetes: "adr-002",
-                          loomora: "adr-003",
-                          driving: "adr-004",
-                        };
-                        const adrId = adrMap[project.id] || "adr-001";
-                        if (onOpenAdr) {
-                          onOpenAdr(adrId);
-                        } else {
-                          window.dispatchEvent(
-                            new CustomEvent("portfolio:open-adr-modal", { detail: { adrId } }),
-                          );
-                        }
-                      }}
-                      aria-label={`Read Architecture Decision Record (ADR) for ${project.title}`}
-                      className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-surface px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
-                    >
-                      <FileCode className="h-4 w-4 text-gold" aria-hidden="true" />
-                      <span>READ ADR &amp; BLUEPRINT</span>
-                    </button>
-
-                    {/* CI/CD & Cloud Topology Trigger */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (onOpenInfra) {
-                          onOpenInfra(project.id);
-                        } else {
-                          window.dispatchEvent(
-                            new CustomEvent("portfolio:open-deployment-modal", {
-                              detail: { profileId: project.id },
-                            }),
-                          );
-                        }
-                      }}
-                      aria-label={`Inspect CI/CD deployment pipeline and cloud topology for ${project.title}`}
-                      className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-surface px-4 py-2.5 font-mono text-xs font-medium text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus cursor-pointer shadow-none"
-                    >
-                      <Cloud className="h-4 w-4 text-gold" aria-hidden="true" />
-                      <span>CI/CD &amp; CLOUD</span>
-                    </button>
                   </div>
                 </div>
 
                 {/* Visual Viewfinder Frame (5 cols on Even, 6 cols on Odd) */}
                 <div className={isEven ? "lg:col-span-5" : "lg:col-span-6"}>
-                  <div className="relative overflow-hidden rounded-[3px] border border-borderSubtle bg-surface aspect-[16/10] flex items-center justify-center">
+                  <div className="glass-card relative overflow-hidden aspect-[16/10] flex items-center justify-center">
                     {project.previewImage ? (
                       <img
                         src={project.previewImage}
@@ -568,40 +513,37 @@ export function FeaturedProjects({
                       />
                     ) : (
                       /* Bespoke Clinical Rule Schematic Frame for Diabetes Expert System */
-                      <div className="w-full h-full p-6 flex flex-col justify-between font-mono bg-card/80 text-left">
-                        <div className="flex items-center justify-between border-b border-borderSubtle pb-2 text-[10px] text-mutedText">
+                      <div className="w-full h-full p-6 flex flex-col justify-between font-mono text-left">
+                        <div className="flex items-center justify-between border-b border-glass-border pb-2 text-[10px] text-mutedText">
                           <span className="text-gold font-bold">
                             SCHEMATIC // CLINICAL INFERENCE
                           </span>
                           <span>NORTON 2026</span>
                         </div>
                         <div className="space-y-2 py-3 text-[11px]">
-                          <div className="flex items-center justify-between bg-surface px-2.5 py-1 border border-borderSubtle">
+                          <div className="glass-panel flex items-center justify-between px-2.5 py-1">
                             <span className="text-mutedText">
                               RULE_01: FASTING_GLUCOSE &gt; 126
                             </span>
                             <span className="text-gold font-semibold">[HIGH RISK]</span>
                           </div>
-                          <div className="flex items-center justify-between bg-surface px-2.5 py-1 border border-borderSubtle">
+                          <div className="glass-panel flex items-center justify-between px-2.5 py-1">
                             <span className="text-mutedText">
                               RULE_02: HBA1C &gt; 6.5% + BMI &gt; 25
                             </span>
                             <span className="text-gold font-semibold">[DIABETIC]</span>
                           </div>
-                          <div className="flex items-center justify-between bg-surface px-2.5 py-1 border border-borderSubtle">
+                          <div className="glass-panel flex items-center justify-between px-2.5 py-1">
                             <span className="text-mutedText">INFERENCE: FORWARD CHAINING</span>
                             <span className="text-primaryText font-semibold">[DETERMINISTIC]</span>
                           </div>
                         </div>
-                        <div className="border-t border-borderSubtle pt-2 flex items-center justify-between text-[10px] text-mutedText">
+                        <div className="border-t border-glass-border pt-2 flex items-center justify-between text-[10px] text-mutedText">
                           <span>BILINGUAL: EN / KHMER</span>
                           <span className="text-gold">AWARD WINNER</span>
                         </div>
                       </div>
                     )}
-
-                    {/* Subtle Technical Frame Overlay */}
-                    <div className="pointer-events-none absolute inset-0 border border-borderSubtle/60" />
                   </div>
                 </div>
               </div>
@@ -619,7 +561,7 @@ export function FeaturedProjects({
       >
         <SheetContent
           side="right"
-          className="flex h-full w-full sm:max-w-xl md:max-w-2xl flex-col justify-between border-l border-borderSubtle bg-base p-6 sm:p-8 shadow-2xl overflow-y-auto"
+          className="glass-elevated flex h-full w-full sm:max-w-xl md:max-w-2xl flex-col justify-between border-l border-glass-border bg-base/90 backdrop-blur-chrome p-6 sm:p-8 overflow-y-auto"
         >
           {activeInspectorProject && (
             <div>
@@ -643,7 +585,7 @@ export function FeaturedProjects({
                       });
                     }}
                     aria-label="Copy shareable deep link to this project inspector"
-                    className="inline-flex items-center gap-1.5 rounded-brand border border-borderSubtle bg-surface px-2.5 py-1 font-mono text-[11px] text-primaryText hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                    className="glass-panel inline-flex items-center gap-1.5 rounded-control px-2.5 py-1 font-mono text-[11px] text-primaryText hover:border-gold hover:text-gold transition-colors cursor-pointer"
                   >
                     {copiedLink ? (
                       <>
@@ -683,15 +625,11 @@ export function FeaturedProjects({
                     <Layers className="h-3.5 w-3.5" />
                     <span>Architecture Overview</span>
                   </TabsTrigger>
-                  <TabsTrigger value="simulator" className="flex items-center gap-1.5">
-                    <Play className="h-3.5 w-3.5 text-gold" />
-                    <span>Live Payload Simulator</span>
-                  </TabsTrigger>
                 </TabsList>
 
                 {/* Tab 1: REST API Endpoints & Contracts */}
                 <TabsContent value="api" className="space-y-4">
-                  <div className="rounded-brand border border-borderSubtle bg-surface p-4">
+                  <div className="glass-panel rounded-control p-4">
                     <span className="font-mono text-[11px] text-mutedText uppercase tracking-wider block mb-1">
                       Endpoint & Authorization:
                     </span>
@@ -714,7 +652,7 @@ export function FeaturedProjects({
                       <span className="font-mono text-[11px] text-mutedText uppercase tracking-wider block mb-1.5">
                         Sample Request:
                       </span>
-                      <pre className="overflow-x-auto rounded-brand border border-borderSubtle bg-card p-4 font-mono text-[11px] text-primaryText leading-relaxed">
+                      <pre className="glass-panel overflow-x-auto rounded-control p-4 font-mono text-[11px] text-primaryText leading-relaxed">
                         <code>{activeInspectorProject.apiSpec.requestPayload}</code>
                       </pre>
                     </div>
@@ -724,7 +662,7 @@ export function FeaturedProjects({
                     <span className="font-mono text-[11px] text-mutedText uppercase tracking-wider block mb-1.5">
                       Sample Response Envelope:
                     </span>
-                    <pre className="overflow-x-auto rounded-brand border border-borderSubtle bg-card p-4 font-mono text-[11px] text-primaryText leading-relaxed">
+                    <pre className="glass-panel overflow-x-auto rounded-control p-4 font-mono text-[11px] text-primaryText leading-relaxed">
                       <code>{activeInspectorProject.apiSpec.responsePayload}</code>
                     </pre>
                   </div>
@@ -732,7 +670,7 @@ export function FeaturedProjects({
 
                 {/* Tab 2: Database Schema & Relational Models */}
                 <TabsContent value="database" className="space-y-4">
-                  <div className="rounded-brand border border-borderSubtle bg-surface p-4">
+                  <div className="glass-panel rounded-control p-4">
                     <h4 className="font-display font-bold text-sm text-primaryText">
                       {activeInspectorProject.schemaSpec.title}
                     </h4>
@@ -745,7 +683,7 @@ export function FeaturedProjects({
                     <span className="font-mono text-[11px] text-mutedText uppercase tracking-wider block mb-1.5">
                       DDL SQL Definition:
                     </span>
-                    <pre className="overflow-x-auto rounded-brand border border-borderSubtle bg-card p-4 font-mono text-[11px] text-primaryText leading-relaxed max-h-[380px]">
+                    <pre className="glass-panel overflow-x-auto rounded-control p-4 font-mono text-[11px] text-primaryText leading-relaxed max-h-[380px]">
                       <code>{activeInspectorProject.schemaSpec.code}</code>
                     </pre>
                   </div>
@@ -753,7 +691,7 @@ export function FeaturedProjects({
 
                 {/* Tab 3: Architecture Overview */}
                 <TabsContent value="overview" className="space-y-4">
-                  <div className="space-y-3 rounded-brand border border-borderSubtle bg-surface p-4">
+                  <div className="glass-panel space-y-3 rounded-control p-4">
                     <span className="font-mono text-[11px] text-mutedText uppercase tracking-wider block">
                       Core Architecture Highlights:
                     </span>
@@ -778,22 +716,13 @@ export function FeaturedProjects({
                       {activeInspectorProject.tech.map((t) => (
                         <span
                           key={t}
-                          className="rounded-[2px] border border-borderSubtle bg-card px-2.5 py-1 font-mono text-xs text-primaryText"
+                          className="glass-panel rounded-control px-2.5 py-1 font-mono text-xs text-primaryText"
                         >
                           {t}
                         </span>
                       ))}
                     </div>
                   </div>
-                </TabsContent>
-
-                {/* Tab 4: Interactive Live Payload & Inference Simulator */}
-                <TabsContent value="simulator" className="space-y-4">
-                  <ArchitectureSimulator
-                    projectId={activeInspectorProject.id}
-                    projectTitle={activeInspectorProject.title}
-                    apiDocsUrl={activeInspectorProject.apiDocsUrl}
-                  />
                 </TabsContent>
               </Tabs>
             </div>
@@ -807,7 +736,7 @@ export function FeaturedProjects({
                   href={activeInspectorProject.liveUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-brand bg-primaryText px-4 py-2 font-mono text-xs font-medium text-base transition-colors hover:bg-gold hover:text-primaryText"
+                  className="inline-flex items-center gap-2 rounded-control bg-primaryText px-4 py-2 font-mono text-xs font-medium text-base transition-colors hover:bg-gold hover:text-primaryText"
                 >
                   <span>Launch App</span>
                   <ExternalLink className="h-3.5 w-3.5" />
@@ -818,66 +747,18 @@ export function FeaturedProjects({
                     href={activeInspectorProject.apiDocsUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-brand border border-borderSubtle bg-surface px-4 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold hover:text-gold"
+                    className="glass-panel inline-flex items-center gap-2 rounded-control px-4 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold hover:text-gold"
                   >
                     <span>API Docs</span>
                     <ExternalLink className="h-3.5 w-3.5" />
                   </a>
                 )}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    const bp = activeInspectorProject.id.includes("diabetes")
-                      ? "diabetes"
-                      : activeInspectorProject.id === "bookly"
-                        ? "bookly"
-                        : "sync";
-                    if (onOpenTopology) {
-                      onOpenTopology(bp);
-                    } else {
-                      window.dispatchEvent(
-                        new CustomEvent("portfolio:open-topology-modal", {
-                          detail: { blueprint: bp },
-                        }),
-                      );
-                    }
-                  }}
-                  className="inline-flex items-center gap-1.5 rounded-brand border border-borderSubtle bg-surface px-3.5 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold hover:text-gold cursor-pointer"
-                >
-                  <Database className="h-3.5 w-3.5 text-gold" />
-                  <span>VIEW FULL ERD TOPOLOGY</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    const adrMap: Record<string, string> = {
-                      bookly: "adr-001",
-                      diabetes: "adr-002",
-                      loomora: "adr-003",
-                      driving: "adr-004",
-                    };
-                    const adrId = adrMap[activeInspectorProject.id] || "adr-001";
-                    if (onOpenAdr) {
-                      onOpenAdr(adrId);
-                    } else {
-                      window.dispatchEvent(
-                        new CustomEvent("portfolio:open-adr-modal", { detail: { adrId } }),
-                      );
-                    }
-                  }}
-                  className="inline-flex items-center gap-1.5 rounded-brand border border-borderSubtle bg-surface px-3.5 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold hover:text-gold cursor-pointer"
-                >
-                  <FileCode className="h-3.5 w-3.5 text-gold" />
-                  <span>READ ADR</span>
-                </button>
               </div>
 
               <SheetClose asChild>
                 <button
                   type="button"
-                  className="rounded-brand border border-borderSubtle bg-surface px-4 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold"
+                  className="glass-panel rounded-control px-4 py-2 font-mono text-xs font-medium text-primaryText transition-colors hover:border-gold"
                 >
                   Close Inspector
                 </button>

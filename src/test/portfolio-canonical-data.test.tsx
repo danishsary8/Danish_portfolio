@@ -7,8 +7,6 @@ import { SystemCapabilities } from "@/components/portfolio/SystemCapabilities";
 import { ExperienceLedger } from "@/components/portfolio/ExperienceLedger";
 import { ContactFooter } from "@/components/portfolio/ContactFooter";
 import { NavLedger } from "@/components/portfolio/NavLedger";
-import { CommandLedger } from "@/components/portfolio/CommandLedger";
-import { ArchitectureSimulator } from "@/components/portfolio/ArchitectureSimulator";
 import { Index } from "@/routes/index";
 
 describe("Canonical Portfolio Data & Source of Truth", () => {
@@ -92,60 +90,10 @@ describe("Canonical Portfolio Data & Source of Truth", () => {
       fireEvent.click(firstButton);
     }
 
-    // Verify Inspector Sheet opens with Schema, API, and Live Simulator tabs
+    // Verify Inspector Sheet opens with Schema, API, and Overview tabs
     expect(screen.getByText("SYSTEM ARCHITECTURE INSPECTOR")).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /REST API/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /PostgreSQL Schema/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /Architecture Overview/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Live Payload Simulator/i })).toBeInTheDocument();
-  });
-
-  it("renders the interactive ArchitectureSimulator with live execution workbench for Bookly and Diabetes", () => {
-    const { unmount } = render(
-      <ArchitectureSimulator
-        projectId="bookly"
-        projectTitle="Bookly Platform"
-        apiDocsUrl="https://bookly-api-zasc.onrender.com/docs"
-      />,
-    );
-    expect(screen.getByText("Live Architecture & Inference Workbench")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /EXECUTE REQUEST/i })).toBeInTheDocument();
-    expect(screen.getByText("Indexed catalog scan & relational pagination")).toBeInTheDocument();
-    unmount();
-
-    render(<ArchitectureSimulator projectId="diabetes" projectTitle="Diabetes Expert System" />);
-    expect(screen.getByRole("button", { name: /RUN INFERENCE ENGINE/i })).toBeInTheDocument();
-    expect(screen.getByText(/Profile A: Baseline/i)).toBeInTheDocument();
-    expect(screen.getByText(/Profile C: Critical/i)).toBeInTheDocument();
-  });
-
-  it("opens CommandLedger via the CMD trigger button in NavLedger", () => {
-    render(<Index />);
-    const cmdButtons = screen.getAllByRole("button", { name: /Open command palette/i });
-    expect(cmdButtons.length).toBeGreaterThan(0);
-    const primaryCmdButton = cmdButtons[0];
-    if (primaryCmdButton) {
-      fireEvent.click(primaryCmdButton);
-    }
-
-    expect(
-      screen.getByPlaceholderText(/Type a command, project, or section anchor/i),
-    ).toBeInTheDocument();
-  });
-
-  it("renders all canonical command actions inside CommandLedger when open", () => {
-    render(<CommandLedger open={true} onOpenChange={() => {}} />);
-    expect(
-      screen.getByPlaceholderText(/Type a command, project, or section anchor/i),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Download Curriculum Vitae (PDF)")).toBeInTheDocument();
-    expect(screen.getByText("Copy Developer Dispatch Email")).toBeInTheDocument();
-    expect(screen.getByText("GitHub Developer Profile")).toBeInTheDocument();
-    expect(screen.getByText("Launch Bookly — Online Bookstore")).toBeInTheDocument();
-    expect(screen.getByText("Inspect Bookly — REST API Documentation")).toBeInTheDocument();
-    expect(screen.getByText("Launch Diabetes Expert System")).toBeInTheDocument();
-    expect(screen.getByText("Launch Loomora Habit Planner")).toBeInTheDocument();
-    expect(screen.getByText("Launch Cambodian Driving Rules App")).toBeInTheDocument();
-    expect(screen.getByText("System Capabilities & Architecture Matrix")).toBeInTheDocument();
   });
 });

@@ -59,37 +59,37 @@ Every component, layout, and interaction must pass through this orchestration ma
 
 1. **`reactbits dev` MCP Server**
    - **What to Pull:** Kinetic typography primitives, subtle magnetic button wrappers, decrypted/tabular text reveal mechanics for technical telemetry strings, and smooth scroll-linked layout helpers.
-   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds, or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into flat `#F5F0E8` cream, `#0A0A0A` near-black, and `#C9973A` gold tokens.
+   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds, or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into this portfolio's glass surface/border tokens, obsidian/parchment text tokens, and `#C9973A` gold accent.
 
 2. **`21st` (`21st.dev`) MCP Server**
-   - **What to Pull:** High-craft structural layout inspiration, interactive data tables, expandable architectural specification drawers, and command-palette/terminal dispatch patterns.
-   - **What to Reject (Anti-AI Filter):** Reject all generic SaaS bento grids, glassmorphic cards, pill-shaped badges, and centered 3-column feature blocks. Strip all default Tailwind indigo/violet/slate classes and map strictly to the portfolio's custom CSS variables.
+   - **What to Pull:** High-craft structural layout inspiration, interactive data tables, expandable architectural specification drawers, and glass-surface card/panel patterns.
+   - **What to Reject (Anti-AI Filter):** Reject generic SaaS bento grids, pill-shaped badges, and centered 3-column feature blocks. Strip all default Tailwind indigo/violet/slate classes and map strictly to the portfolio's custom CSS variables (gold accent, glass surface/border tokens).
 
 3. **`framer-motion` MCP Server**
    - **What to Pull:** Layout choreography (`LayoutGroup`, `AnimatePresence`), staggered scroll-triggered reveals (`whileInView`), and custom spring/bezier physics that strictly obey Emil Kowalski's motion constitution.
 
 4. **`shadcn/ui` (`src/components/ui/*`)**
-   - **What to Use:** Leverage existing Radix-based primitives already installed in `src/components/ui/`—specifically `sheet.tsx` (for the interactive Project Architecture & API Schema Inspector drawer), `dialog.tsx`, `tabs.tsx` (for switching between Live UI Preview, PostgreSQL Schema, and REST API Payload views), `tooltip.tsx`, `badge.tsx`, and `accordion.tsx`.
-   - **How to Customize:** Override all default `shadcn/ui` `rounded-md`/`rounded-lg` classes and drop shadows. Restyle all `shadcn/ui` primitives to have sharp architectural corners (`2px`–`4px` border radius, `rounded-brand`), flat solid backgrounds (`--bg-surface` or `--bg-card`), and subtle tactile borders (`--border-subtle`).
+   - **What to Use:** Leverage existing Radix-based primitives already installed in `src/components/ui/`—specifically `button.tsx`, `card.tsx`, `input.tsx`, `badge.tsx`, `tabs.tsx`, `dialog.tsx`, `sheet.tsx`, and `tooltip.tsx`.
+   - **How to Customize:** Restyle all `shadcn/ui` primitives to soft iOS-style radius (`16px` cards/panels, `10–12px` buttons/inputs/badges), glass surfaces (`--glass-surface` background, `backdrop-filter: blur()`, `--glass-border`), and shadows reserved for floating/elevated states only.
 
 ---
 
-## 2. The 12 Non-Negotiable Anti-AI Design Laws
+## 2. The Anti-AI Design Laws (Glassmorphism Era)
 
-Any component or layout violating even one of these 12 laws is considered a build failure:
+This section was revised to permit the glassmorphic, iOS-style visual language the portfolio now uses, while keeping the anti-generic-template discipline that still applies. Any component or layout violating one of these is considered a build failure:
 
 1. **ZERO Eyebrow Labels:** Never place small uppercase tracked text above a section heading (e.g., no `PORTFOLIO`, `ABOUT ME`, `CAPABILITIES`, or `WELCOME` labels sitting above an `h2`). The heading itself must carry the full semantic weight.
 2. **ZERO Decorative Numbering:** Never prepend fake sequence numbers like `01`, `02`, `03` or `(001)` to section titles or unordered capability blocks.
-3. **ZERO Hairline Section Dividers:** Never place a `1px` `<hr>` or border line between major page sections. Separate major sections strictly using generous whitespace (`120px–180px` desktop vertical padding) and alternating flat background tone shifts (`--bg-base` `#F5F0E8` shifting to `--bg-surface` `#ECE5D8` in light mode; `#0A0A0A` shifting to `#141414` in dark mode).
-4. **ZERO Glassmorphism:** Never use `backdrop-blur`, translucent white/black cards (`bg-white/10`), or frosted acrylic panels anywhere.
-5. **ZERO Resting Drop Shadows:** Static cards, buttons, and containers on the page canvas must have `shadow-none`. Shadows are permitted exclusively on floating overlay layers (`Sheet`, `Dialog`, `Popover`) to indicate z-axis elevation.
-6. **ZERO Gradients:** Never use `bg-gradient-to-*`, `radial-gradient`, or `bg-clip-text text-transparent` gradient typography. Use 100% flat, solid color fields.
+3. **ZERO Hairline Section Dividers:** Never place a `1px` `<hr>` or border line between major page sections. Separate major sections with generous whitespace (`120px–180px` desktop vertical padding) and the page's background mesh-gradient tone shifts, not divider rules.
+4. **Glassmorphism is the house style, used deliberately:** Frosted `backdrop-filter: blur()` surfaces, translucent panels (`--glass-surface`), and thin light borders (`--glass-border`) are expected on nav, cards, modals, and floating controls. The resting page background is a soft mesh/radial gradient (`--bg-elevated`) so the blur always has something to refract — never place a glass panel directly on a flat, gradient-less fill. Avoid the overused "pure white 10% opacity on a plain photo" cliché; keep panels legible with real contrast against `--text-primary`.
+5. **Shadows are for elevation, not decoration:** Flat resting page content stays shadow-free; soft shadows are reserved for floating/elevated layers — glass cards on hover-lift, nav bar, modals, dialogs, sheets, popovers — to indicate real z-axis depth.
+6. **No gradient typography:** Backgrounds and surfaces may use mesh/radial gradients, but never `bg-clip-text text-transparent` gradient text — text stays a solid, readable color.
 7. **ZERO Emoji Icons:** Never render emojis (`🚀`, `💻`, `✨`, `🇰🇭`) anywhere in the UI. Always use crisp `1.5px` stroke vector icons from `lucide-react`.
 8. **ZERO Symmetrical 3-Card Rows:** Never build a row of 3 equal-width centered cards topped with icons. Always use asymmetric multi-column splits (`65/35`, `60/40`, `40/60`) or dense architectural specification matrices.
-9. **ZERO Pill Shapes on Interactive Controls:** Never use `rounded-full` on buttons, tabs, or action triggers (only a tiny `8px` status dot indicator may be round). All buttons, badges, and inputs must use sharp `2px–4px` border radius (`rounded-brand`).
+9. **Soft iOS-style radius, never a pill:** Cards/panels use `16px` radius, buttons/inputs/badges use `10–12px` radius. `rounded-full` stays banned on buttons, tabs, and action triggers — only the `8px` status dot indicator may be fully round.
 10. **ZERO Banned AI Font Pairings:** Never import or fallback to `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
-11. **ZERO "Assistant Palette" Colors:** Never use terracotta, rust, indigo, violet, or cyan accents. Stick exclusively to the locked brand hex tokens.
-12. **ZERO Generic Template Gimmicks:** Never use infinite typewriter text loops (`TextType.tsx`) or mouse-following radial glow borders (`SpotlightCard.tsx`).
+11. **ZERO "Assistant Palette" Colors:** Never use terracotta, rust, indigo, violet, or cyan accents. The one accent stays the locked brand gold (`--accent-gold`).
+12. **ZERO Generic Template Gimmicks:** Never use infinite typewriter text loops (`TextType.tsx`) or mouse-following radial glow borders (`SpotlightCard.tsx`). Any `reactbits.dev` primitive pulled in (decrypted/reveal text, magnetic button) must be restyled to this palette — no neon glow, rainbow shaders, or floating particles.
 
 ---
 
@@ -105,7 +105,7 @@ All Framer Motion transitions and CSS animations in this repository must strictl
    - **Rare / Viewport entry reveals:** Staggered section entrance (`350ms–420ms` duration, `60ms–80ms` child stagger, `cubic-bezier(0.23, 1, 0.32, 1)`).
 3. **Hardware-Accelerated Properties Only:** Animate exclusively `transform` (`translate3d`, `scale`) and `opacity`. Never animate layout-triggering properties (`width`, `height`, `margin`, `padding`, `top`, or `left`).
 4. **No Scale-From-Zero:** Never animate an element entering from `scale(0)`. Always start entrances from `scale(0.96)` or `scale(0.97)` paired with `opacity: 0` and `y: 16px`.
-5. **No Ease-In on UI:** Never use `ease-in` curves on interactive UI elements. Always use `cubic-bezier(0.23, 1, 0.32, 1)` (sharp ease-out) for entrances/exits and `ease-in-out` (`[0.65, 0, 0.35, 1]`) for on-screen spatial morphing.
+5. **Spring-First Motion:** Entrances, hover lifts, and press feedback use Framer Motion spring physics (not cubic-bezier) for a native, iOS-style feel — entrances `{ stiffness: 300, damping: 30 }`, hover lift `{ stiffness: 400, damping: 28 }`, press `{ stiffness: 500, damping: 35 }`. `cubic-bezier(0.23, 1, 0.32, 1)` (sharp ease-out) remains the fallback for CSS-only transitions (color/border on hover) where a spring isn't practical. Never use `ease-in` curves on interactive UI elements.
 6. **Pointer Media Gating:** All hover transforms and color shifts must be gated behind `@media (hover: hover) and (pointer: fine)` so touch devices never experience sticky hover states.
 7. **Reduced Motion Accessibility:** Every motion wrapper and `framer-motion` hook must check `useReducedMotion()`. When enabled, strip all `y` and `scale` movement and fallback to a clean `150ms` opacity fade.
 
@@ -113,31 +113,39 @@ All Framer Motion transitions and CSS animations in this repository must strictl
 
 ## 4. Brand Tokens & Typography Specification
 
-### Color Tokens
+### Color Tokens (Glass Era)
 
-#### Light Theme (Editorial Parchment)
+#### Light Theme
 
-- **Base Canvas (`--bg-base`):** `#F5F0E8` (Warm Cream Canvas)
-- **Structural Surface (`--bg-surface`):** `#ECE5D8` (Secondary Section Shift Canvas)
-- **Elevated Card Surface (`--bg-card`):** `#FAF7F2` (Elevated Flat Structural Surface)
-- **High-Contrast Text (`--text-primary`):** `#0A0A0A` (Near-Black Primary Ink)
-- **Technical / Annotation Muted Text (`--text-muted`):** `#5A554C` (Warm Charcoal Technical Annotations)
-- **Spec Gold Accent (`--accent-gold`):** `#C9973A` (Signature Gold Accent & Active Beacons)
-- **Gold Interactive Hover (`--accent-gold-hover`):** `#B0822D` (Gold Interactive Hover)
-- **Subtle Border (`--border-subtle`):** `rgba(10, 10, 10, 0.10)` (Crisp Structural Ledger Lines)
-- **Focus Ring Border (`--border-focus`):** `#0A0A0A` (Crisp Focus Outline)
+- **Base Canvas (`--bg-base`):** `#F0EEE9` (Warm Parchment Canvas)
+- **Elevated Mesh Background (`--bg-elevated`):** `#F7F5F0` → `#ECE8DF` radial/mesh gradient — sits behind every glass panel so blur has something to refract
+- **Glass Surface (`--glass-surface`):** `rgba(255, 255, 255, 0.55)`
+- **Glass Border (`--glass-border`):** `rgba(10, 10, 10, 0.10)`
+- **High-Contrast Text (`--text-primary`):** `#0A0A0A`
+- **Muted Text (`--text-muted`):** `#5A554C`
+- **Spec Gold Accent (`--accent-gold`):** `#B0822D`
+- **Gold Interactive Hover (`--accent-gold-hover`):** `#9A6F26`
+- **Focus Ring Border (`--border-focus`):** `#0A0A0A`
+- **Blur:** `18px` on content cards, `28px` on nav/modals
 
-#### Dark Theme (Technical Obsidian `.dark`)
+#### Dark Theme (`.dark`)
 
-- **Base Canvas (`--bg-base`):** `#0A0A0A` (Deep Near-Black Canvas)
-- **Structural Surface (`--bg-surface`):** `#121212` (Secondary Section Shift Canvas)
-- **Elevated Card Surface (`--bg-card`):** `#181818` (Flat Structural Surface)
-- **High-Contrast Text (`--text-primary`):** `#F5F0E8` (Cream Primary Ink)
-- **Technical / Annotation Muted Text (`--text-muted`):** `#9A948A` (Muted Warm Stone Annotations)
-- **Spec Gold Accent (`--accent-gold`):** `#C9973A` (Signature Gold Accent)
-- **Gold Interactive Hover (`--accent-gold-hover`):** `#DDA94B` (Lighter Gold Hover)
-- **Subtle Border (`--border-subtle`):** `rgba(245, 240, 232, 0.12)` (Crisp Structural Ledger Lines)
-- **Focus Ring Border (`--border-focus`):** `#C9973A` (Gold Focus Outline)
+- **Base Canvas (`--bg-base`):** `#0A0A0C` (Near-Black, slight blue cast)
+- **Elevated Mesh Background (`--bg-elevated`):** `#15131A` → `#0A0A0C` radial/mesh gradient
+- **Glass Surface (`--glass-surface`):** `rgba(255, 255, 255, 0.06)`
+- **Glass Border (`--glass-border`):** `rgba(255, 255, 255, 0.12)`
+- **High-Contrast Text (`--text-primary`):** `#F5F0E8`
+- **Muted Text (`--text-muted`):** `#9A948A`
+- **Spec Gold Accent (`--accent-gold`):** `#C9973A`
+- **Gold Interactive Hover (`--accent-gold-hover`):** `#DDA94B`
+- **Focus Ring Border (`--border-focus`):** `#C9973A`
+- **Blur:** `18px` on content cards, `28px` on nav/modals
+
+### Radius Scale
+
+- Cards / panels: `16px`
+- Buttons / inputs / badges: `10–12px`
+- Status dot indicator only: fully round (`8px` diameter)
 
 ### Typography Pairing (Max 2 Primary Families + Technical Monospace)
 
@@ -152,38 +160,40 @@ All Framer Motion transitions and CSS animations in this repository must strictl
 All components must draw strictly from these authentic biographical facts. Never invent placeholder lorem ipsum or generic titles:
 
 - **Developer:** Sary Danish (goes by Danish)
-- **Role:** Junior Full-Stack Developer / 4th-Year Software Development Student at Norton University
+- **Role:** Junior Web Developer / 4th-Year Software Development Student at Norton University
 - **Location:** Phnom Penh, Cambodia (`ICT UTC+7`)
 - **Email:** `danishsary4@gmail.com`
 - **GitHub:** `https://github.com/danishsary8`
-- **Exact Bio:**
-  > "My name is Sary Danish, a fourth-year Software Development student at Norton University, Phnom Penh, Cambodia. I build and deploy full-stack web applications — from secure REST APIs to responsive React frontends with clean UI. I enjoy turning real problems into working software, writing maintainable code, and collaborating in teams. My dream is to become a highly skilled Full-Stack Developer, capable of building complete, real-world web applications that are scalable, maintainable, and genuinely useful to people."
+- **Telegram:** `@danishsary`
+- **Exact Bio (blended from CV + prior site copy):**
+  > "My name is Sary Danish, a fourth-year Software Development student at Norton University, Phnom Penh, Cambodia. I build real web applications with React, Laravel, and PostgreSQL — including an online bookstore, a habit planner, and a bilingual clinical expert system — with secure APIs using JWT, OTP verification, and Google OAuth. I focus on responsive interfaces and clean, scalable, maintainable code, and enjoy turning real problems into working software. My goal is to grow into a skilled Full-Stack Developer, building complete, real-world applications that are genuinely useful to people."
 - **Tech Stack:**
-  - Languages & Fundamentals: JavaScript, PHP, Java, Python, HTML, CSS
-  - Frameworks & UI: React, Tailwind CSS, Bootstrap, Laravel, Flask
+  - Languages & Fundamentals: JavaScript (ES6+), PHP, Java, Python, HTML5, CSS3
+  - Frameworks & UI: React, Tailwind CSS, Bootstrap, Framer Motion, Laravel, Flask
   - Databases & Storage: PostgreSQL, Supabase, SQLite, Oracle
-  - Tools & Workflow: Git, GitHub, REST APIs, Figma
+  - Tools & Workflow: Git, GitHub, REST APIs, JWT Authentication, Docker, Cloudinary, Postman
 - **Experience:**
-  - **Frontend & Backend Developer Trainee** — ETEC & KruITSolution — July 2026 – Present — Phnom Penh, Cambodia. Weekend internship training in web development covering frontend and backend technologies, hands-on with real projects.
+  - **Web Developer Trainee (Weekends)** — ETEC & KruITSolution — July 2026 – Present — Phnom Penh, Cambodia. Web developer on a team tour booking platform, building UI dashboards and fetching/integrating REST APIs. Collaborated via Git/GitHub using feature branches, commits, and pull requests. Coordinated API requirements with backend teammates and shared ideas in team discussions.
 - **Projects (All 4 Required):**
-  1. **Bookly:** Online bookstore platform with full e-commerce features. REST API backend with Laravel, React/TypeScript frontend, JWT authentication, PostgreSQL database.
+  1. **Bookly:** Online bookstore (e-commerce) platform. Laravel + React/TypeScript + PostgreSQL REST API, OTP & Google login, cart, checkout, order tracking, reviews, admin dashboard, Telegram bot, Cloudinary media.
      - Live: `https://bookly-frontend-five.vercel.app/`
      - API Docs: `https://bookly-api-zasc.onrender.com/docs`
      - GitHub: `https://github.com/danishsary8`
-  2. **Loomora:** Personal routine and habit planner web app, deployed full-stack with scheduling features.
+  2. **Loomora:** Routine & habit planner. React, Tailwind CSS, Framer Motion, Laravel, PostgreSQL — secure login, Google sign-in, email verification, daily routines and reminders.
      - Live: `https://daycraft-vnid.onrender.com/`
      - GitHub: `https://github.com/danishsary8`
-  3. **Diabetes Expert System:** Full-stack clinical assistance prototype, bilingual EN/Khmer, JWT RBAC, rule-based expert system for diabetes risk assessment. Winner of AI Expert System Competition 2026 at Norton University.
+  3. **Diabetes Expert System:** Bilingual (EN/Khmer) clinical assistant for early diabetes screening. React, Flask, PostgreSQL, JWT, RBAC — explainable rule-based risk assessments and care plans; contributed Google sign-in, UI improvements, and testing. Team project.
      - Live: `https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/`
      - GitHub: `https://github.com/danishsary8`
-  4. **Driving Rules App:** Frontend app for learning Cambodian driving theory, built with Flutter.
+  4. **Driving Rules App:** Offline, bilingual (Khmer/English) driving theory learning app for Cambodia's driving exam. Flutter, Dart, local storage — road-sign lessons and practice exams.
      - Live: `https://drivingruletest.netlify.app/`
      - GitHub: `https://github.com/danishsary8`
 - **Education & Awards:**
-  - **Norton University** — B.S. in Software Development — 2023 – Present (Expected 2027) — Phnom Penh, Cambodia
-  - **Award:** Winner of AI Expert System Competition 2026 — Norton University
-  - **ACE (American Culture and English / Australian Centre for Education)** — English Language Program — Completed
-  - **ETEC Frontend Development Course & Backend Development Course** — Completed
+  - **Norton University** — B.S. in Software Development — 2024 – Present — Phnom Penh, Cambodia *(per CV; confirm if a different start year is correct)*
+  - **Award:** AI Expert System and Innovation 2026 — Award Winner (Team), September 2026 — presented the Diabetes Expert System
+  - **ACE (Australian Centre for Education)** — General English Program — 2024 – 2026, Completed
+  - **ETEC** — Frontend Development Course (HTML, CSS, JavaScript, React.js) — Jan 2025 – Jul 2025, Completed
+  - **ETEC** — Backend Development Course (PHP, Laravel) — Nov 2025 – Mar 2026, Completed
 
 ---
 
@@ -195,3 +205,4 @@ All components must draw strictly from these authentic biographical facts. Never
 - **Architecture Illustration:** Keep the skills architecture illustration separate from the category controls; every technology remains visible and selection changes only its matching visual layer.
 - **Typing Components:** Name wordmarks must render immediately as static, confident editorial typography; never use interval loops or blinking cursor gimmicks.
 - **Test Integrity:** Every layout addition or component refactor must maintain 100% pass rate in the Vitest test suite (`npm test`).
+- **Design System Showcase:** `/design-system` is a standalone route showing every color token, the type scale, live/interactive component samples, glass effect levels, and replayable animation samples. It is linked only from a small footer link, never the primary nav, and must stay in sync with the actual tokens/components in use (not a static mockup).

@@ -9,7 +9,8 @@
   --radius-lg: calc(var(--radius) + 1px);
   --radius-xl: calc(var(--radius) + 2px);
   --radius-2xl: calc(var(--radius) + 3px);
-  --radius-brand: 3px;
+  --radius-brand: 16px;
+  --radius-control: 10px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -84,18 +85,26 @@
 
 @layer base {
   :root {
-    --bg-base: #f5f0e8;
-    --bg-surface: #ece5d8;
-    --bg-card: #faf7f2;
+    --bg-base: #f0eee9;
+    --bg-elevated-1: #f7f5f0;
+    --bg-elevated-2: #ece8df;
+    --glass-surface: rgba(255, 255, 255, 0.55);
+    --glass-surface-strong: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(10, 10, 10, 0.1);
+    --glass-border-strong: rgba(10, 10, 10, 0.22);
+    --blur-card: 18px;
+    --blur-chrome: 28px;
+    --bg-surface: var(--glass-surface);
+    --bg-card: var(--glass-surface);
     --text-primary: #0a0a0a;
     --text-muted: #5a554c;
-    --accent-gold: #c9973a;
-    --accent-gold-hover: #b0822d;
-    --border-subtle: rgba(10, 10, 10, 0.1);
-    --border-strong: rgba(10, 10, 10, 0.22);
+    --accent-gold: #b0822d;
+    --accent-gold-hover: #9a6f26;
+    --border-subtle: var(--glass-border);
+    --border-strong: var(--glass-border-strong);
     --border-focus: #0a0a0a;
 
-    --radius: 3px;
+    --radius: 16px;
     --background: var(--bg-base);
     --foreground: var(--text-primary);
     --card: var(--bg-card);
@@ -123,8 +132,8 @@
     --gold-detail: var(--accent-gold);
     --ink: #0a0a0a;
     --on-ink: #f5f0e8;
-    --shadow-portrait: none;
-    --shadow-card: none;
+    --shadow-portrait: 0 24px 60px -20px rgba(10, 10, 10, 0.28);
+    --shadow-card: 0 16px 40px -18px rgba(10, 10, 10, 0.22);
     --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-drawer: cubic-bezier(0.23, 1, 0.32, 1);
@@ -144,16 +153,24 @@
   }
 
   .dark {
-    --bg-base: #0a0a0a;
-    --bg-surface: #121212;
-    --bg-card: #181818;
+    --bg-base: #0a0a0c;
+    --bg-elevated-1: #15131a;
+    --bg-elevated-2: #0a0a0c;
+    --glass-surface: rgba(255, 255, 255, 0.06);
+    --glass-surface-strong: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --glass-border-strong: rgba(255, 255, 255, 0.22);
+    --bg-surface: var(--glass-surface);
+    --bg-card: var(--glass-surface);
     --text-primary: #f5f0e8;
     --text-muted: #9a948a;
     --accent-gold: #c9973a;
     --accent-gold-hover: #dda94b;
-    --border-subtle: rgba(245, 240, 232, 0.12);
-    --border-strong: rgba(245, 240, 232, 0.24);
+    --border-subtle: var(--glass-border);
+    --border-strong: var(--glass-border-strong);
     --border-focus: #c9973a;
+    --shadow-portrait: 0 24px 60px -16px rgba(0, 0, 0, 0.6);
+    --shadow-card: 0 16px 40px -16px rgba(0, 0, 0, 0.5);
 
     --background: var(--bg-base);
     --foreground: var(--text-primary);
@@ -203,6 +220,19 @@
 
   body {
     background-color: var(--bg-base);
+    background-image:
+      radial-gradient(
+        ellipse 1100px 700px at 15% -10%,
+        color-mix(in oklab, var(--accent-gold) 10%, var(--bg-elevated-1)) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 900px 900px at 100% 20%,
+        var(--bg-elevated-1) 0%,
+        transparent 55%
+      ),
+      linear-gradient(180deg, var(--bg-elevated-1) 0%, var(--bg-elevated-2) 45%, var(--bg-base) 100%);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-body);
     transition:
@@ -271,8 +301,39 @@
 .portfolio-section {
   overflow: clip;
 }
-.portfolio-section:nth-of-type(even) {
-  background: var(--card);
+
+/* ==========================================================================
+   Glassmorphism Surfaces
+   ========================================================================== */
+.glass-panel {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur-chrome));
+  -webkit-backdrop-filter: blur(var(--blur-chrome));
+  border-radius: var(--radius-brand);
+}
+.glass-card {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--blur-card));
+  -webkit-backdrop-filter: blur(var(--blur-card));
+  border-radius: var(--radius-brand);
+  box-shadow: none;
+  transition:
+    transform 200ms var(--ease-out-quint),
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .glass-card:hover {
+    border-color: var(--accent-gold);
+    box-shadow: var(--shadow-card);
+    background: var(--glass-surface-strong);
+  }
+}
+.glass-elevated {
+  box-shadow: var(--shadow-card);
 }
 .section-heading {
   position: relative;

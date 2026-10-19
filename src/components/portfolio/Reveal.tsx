@@ -1,6 +1,6 @@
 import { motion, useAnimationControls, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
-import { EASE_OUT_EXPO, MOTION_DURATION } from "@/lib/motion";
+import { EASE_OUT_EXPO, SPRING_ENTRANCE } from "@/lib/motion";
 
 const EASE = EASE_OUT_EXPO;
 
@@ -18,7 +18,7 @@ export const item: Variants = {
   show: {
     opacity: 1,
     transform: "translateY(0px)",
-    transition: { duration: MOTION_DURATION.reveal, ease: EASE_OUT_EXPO },
+    transition: SPRING_ENTRANCE,
   },
 };
 
@@ -33,7 +33,7 @@ export const badgeItem: Variants = {
   show: {
     opacity: 1,
     transform: "translateY(0px) scale(1)",
-    transition: { duration: MOTION_DURATION.card, ease: EASE_OUT_EXPO },
+    transition: SPRING_ENTRANCE,
   },
 };
 
@@ -84,7 +84,7 @@ export function RevealItem({
             }
       }
       viewport={{ once: true, amount: 0.15, margin: "0px 0px -40px 0px" }}
-      transition={{ duration: MOTION_DURATION.reveal, ease: EASE_OUT_EXPO, delay }}
+      transition={{ ...SPRING_ENTRANCE, delay }}
       variants={
         reduce
           ? { hidden: { opacity: 1, transform: "none" }, show: { opacity: 1, transform: "none" } }
@@ -225,10 +225,7 @@ export function LedgerReveal({ children, className }: { children: ReactNode; cla
         visible: {
           opacity: 1,
           y: 0,
-          transition: {
-            duration: 0.36,
-            ease: EASE,
-          },
+          transition: SPRING_ENTRANCE,
         },
       }}
     >
