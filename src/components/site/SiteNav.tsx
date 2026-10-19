@@ -73,7 +73,7 @@ export function SiteNav() {
           <button
             type="button"
             aria-label="Open menu"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg transition-colors hover:bg-surface lg:hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg transition-colors hover:bg-surface md:hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
           >
             <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
           </button>
@@ -124,6 +124,7 @@ export function SiteNav() {
           itemStyle="default"
           hoverEffect="fill"
           indicator="dot"
+          collapse="never"
           theme={dark ? "dark" : "light"}
           highlightColor={dark ? "#c9973a" : "#b0822d"}
           highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}

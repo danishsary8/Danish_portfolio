@@ -566,17 +566,19 @@ export const PillNav: React.FC<PillNavProps> = ({
       const parent = root.parentElement;
       if (!parent) return;
       const styles = getComputedStyle(parent);
-      const available =
+      const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1200;
+      const containerWidth =
         parent.clientWidth - (parseFloat(styles.paddingLeft) || 0) - (parseFloat(styles.paddingRight) || 0);
+      const available = containerWidth > 300 ? containerWidth : viewportWidth;
       if (available <= 0) return;
       const listWidth = measureListRef.current?.offsetWidth ?? 0;
       const height = readVar(root, "--pn-h");
       const pad = readVar(root, "--pn-pad");
       const gap = readVar(root, "--pn-gap");
       const inner = readVar(root, "--pn-inner");
-      const extraWidth = rightActions ? 120 : 0;
+      const extraWidth = rightActions ? 80 : 0;
       const need = joined
-        ? pad * 2 + (hasLogo ? inner + 140 : 0) + listWidth + extraWidth
+        ? pad * 2 + (hasLogo ? inner + 120 : 0) + listWidth + extraWidth
         : (hasLogo ? height + gap : 0) + listWidth + pad * 2 + extraWidth;
       const next = need > available + 0.5;
       if (introRef.current && next !== collapsed) pendingRef.current = next;
