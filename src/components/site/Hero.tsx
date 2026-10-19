@@ -1,5 +1,5 @@
 import { useRef, type CSSProperties } from "react";
-import { ArrowRight, FileText } from "lucide-react";
+import { ArrowRight, FileText, GraduationCap } from "lucide-react";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
@@ -210,14 +210,39 @@ export function Hero() {
               </div>
 
               {/* Current Role & University Trajectory */}
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px] text-fg-subtle">
-                <span className="inline-flex items-center gap-1.5 font-medium text-fg-muted">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true" />
-                  Web Developer Trainee
-                </span>
-                <span>at ETEC & KruITSolution</span>
-                <span aria-hidden="true" className="text-fg-subtle/40">&bull;</span>
-                <span>4th-Year Software Development, Norton Univ</span>
+              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[12.5px]">
+                <a
+                  href="#experience"
+                  className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-1/70 px-3 py-1.5 transition-all duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-1 hover:shadow-xs press"
+                >
+                  <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
+                    <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
+                    <span className="relative h-2 w-2 rounded-full bg-gold" />
+                  </span>
+                  <span className="font-medium text-fg transition-colors duration-150 group-hover:text-gold">
+                    Web Developer Trainee
+                  </span>
+                  <span className="text-fg-subtle">
+                    at <span className="font-normal text-fg-muted">ETEC & KruITSolution</span>
+                  </span>
+                </a>
+
+                <a
+                  href="#education"
+                  className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-1/70 px-3 py-1.5 transition-all duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-1 hover:shadow-xs press"
+                >
+                  <GraduationCap
+                    className="h-3.5 w-3.5 shrink-0 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <span className="font-medium text-fg transition-colors duration-150 group-hover:text-fg">
+                    4th-Year Software Development
+                  </span>
+                  <span className="text-fg-subtle">
+                    at <span className="font-normal text-fg-muted">Norton University</span>
+                  </span>
+                </a>
               </div>
             </div>
           </div>

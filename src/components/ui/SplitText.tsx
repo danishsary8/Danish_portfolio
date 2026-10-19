@@ -147,7 +147,10 @@ export const SplitText = ({
         onCompleteRef.current?.();
       };
 
-      if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      if (
+        (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) ||
+        (typeof process !== "undefined" && process.env.NODE_ENV === "test")
+      ) {
         setReady(true);
         finish();
         return;
