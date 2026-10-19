@@ -170,8 +170,8 @@ export function Hero() {
                 status="Available to work"
                 contactText="Contact"
                 avatarUrl={ASSETS.profile.photo}
-                holo={0.3}
-                glare={0.2}
+                holo={0}
+                glare={0}
                 tiltStrength={10}
                 parallax={6}
                 radius={16}
