@@ -1,0 +1,188 @@
+import { ASSETS } from "@/lib/assets";
+
+export const PROFILE = {
+  name: "Sary Danish",
+  shortName: "Danish",
+  role: "Junior Web Developer",
+  location: "Phnom Penh, Cambodia",
+  timezone: "Asia/Phnom_Penh",
+  timezoneLabel: "ICT",
+  email: "danishsary4@gmail.com",
+  github: "https://github.com/danishsary8",
+  githubHandle: "danishsary8",
+  telegram: "https://t.me/danishsary",
+  telegramHandle: "@danishsary",
+  pitch:
+    "I build secure REST APIs and clean, responsive React interfaces — and ship them to real users.",
+  bio: [
+    "My name is Sary Danish, a fourth-year Software Development student at Norton University, Phnom Penh, Cambodia. I build real web applications with React, Laravel, and PostgreSQL — including an online bookstore, a habit planner, and a bilingual clinical expert system — with secure APIs using JWT, OTP verification, and Google OAuth.",
+    "I focus on responsive interfaces and clean, scalable, maintainable code, and enjoy turning real problems into working software. My goal is to grow into a skilled Full-Stack Developer, building complete, real-world applications that are genuinely useful to people.",
+  ],
+} as const;
+
+export const FACTS = [
+  { value: "4th", label: "year at Norton University" },
+  { value: "4", label: "projects live in production" },
+  { value: "2026", label: "AI Expert System award" },
+] as const;
+
+export type Project = {
+  id: "bookly" | "loomora" | "diabetes" | "driving";
+  title: string;
+  kind: string;
+  summary: string;
+  highlights: string[];
+  stack: string[];
+  hosting: string;
+  liveUrl: string;
+  githubUrl: string;
+  apiDocsUrl?: string;
+  image?: string;
+  imageAlt?: string;
+  award?: string;
+  team?: boolean;
+};
+
+export const PROJECTS: Project[] = [
+  {
+    id: "bookly",
+    title: "Bookly",
+    kind: "Online bookstore · E-commerce",
+    summary:
+      "A full e-commerce platform for buying books: OTP and Google login, cart, checkout, order tracking, reviews, an admin dashboard, and a Telegram bot for order updates.",
+    highlights: [
+      "Laravel REST API with JWT sessions, OTP verification, and Google OAuth",
+      "Admin dashboard for catalogue, orders, and reviews",
+      "Cloudinary for book media; Telegram bot for order notifications",
+    ],
+    stack: ["Laravel", "React", "TypeScript", "PostgreSQL", "JWT", "Cloudinary"],
+    hosting: "Vercel & Railway",
+    liveUrl: "https://bookly-frontend-five.vercel.app/",
+    githubUrl: "https://github.com/danishsary8",
+    apiDocsUrl: "https://bookly-api-zasc.onrender.com/docs",
+    image: ASSETS.projects.bookly.src,
+    imageAlt: "Bookly storefront showing the book catalogue",
+  },
+  {
+    id: "loomora",
+    title: "Loomora",
+    kind: "Routine & habit planner",
+    summary:
+      "A productivity app where people build daily routines and reminders, with secure login, Google sign-in, and email verification.",
+    highlights: [
+      "Daily routines, reminders, and streaks",
+      "Google sign-in and email verification",
+      "Smooth Framer Motion interactions",
+    ],
+    stack: ["React", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL"],
+    hosting: "Render",
+    liveUrl: "https://daycraft-vnid.onrender.com/",
+    githubUrl: "https://github.com/danishsary8",
+    image: ASSETS.projects.loomora.src,
+    imageAlt: "Loomora dashboard with a daily routine planner",
+  },
+  {
+    id: "diabetes",
+    title: "Diabetes Expert System",
+    kind: "Clinical assistant · Team project",
+    summary:
+      "A bilingual English/Khmer system for early diabetes screening, with explainable rule-based risk assessments and care plans. I contributed Google sign-in, UI improvements, and testing.",
+    highlights: [
+      "Explainable, rule-based risk assessment",
+      "Role-based access with JWT",
+      "Bilingual interface: English and Khmer",
+    ],
+    stack: ["React", "Flask", "PostgreSQL", "JWT", "RBAC"],
+    hosting: "Vercel & Railway",
+    liveUrl: "https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/",
+    githubUrl: "https://github.com/danishsary8",
+    award: "Award Winner · AI Expert System and Innovation 2026",
+    team: true,
+  },
+  {
+    id: "driving",
+    title: "Driving Rules",
+    kind: "Driving theory learning app",
+    summary:
+      "An offline, bilingual Khmer/English app for Cambodia's driving theory exam, with road-sign lessons and practice exams.",
+    highlights: ["Works offline with local storage", "Road-sign lessons and practice exams"],
+    stack: ["Flutter", "Dart", "Local Storage"],
+    hosting: "Netlify",
+    liveUrl: "https://drivingruletest.netlify.app/",
+    githubUrl: "https://github.com/danishsary8",
+    image: ASSETS.projects.driving.src,
+    imageAlt: "Driving Rules app showing a road-sign lesson",
+  },
+];
+
+export const SKILL_GROUPS = [
+  {
+    title: "Languages",
+    skills: ["JavaScript", "TypeScript", "PHP", "Python", "Java", "HTML5", "CSS3"],
+  },
+  {
+    title: "Frameworks & UI",
+    skills: ["React", "Laravel", "Flask", "Tailwind CSS", "Bootstrap", "Framer Motion", "Flutter"],
+  },
+  {
+    title: "Databases",
+    skills: ["PostgreSQL", "Supabase", "SQLite", "Oracle"],
+  },
+  {
+    title: "Tools & APIs",
+    skills: ["Git", "GitHub", "REST APIs", "JWT", "Docker", "Postman", "Cloudinary", "VS Code"],
+  },
+] as const;
+
+export type Skill = (typeof SKILL_GROUPS)[number]["skills"][number];
+
+export const EXPERIENCE = [
+  {
+    title: "Web Developer Trainee",
+    org: "ETEC & KruITSolution",
+    period: "Jul 2026 – Present",
+    detail: "Weekend internship · Phnom Penh",
+    points: [
+      "Web developer on a team tour booking platform, building UI dashboards and fetching and integrating REST APIs.",
+      "Collaborated through Git and GitHub using feature branches, commits, and pull requests.",
+      "Coordinated API requirements with backend teammates and shared ideas in team discussions.",
+    ],
+  },
+  {
+    title: "AI Expert System and Innovation 2026",
+    org: "Award Winner (Team) · Norton University",
+    period: "Sep 2026",
+    detail: "Presented the Diabetes Expert System",
+    points: ["Won with a bilingual, AI-based screening tool for early diabetes risk."],
+  },
+] as const;
+
+export const EDUCATION = [
+  {
+    title: "Bachelor of Software Development",
+    org: "Norton University",
+    period: "2024 – Present",
+  },
+  {
+    title: "Backend Development: PHP, Laravel",
+    org: "ETEC",
+    period: "Nov 2025 – Mar 2026",
+  },
+  {
+    title: "Frontend Development: HTML, CSS, JavaScript, React.js",
+    org: "ETEC",
+    period: "Jan 2025 – Jul 2025",
+  },
+  {
+    title: "General English Program",
+    org: "Australian Centre for Education (ACE)",
+    period: "2024 – 2026",
+  },
+] as const;
+
+export const NAV_LINKS = [
+  { href: "#work", label: "Work" },
+  { href: "#about", label: "About" },
+  { href: "#journey", label: "Experience" },
+  { href: "#contact", label: "Contact" },
+] as const;

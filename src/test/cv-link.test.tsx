@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { CV_HREF, getCvLinkProps } from "@/components/portfolio/cv-link";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 
 describe("CV buttons", () => {
   it("ship as a placeholder until the real CV URL is supplied", () => {

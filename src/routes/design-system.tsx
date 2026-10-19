@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Check, Copy, Github, Moon, RotateCcw, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SPRING_ENTRANCE, SPRING_HOVER, SPRING_PRESS } from "@/lib/motion";
+import { useTheme } from "@/lib/use-theme";
 
 export const Route = createFileRoute("/design-system")({
   head: () => ({
@@ -124,24 +125,6 @@ const TYPE_SCALE = [
     sample: "GET /api/v1/books?sort=price_asc  ·  14:32 ICT",
   },
 ];
-
-function useTheme() {
-  const [dark, setDark] = useState(false);
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
-  const toggle = () => {
-    const next = !document.documentElement.classList.contains("dark");
-    document.documentElement.classList.toggle("dark", next);
-    try {
-      localStorage.setItem("theme", next ? "dark" : "light");
-    } catch {
-      /* storage unavailable */
-    }
-    setDark(next);
-  };
-  return { dark, toggle };
-}
 
 function DesignSystemPage() {
   const { dark, toggle } = useTheme();
