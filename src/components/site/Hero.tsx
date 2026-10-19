@@ -164,12 +164,11 @@ export function Hero() {
                 name={PROFILE.name}
                 title="Software & Web Developer"
                 handle={PROFILE.githubHandle}
-                status="Available to work full-time"
+                status="Available to work"
                 contactText="Contact"
                 avatarUrl={ASSETS.profile.photo}
-                miniAvatarUrl={ASSETS.profile.photo}
-                holo={0.35}
-                glare={0.25}
+                holo={0.3}
+                glare={0.2}
                 tiltStrength={10}
                 parallax={6}
                 radius={16}

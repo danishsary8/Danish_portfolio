@@ -13,7 +13,7 @@
   --pc-tilt: 0;
   --pc-active: 0;
   position: relative;
-  width: 300px;
+  width: 316px;
   max-width: 100%;
   perspective: 1000px;
   touch-action: pan-y;
@@ -173,7 +173,7 @@
   width: calc(100% + var(--pc-parallax) * 2);
   height: calc(100% + var(--pc-parallax) * 2);
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center 18%;
   transform: translate3d(var(--pc-shift-x), var(--pc-shift-y), 0);
   pointer-events: none;
   user-select: none;
@@ -227,9 +227,10 @@
 .profile-card__footer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   min-width: 0;
-  padding: 6px 14px 6px;
+  padding: 6px 12px 6px;
 }
 
 .profile-card__avatar {
