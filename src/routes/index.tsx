@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteNav } from "@/components/site/SiteNav";
 import { Hero } from "@/components/site/Hero";
-import { Work } from "@/components/site/Work";
-import { About } from "@/components/site/About";
-import { Journey } from "@/components/site/Journey";
+import { Skills } from "@/components/site/Skills";
+import { Projects } from "@/components/site/Projects";
+import { Experience } from "@/components/site/Experience";
+import { Education } from "@/components/site/Education";
 import { Contact, SiteFooter } from "@/components/site/Contact";
 
 const TITLE = "Sary Danish — Junior Web Developer | Phnom Penh, Cambodia";
@@ -29,19 +30,20 @@ export const Route = createFileRoute("/")({
 
 export function Index() {
   return (
-    <div className="min-h-screen overflow-x-clip font-body text-primaryText antialiased">
+    <div className="min-h-screen overflow-x-clip bg-bg text-fg">
       <a
         href="#main-content"
-        className="sr-only z-[60] rounded-control bg-primaryText px-4 py-2.5 text-[14px] font-semibold text-[var(--bg-base)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="sr-only z-[60] rounded-control bg-fg px-4 py-2.5 text-[14px] font-medium text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to main content
       </a>
       <SiteNav />
       <main id="main-content">
         <Hero />
-        <Work />
-        <About />
-        <Journey />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Education />
         <Contact />
       </main>
       <SiteFooter />

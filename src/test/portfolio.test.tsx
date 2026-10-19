@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import {
   RouterProvider,
   createMemoryHistory,
@@ -9,106 +9,124 @@ import {
 } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 import { Hero } from "@/components/site/Hero";
-import { Work } from "@/components/site/Work";
-import { About } from "@/components/site/About";
-import { Journey } from "@/components/site/Journey";
+import { Skills } from "@/components/site/Skills";
+import { Projects } from "@/components/site/Projects";
+import { Experience } from "@/components/site/Experience";
+import { Education } from "@/components/site/Education";
 import { Contact, SiteFooter } from "@/components/site/Contact";
 import { SiteNav } from "@/components/site/SiteNav";
-import { revealItem } from "@/components/site/Reveal";
-import { PROJECTS, SKILL_GROUPS } from "@/content/portfolio";
+import { CERTIFICATES, PROJECTS, SKILL_GROUPS } from "@/content/portfolio";
 
 describe("Hero", () => {
-  it("renders the name, role, and location", () => {
+  it("renders the name, role, and calls to action", () => {
     render(<Hero />);
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("SaryDanish");
-    expect(screen.getByText("Junior Web Developer")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Sary Danish");
+    expect(screen.getByText(/Junior Web Developer/)).toBeInTheDocument();
     expect(screen.getByText(/Phnom Penh/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Get in touch/ })).toHaveAttribute("href", "#contact");
+    expect(screen.getByRole("link", { name: /Download CV/ })).toHaveAttribute(
       "href",
-      "https://github.com/danishsary8",
+      "/sary-danish-cv.pdf",
     );
   });
 
   it("is fully readable in server-rendered HTML before hydration", () => {
     const html = renderToStaticMarkup(<Hero />);
-    expect(html).toContain("Sary");
+    expect(html).toContain("Sary Danish");
     expect(html).not.toMatch(/opacity:\s*0[;"]/);
   });
 });
 
-describe("Selected work", () => {
-  it("lists all four projects with their live sites and source", () => {
-    render(<Work />);
-    for (const p of PROJECTS) {
-      expect(screen.getByRole("heading", { level: 3, name: p.title })).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: `Open the live ${p.title} site` })).toHaveAttribute(
-        "href",
-        p.liveUrl,
-      );
-      expect(screen.getByRole("link", { name: `${p.title} source on GitHub` })).toHaveAttribute(
-        "href",
-        p.githubUrl,
-      );
+describe("Skills", () => {
+  it("lists every skill with an icon", () => {
+    const { container } = render(<Skills />);
+    for (const g of SKILL_GROUPS) {
+      expect(screen.getByRole("heading", { level: 3, name: g.title })).toBeInTheDocument();
+      for (const s of g.skills) expect(screen.getByText(s)).toBeInTheDocument();
     }
-    expect(screen.getByRole("link", { name: "Bookly API documentation" })).toHaveAttribute(
-      "href",
-      "https://bookly-api-zasc.onrender.com/docs",
-    );
-    expect(screen.getByText(/AI Expert System and Innovation 2026/)).toBeInTheDocument();
-  });
-
-  it("keeps reveal content visible while waiting for the viewport", () => {
-    expect(revealItem["hidden"]).toMatchObject({ opacity: 1 });
+    const total = SKILL_GROUPS.reduce((n, g) => n + g.skills.length, 0);
+    expect(container.querySelectorAll("li svg").length).toBe(total);
   });
 });
 
-describe("About", () => {
-  it("shows the bio and every skill with an icon", () => {
-    const { container } = render(<About />);
-    expect(
-      screen.getByText(/fourth-year Software Development student at Norton University/),
-    ).toBeInTheDocument();
-    for (const g of SKILL_GROUPS) {
-      expect(screen.getByRole("heading", { level: 4, name: g.title })).toBeInTheDocument();
-      for (const s of g.skills) expect(screen.getByText(s)).toBeInTheDocument();
+describe("Projects", () => {
+  it("lists all four projects", () => {
+    render(<Projects />);
+    for (const p of PROJECTS) {
+      expect(screen.getByRole("button", { name: `${p.title}: view details` })).toBeInTheDocument();
     }
-    const skillCount = SKILL_GROUPS.reduce((n, g) => n + g.skills.length, 0);
-    expect(container.querySelectorAll("li svg").length).toBe(skillCount);
+  });
+
+  it("opens a details dialog with live, source, and API links", () => {
+    render(<Projects />);
+    fireEvent.click(screen.getByRole("button", { name: "Bookly: view details" }));
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("heading", { name: "Bookly" })).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: "Open the live Bookly site" })).toHaveAttribute(
+      "href",
+      "https://bookly-frontend-five.vercel.app/",
+    );
+    expect(within(dialog).getByRole("link", { name: "Bookly source on GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/danishsary8",
+    );
+    expect(within(dialog).getByRole("link", { name: "Bookly API documentation" })).toHaveAttribute(
+      "href",
+      "https://bookly-api-zasc.onrender.com/docs",
+    );
+  });
+
+  it("marks the award-winning project", () => {
+    render(<Projects />);
+    expect(screen.getByLabelText("Award winner")).toBeInTheDocument();
   });
 });
 
 describe("Experience and education", () => {
-  it("shows the internship, the award, and education", () => {
-    render(<Journey />);
+  it("shows the internship and the award", () => {
+    render(<Experience />);
     expect(screen.getByText("Web Developer Trainee")).toBeInTheDocument();
-    expect(screen.getByText("ETEC & KruITSolution")).toBeInTheDocument();
+    expect(screen.getByText(/ETEC & KruITSolution/)).toBeInTheDocument();
     expect(screen.getByText(/tour booking platform/)).toBeInTheDocument();
+    expect(screen.getByText("AI Expert System and Innovation 2026")).toBeInTheDocument();
+  });
+
+  it("shows education and every certificate", () => {
+    render(<Education />);
     expect(screen.getByText("Bachelor of Software Development")).toBeInTheDocument();
-    expect(screen.getByText("Norton University")).toBeInTheDocument();
-    expect(screen.getByText("Australian Centre for Education (ACE)")).toBeInTheDocument();
+    expect(screen.getAllByText(/Norton University/).length).toBeGreaterThan(0);
+    for (const c of CERTIFICATES) expect(screen.getByText(c.title)).toBeInTheDocument();
   });
 });
 
 describe("Contact", () => {
-  it("offers email, GitHub, and Telegram", () => {
+  it("offers email, GitHub, Telegram, and the CV", () => {
     render(<Contact />);
-    expect(screen.getByRole("link", { name: /danishsary4@gmail.com/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "danishsary4@gmail.com" })).toHaveAttribute(
       "href",
       "mailto:danishsary4@gmail.com",
     );
     expect(screen.getByRole("button", { name: /Copy email address/ })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Download CV" })).toHaveAttribute(
-      "href",
-      "/sary-danish-cv.pdf",
-    );
-    expect(screen.getByRole("link", { name: /GitHub/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /github.com\/danishsary8/ })).toHaveAttribute(
       "href",
       "https://github.com/danishsary8",
     );
-    expect(screen.getByRole("link", { name: /Telegram/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /@danishsary/ })).toHaveAttribute(
       "href",
       "https://t.me/danishsary",
     );
+    expect(screen.getByRole("link", { name: /Download CV/ })).toHaveAttribute(
+      "href",
+      "/sary-danish-cv.pdf",
+    );
+  });
+
+  it("asks for a name and message before opening the email app", () => {
+    render(<Contact />);
+    fireEvent.click(screen.getByRole("button", { name: "Write email" }));
+    expect(screen.getByText(/Add your name/)).toBeInTheDocument();
+    expect(screen.getByText(/Write a short message/)).toBeInTheDocument();
+    expect(screen.getByLabelText("Name")).toHaveAttribute("aria-invalid", "true");
   });
 
   it("links the design system from the footer", async () => {
@@ -129,10 +147,10 @@ describe("Contact", () => {
 });
 
 describe("Navigation", () => {
-  it("links every section and offers a theme toggle", () => {
+  it("links all six sections and offers a theme toggle and menu", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: "Primary" });
-    for (const label of ["Work", "About", "Experience", "Contact"]) {
+    for (const label of ["Home", "Skills", "Projects", "Experience", "Education", "Contact"]) {
       expect(within(nav).getByRole("link", { name: label })).toBeInTheDocument();
     }
     expect(

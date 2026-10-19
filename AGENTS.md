@@ -59,99 +59,76 @@ Every component, layout, and interaction must pass through this orchestration ma
 
 1. **`reactbits dev` MCP Server**
    - **What to Pull:** Kinetic typography primitives, subtle magnetic button wrappers, decrypted/tabular text reveal mechanics for technical telemetry strings, and smooth scroll-linked layout helpers.
-   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds, or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into this portfolio's glass surface/border tokens, obsidian/parchment text tokens, and `#C9973A` gold accent.
+   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds, or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into this portfolio's monochrome surface, line, and text tokens, with gold used only as an accent.
 
 2. **`21st` (`21st.dev`) MCP Server**
-   - **What to Pull:** High-craft structural layout inspiration, interactive data tables, expandable architectural specification drawers, and glass-surface card/panel patterns.
-   - **What to Reject (Anti-AI Filter):** Reject generic SaaS bento grids, pill-shaped badges, and centered 3-column feature blocks. Strip all default Tailwind indigo/violet/slate classes and map strictly to the portfolio's custom CSS variables (gold accent, glass surface/border tokens).
+   - **What to Pull:** High-craft structural layout inspiration, interactive data tables, list rows, and flat panel patterns.
+   - **What to Reject (Anti-AI Filter):** Reject generic SaaS bento grids, pill-shaped badges, and centered 3-column feature blocks. Strip all default Tailwind indigo/violet/slate classes and map strictly to the portfolio's custom CSS variables (surface, line, fg tokens, gold accent).
 
 3. **`framer-motion` MCP Server**
-   - **What to Pull:** Layout choreography (`LayoutGroup`, `AnimatePresence`), staggered scroll-triggered reveals (`whileInView`), and custom spring/bezier physics that strictly obey Emil Kowalski's motion constitution.
+   - **What to Pull:** Layout choreography (`LayoutGroup`, `AnimatePresence`), staggered scroll-triggered reveals (`whileInView`), and spring physics that obey the motion constitution in section 3.
 
 4. **`shadcn/ui` (`src/components/ui/*`)**
    - **What to Use:** Leverage existing Radix-based primitives already installed in `src/components/ui/`—specifically `button.tsx`, `card.tsx`, `input.tsx`, `badge.tsx`, `tabs.tsx`, `dialog.tsx`, `sheet.tsx`, and `tooltip.tsx`.
-   - **How to Customize:** Restyle all `shadcn/ui` primitives to soft iOS-style radius (`16px` cards/panels, `10–12px` buttons/inputs/badges), glass surfaces (`--glass-surface` background, `backdrop-filter: blur()`, `--glass-border`), and shadows reserved for floating/elevated states only.
+   - **How to Customize:** Restyle all `shadcn/ui` primitives to the flat token system: `--surface-1`/`--surface-2` fills, 1px `--line` borders, 8px radius on controls and 12px on panels, `.press` feedback on buttons, and `--shadow-float` only on dialogs and sheets.
 
 ---
 
-## 2. The Anti-AI Design Laws (Glassmorphism Era)
+## 2. Design Laws (Linear / Emil Kowalski Era)
 
-This section was revised to permit the glassmorphic, iOS-style visual language the portfolio now uses, while keeping the anti-generic-template discipline that still applies. Any component or layout violating one of these is considered a build failure:
+The portfolio uses a calm, high-craft, Linear-inspired look: monochrome greys, one restrained gold accent, flat layered surfaces, and 1px hairline borders. Any component violating one of these laws is a build failure:
 
-1. **ZERO Eyebrow Labels:** Never place small uppercase tracked text above a section heading (e.g., no `PORTFOLIO`, `ABOUT ME`, `CAPABILITIES`, or `WELCOME` labels sitting above an `h2`). The heading itself must carry the full semantic weight.
-2. **ZERO Decorative Numbering:** Never prepend fake sequence numbers like `01`, `02`, `03` or `(001)` to section titles or unordered capability blocks.
-3. **ZERO Hairline Section Dividers:** Never place a `1px` `<hr>` or border line between major page sections. Separate major sections with generous whitespace (`120px–180px` desktop vertical padding) and the page's background mesh-gradient tone shifts, not divider rules.
-4. **Glassmorphism is the house style, used deliberately:** Frosted `backdrop-filter: blur()` surfaces, translucent panels (`--glass-surface`), and thin light borders (`--glass-border`) are expected on nav, cards, modals, and floating controls. The resting page background is a soft mesh/radial gradient (`--bg-elevated`) so the blur always has something to refract — never place a glass panel directly on a flat, gradient-less fill. Avoid the overused "pure white 10% opacity on a plain photo" cliché; keep panels legible with real contrast against `--text-primary`.
-5. **Shadows are for elevation, not decoration:** Flat resting page content stays shadow-free; soft shadows are reserved for floating/elevated layers — glass cards on hover-lift, nav bar, modals, dialogs, sheets, popovers — to indicate real z-axis depth.
-6. **No gradient typography:** Backgrounds and surfaces may use mesh/radial gradients, but never `bg-clip-text text-transparent` gradient text — text stays a solid, readable color.
-7. **ZERO Emoji Icons:** Never render emojis (`🚀`, `💻`, `✨`, `🇰🇭`) anywhere in the UI. Always use crisp `1.5px` stroke vector icons from `lucide-react`.
-8. **ZERO Symmetrical 3-Card Rows:** Never build a row of 3 equal-width centered cards topped with icons. Always use asymmetric multi-column splits (`65/35`, `60/40`, `40/60`) or dense architectural specification matrices.
-9. **Soft iOS-style radius, never a pill:** Cards/panels use `16px` radius, buttons/inputs/badges use `10–12px` radius. `rounded-full` stays banned on buttons, tabs, and action triggers — only the `8px` status dot indicator may be fully round.
-10. **ZERO Banned AI Font Pairings:** Never import or fallback to `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
-11. **ZERO "Assistant Palette" Colors:** Never use terracotta, rust, indigo, violet, or cyan accents. The one accent stays the locked brand gold (`--accent-gold`).
-12. **ZERO Generic Template Gimmicks:** Never use infinite typewriter text loops (`TextType.tsx`) or mouse-following radial glow borders (`SpotlightCard.tsx`). Any `reactbits.dev` primitive pulled in (decrypted/reveal text, magnetic button) must be restyled to this palette — no neon glow, rainbow shaders, or floating particles.
-
----
-
-## 3. Emil Kowalski Motion & Animation Constitution
-
-All Framer Motion transitions and CSS animations in this repository must strictly follow this decision framework:
-
-1. **Purpose-First Rule:** Before animating any element, identify its exact purpose: _Feedback_, _Spatial Consistency_, _State Indication_, _Preventing Jarring Layout Shifts_, or _Delight (First-time Hero Load only)_. If an animation has no clear purpose, do not animate it.
-2. **Frequency Hierarchy:**
-   - **High-frequency interactions** (keyboard navigation, theme switch): Instant or near-imperceptible (`100ms–120ms`).
-   - **Frequent actions** (button hover, link underline, tab switch): Fast and responsive (`120ms–160ms`, `ease`).
-   - **Occasional interactions** (sliding `Sheet` drawer for API architecture inspection, `Dialog` modals): Controlled spatial transition (`220ms–300ms`, `cubic-bezier(0.23, 1, 0.32, 1)`).
-   - **Rare / Viewport entry reveals:** Staggered section entrance (`350ms–420ms` duration, `60ms–80ms` child stagger, `cubic-bezier(0.23, 1, 0.32, 1)`).
-3. **Hardware-Accelerated Properties Only:** Animate exclusively `transform` (`translate3d`, `scale`) and `opacity`. Never animate layout-triggering properties (`width`, `height`, `margin`, `padding`, `top`, or `left`).
-4. **No Scale-From-Zero:** Never animate an element entering from `scale(0)`. Always start entrances from `scale(0.96)` or `scale(0.97)` paired with `opacity: 0` and `y: 16px`.
-5. **Spring-First Motion:** Entrances, hover lifts, and press feedback use Framer Motion spring physics (not cubic-bezier) for a native, iOS-style feel — entrances `{ stiffness: 300, damping: 30 }`, hover lift `{ stiffness: 400, damping: 28 }`, press `{ stiffness: 500, damping: 35 }`. `cubic-bezier(0.23, 1, 0.32, 1)` (sharp ease-out) remains the fallback for CSS-only transitions (color/border on hover) where a spring isn't practical. Never use `ease-in` curves on interactive UI elements.
-6. **Pointer Media Gating:** All hover transforms and color shifts must be gated behind `@media (hover: hover) and (pointer: fine)` so touch devices never experience sticky hover states.
-7. **Reduced Motion Accessibility:** Every motion wrapper and `framer-motion` hook must check `useReducedMotion()`. When enabled, strip all `y` and `scale` movement and fallback to a clean `150ms` opacity fade.
+1. **ZERO Eyebrow Labels:** No small uppercase tracked text above a section heading. The heading carries the weight.
+2. **ZERO Decorative Numbering:** No `01`, `02`, `03` or zero-padded counters next to titles or groups.
+3. **Flat layers, not glass:** Depth comes from three surface tokens (`--bg`, `--surface-1`, `--surface-2`) and 1px `--line` borders. No `backdrop-filter` glass panels on content; the only blur allowed is the sticky nav bar once scrolled. No mesh or gradient backgrounds, except the single faint `.hero-glow` behind the hero.
+4. **Hairlines are structural:** 1px borders separate rows, cells, and panels. Sections are separated by whitespace (80–112px vertical padding), not by divider rules.
+5. **Shadows only on floating layers:** `--shadow-float` is for dialogs, sheets, and the project hover preview. Resting content has no shadow.
+6. **No gradient typography:** Text is always a solid token colour.
+7. **ZERO Emoji Icons:** Use `lucide-react` (1.5px stroke) or Simple Icons brand marks from `react-icons/si`.
+8. **ZERO Symmetrical 3-Card Feature Rows:** No row of three equal icon-topped cards. Prefer lists, hairline grids, and asymmetric columns.
+9. **Radius scale:** 12px panels/cards, 8px buttons/inputs, 6px badges/chips. `rounded-full` only for the status dot and the avatar.
+10. **Fonts:** Geist and Geist Mono (plus Kantumruy Pro for Khmer). Never `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
+11. **Monochrome + one accent:** Gold (`--gold` / `--gold-ink`) is reserved for the status dot, award markers, and gold text. No terracotta, rust, indigo, violet, or cyan.
+12. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders.
 
 ---
 
-## 4. Brand Tokens & Typography Specification
+## 3. Motion Constitution (Emil Kowalski)
 
-### Color Tokens (Glass Era)
+1. **Gate first:** Anything triggered 100+ times a day or from the keyboard (theme toggle, nav clicks) does not animate beyond a colour change. Name the purpose (feedback, spatial consistency, state, preventing a jarring change, first-load delight) before animating.
+2. **Cheapest tool:** CSS transitions for hover, press, and colour; CSS keyframes for the first-paint hero stagger (`.enter`, runs before hydration); `IntersectionObserver` + CSS transitions for scroll reveals (`<Reveal>`, only hidden under `html.js`); Framer Motion only for springs, layout (`layoutId` nav pill), and pointer-following.
+3. **Properties:** `transform`, `opacity`, and `filter: blur()` only. Never `width`/`height`/`margin`/`padding`/`top`/`left`. Never `transition: all`.
+4. **Curves (from `styles.css`):** `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` for entrances and UI, `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` for on-screen movement, `--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1)` for sheets. Never `ease-in` on UI.
+5. **Durations:** press 160ms (`scale(0.97)`, the `.press` utility), hover 150ms, dialogs ~200–250ms (`scale(0.96)` + fade), first-load and scroll reveals 500–600ms with 50–60ms stagger.
+6. **Springs (`src/lib/motion.ts`):** `SPRING_UI` (duration 0.35, bounce 0.15) for sliding indicators; `SPRING_FOLLOW` for the pointer-following project preview. No scale-from-zero entrances.
+7. **Gating:** Hover motion relies on Tailwind v4 `hover:` (gated by `(hover: hover)`); pointer-following effects require `(hover: hover) and (pointer: fine)` and are off under reduced motion. Reduced motion keeps opacity fades and drops movement and blur.
 
-#### Light Theme
+---
 
-- **Base Canvas (`--bg-base`):** `#F0EEE9` (Warm Parchment Canvas)
-- **Elevated Mesh Background (`--bg-elevated`):** `#F7F5F0` → `#ECE8DF` radial/mesh gradient — sits behind every glass panel so blur has something to refract
-- **Glass Surface (`--glass-surface`):** `rgba(255, 255, 255, 0.55)`
-- **Glass Border (`--glass-border`):** `rgba(10, 10, 10, 0.10)`
-- **High-Contrast Text (`--text-primary`):** `#0A0A0A`
-- **Muted Text (`--text-muted`):** `#5A554C`
-- **Spec Gold Accent (`--accent-gold`):** `#B0822D`
-- **Gold Interactive Hover (`--accent-gold-hover`):** `#9A6F26`
-- **Focus Ring Border (`--border-focus`):** `#0A0A0A`
-- **Blur:** `18px` on content cards, `28px` on nav/modals
+## 4. Brand Tokens & Typography
 
-#### Dark Theme (`.dark`)
+### Colour tokens
 
-- **Base Canvas (`--bg-base`):** `#0A0A0C` (Near-Black, slight blue cast)
-- **Elevated Mesh Background (`--bg-elevated`):** `#15131A` → `#0A0A0C` radial/mesh gradient
-- **Glass Surface (`--glass-surface`):** `rgba(255, 255, 255, 0.06)`
-- **Glass Border (`--glass-border`):** `rgba(255, 255, 255, 0.12)`
-- **High-Contrast Text (`--text-primary`):** `#F5F0E8`
-- **Muted Text (`--text-muted`):** `#9A948A`
-- **Spec Gold Accent (`--accent-gold`):** `#C9973A`
-- **Gold Interactive Hover (`--accent-gold-hover`):** `#DDA94B`
-- **Focus Ring Border (`--border-focus`):** `#C9973A`
-- **Blur:** `18px` on content cards, `28px` on nav/modals
+| Token           | Light                | Dark                    | Use                       |
+| --------------- | -------------------- | ----------------------- | ------------------------- |
+| `--bg`          | `#FBFBFA`            | `#0A0A0B`               | Page canvas               |
+| `--surface-1`   | `#F4F4F3`            | `#111113`               | Panels, hovered rows      |
+| `--surface-2`   | `#FFFFFF`            | `#18181B`               | Dialogs, popovers         |
+| `--line`        | `rgba(10,10,12,.08)` | `rgba(255,255,255,.08)` | Hairline borders          |
+| `--line-strong` | `rgba(10,10,12,.14)` | `rgba(255,255,255,.14)` | Inputs, secondary buttons |
+| `--fg`          | `#111113`            | `#EDEDEF`               | Headings, primary text    |
+| `--fg-muted`    | `#5C5C66`            | `#A1A1AA`               | Body copy                 |
+| `--fg-subtle`   | `#6B6B75`            | `#8A8A93`               | Metadata                  |
+| `--gold`        | `#B0822D`            | `#C9973A`               | Status dot, award fills   |
+| `--gold-ink`    | `#85601F`            | `#C9973A`               | Gold text (≥ 4.5:1)       |
 
-### Radius Scale
+Dark is the default theme; light is available via the toggle. Every text token passes WCAG AA (4.5:1) on every surface in both themes.
 
-- Cards / panels: `16px`
-- Buttons / inputs / badges: `10–12px`
-- Status dot indicator only: fully round (`8px` diameter)
+### Typography
 
-### Typography Pairing (Max 2 Primary Families + Technical Monospace)
-
-1. **Display / Section Headlines:** `Syne` (Weights: `700`, `800`). Wide, architectural, unapologetic proportions that command presence at large display sizes (48px–96px) without feeling like a generic luxury template.
-2. **Body & UI Copy:** `Plus Jakarta Sans` (Weights: `400`, `500`, `600`, `700`). Modern, balanced geometric sans designed specifically for high-density interfaces, readable across all device sizes.
-3. **Technical Metadata / Code / API Schemas:** `JetBrains Mono` (Weights: `400`, `500`). Used strictly for live Phnom Penh telemetry, REST API endpoints, database schema previews, and tech stack tags.
+- **Geist** 400/500/600 for all UI and headings. Display 56–72px, weight 600, `-0.045em`; section headings 26–32px, weight 600, `-0.03em`; body 15px / 1.6.
+- **Geist Mono** 400 for dates, hosting labels, and data, with `tabular-nums`.
+- **Kantumruy Pro** for Khmer text.
 
 ---
 
@@ -200,9 +177,9 @@ All components must draw strictly from these authentic biographical facts. Never
 ## 6. Architectural & Engineering Workspace Conventions
 
 - **Media Handling:** App media (photos, screenshots, documents) is served from CDN via `.asset.json` pointer files — never commit raw binaries into the repository.
-- **Hydration & SSR Safety:** Portfolio content must render visibly before hydration and without viewport observers; motion is a progressive enhancement, never a prerequisite for reading the page.
+- **Hydration & SSR Safety:** Portfolio content must be readable without JavaScript. The hero entrance is pure CSS; scroll reveals only hide content once the inline head script has added `html.js`. Motion is a progressive enhancement, never a prerequisite for reading the page.
 - **Technical Skill Presentation:** Keep technical skill presentation in dedicated components; pointer effects use event-local CSS variables and semantic tokens to stay SSR-safe and lightweight.
 - **Architecture Illustration:** Keep the skills architecture illustration separate from the category controls; every technology remains visible and selection changes only its matching visual layer.
 - **Typing Components:** Name wordmarks must render immediately as static, confident editorial typography; never use interval loops or blinking cursor gimmicks.
 - **Test Integrity:** Every layout addition or component refactor must maintain 100% pass rate in the Vitest test suite (`npm test`).
-- **Design System Showcase:** `/design-system` is a standalone route showing every color token, the type scale, live/interactive component samples, glass effect levels, and replayable animation samples. It is linked only from a small footer link, never the primary nav, and must stay in sync with the actual tokens/components in use (not a static mockup).
+- **Design System Showcase:** `/design-system` is a standalone route showing every color token, the type scale, live/interactive component samples, surface layers, and replayable animation samples. It is linked only from a small footer link, never the primary nav, and must stay in sync with the actual tokens/components in use (not a static mockup).
