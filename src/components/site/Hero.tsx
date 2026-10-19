@@ -1,12 +1,23 @@
 import type { CSSProperties } from "react";
-import { ArrowRight, FileText, Sparkles } from "lucide-react";
-import { FACTS, PROFILE } from "@/content/portfolio";
+import { ArrowRight, FileText } from "lucide-react";
+import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
+import { SkillIcon } from "./SkillIcon";
+
+const CORE_STACK = [
+  "React",
+  "TypeScript",
+  "Laravel",
+  "PostgreSQL",
+  "Tailwind CSS",
+  "REST APIs",
+  "Docker",
+] as const;
 
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
@@ -125,31 +136,38 @@ export function Hero() {
               ) : null}
             </div>
 
-            {/* Facts and highlights ledger */}
-            <dl
-              className="enter mt-10 grid grid-cols-3 overflow-hidden rounded-brand border border-line bg-surface/50 backdrop-blur-sm sm:max-w-[620px]"
-              style={step(5)}
-            >
-              {FACTS.map((f, i) => (
-                <div
-                  key={f.label}
-                  className={`px-4 py-3.5 sm:px-5 ${i > 0 ? "border-l border-line" : ""}`}
-                >
-                  <dt className="sr-only">{f.label}</dt>
-                  <dd>
-                    <span className="block text-[21px] font-semibold tracking-[-0.03em] text-fg sm:text-[25px]">
-                      {f.value}
-                    </span>
+            {/* Core Tech Stack & Current Focus Telemetry */}
+            <div className="enter mt-9 flex flex-col gap-3.5 sm:max-w-[580px]" style={step(5)}>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-[12px] text-fg-subtle">Core Stack</span>
+                <span aria-hidden="true" className="text-fg-subtle/50">/</span>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {CORE_STACK.map((tech) => (
                     <span
-                      aria-hidden="true"
-                      className="mt-0.5 block text-[12px] leading-[1.3] text-fg-subtle"
+                      key={tech}
+                      className="group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/70 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted transition-[border-color,background-color,color] duration-150 hover:border-line-strong hover:bg-surface-1 hover:text-fg"
                     >
-                      {f.label}
+                      <SkillIcon
+                        name={tech}
+                        className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
+                      />
+                      <span>{tech}</span>
                     </span>
-                  </dd>
+                  ))}
                 </div>
-              ))}
-            </dl>
+              </div>
+
+              {/* Current Role & University Trajectory */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px] text-fg-subtle">
+                <span className="inline-flex items-center gap-1.5 font-medium text-fg-muted">
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true" />
+                  Web Developer Trainee
+                </span>
+                <span>at ETEC & KruITSolution</span>
+                <span aria-hidden="true" className="text-fg-subtle/40">&bull;</span>
+                <span>4th-Year Software Development, Norton Univ</span>
+              </div>
+            </div>
           </div>
 
           {/* Right Column: ProfileCard */}
