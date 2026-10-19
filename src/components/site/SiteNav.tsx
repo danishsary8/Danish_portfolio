@@ -47,91 +47,97 @@ export function SiteNav() {
     href: link.href,
   }));
 
-  // Clean, architectural display wordmark without the circular badge
-  const logoNode = (
-    <span className="font-display text-[13px] sm:text-[14px] font-extrabold tracking-[0.06em] text-fg uppercase whitespace-nowrap pl-1 pr-3 select-none">
-      {PROFILE.name}
-    </span>
-  );
-
-  // Clean right actions: Theme switch and mobile menu toggle
-  const rightActionsNode = (
-    <div className="flex items-center gap-0.5 pr-1">
-      {/* Theme Switcher */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={themeLabel}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg-muted transition-colors hover:bg-surface hover:text-fg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-3 sm:px-6 sm:pt-4 md:px-8 pointer-events-none">
+      <nav
+        aria-label="Primary"
+        className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
       >
-        <ThemeIcon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-      </button>
+        {/* Left: Brand Name outside the pill */}
+        <div className="flex items-center justify-start">
+          <a
+            href="#home"
+            className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
+          >
+            <span className="font-display text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase text-fg whitespace-nowrap">
+              {PROFILE.name}
+            </span>
+          </a>
+        </div>
 
-      {/* Mobile Menu trigger */}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
+        {/* Center: Dedicated Floating Pill Navigation Capsule */}
+        <div className="hidden md:flex justify-center">
+          <PillNav
+            items={navItems}
+            activeHref={active ? `#${active}` : undefined}
+            layout="joined"
+            surface="glass"
+            itemStyle="default"
+            hoverEffect="fill"
+            indicator="dot"
+            collapse="never"
+            ariaLabel="Sections"
+            theme={dark ? "dark" : "light"}
+            highlightColor={dark ? "#c9973a" : "#b0822d"}
+            highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}
+            className={`transition-all duration-300 ${scrolled ? "shadow-float scale-[0.99]" : ""}`}
+          />
+        </div>
+
+        {/* Right: Theme Toggle & Mobile Menu outside the pill */}
+        <div className="flex items-center justify-end gap-2">
+          {/* Theme Switcher Button */}
           <button
             type="button"
-            aria-label="Open menu"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full text-fg transition-colors hover:bg-surface md:hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+            onClick={toggle}
+            aria-label={themeLabel}
+            className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-line bg-surface/80 backdrop-blur-md text-fg-muted transition-all duration-150 hover:text-fg hover:border-line-strong hover:bg-surface shadow-xs active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
           >
-            <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+            <ThemeIcon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
           </button>
-        </SheetTrigger>
-        <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
-          <SheetTitle className="sr-only">Menu</SheetTitle>
-          <ul className="flex flex-col gap-1">
-            {NAV_LINKS.map((l) => {
-              const isItemActive = active === l.href.slice(1);
-              return (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-tight transition-colors ${
-                      isItemActive ? "text-fg font-semibold" : "text-fg-muted hover:text-fg"
-                    }`}
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-          <a
-            href={`mailto:${PROFILE.email}`}
-            onClick={() => setOpen(false)}
-            className="mt-auto inline-flex h-11 items-center justify-center rounded-full bg-fg px-5 text-[14px] font-bold tracking-wider uppercase text-bg shadow-md transition-opacity hover:opacity-90"
-          >
-            Email me
-          </a>
-        </SheetContent>
-      </Sheet>
-    </div>
-  );
 
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:px-6 sm:pt-4 pointer-events-none">
-      <div className="pointer-events-auto">
-        <PillNav
-          logo={logoNode}
-          logoAlt={PROFILE.name}
-          logoHref="#home"
-          items={navItems}
-          activeHref={active ? `#${active}` : undefined}
-          layout="joined"
-          surface="glass"
-          itemStyle="default"
-          hoverEffect="fill"
-          indicator="dot"
-          collapse="never"
-          theme={dark ? "dark" : "light"}
-          highlightColor={dark ? "#c9973a" : "#b0822d"}
-          highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}
-          rightActions={rightActionsNode}
-          className={`transition-all duration-300 ${scrolled ? "shadow-float scale-[0.99]" : ""}`}
-        />
-      </div>
+          {/* Mobile Menu trigger (Sheet drawer) */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                aria-label="Open menu"
+                className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-line bg-surface/80 backdrop-blur-md text-fg transition-all duration-150 hover:border-line-strong hover:bg-surface shadow-xs md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+              >
+                <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
+              <SheetTitle className="sr-only">Menu</SheetTitle>
+              <ul className="flex flex-col gap-1">
+                {NAV_LINKS.map((l) => {
+                  const isItemActive = active === l.href.slice(1);
+                  return (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        onClick={() => setOpen(false)}
+                        className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-tight transition-colors ${
+                          isItemActive ? "text-fg font-semibold" : "text-fg-muted hover:text-fg"
+                        }`}
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+              <a
+                href={`mailto:${PROFILE.email}`}
+                onClick={() => setOpen(false)}
+                className="mt-auto inline-flex h-11 items-center justify-center rounded-full bg-fg px-5 text-[14px] font-bold tracking-wider uppercase text-bg shadow-md transition-opacity hover:opacity-90"
+              >
+                Email me
+              </a>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </nav>
     </header>
   );
 }
