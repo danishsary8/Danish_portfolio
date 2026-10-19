@@ -27,7 +27,7 @@ export function Hero() {
         className="pointer-events-none absolute right-[10%] top-24 -z-10 h-[360px] w-[360px] rounded-full bg-gold/10 blur-[110px] dark:bg-gold/15"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 py-12 sm:px-6 lg:py-16">
+      <div className="mx-auto w-full max-w-[1180px] px-5 pt-28 pb-14 sm:px-6 sm:pt-32 sm:pb-16 lg:pt-32 lg:pb-16">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.2fr_auto] lg:gap-12 xl:gap-16">
           {/* Left Column: Status, Headline, Rotating Role, Bio Pitch, CTAs & Facts */}
           <div className="min-w-0">
@@ -149,9 +149,9 @@ export function Hero() {
             </dl>
           </div>
 
-          {/* Right Column: ProfileCard moved up and refined */}
+          {/* Right Column: ProfileCard */}
           <div
-            className="enter flex justify-center lg:justify-end lg:-mt-8 xl:-mt-12"
+            className="enter flex justify-center lg:justify-end"
             style={step(2)}
           >
             <div className="relative">
