@@ -8,6 +8,7 @@ import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import { VariableProximity } from "@/components/ui/VariableProximity";
+import { SplitText } from "@/components/ui/SplitText";
 import { SkillIcon } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -121,15 +122,30 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Sharp, non-duplicative value proposition pitch */}
-            <p
-              className="enter mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
-              style={step(3)}
-            >
-              Building web apps that feel smooth to use and stay rock-solid behind
-              the scenes. Driven by clean code, secure APIs, and turning real ideas
-              into software that just works.
-            </p>
+            {/* Sharp, non-duplicative value proposition pitch with SplitText */}
+            <div className="enter" style={step(3)}>
+              <SplitText
+                text="Building web apps that feel smooth to use and stay rock-solid behind the scenes. Driven by clean code, secure APIs, and turning real ideas into software that just works."
+                className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
+                effect="rise"
+                splitType="chars"
+                delay={40}
+                duration={1.25}
+                staggerFrom="start"
+                trigger="view"
+                hoverEffect="lift"
+                loop={false}
+                loopDelay={1.5}
+                mask={false}
+                threshold={0.1}
+                rootMargin="-100px"
+                textAlign="left"
+                tag="p"
+                onLetterAnimationComplete={() => {
+                  /* Pitch letters animation complete */
+                }}
+              />
+            </div>
 
             {/* Call to action buttons */}
             <div className="enter mt-7 flex flex-wrap items-center gap-3" style={step(4)}>
