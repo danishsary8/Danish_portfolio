@@ -1,83 +1,62 @@
-import { motion, useReducedMotion, type Variants } from "framer-motion";
-import type { ReactNode } from "react";
-import { SPRING_ENTRANCE } from "@/lib/motion";
+import { useEffect, useRef, type CSSProperties, type ElementType, type ReactNode } from "react";
 
-/*
- * Content is never hidden while waiting for hydration or an observer:
- * the hidden state only offsets position, opacity stays 1.
+type RevealProps = {
+  children: ReactNode;
+  as?: ElementType;
+  index?: number;
+  className?: string;
+};
+
+/**
+ * Fades content in once it scrolls into view. Without JS (or before hydration in a
+ * no-JS context) nothing is hidden: the hidden state only applies under `html.js`.
  */
-export const revealItem: Variants = {
-  hidden: { opacity: 1, y: 20 },
-  visible: { opacity: 1, y: 0, transition: SPRING_ENTRANCE },
-};
+export function Reveal({ children, as: Tag = "div", index = 0, className }: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
 
-export const revealGroup: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.04 } },
-};
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) {
+      el.dataset["visible"] = "";
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          el.dataset["visible"] = "";
+          io.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -80px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
-const still: Variants = { hidden: { y: 0 }, visible: { y: 0 } };
-
-export function RevealGroup({
-  children,
-  className,
-  as = "div",
-}: {
-  children: ReactNode;
-  className?: string;
-  as?: "div" | "ul" | "ol";
-}) {
-  const reduce = useReducedMotion();
-  const Comp = motion[as];
   return (
-    <Comp
-      className={className}
-      initial={reduce ? false : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}
-      variants={revealGroup}
-    >
+    <Tag ref={ref} data-reveal="" className={className} style={{ "--i": index } as CSSProperties}>
       {children}
-    </Comp>
+    </Tag>
   );
 }
 
-export function RevealItem({
-  children,
-  className,
-  as = "div",
-}: {
-  children: ReactNode;
-  className?: string;
-  as?: "div" | "li" | "article";
-}) {
-  const reduce = useReducedMotion();
-  const Comp = motion[as];
+export function SectionHeader({ id, title, lede }: { id: string; title: string; lede?: string }) {
   return (
-    <Comp className={className} variants={reduce ? still : revealItem}>
-      {children}
-    </Comp>
-  );
-}
-
-export function SectionHeading({ id, title, lede }: { id: string; title: string; lede?: string }) {
-  return (
-    <RevealGroup className="mb-10 grid gap-5 sm:mb-14 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
-      <RevealItem>
+    <div className="mb-10 flex flex-col gap-3 sm:mb-12">
+      <Reveal>
         <h2
           id={id}
-          className="font-display text-[clamp(2.4rem,6vw,4.75rem)] font-bold leading-[0.98] tracking-[-0.035em] text-primaryText"
+          className="text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] sm:text-[32px]"
         >
           {title}
         </h2>
-      </RevealItem>
+      </Reveal>
       {lede ? (
-        <RevealItem>
-          <p className="max-w-[52ch] text-[16px] leading-[1.6] text-mutedText sm:text-[17px]">
-            {lede}
-          </p>
-        </RevealItem>
+        <Reveal index={1}>
+          <p className="max-w-[58ch] text-fg-muted">{lede}</p>
+        </Reveal>
       ) : null}
-    </RevealGroup>
+    </div>
   );
 }

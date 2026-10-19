@@ -1,200 +1,120 @@
-import { useEffect, useState, type PointerEvent } from "react";
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Award, FileText, Github, GraduationCap } from "lucide-react";
-import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
-import { PROFILE } from "@/content/portfolio";
+import type { CSSProperties } from "react";
+import { ArrowRight, FileText } from "lucide-react";
+import { FACTS, PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
-import { SPRING_ENTRANCE } from "@/lib/motion";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 
-function useFinePointer() {
-  const [fine, setFine] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    setFine(mq.matches);
-    const on = () => setFine(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  return fine;
-}
-
-function Portrait() {
-  const reduce = useReducedMotion();
-  const fine = useFinePointer();
-  const tiltEnabled = fine && !reduce;
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const rx = useSpring(useTransform(py, [-0.5, 0.5], [5, -5]), { stiffness: 220, damping: 24 });
-  const ry = useSpring(useTransform(px, [-0.5, 0.5], [-6, 6]), { stiffness: 220, damping: 24 });
-
-  const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!tiltEnabled) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width - 0.5);
-    py.set((e.clientY - r.top) / r.height - 0.5);
-  };
-  const onLeave = () => {
-    px.set(0);
-    py.set(0);
-  };
-
-  return (
-    <div
-      className="relative mx-auto w-full max-w-[300px] [perspective:1100px] sm:max-w-[380px] lg:max-w-[420px]"
-      onPointerMove={onMove}
-      onPointerLeave={onLeave}
-    >
-      <motion.div
-        style={tiltEnabled ? { rotateX: rx, rotateY: ry } : {}}
-        className="glass-panel glass-elevated relative p-2.5 [transform-style:preserve-3d]"
-      >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[12px] bg-[var(--glass-surface-strong)]">
-          <img
-            src={ASSETS.profile.photo}
-            alt="Portrait of Sary Danish"
-            width={816}
-            height={816}
-            fetchPriority="high"
-            decoding="async"
-            className="h-full w-full object-cover object-top"
-          />
-        </div>
-      </motion.div>
-
-      <div className="glass-panel glass-elevated absolute -bottom-5 -left-4 flex w-max max-w-[calc(100vw-2rem)] items-center gap-3 px-3.5 py-3 sm:-left-10">
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px] bg-gold text-[#0A0A0A]">
-          <Award className="h-[18px] w-[18px]" strokeWidth={1.5} aria-hidden="true" />
-        </span>
-        <span className="text-[13px] leading-[1.3]">
-          <span className="block font-semibold text-primaryText">Award Winner 2026</span>
-          <span className="block whitespace-nowrap text-mutedText">
-            AI Expert System &amp; Innovation
-          </span>
-        </span>
-      </div>
-
-      <div className="glass-panel glass-elevated absolute -right-4 top-6 flex items-center gap-2.5 px-3 py-2.5 sm:-right-8">
-        <GraduationCap
-          className="h-[18px] w-[18px] text-gold-ink"
-          strokeWidth={1.5}
-          aria-hidden="true"
-        />
-        <span className="text-[13px] font-medium text-primaryText">Norton University · Year 4</span>
-      </div>
-    </div>
-  );
-}
+const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 export function Hero() {
-  const reduce = useReducedMotion();
   const time = useLocalTime(PROFILE.timezone);
-
-  // Server render has no reduced-motion signal, so always resolve to the resting position.
-  const item = (i: number) =>
-    reduce
-      ? { initial: false as const, animate: { y: 0 } }
-      : {
-          initial: { y: 24 },
-          animate: { y: 0 },
-          transition: { ...SPRING_ENTRANCE, delay: 0.05 + i * 0.07 },
-        };
+  const hasCv = CV_HREF !== "#" && CV_HREF !== "";
 
   return (
-    <section
-      id="top"
-      aria-labelledby="hero-title"
-      className="relative mx-auto grid max-w-[1240px] items-center gap-14 px-4 pb-24 pt-32 sm:px-6 sm:pt-40 lg:grid-cols-[1.45fr_1fr] lg:gap-10 lg:pb-32 lg:pt-44"
-    >
-      <div>
-        <motion.div
-          {...item(0)}
-          className="glass-panel mb-8 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-control px-3.5 py-2 text-[13px]"
-        >
-          <span className="inline-flex items-center gap-2 font-medium text-primaryText">
-            <span aria-hidden="true" className="relative inline-flex h-2 w-2">
-              <span className="absolute inset-0 rounded-full bg-gold motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
-              <span className="relative h-2 w-2 rounded-full bg-gold" />
+    <section id="home" aria-labelledby="hero-title" className="relative isolate">
+      <div aria-hidden="true" className="hero-glow absolute inset-x-0 top-0 -z-10 h-[640px]" />
+      <div className="mx-auto max-w-[1120px] px-5 pb-20 pt-32 sm:px-6 sm:pt-40 lg:pb-28">
+        <div className="enter flex flex-wrap items-center gap-3" style={step(0)}>
+          <img
+            src={ASSETS.profile.photo}
+            alt=""
+            width={816}
+            height={816}
+            decoding="async"
+            className="h-9 w-9 rounded-full object-cover object-top ring-1 ring-line-strong"
+          />
+          <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[13.5px] text-fg-muted">
+            <span className="inline-flex items-center gap-2 text-fg">
+              <span aria-hidden="true" className="relative inline-flex h-2 w-2">
+                <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
+                <span className="relative h-2 w-2 rounded-full bg-gold" />
+              </span>
+              Open to web developer roles
             </span>
-            Open to web developer roles
-          </span>
-          <span className="text-mutedText">
-            {PROFILE.location.split(",")[0]} ·{" "}
-            <span className="font-mono tabular-nums">{time ?? "--:--"}</span>{" "}
-            {PROFILE.timezoneLabel}
-          </span>
-        </motion.div>
+            <span aria-hidden="true" className="text-fg-subtle">
+              /
+            </span>
+            <span>
+              {PROFILE.location.split(",")[0]}{" "}
+              <span className="font-mono text-[12.5px] tabular-nums">{time ?? "--:--"}</span>{" "}
+              {PROFILE.timezoneLabel}
+            </span>
+          </p>
+        </div>
 
-        <motion.h1
-          {...item(1)}
+        <h1
           id="hero-title"
-          className="font-display text-[clamp(3.6rem,13vw,9.5rem)] font-extrabold leading-[0.9] tracking-[-0.045em] text-primaryText"
+          className="enter mt-8 max-w-[19ch] text-[clamp(2.4rem,6.2vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.045em]"
+          style={step(1)}
         >
-          Sary
-          <br />
-          Danish
-        </motion.h1>
+          <span className="text-fg">{PROFILE.name}</span>{" "}
+          <span className="text-fg-subtle">builds secure APIs and clean, responsive web apps.</span>
+        </h1>
 
-        <motion.p
-          {...item(2)}
-          className="mt-7 font-display text-[clamp(1.35rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-primaryText"
+        <p
+          className="enter mt-6 max-w-[54ch] text-[16px] leading-[1.65] text-fg-muted sm:text-[17px]"
+          style={step(2)}
         >
-          {PROFILE.role}
-        </motion.p>
+          {PROFILE.role} and fourth-year Software Development student at Norton University.
+          Currently a web developer trainee at ETEC &amp; KruITSolution, shipping React and Laravel
+          apps.
+        </p>
 
-        <motion.p
-          {...item(3)}
-          className="mt-3 max-w-[46ch] text-[17px] leading-[1.6] text-mutedText sm:text-[18px]"
-        >
-          {PROFILE.pitch}
-        </motion.p>
-
-        <motion.div {...item(4)} className="mt-9 flex flex-wrap items-center gap-3">
+        <div className="enter mt-9 flex flex-wrap items-center gap-2.5" style={step(3)}>
           <a
-            href="#work"
-            className="group inline-flex h-12 items-center gap-2 rounded-control bg-primaryText px-5 text-[15px] font-semibold text-[var(--bg-base)] transition-[background-color,color,transform] duration-150 hover:bg-gold hover:text-[#0A0A0A] active:scale-[0.98]"
+            href="#contact"
+            className="press group inline-flex h-11 items-center gap-2 rounded-control bg-fg px-5 text-[14.5px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90"
           >
-            View selected work
-            <ArrowDown
-              className="h-4 w-4 transition-transform duration-200 group-hover:translate-y-0.5"
-              strokeWidth={1.5}
+            Get in touch
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+              strokeWidth={1.75}
               aria-hidden="true"
             />
           </a>
           <a
-            href={PROFILE.github}
-            target="_blank"
-            rel="noreferrer"
-            className="glass-panel inline-flex h-12 items-center gap-2 rounded-control px-5 text-[15px] font-medium text-primaryText transition-[border-color,transform] duration-150 hover:border-gold active:scale-[0.98]"
+            href="#projects"
+            className="press inline-flex h-11 items-center rounded-control border border-line-strong bg-surface px-5 text-[14.5px] font-medium text-fg transition-[background-color,transform] duration-150 hover:bg-raised"
           >
-            <Github className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-            GitHub
-            <ArrowUpRight className="h-4 w-4 text-mutedText" strokeWidth={1.5} aria-hidden="true" />
+            View projects
           </a>
-          {CV_HREF !== "#" && CV_HREF !== "" ? (
+          {hasCv ? (
             <a
               {...getCvLinkProps()}
-              className="inline-flex h-12 items-center gap-2 rounded-control px-4 text-[15px] font-medium text-primaryText underline-offset-4 transition-colors hover:text-gold-ink hover:underline"
+              className="press inline-flex h-11 items-center gap-2 rounded-control px-4 text-[14.5px] font-medium text-fg-muted transition-[color,transform] duration-150 hover:text-fg"
             >
               <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
               Download CV
             </a>
           ) : null}
-        </motion.div>
-      </div>
+        </div>
 
-      <motion.div
-        {...(reduce
-          ? { initial: false as const, animate: { y: 0, scale: 1 } }
-          : {
-              initial: { y: 32, scale: 0.97 },
-              animate: { y: 0, scale: 1 },
-              transition: { ...SPRING_ENTRANCE, delay: 0.2 },
-            })}
-        className="pb-6"
-      >
-        <Portrait />
-      </motion.div>
+        <dl
+          className="enter mt-16 grid grid-cols-3 overflow-hidden rounded-brand border border-line sm:mt-20 sm:max-w-[640px]"
+          style={step(4)}
+        >
+          {FACTS.map((f, i) => (
+            <div
+              key={f.label}
+              className={`px-4 py-4 sm:px-5 ${i > 0 ? "border-l border-line" : ""}`}
+            >
+              <dt className="sr-only">{f.label}</dt>
+              <dd>
+                <span className="block text-[22px] font-semibold tracking-[-0.03em] text-fg sm:text-[26px]">
+                  {f.value}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="mt-1 block text-[12.5px] leading-[1.35] text-fg-subtle"
+                >
+                  {f.label}
+                </span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }

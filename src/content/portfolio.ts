@@ -162,27 +162,47 @@ export const EDUCATION = [
     title: "Bachelor of Software Development",
     org: "Norton University",
     period: "2024 – Present",
-  },
-  {
-    title: "Backend Development: PHP, Laravel",
-    org: "ETEC",
-    period: "Nov 2025 – Mar 2026",
-  },
-  {
-    title: "Frontend Development: HTML, CSS, JavaScript, React.js",
-    org: "ETEC",
-    period: "Jan 2025 – Jul 2025",
+    detail: "Fourth year · Phnom Penh",
   },
   {
     title: "General English Program",
     org: "Australian Centre for Education (ACE)",
     period: "2024 – 2026",
+    detail: "Completed",
   },
 ] as const;
 
+export type Certificate = {
+  title: string;
+  issuer: string;
+  date: string;
+  /** Path under /public or a CDN URL. Leave undefined until the scan is added. */
+  image?: string;
+};
+
+export const CERTIFICATES: Certificate[] = [
+  {
+    title: "AI Expert System and Innovation 2026 — Award Winner (Team)",
+    issuer: "Norton University",
+    date: "Sep 2026",
+  },
+  {
+    title: "Backend Development: PHP, Laravel",
+    issuer: "ETEC",
+    date: "Nov 2025 – Mar 2026",
+  },
+  {
+    title: "Frontend Development: HTML, CSS, JavaScript, React.js",
+    issuer: "ETEC",
+    date: "Jan 2025 – Jul 2025",
+  },
+];
+
 export const NAV_LINKS = [
-  { href: "#work", label: "Work" },
-  { href: "#about", label: "About" },
-  { href: "#journey", label: "Experience" },
+  { href: "#home", label: "Home" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Projects" },
+  { href: "#experience", label: "Experience" },
+  { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ] as const;

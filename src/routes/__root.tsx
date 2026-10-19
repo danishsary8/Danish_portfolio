@@ -13,30 +13,35 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+const primaryBtn =
+  "press inline-flex h-10 items-center justify-center rounded-control bg-fg px-4 text-[14px] font-medium text-bg transition-[transform,opacity] duration-150 hover:opacity-90";
+const secondaryBtn =
+  "press inline-flex h-10 items-center justify-center rounded-control border border-line-strong px-4 text-[14px] font-medium text-fg transition-[transform,background-color] duration-150 hover:bg-raised";
+
+function StatusShell({ code, children }: { code: string; children: ReactNode }) {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-bg px-5 py-12 text-fg">
+      <div className="w-full max-w-md">
+        <p className="font-mono text-[13px] text-fg-subtle">{code}</p>
+        {children}
+      </div>
+    </main>
+  );
+}
+
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-base px-6 py-12 text-primaryText selection:bg-gold selection:text-primaryText">
-      <div className="w-full max-w-xl rounded-brand border border-subtle bg-card p-8 md:p-12 shadow-none">
-        <span className="mb-4 block font-mono text-xs font-semibold tracking-wider text-gold">
-          [HTTP 404 // ROUTE_NOT_FOUND]
-        </span>
-        <h1 className="mb-4 font-display text-2xl font-extrabold uppercase leading-tight tracking-editorial text-primaryText sm:text-3xl md:text-4xl">
-          Requested endpoint does not exist in this ledger.
-        </h1>
-        <p className="mb-8 font-body text-sm leading-relaxed text-muted md:text-base">
-          The route target you requested cannot be resolved within Sary Danish's application
-          architecture. Please verify the destination or return to the primary engineering ledger.
-        </p>
-        <div className="flex items-center gap-4">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-brand bg-primaryText px-5 py-3 font-mono text-xs font-semibold uppercase tracking-wider text-base transition-colors duration-150 hover:bg-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus shadow-none"
-          >
-            Return to Ledger
-          </Link>
-        </div>
+    <StatusShell code="404">
+      <h1 className="mt-3 text-[28px] font-semibold leading-tight tracking-[-0.03em]">
+        This page doesn&rsquo;t exist.
+      </h1>
+      <p className="mt-3 text-fg-muted">The link may be broken or the page may have moved.</p>
+      <div className="mt-8">
+        <Link to="/" className={primaryBtn}>
+          Back to home
+        </Link>
       </div>
-    </div>
+    </StatusShell>
   );
 }
 
@@ -47,43 +52,33 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
-  const errorMessage = error instanceof Error ? error.message : "Unexpected runtime fault";
+  const errorMessage = error instanceof Error ? error.message : "Unexpected error";
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-base px-6 py-12 text-primaryText selection:bg-gold selection:text-primaryText">
-      <div className="w-full max-w-xl rounded-brand border border-subtle bg-card p-8 md:p-12 shadow-none">
-        <span className="mb-4 block font-mono text-xs font-semibold tracking-wider text-gold">
-          [HTTP 500 // RUNTIME_EXCEPTION]
-        </span>
-        <h1 className="mb-4 font-display text-2xl font-extrabold uppercase leading-tight tracking-editorial text-primaryText sm:text-3xl md:text-4xl">
-          System execution exception captured.
-        </h1>
-        <p className="mb-4 font-body text-sm leading-relaxed text-muted md:text-base">
-          An unhandled error occurred during component rendering. The failure details have been
-          logged to the telemetry boundary.
-        </p>
-        <div className="mb-8 rounded-brand border border-subtle bg-surface p-3 font-mono text-xs text-muted">
-          {errorMessage}
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-brand bg-primaryText px-5 py-3 font-mono text-xs font-semibold uppercase tracking-wider text-base transition-colors duration-150 hover:bg-gold hover:text-primaryText focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus shadow-none cursor-pointer"
-          >
-            Retry Execution
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-brand border border-subtle bg-surface px-5 py-3 font-mono text-xs font-semibold uppercase tracking-wider text-primaryText transition-colors duration-150 hover:border-gold hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus shadow-none"
-          >
-            Return to Index
-          </a>
-        </div>
+    <StatusShell code="500">
+      <h1 className="mt-3 text-[28px] font-semibold leading-tight tracking-[-0.03em]">
+        Something went wrong.
+      </h1>
+      <p className="mt-3 text-fg-muted">The page hit an error while loading. Try again.</p>
+      <pre className="panel mt-6 overflow-x-auto p-3 font-mono text-[12px] text-fg-muted">
+        {errorMessage}
+      </pre>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className={primaryBtn}
+        >
+          Try again
+        </button>
+        <a href="/" className={secondaryBtn}>
+          Back to home
+        </a>
       </div>
-    </div>
+    </StatusShell>
   );
 }
 
@@ -120,8 +115,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building real web applications with React, Laravel, and PostgreSQL.",
       },
-      { name: "theme-color", content: "#F0EEE9", media: "(prefers-color-scheme: light)" },
-      { name: "theme-color", content: "#0A0A0C", media: "(prefers-color-scheme: dark)" },
+      { name: "theme-color", content: "#FBFBFA", media: "(prefers-color-scheme: light)" },
+      { name: "theme-color", content: "#0A0A0B", media: "(prefers-color-scheme: dark)" },
     ],
     links: [
       {
@@ -132,7 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Kantumruy+Pro:wght@400;500;600&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -150,7 +145,7 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();`,
+            __html: `(function(){var d=document.documentElement;d.classList.add('js');try{if(localStorage.getItem('theme')!=='light'){d.classList.add('dark');}}catch(e){d.classList.add('dark');}})();`,
           }}
         />
       </head>

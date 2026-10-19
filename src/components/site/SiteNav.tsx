@@ -1,118 +1,125 @@
 import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Menu, Moon, Sun } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
+import { SPRING_UI } from "@/lib/motion";
 import { useTheme } from "@/lib/use-theme";
 
-function useActiveSection(ids: string[]) {
-  const [active, setActive] = useState<string | null>(null);
+const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
+
+function useActiveSection() {
+  const [active, setActive] = useState<string>(SECTION_IDS[0] ?? "");
   useEffect(() => {
-    const els = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    const els = SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (el): el is HTMLElement => el !== null,
+    );
     if (!els.length || !("IntersectionObserver" in window)) return;
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: "-40% 0px -55% 0px" },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, [ids]);
+  }, []);
   return active;
 }
 
-const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
-
 export function SiteNav() {
   const { dark, toggle } = useTheme();
+  const reduce = useReducedMotion();
+  const active = useActiveSection();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const active = useActiveSection(SECTION_IDS);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
   const ThemeIcon = dark ? Sun : Moon;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-200 ${
+        scrolled ? "border-line bg-bg/80 backdrop-blur-md" : "border-transparent bg-transparent"
+      }`}
+    >
       <nav
         aria-label="Primary"
-        className={`glass-panel mx-auto flex max-w-[1240px] items-center justify-between gap-3 py-1.5 pl-4 pr-1.5 transition-shadow duration-300 ${
-          scrolled ? "glass-elevated" : ""
-        }`}
+        className="mx-auto flex h-16 max-w-[1120px] items-center justify-between gap-4 px-5 sm:px-6"
       >
         <a
-          href="#top"
-          className="inline-flex min-h-11 items-center gap-2.5 rounded-control font-display text-[17px] font-bold tracking-[-0.02em] text-primaryText"
+          href="#home"
+          className="flex min-h-11 items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-fg"
         >
           <span
             aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-[9px] bg-primaryText font-display text-[11px] font-extrabold tracking-[-0.02em] text-[var(--bg-base)]"
+            className="grid h-7 w-7 place-items-center rounded-[7px] bg-fg font-mono text-[11px] font-medium text-bg"
           >
             SD
           </span>
-          <span className="hidden sm:inline">{PROFILE.name}</span>
+          {PROFILE.name}
         </a>
 
-        <ul className="hidden items-center gap-0.5 md:flex">
+        <ul className="hidden items-center gap-0.5 lg:flex">
           {NAV_LINKS.map((l) => {
-            const isActive = active === l.href.slice(1);
+            const id = l.href.slice(1);
+            const isActive = active === id;
             return (
-              <li key={l.href}>
+              <li key={l.href} className="relative">
+                {isActive ? (
+                  <motion.span
+                    layoutId="nav-pill"
+                    aria-hidden="true"
+                    transition={reduce ? { duration: 0 } : SPRING_UI}
+                    className="absolute inset-0 rounded-[7px] border border-line bg-surface"
+                  />
+                ) : null}
                 <a
                   href={l.href}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative inline-flex min-h-11 items-center rounded-control px-3.5 text-[14px] font-medium transition-colors ${
-                    isActive ? "text-primaryText" : "text-mutedText hover:text-primaryText"
+                  className={`relative inline-flex h-8 items-center rounded-[7px] px-3 text-[13.5px] transition-colors duration-150 before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-[''] ${
+                    isActive ? "text-fg" : "text-fg-muted hover:text-fg"
                   }`}
                 >
                   {l.label}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-3.5 bottom-2 h-px bg-gold transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] origin-left ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
                 </a>
               </li>
             );
           })}
         </ul>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={toggle}
-            aria-label={themeLabel}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-control text-mutedText transition-colors hover:bg-[var(--glass-surface-strong)] hover:text-primaryText"
+            aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+            className="press inline-flex h-11 w-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-150 hover:text-fg"
           >
-            <ThemeIcon className="h-[18px] w-[18px]" strokeWidth={1.5} aria-hidden="true" />
+            <ThemeIcon className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
           </button>
           <a
-            href={`mailto:${PROFILE.email}`}
-            className="hidden h-11 items-center rounded-control bg-gold px-4 text-[14px] font-semibold text-[#0A0A0A] transition-[background-color,transform] duration-150 hover:bg-gold-hover active:scale-[0.98] sm:inline-flex"
+            href="#contact"
+            className="press hidden h-11 items-center rounded-control bg-fg px-4 lg:h-9 text-[13.5px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90 sm:inline-flex"
           >
-            Email me
+            Get in touch
           </a>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
                 type="button"
                 aria-label="Open menu"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-control text-primaryText transition-colors hover:bg-[var(--glass-surface-strong)] md:hidden"
+                className="press inline-flex h-11 w-11 items-center justify-center rounded-control text-fg lg:hidden"
               >
                 <Menu className="h-5 w-5" strokeWidth={1.5} aria-hidden="true" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="flex w-[86vw] max-w-sm flex-col pt-20">
+            <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
               <SheetTitle className="sr-only">Menu</SheetTitle>
               <ul className="flex flex-col">
                 {NAV_LINKS.map((l) => (
@@ -120,7 +127,9 @@ export function SiteNav() {
                     <a
                       href={l.href}
                       onClick={() => setOpen(false)}
-                      className="flex min-h-14 items-center font-display text-[32px] font-bold tracking-[-0.03em] text-primaryText"
+                      className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-[-0.02em] ${
+                        active === l.href.slice(1) ? "text-fg" : "text-fg-muted"
+                      }`}
                     >
                       {l.label}
                     </a>
@@ -129,7 +138,7 @@ export function SiteNav() {
               </ul>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className="mt-auto inline-flex h-12 items-center justify-center rounded-control bg-gold px-5 text-[15px] font-semibold text-[#0A0A0A]"
+                className="press mt-auto inline-flex h-11 items-center justify-center rounded-control bg-fg text-[15px] font-medium text-bg"
               >
                 Email me
               </a>
