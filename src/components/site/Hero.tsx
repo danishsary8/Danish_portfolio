@@ -90,9 +90,9 @@ export function Hero() {
               className="enter mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
               style={step(3)}
             >
-              Building modern, high-performance web applications with clean user interfaces
-              and robust APIs. Focused on scalable frontend architecture, secure backend services,
-              and shipping reliable software.
+              Crafting high-performance web applications where fluid user interfaces
+              meet resilient backend systems. Driven by clean architecture, secure APIs,
+              and turning real ideas into software that just works.
             </p>
 
             {/* Call to action buttons */}
