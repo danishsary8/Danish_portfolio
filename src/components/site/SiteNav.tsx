@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
+import { ShinyText } from "@/components/ui/ShinyText";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -63,9 +64,16 @@ export function SiteNav() {
             href="#home"
             className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
           >
-            <span className="font-display text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase text-fg whitespace-nowrap">
-              {PROFILE.name}
-            </span>
+            <ShinyText
+              text={PROFILE.name}
+              color={dark ? "#b5b5b5" : "#27272a"}
+              shineColor={dark ? "#ffffff" : "#09090b"}
+              speed={2}
+              shineWidth={40}
+              softness={0.8}
+              trigger="loop"
+              className="font-display text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
+            />
           </a>
         </div>
 
