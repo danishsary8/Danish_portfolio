@@ -57,7 +57,8 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--pn-solid": "#121016",
     "--pn-edge": "rgba(255, 255, 255, 0.12)",
     "--pn-rim": "rgba(255, 255, 255, 0.14)",
-    "--pn-shadow": "0 22px 48px -18px rgba(0, 0, 0, 0.75), 0 6px 16px -6px rgba(0, 0, 0, 0.5)",
+    "--pn-shadow":
+      "0 24px 54px -12px rgba(0, 0, 0, 0.85), 0 8px 24px -4px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(0, 0, 0, 0.4)",
     "--pn-text": "rgba(245, 240, 232, 0.65)",
     "--pn-strong": "#f5f0e8",
     "--pn-pill": "#c9973a",
@@ -75,7 +76,8 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--pn-solid": "#f7f5f0",
     "--pn-edge": "rgba(10, 10, 10, 0.08)",
     "--pn-rim": "rgba(255, 255, 255, 0.95)",
-    "--pn-shadow": "0 18px 36px -16px rgba(10, 10, 10, 0.12), 0 4px 12px -4px rgba(10, 10, 10, 0.06)",
+    "--pn-shadow":
+      "0 20px 42px -10px rgba(10, 10, 14, 0.22), 0 8px 18px -4px rgba(10, 10, 14, 0.12), 0 2px 6px rgba(10, 10, 14, 0.08)",
     "--pn-text": "rgba(10, 10, 10, 0.65)",
     "--pn-strong": "#0a0a0a",
     "--pn-pill": "#b0822d",

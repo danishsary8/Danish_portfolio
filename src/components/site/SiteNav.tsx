@@ -93,7 +93,7 @@ export function SiteNav() {
             theme={dark ? "dark" : "light"}
             highlightColor={dark ? "#c9973a" : "#b0822d"}
             highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}
-            className={`transition-all duration-300 ${scrolled ? "shadow-float scale-[0.99]" : ""}`}
+            className={`transition-all duration-300 shadow-float ${scrolled ? "scale-[0.99] ring-1 ring-line/30" : ""}`}
           />
         </div>
 
