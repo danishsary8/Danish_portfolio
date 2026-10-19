@@ -63,18 +63,18 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Sary (foreground) Danish (gold accent) with VariableProximity */}
+            {/* Main Headline: Sary (foreground) Danish (gold accent) with Syne architectural display & VariableProximity */}
             <h1
               ref={headlineRef}
               id="hero-title"
-              className="enter relative mt-4 cursor-default select-none text-[clamp(2.75rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-[-0.04em]"
+              className="enter hero-name-heading relative mt-4 cursor-default select-none text-[clamp(2.85rem,6.4vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.03em]"
               style={step(1)}
             >
               <VariableProximity
                 label="Sary"
-                className="text-fg"
-                fromFontVariationSettings="'wght' 550, 'opsz' 14"
-                toFontVariationSettings="'wght' 950, 'opsz' 40"
+                className="text-fg hero-name-sary"
+                fromFontVariationSettings="'wght' 700"
+                toFontVariationSettings="'wght' 800"
                 containerRef={headlineRef}
                 radius={130}
                 falloff="linear"
@@ -84,9 +84,9 @@ export function Hero() {
               />{" "}
               <VariableProximity
                 label="Danish"
-                className="text-gold dark:text-gold"
-                fromFontVariationSettings="'wght' 550, 'opsz' 14"
-                toFontVariationSettings="'wght' 950, 'opsz' 40"
+                className="text-gold dark:text-gold hero-name-danish"
+                fromFontVariationSettings="'wght' 700"
+                toFontVariationSettings="'wght' 800"
                 containerRef={headlineRef}
                 radius={130}
                 falloff="linear"
