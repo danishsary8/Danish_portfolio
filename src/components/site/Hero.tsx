@@ -9,6 +9,7 @@ import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import { VariableProximity } from "@/components/ui/VariableProximity";
 import { SplitText } from "@/components/ui/SplitText";
+import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -149,17 +150,33 @@ export function Hero() {
 
             {/* Call to action buttons */}
             <div className="enter mt-7 flex flex-wrap items-center gap-3" style={step(4)}>
-              <a
+              <SpecularButton
                 href="#contact"
-                className="press group inline-flex h-10.5 items-center gap-2 rounded-control bg-fg px-5 text-[14px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90"
+                size="md"
+                radius={8}
+                tint="#0a0a0b"
+                tintOpacity={0.94}
+                textColor="#f5f5f5"
+                lineColor="#ffffff"
+                baseColor="#525252"
+                intensity={1.2}
+                idleIntensity={0.4}
+                shineSize={12}
+                shineFade={34}
+                thickness={1.3}
+                glow={1.2}
+                followMouse
+                proximity={250}
+                flash
+                className="group !h-10.5 !px-5 !text-[14px] !font-medium"
               >
-                Get in touch
+                <span>Get in touch</span>
                 <ArrowRight
                   className="h-4 w-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
                   strokeWidth={1.75}
                   aria-hidden="true"
                 />
-              </a>
+              </SpecularButton>
               <a
                 href="#projects"
                 className="press inline-flex h-10.5 items-center rounded-control border border-line-strong bg-surface px-5 text-[14px] font-medium text-fg transition-[background-color,transform] duration-150 hover:bg-raised"
