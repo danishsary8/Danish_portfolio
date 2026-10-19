@@ -5,7 +5,7 @@ import { ASSETS } from "@/lib/assets";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
-import { RotatingText } from "@/components/ui/RotatingText";
+import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -60,21 +60,24 @@ export function Hero() {
               <span className="text-gold dark:text-gold">Danish</span>
             </h1>
 
-            {/* Dynamic Rotating Role: Junior [Web / Software / Fullstack] Developer */}
+            {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
             <div className="enter mt-3 flex items-center" style={step(2)}>
               <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-3 py-1 text-[15px] sm:text-[17px] font-semibold text-fg shadow-2xs backdrop-blur-sm">
                 <span className="sr-only">Junior Web Developer</span>
                 <span aria-hidden="true" className="text-fg-muted font-medium">Junior</span>
                 <span aria-hidden="true" className="inline-flex items-center rounded-md border border-gold/35 bg-gold/15 px-2 py-0.5 text-gold dark:text-gold font-bold">
-                  <RotatingText
-                    texts={["Web", "Software", "Fullstack"]}
-                    effect="slide"
-                    direction="up"
-                    highlight={false}
-                    staggerFrom="last"
-                    staggerDuration={0.02}
-                    splitLevelClassName="overflow-hidden pb-0.5"
-                    rotationInterval={2600}
+                  <TextType
+                    text={["Software", "Web", "Fullstack"]}
+                    typingSpeed={75}
+                    pauseDuration={1500}
+                    deletingSpeed={50}
+                    deleteMode="backspace"
+                    typeEffect="fade"
+                    mistakes={0.2}
+                    cursorStyle="bar"
+                    cursorGlide
+                    showCursor
+                    cursorColor="currentColor"
                     className="font-bold text-gold"
                   />
                 </span>
