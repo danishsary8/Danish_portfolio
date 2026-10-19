@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import { ArrowRight, FileText } from "lucide-react";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
@@ -7,6 +7,7 @@ import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
+import { VariableProximity } from "@/components/ui/VariableProximity";
 import { SkillIcon } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -22,6 +23,7 @@ const CORE_STACK = [
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 export function Hero() {
+  const headlineRef = useRef<HTMLHeadingElement>(null);
   const time = useLocalTime(PROFILE.timezone);
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
@@ -61,14 +63,37 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Sary (foreground) Danish (gold accent) */}
+            {/* Main Headline: Sary (foreground) Danish (gold accent) with VariableProximity */}
             <h1
+              ref={headlineRef}
               id="hero-title"
-              className="enter mt-4 text-[clamp(2.75rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-[-0.04em]"
+              className="enter relative mt-4 cursor-default select-none text-[clamp(2.75rem,6.2vw,4.5rem)] font-extrabold leading-[1.03] tracking-[-0.04em]"
               style={step(1)}
             >
-              <span className="text-fg">Sary</span>{" "}
-              <span className="text-gold dark:text-gold">Danish</span>
+              <VariableProximity
+                label="Sary"
+                className="text-fg"
+                fromFontVariationSettings="'wght' 550, 'opsz' 14"
+                toFontVariationSettings="'wght' 950, 'opsz' 40"
+                containerRef={headlineRef}
+                radius={130}
+                falloff="linear"
+                smoothing={0.2}
+                scale={1.04}
+                lift={0.03}
+              />{" "}
+              <VariableProximity
+                label="Danish"
+                className="text-gold dark:text-gold"
+                fromFontVariationSettings="'wght' 550, 'opsz' 14"
+                toFontVariationSettings="'wght' 950, 'opsz' 40"
+                containerRef={headlineRef}
+                radius={130}
+                falloff="linear"
+                smoothing={0.2}
+                scale={1.04}
+                lift={0.03}
+              />
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
