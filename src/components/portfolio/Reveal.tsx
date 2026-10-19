@@ -1,32 +1,51 @@
 import { motion, useAnimationControls, useReducedMotion, type Variants } from "framer-motion";
 import { useEffect, type ReactNode } from "react";
+import { EASE_OUT_EXPO, MOTION_DURATION } from "@/lib/motion";
 
-const EASE = [0.23, 1, 0.32, 1] as const;
+const EASE = EASE_OUT_EXPO;
 
 export const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.065, delayChildren: 0.04 } },
 };
+
+/**
+ * Invariant: Content must remain visible (opacity: 1) before and during observer wait,
+ * satisfying SSR readability and Vitest assertions in portfolio-visibility.test.tsx.
+ */
 export const item: Variants = {
-  // Content must remain readable if hydration or viewport observation stalls.
   hidden: { opacity: 1, transform: "translateY(12px)" },
-  show: { opacity: 1, transform: "translateY(0px)", transition: { duration: 0.35, ease: EASE } },
+  show: {
+    opacity: 1,
+    transform: "translateY(0px)",
+    transition: { duration: MOTION_DURATION.reveal, ease: EASE_OUT_EXPO },
+  },
 };
-/* Badges / chips: subtle spring pop-in */
+
+/* Badges / chips: subtle pop-in with strict 0.97 min scale */
 export const badgeContainer: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.04 } },
 };
+
 export const badgeItem: Variants = {
   hidden: { opacity: 1, transform: "translateY(8px) scale(0.97)" },
   show: {
     opacity: 1,
     transform: "translateY(0px) scale(1)",
-    transition: { duration: 0.25, ease: EASE },
+    transition: { duration: MOTION_DURATION.card, ease: EASE_OUT_EXPO },
   },
 };
 
-export function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   const reduce = useReducedMotion();
   return (
     <motion.div
@@ -34,14 +53,23 @@ export function Reveal({ children, className }: { children: ReactNode; className
       variants={container}
       initial={reduce ? "show" : "hidden"}
       whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: 0.15, margin: "0px 0px -40px 0px" }}
+      transition={{ delay }}
     >
       {children}
     </motion.div>
   );
 }
 
-export function RevealItem({ children, className }: { children: ReactNode; className?: string }) {
+export function RevealItem({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   const reduce = useReducedMotion();
   return (
     <motion.div
@@ -55,8 +83,8 @@ export function RevealItem({ children, className }: { children: ReactNode; class
               transform: ["translateY(16px)", "translateY(0px)"],
             }
       }
-      viewport={{ once: true, amount: 0.12 }}
-      transition={{ duration: 0.35, ease: EASE }}
+      viewport={{ once: true, amount: 0.15, margin: "0px 0px -40px 0px" }}
+      transition={{ duration: MOTION_DURATION.reveal, ease: EASE_OUT_EXPO, delay }}
       variants={
         reduce
           ? { hidden: { opacity: 1, transform: "none" }, show: { opacity: 1, transform: "none" } }
@@ -137,23 +165,74 @@ export function SplitWords({ text, className }: { text: string; className?: stri
   );
 }
 
-export function SectionHeader({
-  index,
-  title,
-  kicker,
-}: {
-  index: string;
-  title: string;
-  kicker: string;
-}) {
+export function SectionHeader({ title }: { index?: string; title: string; kicker?: string }) {
   return (
-    <Reveal className="section-heading mb-10 flex flex-col gap-4 sm:mb-12">
+    <Reveal className="section-heading mb-10 sm:mb-14">
       <RevealItem>
-        <p className="mb-4 flex items-center gap-3 font-mono text-xs text-highlight">
-          <span className="section-index">{index}</span> {kicker}
-        </p>
-        <h2 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">{title}</h2>
+        <h2 className="font-display text-3xl font-bold tracking-tight text-primaryText sm:text-4xl lg:text-5xl">
+          {title}
+        </h2>
       </RevealItem>
     </Reveal>
+  );
+}
+
+/**
+ * StaggerGrid & LedgerReveal: Reusable parent-child stagger orchestration
+ * for multi-column asymmetric sections (SystemCapabilities, FeaturedProjects, EngineeringWorks).
+ */
+export function StaggerGrid({
+  children,
+  className,
+  stagger = 0.06,
+  delay = 0.04,
+}: {
+  children: ReactNode;
+  className?: string;
+  stagger?: number;
+  delay?: number;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduce ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15, margin: "0px 0px -40px 0px" }}
+      variants={{
+        hidden: { opacity: 1 },
+        visible: {
+          opacity: 1,
+          transition: {
+            staggerChildren: reduce ? 0 : stagger,
+            delayChildren: reduce ? 0 : delay,
+          },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function LedgerReveal({ children, className }: { children: ReactNode; className?: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      variants={{
+        hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 14 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.36,
+            ease: EASE,
+          },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }

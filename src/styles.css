@@ -1,15 +1,16 @@
 @import "tailwindcss" source(none);
+@config "../tailwind.config.js";
 @import "tw-animate-css";
 @source "../src";
 @custom-variant dark (&:is(.dark *));
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 1px);
+  --radius-xl: calc(var(--radius) + 2px);
+  --radius-2xl: calc(var(--radius) + 3px);
+  --radius-brand: 3px;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -25,8 +26,35 @@
   --color-ink: var(--ink);
   --color-on-ink: var(--on-ink);
   --color-surface-raised: var(--surface-raised);
-  --font-display: "Space Grotesk", sans-serif;
-  --font-sans: "DM Sans", sans-serif;
+
+  /* Design System Token Mappings */
+  --color-base: var(--bg-base);
+  --color-surface: var(--bg-surface);
+  --color-primary-text: var(--text-primary);
+  --color-muted-text: var(--text-muted);
+  --color-gold: var(--accent-gold);
+  --color-gold-hover: var(--accent-gold-hover);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-border-focus: var(--border-focus);
+  --color-focus: var(--border-focus);
+
+  /* Editorial Typography */
+  --font-display: Syne, "Kantumruy Pro", sans-serif;
+  --font-body: "Plus Jakarta Sans", "Kantumruy Pro", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Kantumruy Pro", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-khmer: "Kantumruy Pro", "Plus Jakarta Sans", sans-serif;
+
+  /* Spacing */
+  --spacing-section-desktop: 160px;
+  --spacing-section-mobile: 80px;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.04em;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-editorial: -0.03em;
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -54,72 +82,170 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
-  --radius: 0.5rem;
-  --background: oklch(0.956 0.014 82);
-  --foreground: oklch(0.213 0 0);
-  --card: oklch(0.984 0.007 82);
-  --card-foreground: var(--foreground);
-  --popover: var(--card);
-  --popover-foreground: var(--foreground);
-  --primary: oklch(0.51 0.091 80);
-  --primary-glow: oklch(0.51 0.091 80);
-  --primary-foreground: oklch(0.99 0.008 85);
-  --highlight: oklch(0.51 0.091 80);
-  --cta: oklch(0.213 0 0);
-  --cta-foreground: oklch(0.956 0.014 82);
-  --secondary: oklch(0.927 0.022 82);
-  --secondary-foreground: var(--foreground);
-  --muted: oklch(0.917 0.015 82);
-  --muted-foreground: oklch(0.415 0.012 80);
-  --accent: oklch(0.903 0.035 82);
-  --accent-foreground: var(--foreground);
-  --destructive: oklch(0.52 0.2 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.827 0.024 82);
-  --input: oklch(0.67 0.025 82);
-  --ring: var(--primary);
-  --surface-raised: oklch(0.96 0.018 82);
-  --gold-detail: oklch(0.657 0.106 81);
-  --ink: oklch(0.213 0 0);
-  --on-ink: oklch(0.956 0.014 82);
-  --spotlight-color: color-mix(in oklab, var(--gold-detail) 13%, transparent);
-  --shadow-portrait: 0 22px 55px -28px color-mix(in oklab, var(--ink) 28%, transparent);
-  --shadow-card: 0 16px 38px -24px color-mix(in oklab, var(--ink) 22%, transparent);
-  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --chart-1: var(--primary);
-  --chart-2: var(--gold-detail);
-  --chart-3: var(--ink);
-  --chart-4: var(--muted);
-  --chart-5: var(--border);
-  --sidebar: var(--card);
-  --sidebar-foreground: var(--foreground);
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: var(--accent);
-  --sidebar-accent-foreground: var(--foreground);
-  --sidebar-border: var(--border);
-  --sidebar-ring: var(--ring);
+@layer base {
+  :root {
+    --bg-base: #f5f0e8;
+    --bg-surface: #ece5d8;
+    --bg-card: #faf7f2;
+    --text-primary: #0a0a0a;
+    --text-muted: #5a554c;
+    --accent-gold: #c9973a;
+    --accent-gold-hover: #b0822d;
+    --border-subtle: rgba(10, 10, 10, 0.1);
+    --border-strong: rgba(10, 10, 10, 0.22);
+    --border-focus: #0a0a0a;
+
+    --radius: 3px;
+    --background: var(--bg-base);
+    --foreground: var(--text-primary);
+    --card: var(--bg-card);
+    --card-foreground: var(--text-primary);
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
+    --primary: var(--accent-gold);
+    --primary-glow: var(--accent-gold);
+    --primary-foreground: #0a0a0a;
+    --highlight: var(--accent-gold);
+    --cta: #0a0a0a;
+    --cta-foreground: #f5f0e8;
+    --secondary: var(--bg-surface);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--bg-surface);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--bg-surface);
+    --accent-foreground: var(--text-primary);
+    --destructive: oklch(0.52 0.2 27);
+    --destructive-foreground: oklch(0.99 0 0);
+    --border: var(--border-subtle);
+    --input: var(--border-subtle);
+    --ring: var(--border-focus);
+    --surface-raised: var(--bg-surface);
+    --gold-detail: var(--accent-gold);
+    --ink: #0a0a0a;
+    --on-ink: #f5f0e8;
+    --shadow-portrait: none;
+    --shadow-card: none;
+    --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-drawer: cubic-bezier(0.23, 1, 0.32, 1);
+    --chart-1: var(--primary);
+    --chart-2: var(--gold-detail);
+    --chart-3: var(--ink);
+    --chart-4: var(--muted);
+    --chart-5: var(--border);
+    --sidebar: var(--card);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+  }
+
+  .dark {
+    --bg-base: #0a0a0a;
+    --bg-surface: #121212;
+    --bg-card: #181818;
+    --text-primary: #f5f0e8;
+    --text-muted: #9a948a;
+    --accent-gold: #c9973a;
+    --accent-gold-hover: #dda94b;
+    --border-subtle: rgba(245, 240, 232, 0.12);
+    --border-strong: rgba(245, 240, 232, 0.24);
+    --border-focus: #c9973a;
+
+    --background: var(--bg-base);
+    --foreground: var(--text-primary);
+    --card: var(--bg-card);
+    --card-foreground: var(--text-primary);
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
+    --primary: var(--accent-gold);
+    --primary-glow: var(--accent-gold);
+    --primary-foreground: #0a0a0a;
+    --highlight: var(--accent-gold);
+    --cta: #f5f0e8;
+    --cta-foreground: #0a0a0a;
+    --secondary: var(--bg-surface);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--bg-surface);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--bg-surface);
+    --accent-foreground: var(--text-primary);
+    --border: var(--border-subtle);
+    --input: var(--border-subtle);
+    --ring: var(--border-focus);
+    --surface-raised: var(--bg-surface);
+    --gold-detail: var(--accent-gold);
+    --ink: #0a0a0a;
+    --on-ink: #f5f0e8;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* Clear, high-contrast keyboard accessibility focus ring */
+  :focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Editorial gold selection highlight */
+  ::selection {
+    background-color: var(--accent-gold);
+    color: #0a0a0a;
+  }
+
+  /* Buttons keep non-selectable labels; links keep native touch callouts */
+  button,
+  [role="button"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  a {
+    -webkit-user-select: auto;
+    user-select: auto;
+    -webkit-touch-callout: default;
+  }
 }
-@utility glass {
-  background: color-mix(in oklab, var(--card) 85%, transparent);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-}
-@utility shadow-blue {
-  box-shadow: var(--shadow-card);
-}
-@utility glow-blue {
-  box-shadow: var(--shadow-card);
-}
-@utility glow-cta {
-  box-shadow: var(--shadow-card);
-}
-@utility pulse-cta {
-  animation: none;
-}
+
 @utility ease-quint {
   transition-timing-function: var(--ease-out-quint);
 }
@@ -131,48 +257,9 @@
   touch-action: manipulation;
 }
 @utility press {
-  transition: transform 160ms var(--ease-out-quint);
+  transition: transform 140ms var(--ease-out-quint);
   &:active {
     transform: scale(0.97);
-  }
-}
-@layer base {
-  * {
-    border-color: var(--border);
-  }
-  html {
-    scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-text-size-adjust: 100%;
-  }
-  body {
-    font-family: var(--font-sans);
-    background: var(--background);
-    color: var(--foreground);
-  }
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-display);
-    letter-spacing: 0;
-    text-wrap: balance;
-  }
-  ::selection {
-    background: var(--primary);
-    color: var(--primary-foreground);
-  }
-  /* Buttons keep non-selectable labels; plain links keep native long-press
-     so iOS/Android show Copy Link / Open in New Tab callouts. */
-  button,
-  [role="button"] {
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-  }
-  a {
-    -webkit-user-select: auto;
-    user-select: auto;
-    -webkit-touch-callout: default;
   }
 }
 .portfolio-shell {
@@ -222,32 +309,6 @@
 .text-type-line {
   display: block;
   white-space: nowrap;
-}
-.text-type-character {
-  position: relative;
-  display: inline-block;
-}
-.text-type-base {
-  color: var(--muted-foreground);
-}
-.text-type-ink {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 100ms ease;
-}
-.text-type-character[data-typed="true"] .text-type-ink {
-  opacity: 1;
-}
-.text-type-character[data-cursor="true"]::after {
-  content: "";
-  position: absolute;
-  right: -0.04em;
-  top: 0.12em;
-  width: 2px;
-  height: 0.8em;
-  background: var(--primary);
-  pointer-events: none;
 }
 .project-actions .project-action {
   min-width: 0;
@@ -329,18 +390,6 @@
     transform 200ms var(--ease-out-quint),
     box-shadow 200ms ease;
 }
-.spotlight-light {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(
-    350px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
-    var(--spotlight-color),
-    transparent 80%
-  );
-  transition: opacity 200ms ease;
-}
 .project-card {
   box-shadow: var(--shadow-card);
   transition:
@@ -373,9 +422,6 @@
 .skill-category.skill-selected button {
   background: var(--ink);
   color: var(--on-ink);
-}
-.skill-category.skill-selected .spotlight-light {
-  opacity: 0.8;
 }
 .skill-icon {
   color: var(--primary);
@@ -479,9 +525,6 @@ footer {
   .spotlight-card:hover {
     border-color: var(--primary);
   }
-  .spotlight-card:hover .spotlight-light {
-    opacity: 1;
-  }
   .project-card:hover {
     transform: translateY(-4px);
     border-color: var(--primary);
@@ -543,9 +586,6 @@ footer {
   *::after {
     animation: none !important;
   }
-  .spotlight-light {
-    display: none;
-  }
   .project-card,
   .project-card img,
   .portfolio-shell [style*="transform"],
@@ -554,10 +594,124 @@ footer {
   .skill-chip:hover {
     transform: none !important;
   }
-  .text-type-base {
-    color: inherit;
+}
+
+/* ==========================================================================
+   Swiss Architectural Broadsheet & Exposed Structural Grid Utilities
+   ========================================================================== */
+.bg-editorial-grid {
+  background-image: 
+    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.surface-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.crosshair-corner {
+  position: relative;
+}
+.crosshair-corner::before {
+  content: "+";
+  position: absolute;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1;
+  color: var(--accent-gold);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   Editorial Print-to-Dossier Stylesheet (@media print)
+   Converts the portfolio into a clean, black-and-white architectural dossier.
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 1.6cm 1.4cm;
+    size: A4 portrait;
   }
-  .text-type-character::after {
-    display: none;
+
+  /* Force pure black-and-white canvas without dark mode overrides */
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #0a0a0a !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+  }
+
+  html,
+  body,
+  .portfolio-shell {
+    background-color: #ffffff !important;
+    color: #0a0a0a !important;
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide interactive chrome, buttons, modals, drawers, and skip links */
+  header nav,
+  header button,
+  button,
+  [role="dialog"],
+  [data-radix-portal],
+  a[href="#main-content"],
+  [aria-label="Open command palette"],
+  [aria-label="Switch to light theme"],
+  [aria-label="Switch to dark theme"],
+  [aria-label="Open mobile navigation"],
+  [aria-label="Open technical architecture inspector"] {
+    display: none !important;
+  }
+
+  /* Keep canonical URLs readable on print */
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    font-family: var(--font-mono, monospace);
+    color: #444444 !important;
+    word-break: break-all;
+  }
+
+  /* Do not print redundant internal hash links or javascript void */
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "" !important;
+  }
+
+  /* Ensure architectural sections and cards avoid awkward page breaks */
+  section,
+  article,
+  .project-card,
+  li,
+  tr {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Architectural ledger borders */
+  .border,
+  .border-b,
+  .border-t,
+  .border-l,
+  .border-r,
+  .border-borderSubtle {
+    border-color: rgba(10, 10, 10, 0.25) !important;
+  }
+
+  /* Ensure code and preformatted snippets print cleanly */
+  pre,
+  code {
+    border: 1px solid rgba(10, 10, 10, 0.2) !important;
+    page-break-inside: avoid;
+    white-space: pre-wrap !important;
+    word-break: break-all;
   }
 }
+
