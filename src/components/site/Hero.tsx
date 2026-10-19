@@ -62,10 +62,10 @@ export function Hero() {
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
             <div className="enter mt-3 flex items-center" style={step(2)}>
-              <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-3 py-1 text-[15px] sm:text-[17px] font-semibold text-fg shadow-2xs backdrop-blur-sm">
+              <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-3 py-1 text-[15px] sm:text-[17px] font-medium text-fg-muted shadow-2xs backdrop-blur-sm">
                 <span className="sr-only">Junior Web Developer</span>
-                <span aria-hidden="true" className="text-fg-muted font-medium">Junior</span>
-                <span aria-hidden="true" className="inline-flex items-center rounded-md border border-gold/35 bg-gold/15 px-2 py-0.5 text-gold dark:text-gold font-bold">
+                <span aria-hidden="true" className="font-medium text-fg-muted">Junior</span>
+                <span aria-hidden="true" className="inline-flex items-center font-medium text-fg-muted">
                   <TextType
                     text={["Software", "Web", "Fullstack"]}
                     typingSpeed={75}
@@ -78,10 +78,10 @@ export function Hero() {
                     cursorGlide
                     showCursor
                     cursorColor="currentColor"
-                    className="font-bold text-gold"
+                    className="font-medium text-fg-muted"
                   />
                 </span>
-                <span aria-hidden="true" className="text-fg-muted font-medium">Developer</span>
+                <span aria-hidden="true" className="font-medium text-fg-muted">Developer</span>
               </div>
             </div>
 
