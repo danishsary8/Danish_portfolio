@@ -93,35 +93,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "author", content: "Sary Danish" },
-      { title: "Sary Danish — Junior Full-Stack Developer | Phnom Penh, Cambodia" },
+      { title: "Sary Danish — Junior Web Developer | Phnom Penh, Cambodia" },
       {
         name: "description",
         content:
-          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building scalable full-stack web applications with Laravel, React, TypeScript, and PostgreSQL.",
+          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building real web applications with React, Laravel, and PostgreSQL.",
       },
       {
         property: "og:title",
-        content: "Sary Danish — Junior Full-Stack Developer | Phnom Penh, Cambodia",
+        content: "Sary Danish — Junior Web Developer | Phnom Penh, Cambodia",
       },
       {
         property: "og:description",
         content:
-          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building scalable full-stack web applications with Laravel, React, TypeScript, and PostgreSQL.",
+          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building real web applications with React, Laravel, and PostgreSQL.",
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "Sary Danish — Junior Full-Stack Developer | Phnom Penh, Cambodia",
+        content: "Sary Danish — Junior Web Developer | Phnom Penh, Cambodia",
       },
       {
         name: "twitter:description",
         content:
-          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building scalable full-stack web applications with Laravel, React, TypeScript, and PostgreSQL.",
+          "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building real web applications with React, Laravel, and PostgreSQL.",
       },
-      { name: "theme-color", content: "#F5F0E8", media: "(prefers-color-scheme: light)" },
-      { name: "theme-color", content: "#0A0A0A", media: "(prefers-color-scheme: dark)" },
+      { name: "theme-color", content: "#F0EEE9", media: "(prefers-color-scheme: light)" },
+      { name: "theme-color", content: "#0A0A0C", media: "(prefers-color-scheme: dark)" },
     ],
     links: [
       {

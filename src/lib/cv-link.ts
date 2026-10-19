@@ -1,12 +1,8 @@
 /**
- * The single place to set your CV PDF address.
- *
- * Paste the URL into CV_HREF below and every CV button in the site picks it up:
- * the floating button, the desktop navbar button and the mobile navbar button.
- * Until a real URL is set, the buttons look the same but carry no link at all,
- * so no visitor ever lands on an empty "#" page.
+ * The single place to set the CV PDF address. Every "Download CV" button reads it;
+ * set it to "#" and those buttons disappear instead of linking nowhere.
  */
-export const CV_HREF = "#";
+export const CV_HREF: string = "/sary-danish-cv.pdf";
 
 export type CvLinkProps = {
   href?: string;
