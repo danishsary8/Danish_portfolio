@@ -86,7 +86,7 @@ The portfolio uses a calm, high-craft, Linear-inspired look: monochrome greys, o
 6. **No gradient typography:** Text is always a solid token colour.
 7. **ZERO Emoji Icons:** Use `lucide-react` (1.5px stroke) or Simple Icons brand marks from `react-icons/si`.
 8. **ZERO Symmetrical 3-Card Feature Rows:** No row of three equal icon-topped cards. Prefer lists, hairline grids, and asymmetric columns.
-9. **Radius scale:** 12px panels/cards, 8px buttons/inputs, 6px badges/chips. `rounded-full` only for the status dot and the avatar.
+9. **Radius scale:** 12px panels/cards, 8px buttons/inputs, 6px badges/chips. `rounded-full` only for the status dot, the avatar, and the primary nav bar (link track, sliding thumb, theme toggle, "Get in touch").
 10. **Fonts:** Geist and Geist Mono (plus Kantumruy Pro for Khmer). Never `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
 11. **Monochrome + one accent:** Gold (`--gold` / `--gold-ink`) is reserved for the status dot, award markers, and gold text. No terracotta, rust, indigo, violet, or cyan.
 12. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders.

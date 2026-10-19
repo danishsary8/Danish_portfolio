@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Menu, Moon, Sun } from "lucide-react";
+import { ArrowUpRight, Menu, Moon, Sun } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { SPRING_UI } from "@/lib/motion";
@@ -51,11 +51,11 @@ export function SiteNav() {
     >
       <nav
         aria-label="Primary"
-        className="mx-auto flex h-16 max-w-[1120px] items-center justify-between gap-4 px-5 sm:px-6"
+        className="mx-auto flex h-16 max-w-[1120px] items-center justify-between gap-4 px-5 sm:px-6 lg:grid lg:h-[72px] lg:grid-cols-[1fr_auto_1fr]"
       >
         <a
           href="#home"
-          className="flex min-h-11 items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-fg"
+          className="flex min-h-11 items-center gap-2.5 justify-self-start text-[15px] font-semibold tracking-[-0.01em] text-fg"
         >
           <span
             aria-hidden="true"
@@ -66,7 +66,7 @@ export function SiteNav() {
           {PROFILE.name}
         </a>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
+        <ul className="nav-track hidden items-center gap-0.5 rounded-full p-1 lg:flex">
           {NAV_LINKS.map((l) => {
             const id = l.href.slice(1);
             const isActive = active === id;
@@ -77,14 +77,14 @@ export function SiteNav() {
                     layoutId="nav-pill"
                     aria-hidden="true"
                     transition={reduce ? { duration: 0 } : SPRING_UI}
-                    className="absolute inset-0 rounded-[7px] border border-line bg-surface"
+                    className="nav-thumb absolute inset-0 rounded-full"
                   />
                 ) : null}
                 <a
                   href={l.href}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative inline-flex h-8 items-center rounded-[7px] px-3 text-[13.5px] transition-colors duration-150 before:absolute before:inset-x-0 before:-inset-y-1.5 before:content-[''] ${
-                    isActive ? "text-fg" : "text-fg-muted hover:text-fg"
+                  className={`relative inline-flex h-9 items-center rounded-full px-4 text-[13.5px] font-medium tracking-[-0.005em] transition-[color,background-color] duration-150 ${
+                    isActive ? "text-fg" : "text-fg-muted hover:bg-fg/[0.035] hover:text-fg"
                   }`}
                 >
                   {l.label}
@@ -94,20 +94,25 @@ export function SiteNav() {
           })}
         </ul>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2 justify-self-end">
           <button
             type="button"
             onClick={toggle}
             aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-            className="press inline-flex h-11 w-11 items-center justify-center rounded-control text-fg-muted transition-colors duration-150 hover:text-fg"
+            className="nav-track press inline-flex h-11 w-11 items-center justify-center rounded-full text-fg-muted transition-[color,transform] duration-150 hover:text-fg"
           >
             <ThemeIcon className="h-[17px] w-[17px]" strokeWidth={1.5} aria-hidden="true" />
           </button>
           <a
             href="#contact"
-            className="press hidden h-11 items-center rounded-control bg-fg px-4 lg:h-9 text-[13.5px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90 sm:inline-flex"
+            className="press group hidden h-11 items-center gap-1.5 rounded-full bg-fg pl-5 pr-4 text-[13.5px] font-medium text-bg transition-[opacity,transform] duration-150 hover:opacity-90 sm:inline-flex"
           >
             Get in touch
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-px group-hover:-translate-y-px"
+              strokeWidth={1.75}
+              aria-hidden="true"
+            />
           </a>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
