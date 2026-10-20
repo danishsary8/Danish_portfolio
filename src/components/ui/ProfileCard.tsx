@@ -88,7 +88,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
   iconUrl,
   miniAvatarUrl,
   name = "Sary Danish",
-  title = "Junior Software Developer",
+  title = "Junior Fullstack Developer",
   handle = "danishsary8",
   status = "Open to roles",
   statusColor = "#b0822d",

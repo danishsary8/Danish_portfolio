@@ -200,7 +200,7 @@ export function Hero() {
                 <span aria-hidden="true" className="font-display font-bold text-fg tracking-tight">Junior</span>
                 <span aria-hidden="true" className="inline-flex items-center font-display font-extrabold text-gold tracking-tight min-w-[190px] sm:min-w-[225px]">
                   <TextType
-                    text={["Full-Stack Developer"]}
+                    text={["Fullstack Developer"]}
                     typingSpeed={60}
                     pauseDuration={3500}
                     deletingSpeed={35}
@@ -451,7 +451,7 @@ export function Hero() {
               />
               <ProfileCard
                 name={PROFILE.name}
-                title="Junior Full-Stack Developer"
+                title="Junior Fullstack Developer"
                 handle={PROFILE.phone || "087 680 999"}
                 status="Available to work full-time"
                 statusColor={dark ? "#c9973a" : "#b0822d"}
