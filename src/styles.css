@@ -58,8 +58,8 @@
 
 @layer base {
   :root {
-    --bg: #ffffff;
-    --surface-1: #f6f6f7;
+    --bg: #f8f9fc;
+    --surface-1: #f3f4f8;
     --surface-2: #ffffff;
     --line: rgba(10, 10, 12, 0.08);
     --line-strong: rgba(10, 10, 12, 0.14);
@@ -70,7 +70,7 @@
     --gold-ink: #85601f;
     --focus: #111113;
     --destructive: #c4332b;
-    --glow: rgba(10, 10, 12, 0.045);
+    --glow: rgba(201, 151, 58, 0.12);
     --shadow-float: 0 24px 48px -16px rgba(10, 10, 12, 0.18), 0 2px 6px rgba(10, 10, 12, 0.04);
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -101,7 +101,7 @@
     --gold-ink: #c9973a;
     --focus: #ededef;
     --destructive: #ef6b62;
-    --glow: rgba(255, 255, 255, 0.06);
+    --glow: rgba(201, 151, 58, 0.22);
     --shadow-float: 0 24px 48px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
   }
 

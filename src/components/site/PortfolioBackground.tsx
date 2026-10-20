@@ -31,27 +31,30 @@ export function PortfolioBackground() {
         }`}
         style={{
           background: `
-            radial-gradient(ellipse 1100px 750px at 50% -40px, rgba(201, 151, 58, 0.28), transparent 72%),
-            radial-gradient(circle 750px at 85% 26%, rgba(212, 165, 65, 0.18), transparent 65%),
-            radial-gradient(circle 750px at 12% 70%, rgba(201, 151, 58, 0.14), transparent 65%),
-            radial-gradient(circle 600px at 50% 50%, rgba(70, 90, 135, 0.08), transparent 70%),
-            linear-gradient(145deg, #090a0f 0%, #10131d 35%, #161a29 65%, #0b0c11 100%)
+            radial-gradient(ellipse 1100px 750px at 50% -60px, rgba(201, 151, 58, 0.35), transparent 72%),
+            radial-gradient(circle 850px at 85% 24%, rgba(212, 165, 65, 0.24), transparent 65%),
+            radial-gradient(circle 900px at 12% 58%, rgba(60, 85, 155, 0.28), transparent 65%),
+            radial-gradient(circle 750px at 88% 78%, rgba(201, 151, 58, 0.2), transparent 65%),
+            radial-gradient(circle 600px at 50% 50%, rgba(70, 95, 145, 0.12), transparent 70%),
+            linear-gradient(150deg, #07080c 0%, #0d1017 32%, #141926 68%, #090a0e 100%)
           `,
         }}
       />
 
-      {/* Light Theme Ambient Gradient Layer (Clean, luminous, white editorial studio light) */}
+      {/* Light Theme Ambient Gradient Layer (Distinct, luminous, multi-tone warm gold & cool slate atmosphere) */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 ease-out ${
           !dark ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
           background: `
-            radial-gradient(ellipse 1100px 650px at 50% -30px, #ffffff 0%, rgba(255, 255, 255, 0.8) 45%, transparent 75%),
-            radial-gradient(circle 750px at 85% 22%, rgba(201, 151, 58, 0.06), transparent 60%),
-            radial-gradient(circle 800px at 10% 65%, rgba(226, 232, 240, 0.55), transparent 65%),
-            radial-gradient(circle 600px at 18% 18%, rgba(241, 245, 249, 0.7), transparent 70%),
-            linear-gradient(160deg, #FFFFFF 0%, #FBFBFC 30%, #F3F4F8 70%, #FFFFFF 100%)
+            radial-gradient(ellipse 950px 650px at 82% 10%, rgba(201, 151, 58, 0.18), transparent 70%),
+            radial-gradient(ellipse 1100px 520px at 50% -20px, rgba(255, 255, 255, 0.85), transparent 65%),
+            radial-gradient(circle 850px at 8% 38%, rgba(180, 210, 248, 0.38), transparent 65%),
+            radial-gradient(circle 800px at 92% 64%, rgba(218, 172, 70, 0.16), transparent 60%),
+            radial-gradient(circle 900px at 14% 88%, rgba(195, 212, 242, 0.42), transparent 65%),
+            radial-gradient(circle 650px at 70% 92%, rgba(225, 185, 95, 0.14), transparent 60%),
+            linear-gradient(142deg, #F8FAFD 0%, #F1F4FA 28%, #FAF7F1 62%, #EFF3F9 88%, #F7F5EF 100%)
           `,
         }}
       />

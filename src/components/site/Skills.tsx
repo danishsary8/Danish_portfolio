@@ -16,7 +16,7 @@ export function Skills() {
       />
       <div className="grid gap-px overflow-hidden rounded-brand border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
         {SKILL_GROUPS.map((g, i) => (
-          <Reveal key={g.title} index={i} className="bg-bg p-5 sm:p-6">
+          <Reveal key={g.title} index={i} className="bg-surface-1/75 backdrop-blur-xs p-5 sm:p-6">
             <h3 className="text-[13px] font-medium text-fg-muted">{g.title}</h3>
             <ul className="mt-4 grid grid-cols-2 gap-x-3 sm:grid-cols-1">
               {g.skills.map((s) => (
