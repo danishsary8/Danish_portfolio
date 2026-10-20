@@ -11,6 +11,7 @@ import DepthText from "@/components/ui/DepthText";
 import LogoLoop from "@/components/ui/LogoLoop";
 import CountUp from "@/components/ui/CountUp";
 import ScrambledText from "@/components/ui/ScrambledText";
+import FuseButton from "@/components/ui/FuseButton";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
@@ -191,13 +192,26 @@ export function Hero() {
                 <span className="relative z-10">View projects</span>
               </a>
               {hasCv ? (
-                <a
-                  {...getCvLinkProps()}
-                  className="btn-neobrutal-tertiary inline-flex h-10.5 items-center gap-2 rounded-control px-4 text-[14px] font-medium cursor-pointer select-none"
-                >
-                  <FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-                  <span className="relative z-10">Download CV</span>
-                </a>
+                <FuseButton
+                  label="Download CV"
+                  undoLabel="Cancel"
+                  doneLabel="Opening CV..."
+                  icon={<FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />}
+                  href={CV_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  color={dark ? "#EDEDEF" : "#111113"}
+                  background={dark ? "#18181B" : "#F4F4F3"}
+                  fuseColor="#F59E0B"
+                  undoWindow={2000}
+                  fuse="outline"
+                  fuseThickness={2}
+                  radius={8}
+                  size="md"
+                  commitOn="fuseEnd"
+                  settle="reset"
+                  className="btn-neobrutal-tertiary select-none"
+                />
               ) : null}
             </div>
 
