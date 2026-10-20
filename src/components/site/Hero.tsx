@@ -186,12 +186,15 @@ export function Hero() {
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
-            <div className="enter mt-3 sm:mt-3.5 flex items-center" style={step(2)}>
-              <div className="ios-glass-pill cursor-target inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 text-[14.5px] sm:text-[16.5px] font-semibold text-fg select-none transition-all duration-200">
+            <div className="enter mt-3 sm:mt-4 flex items-center" style={step(2)}>
+              <div className="ios-glass-pill cursor-target inline-flex items-center gap-2.5 px-4 py-2 sm:px-5 sm:py-2.5 font-display text-[16px] sm:text-[19px] font-bold tracking-tight text-fg select-none transition-all duration-200">
                 <span className="sr-only">Junior Web Developer</span>
-                <span className="flex h-2 w-2 shrink-0 rounded-full bg-gold shadow-[0_0_8px_var(--gold)]" aria-hidden="true" />
-                <span aria-hidden="true" className="font-semibold text-fg tracking-tight">Junior</span>
-                <span aria-hidden="true" className="inline-flex items-center font-bold text-gold tracking-tight px-1.5 py-0.5 rounded-md bg-gold/10 dark:bg-gold/15">
+                <span className="relative flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20" aria-hidden="true">
+                  <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
+                  <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_8px_var(--gold)]" />
+                </span>
+                <span aria-hidden="true" className="font-display font-bold text-fg tracking-tight">Junior</span>
+                <span aria-hidden="true" className="inline-flex items-center font-display font-extrabold text-gold tracking-tight">
                   <TextType
                     text={["Web", "Software", "Full-Stack"]}
                     typingSpeed={60}
@@ -204,10 +207,10 @@ export function Hero() {
                     cursorGlide
                     showCursor
                     cursorColor={dark ? "#C9973A" : "#B0822D"}
-                    className="font-bold text-gold"
+                    className="font-display font-extrabold text-gold"
                   />
                 </span>
-                <span aria-hidden="true" className="font-semibold text-fg tracking-tight">Developer</span>
+                <span aria-hidden="true" className="font-display font-bold text-fg tracking-tight">Developer</span>
               </div>
             </div>
 
