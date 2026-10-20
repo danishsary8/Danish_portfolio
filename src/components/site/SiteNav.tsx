@@ -6,6 +6,7 @@ import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { GradientText } from "@/components/ui/GradientText";
 import { SlingButton } from "@/components/ui/SlingButton";
+import { GradualBlur } from "@/components/ui/GradualBlur";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -82,15 +83,30 @@ export function SiteNav() {
   }));
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
-        scrolled ? "bg-bg/85 backdrop-blur-md border-b border-line/40 shadow-xs" : "bg-transparent"
-      }`}
-    >
-      <nav
-        aria-label="Primary"
-        className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
+    <>
+      {/* Progressive Stepped Gradual Blur underneath the top nav bar */}
+      <GradualBlur
+        position="top"
+        target="page"
+        height="6rem"
+        strength={2}
+        layers={8}
+        curve="linear"
+        exponential
+        tint={dark ? "rgba(18, 15, 23, 0.6)" : "rgba(251, 251, 250, 0.65)"}
+        autoHide
+        zIndex={40}
+      />
+
+      <header
+        className={`fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
+          scrolled ? "border-b border-line/30 shadow-xs" : "bg-transparent"
+        }`}
       >
+        <nav
+          aria-label="Primary"
+          className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
+        >
         {/* Left: Brand Name outside the pill */}
         <div className="flex items-center justify-start">
           <a
@@ -181,7 +197,8 @@ export function SiteNav() {
         </div>
       </nav>
     </header>
-  );
+  </>
+);
 }
 
 export default SiteNav;
