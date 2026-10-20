@@ -261,7 +261,7 @@
     background-color: #111113;
     color: #ffffff;
     border: 2px solid #111113;
-    box-shadow: 3.5px 3.5px 0px var(--gold);
+    box-shadow: 3.5px 3.5px 0px #2563eb;
     transition:
       transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
       box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
@@ -273,12 +273,12 @@
     background-color: #18181b;
     color: #ffffff;
     border: 2px solid #ededef;
-    box-shadow: 3.5px 3.5px 0px var(--gold);
+    box-shadow: 3.5px 3.5px 0px #3b82f6;
   }
 
   .btn-neobrutal-primary:hover {
     transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px var(--gold);
+    box-shadow: 5px 5px 0px #2563eb;
     background-color: #000000;
   }
 
@@ -286,7 +286,7 @@
     background-color: #222226;
     border-color: #ffffff;
     transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px var(--gold);
+    box-shadow: 5px 5px 0px #3b82f6;
   }
 
   .btn-neobrutal-primary:active,

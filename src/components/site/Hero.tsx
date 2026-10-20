@@ -80,7 +80,7 @@ export function Hero() {
                 <ElasticMesh
                   text="Sary Danish"
                   material="balloon"
-                  color={dark ? "#C9973A" : "#B0822D"}
+                  color={dark ? "#3b82f6" : "#2563eb"}
                   inflate={1}
                   stiffness={0.5}
                   wobble={0.6}
