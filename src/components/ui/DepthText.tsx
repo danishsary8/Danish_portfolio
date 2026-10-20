@@ -362,7 +362,7 @@ const DepthText = ({
             {text}
           </span>
         ))}
-        <span className="depth-text__face">{text}</span>
+        <span className="depth-text__face" style={{ color: faceColor }}>{text}</span>
       </span>
     </span>
   );

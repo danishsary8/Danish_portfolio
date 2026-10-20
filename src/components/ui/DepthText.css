@@ -1,9 +1,16 @@
+@property --depth-text-face-color {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #111113;
+}
+
 .depth-text {
   display: inline-block;
   perspective: var(--depth-text-perspective);
   perspective-origin: 50% 48%;
   isolation: isolate;
   font-family: inherit;
+  transition: --depth-text-face-color 950ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .depth-text__stage {
@@ -14,7 +21,7 @@
   transform-origin: 50% 50%;
   will-change: transform;
   filter: var(--depth-text-filter, drop-shadow(0 4px 10px rgba(0, 0, 0, 0.07)));
-  transition: filter 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: filter 950ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark .depth-text__stage {
@@ -35,7 +42,10 @@
   backface-visibility: hidden;
   font-kerning: normal;
   text-rendering: geometricPrecision;
-  transition: color 750ms cubic-bezier(0.22, 1, 0.36, 1), text-shadow 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    color 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-text-stroke-color 950ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .depth-text__layer {
@@ -43,7 +53,9 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  transition: color 750ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    color 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-text-stroke-color 950ms cubic-bezier(0.22, 1, 0.36, 1);
   -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.12);
   paint-order: stroke fill;
 }
@@ -70,6 +82,10 @@
   transform: translateZ(0.6px);
   -webkit-text-stroke: var(--depth-text-stroke, 0.5px rgba(0, 0, 0, 0.1));
   paint-order: stroke fill;
+  transition:
+    color 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 950ms cubic-bezier(0.22, 1, 0.36, 1),
+    -webkit-text-stroke-color 950ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark .depth-text__face {
