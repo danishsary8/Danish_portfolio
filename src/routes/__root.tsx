@@ -13,7 +13,6 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatbotWidget } from "@/components/site/ChatbotWidget";
-import SmoothCursor from "@/components/ui/SmoothCursor";
 
 const primaryBtn =
   "press inline-flex h-10 items-center justify-center rounded-control bg-fg px-4 text-[14px] font-medium text-bg transition-[transform,opacity] duration-150 hover:opacity-90";
@@ -167,7 +166,6 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <ChatbotWidget />
-      <SmoothCursor />
     </QueryClientProvider>
   );
 }

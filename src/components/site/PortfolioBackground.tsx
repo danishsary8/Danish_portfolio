@@ -9,48 +9,57 @@ export function PortfolioBackground() {
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Smooth Cohesive Ambient Gradient Background */}
+      {/* Dark Theme Ambient Gradient Layer (Cohesive obsidian / charcoal / whisper of warm bronze) */}
       <div
-        className="absolute inset-0 transition-opacity duration-700 ease-out"
+        className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+          dark ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         style={{
-          background: dark
-            ? `radial-gradient(ellipse 1100px 700px at 50% -80px, rgba(201, 151, 58, 0.14), transparent 75%),
-               radial-gradient(ellipse 900px 600px at 90% 35%, rgba(201, 151, 58, 0.08), transparent 70%),
-               radial-gradient(ellipse 850px 650px at 10% 75%, rgba(212, 175, 55, 0.06), transparent 70%),
-               radial-gradient(circle 800px at 50% 100%, rgba(201, 151, 58, 0.05), transparent 70%),
-               #0A0A0B`
-            : `radial-gradient(ellipse 1100px 700px at 50% -80px, rgba(176, 130, 45, 0.10), transparent 75%),
-               radial-gradient(ellipse 900px 600px at 90% 35%, rgba(176, 130, 45, 0.06), transparent 70%),
-               radial-gradient(ellipse 850px 650px at 10% 75%, rgba(190, 145, 55, 0.045), transparent 70%),
-               radial-gradient(circle 800px at 50% 100%, rgba(176, 130, 45, 0.04), transparent 70%),
-               #FBFBFA`,
+          background: `
+            radial-gradient(ellipse 1200px 750px at 50% -80px, rgba(201, 151, 58, 0.075), transparent 70%),
+            radial-gradient(ellipse 850px 600px at 85% 40%, rgba(201, 151, 58, 0.038), transparent 65%),
+            linear-gradient(165deg, #090A0C 0%, #0D0E12 35%, #101116 70%, #0A0B0E 100%)
+          `,
         }}
       />
 
-      {/* Living Drifting Particles Layer (Smooth 60fps & calm drift) */}
-      <div className="absolute inset-0 opacity-85 dark:opacity-90 transition-opacity duration-500">
+      {/* Light Theme Ambient Gradient Layer (Editorial warm parchment / linen stone / whisper of warm amber) */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+          !dark ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        style={{
+          background: `
+            radial-gradient(ellipse 1200px 750px at 50% -80px, rgba(176, 130, 45, 0.05), transparent 70%),
+            radial-gradient(ellipse 850px 600px at 85% 40%, rgba(176, 130, 45, 0.028), transparent 65%),
+            linear-gradient(165deg, #FAF8F5 0%, #F4F0E8 35%, #EFEAE0 70%, #FAF8F5 100%)
+          `,
+        }}
+      />
+
+      {/* Ultra-Lightweight Calm Drifting Particles Layer (Zero-lag, 20 particles, 0 hover overhead) */}
+      <div className="absolute inset-0 opacity-60 dark:opacity-75 transition-opacity duration-700">
         <Particles
-          particleCount={85}
-          particleSpread={12}
-          speed={0.05}
+          particleCount={20}
+          particleSpread={14}
+          speed={0.012}
           particleColors={
             dark
-              ? ["#C9973A", "#E5C378", "#D4AF37", "#EDEDEF"]
-              : ["#B0822D", "#C9973A", "#85601F", "#71717A"]
+              ? ["#C9973A", "#D4AF37", "#9A9AA3", "#4A4A52"]
+              : ["#B0822D", "#C9973A", "#A1A1AA", "#C4C4C8"]
           }
-          particleBaseSize={80}
-          sizeRandomness={0.7}
-          glow={dark ? 0.45 : 0.3}
-          twinkle={0.25}
-          moveParticlesOnHover
-          hoverEffect="parallax"
-          particleHoverFactor={0.25}
-          hoverRadius={180}
+          particleBaseSize={60}
+          sizeRandomness={0.6}
+          glow={dark ? 0.35 : 0.22}
+          twinkle={0.2}
+          moveParticlesOnHover={false}
+          hoverEffect="none"
+          particleHoverFactor={0}
           disableRotation
-          pixelRatio={1.2}
+          pixelRatio={1}
           alphaParticles
           clickBurst={false}
-          intro
+          intro={false}
         />
       </div>
     </div>
