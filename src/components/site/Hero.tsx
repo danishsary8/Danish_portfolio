@@ -14,6 +14,7 @@ import ScrambledText from "@/components/ui/ScrambledText";
 import FuseButton from "@/components/ui/FuseButton";
 import GradientText from "@/components/ui/GradientText";
 import GlareHover from "@/components/ui/GlareHover";
+import StarBorder from "@/components/ui/StarBorder";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -385,40 +386,72 @@ export function Hero() {
 
               {/* Current Role & University Trajectory */}
               <div className="flex flex-wrap items-center gap-2.5 pt-1 text-[12px] sm:text-[12.5px]">
-                <a
+                <StarBorder
+                  as="a"
                   href="#experience"
                   className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
+                  color={dark ? "#C9973A" : "#B0822D"}
+                  trailColor={dark ? "#E5C378" : "#85601F"}
+                  duration={5}
+                  direction="clockwise"
+                  stars={1}
+                  trailLength={0.28}
+                  thickness={1.2}
+                  radius={9999}
+                  glow={0.55}
+                  hover="lap"
+                  sparkle={false}
+                  clickPulse
+                  backgroundColor="transparent"
+                  borderColor="transparent"
+                  theme={dark ? "dark" : "light"}
                 >
-                  <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
+                  <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
                     <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
                     <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_6px_var(--gold)]" />
                   </span>
-                  <span className="font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-gold">
+                  <span className="relative z-10 font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-gold">
                     Web Developer Trainee Intern
                   </span>
-                  <span className="text-fg-subtle">
+                  <span className="relative z-10 text-fg-subtle">
                     at <span className="font-normal text-fg-muted">ETEC & KruITSolution</span>
                   </span>
-                </a>
+                </StarBorder>
 
-                <a
+                <StarBorder
+                  as="a"
                   href="#education"
                   className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
+                  color={dark ? "#C9973A" : "#B0822D"}
+                  trailColor={dark ? "#E5C378" : "#85601F"}
+                  duration={5.8}
+                  direction="clockwise"
+                  stars={1}
+                  trailLength={0.28}
+                  thickness={1.2}
+                  radius={9999}
+                  glow={0.55}
+                  hover="lap"
+                  sparkle={false}
+                  clickPulse
+                  backgroundColor="transparent"
+                  borderColor="transparent"
+                  theme={dark ? "dark" : "light"}
                 >
-                  <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-fg/[0.06] dark:bg-white/[0.08]">
+                  <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-fg/[0.06] dark:bg-white/[0.08]">
                     <GraduationCap
                       className="h-3 w-3 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
                       strokeWidth={1.75}
                       aria-hidden="true"
                     />
                   </span>
-                  <span className="font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-fg">
+                  <span className="relative z-10 font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-fg">
                     4th-Year Software Development
                   </span>
-                  <span className="text-fg-subtle">
+                  <span className="relative z-10 text-fg-subtle">
                     at <span className="font-normal text-fg-muted">Norton University</span>
                   </span>
-                </a>
+                </StarBorder>
               </div>
             </div>
           </div>

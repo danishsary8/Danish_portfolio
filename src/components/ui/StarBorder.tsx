@@ -1,43 +1,51 @@
-// @ts-nocheck
 'use client';
 
-import { useEffect, useRef } from 'react';
-
+import React, { useEffect, useRef, ElementType, ReactNode, CSSProperties, ComponentPropsWithoutRef } from 'react';
 import './StarBorder.css';
 
 const THEMES = {
   dark: {
-    surface: '#111113',
-    text: '#ededef',
-    track: 'rgba(255, 255, 255, 0.14)',
+    surface: '#0c0c0f',
+    text: '#fafafa',
+    track: 'rgba(255, 255, 255, 0.1)',
     light: '#ffffff'
   },
   light: {
     surface: '#ffffff',
-    text: '#111113',
-    track: 'rgba(10, 10, 12, 0.14)',
-    light: '#111113'
+    text: '#18181b',
+    track: 'rgba(24, 24, 27, 0.12)',
+    light: '#18181b'
   }
 };
 
-const HOVERS = ['lap', 'brighten', 'reveal', 'none'];
+const HOVERS = ['lap', 'brighten', 'reveal', 'none'] as const;
+type HoverEffect = typeof HOVERS[number];
+
 const BLEED = 48;
 const LAP = 0.9;
 const TAU = Math.PI * 2;
-const WHITE = [255, 255, 255];
+const WHITE: [number, number, number] = [255, 255, 255];
 
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const wrap = (value, total) => ((value % total) + total) % total;
-const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - (2 - 2 * t) ** 3 / 2);
-const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
-const rgba = (rgb, alpha) =>
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const wrap = (value: number, total: number) => ((value % total) + total) % total;
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (2 - 2 * t) ** 3 / 2);
+const mix = (a: [number, number, number], b: [number, number, number], t: number): [number, number, number] => [
+  a[0] + (b[0] - a[0]) * t,
+  a[1] + (b[1] - a[1]) * t,
+  a[2] + (b[2] - a[2]) * t
+];
+const rgba = (rgb: [number, number, number], alpha: number) =>
   `rgba(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])}, ${clamp(alpha, 0, 1).toFixed(3)})`;
 
-let colorContext = null;
+let colorContext: CanvasRenderingContext2D | null = null;
 
-const toRgb = color => {
-  if (typeof document === 'undefined') return WHITE;
-  colorContext = colorContext ?? document.createElement('canvas').getContext('2d');
+const toRgb = (color: string): [number, number, number] => {
+  if (typeof window !== 'undefined' && color && typeof color === 'string' && color.startsWith('var(')) {
+    const varName = color.slice(4, -1).trim();
+    const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    if (resolved) color = resolved;
+  }
+  colorContext = colorContext ?? (typeof document !== 'undefined' ? document.createElement('canvas').getContext('2d') : null);
   if (!colorContext) return WHITE;
   colorContext.fillStyle = '#000000';
   colorContext.fillStyle = color;
@@ -47,15 +55,30 @@ const toRgb = color => {
     return [(hex >> 16) & 255, (hex >> 8) & 255, hex & 255];
   }
   const parts = value.match(/[\d.]+/g)?.map(Number) ?? WHITE;
-  return [parts[0], parts[1], parts[2]];
+  return [parts[0] ?? 255, parts[1] ?? 255, parts[2] ?? 255];
 };
 
-const outline = (width, height, radius) => {
+interface Segment {
+  length: number;
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  angle: number | null;
+}
+
+interface Shape {
+  r: number;
+  segments: Segment[];
+  total: number;
+}
+
+const outline = (width: number, height: number, radius: number): Shape => {
   const r = Math.max(0, Math.min(radius, width / 2, height / 2));
   const arc = (Math.PI * r) / 2;
   const across = Math.max(0, width - 2 * r);
   const down = Math.max(0, height - 2 * r);
-  const segments = [
+  const segments: Segment[] = [
     { length: across, x: r, y: 0, dx: 1, dy: 0, angle: null },
     { length: arc, x: width - r, y: r, dx: 0, dy: 0, angle: -Math.PI / 2 },
     { length: down, x: width, y: r, dx: 0, dy: 1, angle: null },
@@ -75,7 +98,14 @@ const outline = (width, height, radius) => {
   };
 };
 
-const pointAt = (shape, distance, point) => {
+interface Point {
+  x: number;
+  y: number;
+  nx: number;
+  ny: number;
+}
+
+const pointAt = (shape: Shape, distance: number, point: Point) => {
   let s = wrap(distance, shape.total);
   for (const segment of shape.segments) {
     if (segment.length > 0 && s <= segment.length) {
@@ -98,7 +128,7 @@ const pointAt = (shape, distance, point) => {
   return point;
 };
 
-const project = (shape, px, py) => {
+const project = (shape: Shape, px: number, py: number) => {
   let best = Infinity;
   let found = 0;
   let offset = 0;
@@ -129,8 +159,34 @@ const project = (shape, px, py) => {
   return found;
 };
 
-const StarBorder = ({
-  as: Component = 'button',
+export interface StarBorderProps<T extends ElementType = 'button'> {
+  as?: T;
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  color?: string;
+  trailColor?: string;
+  duration?: number;
+  thickness?: number;
+  radius?: number;
+  trailLength?: number;
+  stars?: number;
+  glow?: number;
+  sparkle?: boolean;
+  direction?: 'clockwise' | 'counterclockwise';
+  hover?: HoverEffect;
+  clickPulse?: boolean;
+  theme?: 'dark' | 'light';
+  backgroundColor?: string;
+  textColor?: string;
+  borderColor?: string;
+}
+
+export type StarBorderComponentProps<T extends ElementType = 'button'> = StarBorderProps<T> &
+  Omit<ComponentPropsWithoutRef<T>, keyof StarBorderProps<T>>;
+
+export const StarBorder = <T extends ElementType = 'button'>({
+  as,
   children,
   className = '',
   style,
@@ -151,10 +207,11 @@ const StarBorder = ({
   textColor,
   borderColor,
   ...rest
-}) => {
-  const rootRef = useRef(null);
-  const canvasRef = useRef(null);
-  const wakeRef = useRef(null);
+}: StarBorderComponentProps<T>) => {
+  const Component = (as || 'button') as ElementType;
+  const rootRef = useRef<HTMLElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const wakeRef = useRef<(() => void) | null>(null);
   const palette = THEMES[theme] ?? THEMES.dark;
   const light = color ?? palette.light;
   const settings = {
@@ -169,7 +226,7 @@ const StarBorder = ({
     glow: clamp(glow, 0, 1),
     sparkle,
     direction: direction === 'counterclockwise' ? -1 : 1,
-    hover: HOVERS.includes(hover) ? hover : 'lap',
+    hover: (HOVERS as readonly string[]).includes(hover) ? hover : 'lap',
     clickPulse
   };
   const settingsRef = useRef(settings);
@@ -182,7 +239,7 @@ const StarBorder = ({
     if (!root || !canvas || !ctx) return undefined;
 
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-    const point = { x: 0, y: 0, nx: 0, ny: -1 };
+    const point: Point = { x: 0, y: 0, nx: 0, ny: -1 };
     const state = {
       width: 0,
       height: 0,
@@ -202,9 +259,22 @@ const StarBorder = ({
       pointerY: 0,
       visible: true
     };
-    const pulses = [];
-    const dust = [];
-    const colors = { key: '', head: WHITE, tail: WHITE };
+    const pulses: { origin: number; age: number }[] = [];
+    const dust: {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      age: number;
+      life: number;
+      size: number;
+      seed: number;
+    }[] = [];
+    const colors: { key: string; head: [number, number, number]; tail: [number, number, number] } = {
+      key: '',
+      head: WHITE,
+      tail: WHITE
+    };
     let raf = 0;
     let last = performance.now();
     let alive = true;
@@ -218,21 +288,21 @@ const StarBorder = ({
       wake();
     };
 
-    const local = event => {
+    const local = (event: PointerEvent | MouseEvent) => {
       const rect = root.getBoundingClientRect();
       const scaleX = rect.width ? state.width / rect.width : 1;
       const scaleY = rect.height ? state.height / rect.height : 1;
       return [(event.clientX - rect.left) * scaleX, (event.clientY - rect.top) * scaleY];
     };
 
-    const shapeFor = s =>
+    const shapeFor = (s: typeof settings) =>
       outline(
         Math.max(1, state.width - s.thickness),
         Math.max(1, state.height - s.thickness),
         s.radius - s.thickness / 2
       );
 
-    const stroke = (x1, y1, x2, y2, width, style) => {
+    const stroke = (x1: number, y1: number, x2: number, y2: number, width: number, style: string | CanvasGradient) => {
       ctx.lineWidth = width;
       ctx.strokeStyle = style;
       ctx.beginPath();
@@ -241,7 +311,15 @@ const StarBorder = ({
       ctx.stroke();
     };
 
-    const drawTrail = (s, shape, head, length, sign, intensity, tip = true) => {
+    const drawTrail = (
+      s: typeof settings,
+      shape: Shape,
+      head: number,
+      length: number,
+      sign: number,
+      intensity: number,
+      tip = true
+    ) => {
       if (length < 0.5 || intensity <= 0) return;
       const steps = clamp(Math.ceil(length / 2), 2, 90);
       pointAt(shape, head, point);
@@ -261,7 +339,7 @@ const StarBorder = ({
       }
     };
 
-    const drawHead = (s, x, y, intensity, twinkle) => {
+    const drawHead = (s: typeof settings, x: number, y: number, intensity: number, twinkle: number) => {
       if (intensity <= 0) return;
       const tone = colors.head;
       const reach = (12 + 40 * s.glow) * (s.light ? 0.6 : 1);
@@ -300,7 +378,7 @@ const StarBorder = ({
       stroke(x, y - spike, x, y + spike, s.light ? 0.75 : 1, vertical);
     };
 
-    const spawnDust = (x, y, nx, ny, speed) => {
+    const spawnDust = (x: number, y: number, nx: number, ny: number, speed: number) => {
       if (dust.length > 48) return;
       const push = 3 + Math.random() * 10;
       const drift = (Math.random() - 0.5) * 8;
@@ -316,7 +394,7 @@ const StarBorder = ({
       });
     };
 
-    const draw = (base, shape) => {
+    const draw = (base: typeof settings, shape: Shape) => {
       const s = state.boost > 0.001 ? { ...base, glow: Math.min(1.5, base.glow + 0.4 * state.boost) } : base;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -339,36 +417,43 @@ const StarBorder = ({
         ctx.lineWidth = s.thickness + 2 * s.glow;
         ctx.strokeStyle = rgba(colors.head, ring);
         ctx.beginPath();
-        ctx.roundRect(
-          0,
-          0,
-          Math.max(1, state.width - s.thickness),
-          Math.max(1, state.height - s.thickness),
-          Math.max(0, shape.r)
-        );
+        if (typeof ctx.roundRect === 'function') {
+          ctx.roundRect(
+            0,
+            0,
+            Math.max(1, state.width - s.thickness),
+            Math.max(1, state.height - s.thickness),
+            Math.max(0, shape.r)
+          );
+        } else {
+          ctx.rect(0, 0, Math.max(1, state.width - s.thickness), Math.max(1, state.height - s.thickness));
+        }
         ctx.stroke();
       }
 
       const still = clamp(1 - speed / Math.max(1, (total / s.duration) * 0.6), 0, 1) * Math.min(1, intensity);
-      const rest = (10 + 14 * s.glow + s.thickness * 2) * still;
-      for (let i = 0; i < s.stars; i++) {
-        const head = state.phase + i * spacing;
-        drawTrail(s, shape, head, length, sign, Math.min(1, intensity));
-        if (still > 0.01) {
-          drawTrail(s, shape, head, rest, 1, still, false);
-          drawTrail(s, shape, head, rest, -1, still, false);
+      if (still > 0.005) {
+        for (let i = 0; i < s.stars; i++) {
+          const stationary = state.phase + i * spacing;
+          const reach = (10 + 26 * s.glow) * (0.65 + 0.35 * still);
+          drawTrail(s, shape, stationary, reach, 1, still * 0.5, false);
+          drawTrail(s, shape, stationary, reach, -1, still * 0.5, false);
         }
+      }
+
+      for (let i = 0; i < s.stars; i++) {
+        drawTrail(s, shape, state.phase + i * spacing, length, sign, intensity, true);
       }
 
       pulses.forEach(pulse => {
         const progress = pulse.age / 0.65;
-        const fade = (1 - progress) ** 2;
-        const travel = (total / 2) * (1 - (1 - Math.min(1, pulse.age / 0.5)) ** 2);
-        const tail = Math.min(travel, total * 0.16);
-        [1, -1].forEach(way => {
-          const front = pulse.origin + way * travel;
-          drawTrail(s, shape, front, tail, way, fade);
-          pointAt(shape, front, point);
+        const wave = ease(progress);
+        const fade = (1 - progress) ** 1.8 * (s.light ? 0.55 : 0.95);
+        const reach = wave * total * 0.45;
+        drawTrail(s, shape, pulse.origin + reach, 20 + 35 * s.glow, 1, fade * 0.7);
+        drawTrail(s, shape, pulse.origin - reach, 20 + 35 * s.glow, -1, fade * 0.7);
+        [-reach, reach].forEach(dx => {
+          pointAt(shape, pulse.origin + dx, point);
           drawHead(s, point.x, point.y, fade * 0.8, 0.8);
         });
       });
@@ -391,7 +476,7 @@ const StarBorder = ({
       });
     };
 
-    const frame = now => {
+    const frame = (now: number) => {
       raf = 0;
       if (!alive) return;
       const s = settingsRef.current;
@@ -472,7 +557,7 @@ const StarBorder = ({
     };
     wakeRef.current = wake;
 
-    const onEnter = event => {
+    const onEnter = (event: PointerEvent) => {
       const s = settingsRef.current;
       [state.pointerX, state.pointerY] = local(event);
       state.hovered = true;
@@ -487,20 +572,20 @@ const StarBorder = ({
       state.hovered = false;
       wake();
     };
-    const pulse = origin => {
+    const pulse = (origin: number) => {
       if (!settingsRef.current.clickPulse) return;
       pulses.push({ origin, age: 0 });
       if (pulses.length > 4) pulses.shift();
       state.flash = 1;
       wake();
     };
-    const onDown = event => {
+    const onDown = (event: PointerEvent) => {
       if (event.button !== 0 && event.pointerType === 'mouse') return;
       const s = settingsRef.current;
       const [x, y] = local(event);
       pulse(project(shapeFor(s), x - s.thickness / 2, y - s.thickness / 2));
     };
-    const onClick = event => {
+    const onClick = (event: MouseEvent) => {
       if (event.detail === 0) pulse(state.phase);
     };
     const onFocus = () => {
@@ -520,12 +605,12 @@ const StarBorder = ({
       if (state.visible) wake();
     });
     visibility.observe(root);
-    root.addEventListener('pointerenter', onEnter);
-    root.addEventListener('pointerleave', onLeave);
-    root.addEventListener('pointerdown', onDown);
-    root.addEventListener('click', onClick);
-    root.addEventListener('focus', onFocus);
-    root.addEventListener('blur', onBlur);
+    root.addEventListener('pointerenter', onEnter as EventListener);
+    root.addEventListener('pointerleave', onLeave as EventListener);
+    root.addEventListener('pointerdown', onDown as EventListener);
+    root.addEventListener('click', onClick as EventListener);
+    root.addEventListener('focus', onFocus as EventListener);
+    root.addEventListener('blur', onBlur as EventListener);
     measure();
 
     return () => {
@@ -534,12 +619,12 @@ const StarBorder = ({
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       visibility.disconnect();
-      root.removeEventListener('pointerenter', onEnter);
-      root.removeEventListener('pointerleave', onLeave);
-      root.removeEventListener('pointerdown', onDown);
-      root.removeEventListener('click', onClick);
-      root.removeEventListener('focus', onFocus);
-      root.removeEventListener('blur', onBlur);
+      root.removeEventListener('pointerenter', onEnter as EventListener);
+      root.removeEventListener('pointerleave', onLeave as EventListener);
+      root.removeEventListener('pointerdown', onDown as EventListener);
+      root.removeEventListener('click', onClick as EventListener);
+      root.removeEventListener('focus', onFocus as EventListener);
+      root.removeEventListener('blur', onBlur as EventListener);
     };
   }, []);
 
@@ -559,7 +644,7 @@ const StarBorder = ({
         '--star-border-track': borderColor ?? palette.track,
         ...style
       }}
-      {...(Component === 'button' && rest.type === undefined ? { type: 'button' } : null)}
+      {...(Component === 'button' && (rest as { type?: string }).type === undefined ? { type: 'button' } : null)}
       {...rest}
     >
       <canvas ref={canvasRef} className="star-border__light" aria-hidden="true" />
