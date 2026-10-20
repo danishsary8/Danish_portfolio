@@ -588,5 +588,25 @@
 
 @keyframes bot-float-bob {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes bot-shadow-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.35; }
+  50% { transform: scale(0.8); opacity: 0.18; }
+}
+
+@keyframes bot-orbital-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes bot-hand-wave {
+  0%, 100% { transform: rotate(18deg) translateY(0); }
+  50% { transform: rotate(38deg) translateY(-2px); }
+}
+
+@keyframes bot-soundwave {
+  0%, 100% { height: 3px; }
+  50% { height: 10px; }
 }
