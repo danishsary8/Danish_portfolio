@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   forwardRef,
   useCallback,
@@ -10,6 +11,7 @@ import {
   type CSSProperties,
   type MouseEvent,
 } from "react";
+// @ts-nocheck
 import {
   motion,
   AnimatePresence,

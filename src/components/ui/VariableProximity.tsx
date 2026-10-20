@@ -28,7 +28,7 @@ const parseSettings = (settings: string) =>
       .filter(Boolean)
       .map((part) => {
         const [name, value] = part.split(/\s+/);
-        return [name.replace(/['"]/g, ""), parseFloat(value)];
+        return [name ? name.replace(/['"]/g, "") : "", value !== undefined ? parseFloat(value) : 0] as [string, number];
       }),
   );
 
@@ -145,7 +145,7 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
         if (lastTop !== null && top > lastTop + 2) starts.push(index);
         lastTop = top;
       });
-      letters.forEach((letter, index) => ((letter as HTMLElement).style.fontVariationSettings = saved[index]));
+      letters.forEach((letter, index) => ((letter as HTMLElement).style.fontVariationSettings = saved[index] ?? ""));
       breaks.forEach((node) => (node.style.display = ""));
       root.style.whiteSpace = wrap;
       const key = starts.join(",");

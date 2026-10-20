@@ -25,7 +25,7 @@ export interface PillNavProps {
   logoAlt?: string;
   logoHref?: string;
   items?: PillNavItem[];
-  activeHref?: string;
+  activeHref?: string | undefined;
   defaultActiveIndex?: number;
   onItemClick?: (item: PillNavItem, index: number, event: MouseEvent) => void;
   linkComponent?: ComponentType<any> | string;
@@ -240,7 +240,7 @@ export const PillNav: React.FC<PillNavProps> = ({
   const vars: Record<string, string> = { ...palette, ...(SIZES[size] ?? SIZES.md) };
   if (surface === "glass") vars["--pn-blur"] = "blur(28px) saturate(1.8)";
   if (surface === "solid") {
-    vars["--pn-surface"] = palette["--pn-solid"];
+    vars["--pn-surface"] = palette["--pn-solid"] ?? "";
     vars["--pn-blur"] = "none";
   }
   if (surface === "none") {
@@ -262,7 +262,7 @@ export const PillNav: React.FC<PillNavProps> = ({
     vars["--pn-pill"] = highlightColor;
     vars["--pn-dot"] = highlightColor;
     vars["--pn-pill-shadow"] = "inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px -6px rgba(0, 0, 0, 0.45)";
-    vars["--pn-pill-ink"] = highlightTextColor || palette["--pn-pill-ink"];
+    vars["--pn-pill-ink"] = highlightTextColor || palette["--pn-pill-ink"] || "";
   } else if (highlightTextColor) {
     vars["--pn-pill-ink"] = highlightTextColor;
   }

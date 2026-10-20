@@ -125,6 +125,30 @@ const buildRoll = (a, b, spin, { compact, decimals, places, separator }) => {
   return { slots, columns, label };
 };
 
+export interface CountUpProps {
+  to: number;
+  from?: number;
+  direction?: 'up' | 'down';
+  delay?: number;
+  duration?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  startWhen?: boolean;
+  separator?: string;
+  prefix?: string;
+  suffix?: string;
+  mode?: 'count' | 'roll';
+  easing?: string | ((t: number) => number);
+  decimals?: number;
+  format?: 'standard' | 'compact';
+  trigger?: 'view' | 'mount';
+  replayOnHover?: boolean;
+  padDigits?: number;
+  formatter?: (value: number) => string;
+  onStart?: () => void;
+  onEnd?: () => void;
+}
+
 export default function CountUp({
   to,
   from = 0,
@@ -132,7 +156,7 @@ export default function CountUp({
   delay = 0,
   duration = 2,
   className = '',
-  style,
+  style = {},
   startWhen = true,
   separator = '',
   prefix = '',
@@ -147,7 +171,7 @@ export default function CountUp({
   formatter,
   onStart,
   onEnd
-}) {
+}: CountUpProps) {
   const ref = useRef(null);
   const textRef = useRef(null);
   const slotRefs = useRef([]);

@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
-import Lottie from "lottie-react";
 import { MessageSquare, X, Send, Sparkles, User, Bot, ArrowRight, FileText, Mail, Github, ExternalLink } from "lucide-react";
-import botAnimationData from "@/assets/bot-animation.json";
 import { PROFILE, PROJECTS, SKILL_GROUPS } from "@/content/portfolio";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
+
+export interface ChatLink {
+  label: string;
+  href?: string;
+  action?: () => void;
+}
 
 interface Message {
   id: string;
   sender: "bot" | "user";
   text: string;
   time: string;
-  links?: { label: string; href?: string; action?: () => void }[];
+  links?: ChatLink[];
 }
 
 export type BotState = "idle" | "listening" | "greeting" | "ready";
@@ -113,21 +117,21 @@ export function ChatbotWidget() {
         const p = PROJECTS.find((x) => x.id === "bookly");
         botResponse = `Bookly is an online bookstore platform Danish engineered with Laravel, React, and PostgreSQL. It features OTP & Google authentication, order tracking, admin dashboard, Telegram bot alerts, and Cloudinary media.`;
         links = [
-          { label: "Bookly Live App", href: p?.liveUrl },
-          { label: "REST API Docs", href: p?.apiDocsUrl },
+          ...(p?.liveUrl ? [{ label: "Bookly Live App", href: p.liveUrl }] : []),
+          ...(p?.apiDocsUrl ? [{ label: "REST API Docs", href: p.apiDocsUrl }] : []),
         ];
       } else if (q.includes("loomora")) {
         const p = PROJECTS.find((x) => x.id === "loomora");
         botResponse = `Loomora is a daily routine & habit planner built with React, Tailwind CSS, Framer Motion, and Laravel with PostgreSQL. Features secure authentication, habit streaks, and reminders.`;
-        links = [{ label: "Loomora Live App", href: p?.liveUrl }];
+        links = p?.liveUrl ? [{ label: "Loomora Live App", href: p.liveUrl }] : [];
       } else if (q.includes("diabetes") || q.includes("expert") || q.includes("award")) {
-        const p = PROJECTS.find((x) => x.id === "diabetes-expert-system");
+        const p = PROJECTS.find((x) => x.id === "diabetes");
         botResponse = `The Diabetes Expert System is a bilingual (EN/Khmer) clinical decision assistant built with Flask, React, and PostgreSQL. It won the AI Expert System and Innovation 2026 Team Award at Norton University! Danish contributed Google OAuth, UI refactors, and testing.`;
-        links = [{ label: "Clinical System Live App", href: p?.liveUrl }];
+        links = p?.liveUrl ? [{ label: "Clinical System Live App", href: p.liveUrl }] : [];
       } else if (q.includes("driving") || q.includes("flutter")) {
-        const p = PROJECTS.find((x) => x.id === "driving-rules-app");
+        const p = PROJECTS.find((x) => x.id === "driving");
         botResponse = `Driving Rules App is an offline bilingual (Khmer/English) learning app for Cambodia's official driving exam, built with Flutter and Dart with local storage and mock tests.`;
-        links = [{ label: "Driving App Web Demo", href: p?.liveUrl }];
+        links = p?.liveUrl ? [{ label: "Driving App Web Demo", href: p.liveUrl }] : [];
       } else if (q.includes("project")) {
         botResponse =
           "Danish has built 4 key production applications:\n\n" +
@@ -180,7 +184,7 @@ export function ChatbotWidget() {
         sender: "bot",
         text: botResponse,
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        links,
+        ...(links && links.length > 0 ? { links } : {}),
       };
       setMessages((prev) => [...prev, botMsg]);
     }, 450);

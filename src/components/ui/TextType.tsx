@@ -87,8 +87,9 @@ const graphemes = (value: string): string[] => {
 
 const typoFor = (char: string): string | null => {
   const keys = NEIGHBORS[char.toLowerCase()];
-  if (!keys) return null;
+  if (!keys || keys.length === 0) return null;
   const pick = keys[Math.floor(Math.random() * keys.length)];
+  if (!pick) return null;
   return char === char.toLowerCase() ? pick : pick.toUpperCase();
 };
 
@@ -200,7 +201,7 @@ export function TextType({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
+        if (!entry || !entry.isIntersecting) return;
         setIsVisible(true);
         observer.disconnect();
       },
@@ -309,7 +310,7 @@ export function TextType({
         const lead = shown === 0 ? initialDelay : 0;
         const next = reverseMode ? total - shown - 1 : shown;
         const wrong =
-          mistakes > 0 && shown > 0 && lastTypo.current !== next ? typoFor(chars[next]) : null;
+          mistakes > 0 && shown > 0 && lastTypo.current !== next ? typoFor(chars[next] ?? "") : null;
 
         if (reduceMotion) {
           wait(lead, () => setCount(total));
@@ -341,7 +342,7 @@ export function TextType({
         wait(deletingSpeed, () => setCount(shown - 1));
       }
     } else {
-      onSentenceCompleteRef.current?.(textArray[index], index);
+      onSentenceCompleteRef.current?.(textArray[index] ?? "", index);
       lastTypo.current = -1;
       setSelected(0);
       setIsDeleting(false);

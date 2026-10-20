@@ -11,6 +11,24 @@ const TAU = Math.PI * 2;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
+export interface GradientTextProps {
+  children?: React.ReactNode;
+  colors?: string[];
+  animationSpeed?: number;
+  variant?: 'linear' | 'flow' | 'conic';
+  angle?: number;
+  direction?: 'horizontal' | 'vertical' | 'diagonal';
+  scale?: number;
+  yoyo?: boolean;
+  glow?: number;
+  showBorder?: boolean;
+  borderWidth?: number;
+  pauseOnHover?: boolean;
+  followPointer?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
 export function GradientText({
   children,
   colors = ['#5227FF', '#FF9FFC', '#B497CF'],
@@ -26,8 +44,8 @@ export function GradientText({
   pauseOnHover = false,
   followPointer = false,
   className = '',
-  style
-}) {
+  style = {}
+}: GradientTextProps) {
   const rootRef = useRef(null);
   const settingsRef = useRef(null);
   const wakeRef = useRef(null);

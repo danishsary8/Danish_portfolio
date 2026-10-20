@@ -878,7 +878,37 @@ const createEngine = (root, track, config, setLayout) => {
   return { refresh, wake, destroy, state: st };
 };
 
-export const LogoLoop = memo(
+export interface LogoLoopProps {
+  logos: any[];
+  speed?: number;
+  direction?: 'left' | 'right' | 'up' | 'down';
+  width?: string | number;
+  logoHeight?: number;
+  gap?: number;
+  pauseOnHover?: boolean;
+  hoverSpeed?: number;
+  fadeOut?: boolean;
+  fadeOutWidth?: number;
+  scaleOnHover?: boolean;
+  layout?: 'line' | 'wave' | 'circle';
+  bend?: number;
+  focus?: number;
+  magnify?: number;
+  tiltX?: number;
+  tiltY?: number;
+  step?: boolean;
+  muted?: number;
+  labels?: 'none' | 'hover' | 'always';
+  draggable?: boolean;
+  scrollBoost?: number;
+  intro?: boolean;
+  renderItem?: (item: any, key: any) => React.ReactNode;
+  ariaLabel?: string;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+export const LogoLoop = memo<LogoLoopProps>(
   ({
     logos,
     speed = 120,

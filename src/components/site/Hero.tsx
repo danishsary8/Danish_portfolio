@@ -339,7 +339,7 @@ export function Hero() {
                     draggable={true}
                     intro={false}
                     ariaLabel="Core Tech Stack"
-                    renderItem={(item) => (
+                    renderItem={(item: any) => (
                       <span
                         className="tech-badge group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/80 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted cursor-default select-none hover:bg-surface-1 hover:text-fg whitespace-nowrap"
                         style={
