@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-export function Index() {
+function Index() {
   return (
     <div className="min-h-screen overflow-x-clip bg-bg text-fg">
       <a

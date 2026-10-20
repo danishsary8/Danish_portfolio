@@ -12,7 +12,7 @@ import LogoLoop from "@/components/ui/LogoLoop";
 import CountUp from "@/components/ui/CountUp";
 import ScrambledText from "@/components/ui/ScrambledText";
 import FuseButton from "@/components/ui/FuseButton";
-import { SpecularButton } from "@/components/ui/SpecularButton";
+import GradientText from "@/components/ui/GradientText";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -119,7 +119,7 @@ export function Hero() {
                 pointerTracking
                 smoothing={0.14}
                 perspective={850}
-                autoOrbit={true}
+                autoOrbit={false}
                 orbitSpeed={0.2}
                 fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
                 fontWeight={800}
@@ -218,7 +218,14 @@ export function Hero() {
             {/* Core Tech Stack & Current Focus Telemetry */}
             <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <span className="shrink-0 font-mono text-[12px] text-fg-subtle">Core Stack</span>
+                <GradientText
+                  colors={dark ? ["#60a5fa", "#a78bfa", "#f472b6"] : ["#2563eb", "#7c3aed", "#ec4899"]}
+                  animationSpeed={6}
+                  showBorder={false}
+                  className="shrink-0 font-mono text-[12px] font-semibold"
+                >
+                  Core Stack
+                </GradientText>
                 <span aria-hidden="true" className="shrink-0 text-fg-subtle/50">/</span>
                 <div className="min-w-0 flex-1 overflow-hidden">
                   <LogoLoop

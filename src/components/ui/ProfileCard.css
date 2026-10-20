@@ -56,7 +56,13 @@
   transform: rotate(25deg);
   pointer-events: none;
   z-index: 30;
-  animation: profile-card-flash-sweep 5.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  opacity: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .profile-card:hover .profile-card__body::after {
+    animation: profile-card-flash-sweep 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
 }
 
 @keyframes profile-card-flash-sweep {

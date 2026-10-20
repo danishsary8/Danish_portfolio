@@ -213,13 +213,19 @@ const DepthText = ({
       frameId = requestAnimationFrame(tick);
     };
 
+    let cachedRect = null;
+    const updateRect = () => {
+      if (root) cachedRect = root.getBoundingClientRect();
+    };
+    updateRect();
+
     const handlePointerMove = event => {
-      const rect = root.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
+      if (!cachedRect) updateRect();
+      if (!cachedRect || !cachedRect.width || !cachedRect.height) return;
 
       activePointer = true;
-      const x = clamp((event.clientX - (rect.left + rect.width / 2)) / (rect.width * 0.8), -1, 1);
-      const y = clamp((event.clientY - (rect.top + rect.height / 2)) / (rect.height * 0.8), -1, 1);
+      const x = clamp((event.clientX - (cachedRect.left + cachedRect.width / 2)) / (cachedRect.width * 0.8), -1, 1);
+      const y = clamp((event.clientY - (cachedRect.top + cachedRect.height / 2)) / (cachedRect.height * 0.8), -1, 1);
 
       target.x = baseRotation.x - y * safeTilt;
       target.y = baseRotation.y + x * safeTilt;
@@ -291,14 +297,17 @@ const DepthText = ({
         ? null
         : new ResizeObserver(() => {
             size = root.offsetHeight;
+            updateRect();
           });
     resizeObserver?.observe(root);
+    window.addEventListener('scroll', updateRect, { passive: true });
 
     applyGrow();
     applyTransform();
     start();
 
     return () => {
+      window.removeEventListener('scroll', updateRect);
       if (canTrackPointer) {
         window.removeEventListener('pointermove', handlePointerMove);
         window.removeEventListener('pointerout', handlePointerOut);

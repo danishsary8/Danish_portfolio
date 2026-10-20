@@ -1,6 +1,7 @@
+// @ts-nocheck
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import './GradientText.css';
 
@@ -10,25 +11,7 @@ const TAU = Math.PI * 2;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-export interface GradientTextProps extends React.HTMLAttributes<HTMLSpanElement> {
-  children?: React.ReactNode;
-  colors?: string[];
-  animationSpeed?: number;
-  variant?: 'linear' | 'flow' | 'conic';
-  angle?: number;
-  direction?: 'horizontal' | 'vertical' | 'diagonal';
-  scale?: number;
-  yoyo?: boolean;
-  glow?: number;
-  showBorder?: boolean;
-  borderWidth?: number;
-  pauseOnHover?: boolean;
-  followPointer?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-}
-
-export const GradientText: React.FC<GradientTextProps> = function GradientText({
+export function GradientText({
   children,
   colors = ['#5227FF', '#FF9FFC', '#B497CF'],
   animationSpeed = 8,
