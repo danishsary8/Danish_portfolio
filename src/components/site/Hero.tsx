@@ -271,11 +271,12 @@ export function Hero() {
                 <GradientText
                   colors={
                     dark
-                      ? ["#40ffaa", "#4079ff", "#a78bfa", "#40ffaa"]
-                      : ["#059669", "#2563eb", "#7c3aed", "#059669"]
+                      ? ["#40ffaa", "#38bdf8", "#818cf8", "#c084fc", "#40ffaa"]
+                      : ["#059669", "#0284c7", "#4f46e5", "#9333ea", "#059669"]
                   }
-                  animationSpeed={3}
-                  scale={1.2}
+                  animationSpeed={5}
+                  variant="flow"
+                  scale={1.8}
                   glow={dark ? 0.35 : 0.15}
                   showBorder={false}
                   className="shrink-0 font-mono text-[12px] sm:text-[12.5px] font-bold tracking-wider uppercase select-none"
