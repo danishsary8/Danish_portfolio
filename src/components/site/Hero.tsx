@@ -10,7 +10,6 @@ import { ProfileCard } from "@/components/ui/ProfileCard";
 import ElasticMesh from "@/components/ui/ElasticMesh";
 import { SplitText } from "@/components/ui/SplitText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
-import StarBorder from "@/components/ui/StarBorder";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -146,26 +145,12 @@ export function Hero() {
                   aria-hidden="true"
                 />
               </a>
-              <StarBorder
-                as="a"
+              <a
                 href="#projects"
-                color={dark ? "#ffffff" : "#111113"}
-                trailColor={dark ? "#ffffff" : "#111113"}
-                duration={4}
-                direction="clockwise"
-                stars={1}
-                trailLength={0.3}
-                thickness={1}
-                radius={12}
-                glow={0.6}
-                hover="lap"
-                sparkle={false}
-                clickPulse
-                theme={dark ? "dark" : "light"}
-                className="h-10.5 px-5 text-[14px] font-semibold cursor-pointer select-none"
+                className="btn-neobrutal-secondary inline-flex h-10.5 items-center justify-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
               >
                 View projects
-              </StarBorder>
+              </a>
               {hasCv ? (
                 <a
                   {...getCvLinkProps()}
