@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, FileText, GraduationCap } from "lucide-react";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
@@ -29,6 +29,21 @@ export function Hero() {
   const time = useLocalTime(PROFILE.timezone);
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
+  const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const interval = setInterval(() => {
+      if (!isPausedRef.current) {
+        setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
+      }
+    }, 3400);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section id="home" aria-labelledby="hero-title" className="relative isolate overflow-hidden">
@@ -65,16 +80,28 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Sary (foreground) Danish (gold accent) with Syne architectural display & VariableProximity */}
+            {/* Main Headline: Alternating Gold Accent between Sary and Danish with Syne display & VariableProximity */}
             <h1
               ref={headlineRef}
               id="hero-title"
-              className="enter hero-name-heading relative mt-4 cursor-default select-none text-[clamp(2.85rem,6.4vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.03em]"
+              className="enter hero-name-heading relative mt-4 cursor-pointer select-none text-[clamp(2.85rem,6.4vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.03em]"
               style={step(1)}
+              onPointerEnter={() => {
+                isPausedRef.current = true;
+              }}
+              onPointerLeave={() => {
+                isPausedRef.current = false;
+              }}
+              onClick={() => {
+                setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
+              }}
+              title="Click to alternate highlight"
             >
               <VariableProximity
                 label="Sary"
-                className="text-fg hero-name-sary"
+                className={`hero-name-sary hero-name-word ${
+                  goldTarget === "sary" ? "hero-name-word--gold" : "hero-name-word--primary"
+                }`}
                 fromFontVariationSettings="'wght' 700"
                 toFontVariationSettings="'wght' 800"
                 containerRef={headlineRef}
@@ -86,7 +113,9 @@ export function Hero() {
               />{" "}
               <VariableProximity
                 label="Danish"
-                className="text-gold dark:text-gold hero-name-danish"
+                className={`hero-name-danish hero-name-word ${
+                  goldTarget === "danish" ? "hero-name-word--gold" : "hero-name-word--primary"
+                }`}
                 fromFontVariationSettings="'wght' 700"
                 toFontVariationSettings="'wght' 800"
                 containerRef={headlineRef}
