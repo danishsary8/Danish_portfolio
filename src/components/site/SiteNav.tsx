@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
-import { ShinyText } from "@/components/ui/ShinyText";
+import { GradientText } from "@/components/ui/GradientText";
 import { SlingButton } from "@/components/ui/SlingButton";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
@@ -65,19 +65,19 @@ export function SiteNav() {
             href="#home"
             className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
           >
-            <ShinyText
-              text={PROFILE.name}
-              color={dark ? "#a1a1aa" : "#18181b"}
-              shineColor="#ffffff"
-              speed={2.2}
-              delay={1.2}
-              shineWidth={6}
-              softness={0.35}
-              glow={0.1}
-              angle={115}
-              trigger="loop"
+            <GradientText
+              colors={
+                dark
+                  ? ["#EDEDEF", "#C9973A", "#FFFFFF", "#C9973A"]
+                  : ["#111113", "#B0822D", "#27272A", "#85601F"]
+              }
+              animationSpeed={8}
+              variant="flow"
+              glow={0.35}
               className="font-display nav-brand-text text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
-            />
+            >
+              {PROFILE.name}
+            </GradientText>
           </a>
         </div>
 
