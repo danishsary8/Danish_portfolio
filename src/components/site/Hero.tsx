@@ -305,7 +305,8 @@ export function Hero() {
                     color={dark ? "#EDEDEF" : "#111113"}
                     background={dark ? "#18181B" : "#F4F4F3"}
                     fuseColor="#F59E0B"
-                    undoWindow={2000}
+                    undoWindow={1000}
+                    pauseOnHover={false}
                     fuse="outline"
                     fuseThickness={2}
                     radius={8}

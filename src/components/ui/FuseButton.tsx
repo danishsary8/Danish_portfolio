@@ -72,7 +72,7 @@ export default function FuseButton({
     const a = anim.current;
     if (!a) return;
     const { hover, hidden } = pause.current;
-    if (hover || hidden) {
+    if ((pauseOnHover && hover) || hidden) {
       if (a.playState === 'running') a.pause();
     } else if (a.playState === 'paused') {
       a.play();
@@ -174,9 +174,11 @@ export default function FuseButton({
   const handlePointerLeave = e => {
     release();
     if (e.pointerType !== 'mouse') return;
-    pause.current.canHoverPause = true;
-    pause.current.hover = false;
-    syncPlayState();
+    if (pauseOnHover) {
+      pause.current.canHoverPause = true;
+      pause.current.hover = false;
+      syncPlayState();
+    }
   };
   const handleKeyDown = e => {
     if (e.key === 'Enter' || e.key === ' ') lastInput.current = 'keyboard';
