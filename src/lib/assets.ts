@@ -6,6 +6,7 @@
  */
 
 import photo from "@/assets/danish-photo.jpg";
+import chatbotIcon from "@/assets/chatbot.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
 import drivingShot from "@/assets/project-driving.jpg.asset.json";
@@ -17,6 +18,10 @@ export interface ProjectAsset {
 }
 
 export const ASSETS = {
+  chatbot: {
+    icon: chatbotIcon,
+    alt: "Sary Danish AI Assistant",
+  },
   profile: {
     photo,
     alt: "Sary Danish — Junior Full-Stack Developer & Software Development Student",

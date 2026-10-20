@@ -6,6 +6,7 @@ import { Projects } from "@/components/site/Projects";
 import { Experience } from "@/components/site/Experience";
 import { Education } from "@/components/site/Education";
 import { Contact, SiteFooter } from "@/components/site/Contact";
+import { FloatingChatbot } from "@/components/site/FloatingChatbot";
 
 const TITLE = "Sary Danish — Junior Web Developer | Phnom Penh, Cambodia";
 const DESCRIPTION =
@@ -47,6 +48,7 @@ export function Index() {
         <Contact />
       </main>
       <SiteFooter />
+      <FloatingChatbot />
     </div>
   );
 }
