@@ -14,7 +14,6 @@ import CountUp from "@/components/ui/CountUp";
 import ScrambledText from "@/components/ui/ScrambledText";
 import FuseButton from "@/components/ui/FuseButton";
 import GradientText from "@/components/ui/GradientText";
-import GlareHover from "@/components/ui/GlareHover";
 import SpecularButton from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
@@ -239,31 +238,14 @@ export function Hero() {
             <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-3.5 sm:gap-4" style={step(4)}>
               <a
                 href="#contact"
-                className="btn-neobrutal-primary group inline-flex h-10.5 items-center justify-center rounded-control select-none overflow-hidden"
+                className="btn-neobrutal-primary group inline-flex h-10.5 items-center justify-center gap-2 px-5 rounded-control select-none"
               >
-                <GlareHover
-                  borderRadius="6px"
-                  mode="hover"
-                  variant="streak"
-                  glareColor="#ffffff"
-                  glareOpacity={0.4}
-                  glareSize={30}
-                  softness={0.6}
-                  glareAngle={-45}
-                  blendMode="screen"
-                  rimGlint={true}
-                  transitionDuration={650}
-                  className="h-full w-full px-5 flex items-center justify-center select-none"
-                >
-                  <div className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap">
-                    <span className="font-semibold text-white">Get in touch</span>
-                    <ArrowRight
-                      className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    />
-                  </div>
-                </GlareHover>
+                <span className="font-semibold text-white whitespace-nowrap">Get in touch</span>
+                <ArrowRight
+                  className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
               </a>
 
               {PROFILE.github ? (
@@ -271,31 +253,14 @@ export function Hero() {
                   href={PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center rounded-control select-none overflow-hidden"
+                  className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center gap-2.5 px-5 rounded-control select-none"
                   aria-label="GitHub profile"
                 >
-                  <GlareHover
-                    borderRadius="6px"
-                    mode="hover"
-                    variant="streak"
-                    glareColor="#ffffff"
-                    glareOpacity={0.4}
-                    glareSize={30}
-                    softness={0.6}
-                    glareAngle={-45}
-                    blendMode="screen"
-                    rimGlint={true}
-                    transitionDuration={650}
-                    className="h-full w-full px-5 flex items-center justify-center select-none"
-                  >
-                    <div className="relative z-10 flex items-center justify-center gap-2.5 whitespace-nowrap">
-                      <SiGithub
-                        className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
-                        aria-hidden="true"
-                      />
-                      <span className="font-semibold tracking-[-0.01em]">GitHub</span>
-                    </div>
-                  </GlareHover>
+                  <SiGithub
+                    className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                    aria-hidden="true"
+                  />
+                  <span className="font-semibold tracking-[-0.01em] whitespace-nowrap">GitHub</span>
                 </a>
               ) : null}
             </div>
