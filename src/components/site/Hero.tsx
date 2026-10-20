@@ -186,27 +186,28 @@ export function Hero() {
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
-            <div className="enter mt-2 sm:mt-2.5 flex items-center" style={step(2)}>
-              <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[14px] sm:text-[16px] font-medium text-fg-muted shadow-2xs backdrop-blur-sm">
+            <div className="enter mt-3 sm:mt-3.5 flex items-center" style={step(2)}>
+              <div className="ios-glass-pill cursor-target inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 text-[14.5px] sm:text-[16.5px] font-semibold text-fg select-none transition-all duration-200">
                 <span className="sr-only">Junior Web Developer</span>
-                <span aria-hidden="true" className="font-medium text-fg-muted">Junior</span>
-                <span aria-hidden="true" className="inline-flex items-center font-medium text-fg-muted">
+                <span className="flex h-2 w-2 shrink-0 rounded-full bg-gold shadow-[0_0_8px_var(--gold)]" aria-hidden="true" />
+                <span aria-hidden="true" className="font-semibold text-fg tracking-tight">Junior</span>
+                <span aria-hidden="true" className="inline-flex items-center font-bold text-gold tracking-tight px-1.5 py-0.5 rounded-md bg-gold/10 dark:bg-gold/15">
                   <TextType
-                    text={["Software", "Web", "Fullstack"]}
-                    typingSpeed={75}
-                    pauseDuration={1500}
-                    deletingSpeed={50}
+                    text={["Web", "Software", "Full-Stack"]}
+                    typingSpeed={60}
+                    pauseDuration={2400}
+                    deletingSpeed={40}
                     deleteMode="backspace"
                     typeEffect="fade"
-                    mistakes={0.2}
+                    mistakes={0}
                     cursorStyle="bar"
                     cursorGlide
                     showCursor
-                    cursorColor="currentColor"
-                    className="font-medium text-fg-muted"
+                    cursorColor={dark ? "#C9973A" : "#B0822D"}
+                    className="font-bold text-gold"
                   />
                 </span>
-                <span aria-hidden="true" className="font-medium text-fg-muted">Developer</span>
+                <span aria-hidden="true" className="font-semibold text-fg tracking-tight">Developer</span>
               </div>
             </div>
 
