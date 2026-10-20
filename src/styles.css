@@ -295,31 +295,6 @@
     box-shadow: 0px 0px 0px transparent;
   }
 
-  /* Specular Light Sweep on Primary Neobrutalist Button */
-  .btn-neobrutal-primary::after {
-    content: "";
-    position: absolute;
-    top: -60%;
-    left: -100%;
-    width: 32px;
-    height: 220%;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.12) 18%,
-      rgba(255, 255, 255, 0.65) 42%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0.65) 58%,
-      rgba(255, 255, 255, 0.12) 82%,
-      transparent 100%
-    );
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.85));
-    transform: rotate(25deg);
-    pointer-events: none;
-    z-index: 1;
-    animation: specular-flash-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-
   /* Backward compatibility alias */
   .btn-primary-flash {
     composes: btn-neobrutal-primary;
@@ -328,6 +303,7 @@
   /* Neobrutalist Secondary Button (White Button) */
   .btn-neobrutal-secondary {
     position: relative;
+    overflow: hidden;
     background-color: #ffffff;
     color: #111113;
     border: 2px solid #111113;
@@ -372,6 +348,7 @@
   /* Neobrutalist Tertiary Button (Download CV) */
   .btn-neobrutal-tertiary {
     position: relative;
+    overflow: hidden;
     background-color: transparent;
     color: var(--fg-muted);
     border: 2px solid transparent;
@@ -396,29 +373,65 @@
     box-shadow: 0px 0px 0px transparent;
   }
 
+  /* Specular Light Sweep on All Action Buttons (Triggered ONLY on Hover) */
+  .btn-neobrutal-primary::after,
+  .btn-neobrutal-secondary::after,
+  .btn-neobrutal-tertiary::after {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -110%;
+    width: 34px;
+    height: 220%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.14) 18%,
+      rgba(255, 255, 255, 0.7) 42%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.7) 58%,
+      rgba(255, 255, 255, 0.14) 82%,
+      transparent 100%
+    );
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+    transform: rotate(25deg);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn-neobrutal-primary:hover::after,
+    .btn-neobrutal-secondary:hover::after,
+    .btn-neobrutal-tertiary:hover::after {
+      animation: specular-flash-sweep 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+  }
+
   @keyframes specular-flash-sweep {
     0% {
-      left: -90%;
+      left: -110%;
       opacity: 0;
     }
-    6% {
+    15% {
       opacity: 1;
     }
-    48% {
-      left: 175%;
+    85% {
       opacity: 1;
     }
-    52%, 100% {
-      left: 175%;
+    100% {
+      left: 190%;
       opacity: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .btn-primary-flash::after,
-    .btn-neobrutal-primary::after {
-      animation: none;
-      display: none;
+    .btn-neobrutal-primary::after,
+    .btn-neobrutal-secondary::after,
+    .btn-neobrutal-tertiary::after {
+      animation: none !important;
+      display: none !important;
     }
   }
 

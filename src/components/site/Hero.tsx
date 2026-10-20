@@ -188,15 +188,15 @@ export function Hero() {
                 href="#projects"
                 className="btn-neobrutal-secondary inline-flex h-10.5 items-center justify-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
               >
-                View projects
+                <span className="relative z-10">View projects</span>
               </a>
               {hasCv ? (
                 <a
                   {...getCvLinkProps()}
                   className="btn-neobrutal-tertiary inline-flex h-10.5 items-center gap-2 rounded-control px-4 text-[14px] font-medium cursor-pointer select-none"
                 >
-                  <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-                  Download CV
+                  <FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+                  <span className="relative z-10">Download CV</span>
                 </a>
               ) : null}
             </div>
