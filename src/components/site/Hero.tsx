@@ -254,14 +254,16 @@ export function Hero() {
                   blendMode="screen"
                   rimGlint={true}
                   transitionDuration={650}
-                  className="h-full w-full px-5 inline-flex flex-row items-center justify-center gap-2 select-none"
+                  className="h-full w-full px-5 flex items-center justify-center select-none"
                 >
-                  <span className="font-semibold text-white whitespace-nowrap">Get in touch</span>
-                  <ArrowRight
-                    className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
+                  <div className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap">
+                    <span className="font-semibold text-white">Get in touch</span>
+                    <ArrowRight
+                      className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
+                  </div>
                 </GlareHover>
               </a>
 
@@ -285,13 +287,15 @@ export function Hero() {
                     blendMode="screen"
                     rimGlint={true}
                     transitionDuration={650}
-                    className="h-full w-full px-5 inline-flex flex-row items-center justify-center gap-2.5 select-none"
+                    className="h-full w-full px-5 flex items-center justify-center select-none"
                   >
-                    <SiGithub
-                      className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
-                      aria-hidden="true"
-                    />
-                    <span className="font-semibold tracking-[-0.01em] whitespace-nowrap">GitHub</span>
+                    <div className="relative z-10 flex items-center justify-center gap-2.5 whitespace-nowrap">
+                      <SiGithub
+                        className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                        aria-hidden="true"
+                      />
+                      <span className="font-semibold tracking-[-0.01em]">GitHub</span>
+                    </div>
                   </GlareHover>
                 </a>
               ) : null}
