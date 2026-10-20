@@ -345,6 +345,51 @@
     box-shadow: 0px 0px 0px transparent;
   }
 
+  /* Neobrutalist GitHub Button */
+  .btn-neobrutal-github {
+    position: relative;
+    overflow: hidden;
+    background-color: #ffffff;
+    color: #111113;
+    border: 2px solid #111113;
+    box-shadow: 3.5px 3.5px 0px #94a3b8;
+    transition:
+      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .dark .btn-neobrutal-github {
+    background-color: #18181B;
+    color: #EDEDEF;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 3.5px 3.5px 0px #475569;
+  }
+
+  .btn-neobrutal-github:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px #64748b;
+    background-color: #f8fafc;
+    border-color: #000000;
+    color: #000000;
+  }
+
+  .dark .btn-neobrutal-github:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px #94a3b8;
+    background-color: #27272A;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .btn-neobrutal-github:active,
+  .dark .btn-neobrutal-github:active {
+    transform: translate(3.5px, 3.5px);
+    box-shadow: 0px 0px 0px transparent;
+  }
+
   /* Neobrutalist Tertiary Button (Download CV) */
   .btn-neobrutal-tertiary {
     position: relative;

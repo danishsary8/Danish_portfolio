@@ -263,36 +263,14 @@ export function Hero() {
                 </a>
               </GlareHover>
 
-              <GlareHover
-                borderRadius="8px"
-                mode="hover"
-                variant="streak"
-                glareColor={dark ? "#ffffff" : "#111113"}
-                glareOpacity={dark ? 0.35 : 0.18}
-                glareSize={30}
-                softness={0.6}
-                glareAngle={-45}
-                blendMode="screen"
-                rimGlint={true}
-                transitionDuration={650}
-                className="inline-grid rounded-control"
-              >
-                <a
-                  href="#projects"
-                  className="btn-neobrutal-secondary inline-flex h-10.5 items-center justify-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
-                >
-                  <span className="relative z-10">View projects</span>
-                </a>
-              </GlareHover>
-
               {PROFILE.github ? (
                 <GlareHover
                   borderRadius="8px"
                   mode="hover"
                   variant="streak"
                   glareColor={dark ? "#ffffff" : "#111113"}
-                  glareOpacity={dark ? 0.35 : 0.18}
-                  glareSize={30}
+                  glareOpacity={dark ? 0.35 : 0.2}
+                  glareSize={35}
                   softness={0.6}
                   glareAngle={-45}
                   blendMode="screen"
@@ -304,11 +282,14 @@ export function Hero() {
                     href={PROFILE.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-neobrutal-tertiary inline-flex h-10.5 items-center justify-center gap-2 rounded-control px-4.5 text-[14px] font-semibold select-none press"
+                    className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center gap-2.5 rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
                     aria-label="GitHub profile"
                   >
-                    <SiGithub className="relative z-10 h-4 w-4 shrink-0 text-fg" aria-hidden="true" />
-                    <span className="relative z-10">GitHub</span>
+                    <SiGithub
+                      className="relative z-10 h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                      aria-hidden="true"
+                    />
+                    <span className="relative z-10 font-semibold tracking-[-0.01em]">GitHub</span>
                   </a>
                 </GlareHover>
               ) : null}
