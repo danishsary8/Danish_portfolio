@@ -126,7 +126,7 @@ export function Hero() {
             {/* Sharp, non-duplicative value proposition pitch with SplitText */}
             <div className="enter" style={step(3)}>
               <SplitText
-                text="Building web apps that feel smooth to use and stay rock-solid behind the scenes. Driven by clean code, secure APIs, and turning real ideas into software that just works."
+                text="Building web apps that are fast, intuitive, and reliable. Powered by clean code, secure APIs, and turning real ideas into software that just works."
                 className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
                 effect="rise"
                 splitType="chars"
