@@ -7,7 +7,7 @@ import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
-import { VariableProximity } from "@/components/ui/VariableProximity";
+import ElasticMesh from "@/components/ui/ElasticMesh";
 import { StrokeText } from "@/components/ui/StrokeText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SplitFlapText } from "@/components/ui/SplitFlapText";
@@ -27,25 +27,9 @@ const CORE_STACK = [
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 export function Hero() {
-  const headlineRef = useRef<HTMLHeadingElement>(null);
   const time = useLocalTime(PROFILE.timezone);
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
-  const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
-  const isPausedRef = useRef(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-    const interval = setInterval(() => {
-      if (!isPausedRef.current) {
-        setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
-      }
-    }, 3400);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <section
@@ -108,51 +92,26 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Alternating Gold Accent between Sary and Danish with Syne display & VariableProximity */}
+            {/* Main Headline: Interactive 3D ElasticMesh */}
             <h1
-              ref={headlineRef}
               id="hero-title"
-              className="enter hero-name-heading relative mt-2.5 sm:mt-3.5 cursor-pointer select-none text-[clamp(2.5rem,5.2vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.03em]"
+              className="enter relative mt-1 sm:mt-2 select-none"
               style={step(1)}
-              onPointerEnter={() => {
-                isPausedRef.current = true;
-              }}
-              onPointerLeave={() => {
-                isPausedRef.current = false;
-              }}
-              onClick={() => {
-                setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
-              }}
-              title="Click to alternate highlight"
             >
-              <VariableProximity
-                label="Sary"
-                className={`hero-name-sary hero-name-word ${
-                  goldTarget === "sary" ? "hero-name-word--gold" : "hero-name-word--primary"
-                }`}
-                fromFontVariationSettings="'wght' 700"
-                toFontVariationSettings="'wght' 800"
-                containerRef={headlineRef}
-                radius={130}
-                falloff="linear"
-                smoothing={0.2}
-                scale={1.04}
-                lift={0.03}
-              />{" "}
-              <VariableProximity
-                label="Danish"
-                className={`hero-name-danish hero-name-word ${
-                  goldTarget === "danish" ? "hero-name-word--gold" : "hero-name-word--primary"
-                }`}
-                fromFontVariationSettings="'wght' 700"
-                toFontVariationSettings="'wght' 800"
-                containerRef={headlineRef}
-                radius={130}
-                falloff="linear"
-                smoothing={0.2}
-                scale={1.04}
-                lift={0.03}
-              />
+              <span className="sr-only">Sary Danish</span>
+              <div className="relative w-full max-w-[560px] h-[130px] sm:h-[160px] md:h-[185px]">
+                <ElasticMesh
+                  text="Sary Danish"
+                  material="balloon"
+                  color={dark ? "#C9973A" : "#B0822D"}
+                  inflate={1}
+                  stiffness={0.5}
+                  wobble={0.6}
+                  theme={dark ? "dark" : "light"}
+                  fontFamily="Syne, Geist, sans-serif"
+                  fontWeight={800}
+                />
+              </div>
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
