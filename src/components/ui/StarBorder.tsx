@@ -25,6 +25,7 @@ const BLEED = 48;
 const LAP = 0.9;
 const TAU = Math.PI * 2;
 const WHITE: [number, number, number] = [255, 255, 255];
+const GLOBAL_START_TIME = typeof performance !== 'undefined' ? performance.now() : 0;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const wrap = (value: number, total: number) => ((value % total) + total) % total;
@@ -180,6 +181,8 @@ export interface StarBorderProps<T extends ElementType = 'button'> {
   backgroundColor?: string;
   textColor?: string;
   borderColor?: string;
+  sync?: boolean;
+  syncOffset?: number;
 }
 
 export type StarBorderComponentProps<T extends ElementType = 'button'> = StarBorderProps<T> &
@@ -206,6 +209,8 @@ export const StarBorder = <T extends ElementType = 'button'>({
   backgroundColor,
   textColor,
   borderColor,
+  sync = true,
+  syncOffset = 0,
   ...rest
 }: StarBorderComponentProps<T>) => {
   const Component = (as || 'button') as ElementType;
@@ -227,7 +232,9 @@ export const StarBorder = <T extends ElementType = 'button'>({
     sparkle,
     direction: direction === 'counterclockwise' ? -1 : 1,
     hover: (HOVERS as readonly string[]).includes(hover) ? hover : 'lap',
-    clickPulse
+    clickPulse,
+    sync,
+    syncOffset: typeof syncOffset === 'number' ? syncOffset : 0
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -248,6 +255,7 @@ export const StarBorder = <T extends ElementType = 'button'>({
       velocity: 0,
       motion: 0,
       lap: -1,
+      lapOffset: 0,
       time: 0,
       reveal: 0,
       boost: 0,
@@ -510,9 +518,19 @@ export const StarBorder = <T extends ElementType = 'button'>({
         state.lap += dt;
         extra = (ease(Math.min(1, state.lap / LAP)) - before) * total * s.direction;
         if (state.lap >= LAP) state.lap = -1;
+        state.lapOffset += extra;
+      } else if (state.lapOffset !== 0) {
+        state.lapOffset = wrap(state.lapOffset, total);
       }
-      state.motion = state.velocity + extra / dt;
-      state.phase = wrap(state.phase + state.velocity * dt + extra, total);
+
+      state.motion = state.velocity + (state.lap >= 0 ? extra / dt : 0);
+
+      if (s.sync && !reduce) {
+        const cycleProgress = wrap(((now - GLOBAL_START_TIME) / 1000 / s.duration) * s.direction + s.syncOffset, 1);
+        state.phase = wrap(cycleProgress * total + state.lapOffset, total);
+      } else {
+        state.phase = wrap(state.phase + state.velocity * dt + extra, total);
+      }
 
       const pace = Math.abs(state.motion) / Math.max(1, Math.abs(total / s.duration));
       if (s.sparkle && !reduce && state.reveal > 0.05) {

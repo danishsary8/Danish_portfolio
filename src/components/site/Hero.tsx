@@ -392,8 +392,10 @@ export function Hero() {
                   className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
                   color={dark ? "#C9973A" : "#B0822D"}
                   trailColor={dark ? "#E5C378" : "#85601F"}
-                  duration={5}
+                  duration={8.5}
                   direction="clockwise"
+                  sync
+                  syncOffset={0}
                   stars={1}
                   trailLength={0.28}
                   thickness={1.2}
@@ -424,8 +426,10 @@ export function Hero() {
                   className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
                   color={dark ? "#C9973A" : "#B0822D"}
                   trailColor={dark ? "#E5C378" : "#85601F"}
-                  duration={5.8}
+                  duration={8.5}
                   direction="clockwise"
+                  sync
+                  syncOffset={0}
                   stars={1}
                   trailLength={0.28}
                   thickness={1.2}
