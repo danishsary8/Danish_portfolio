@@ -107,18 +107,19 @@ export function Hero() {
             >
               <DepthText
                 text="Sary Danish"
-                layers={12}
-                depth={1.15}
+                layers={18}
+                depth={1.65}
                 faceColor={dark ? "#3b82f6" : "#2563eb"}
                 depthColor={dark ? "#1d4ed8" : "#1e40af"}
                 gradientDepth={false}
                 hoverPush={0.35}
                 float={false}
-                tilt={4.5}
+                tilt={6}
                 pointerTracking
                 smoothing={0.14}
-                perspective={950}
-                autoOrbit={false}
+                perspective={850}
+                autoOrbit={true}
+                orbitSpeed={0.2}
                 fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
                 fontWeight={800}
                 shadow
