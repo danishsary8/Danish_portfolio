@@ -8,7 +8,7 @@ import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import ElasticMesh from "@/components/ui/ElasticMesh";
-import { StrokeText } from "@/components/ui/StrokeText";
+import { SplitText } from "@/components/ui/SplitText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import StarBorder from "@/components/ui/StarBorder";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
@@ -116,35 +116,21 @@ export function Hero() {
               </div>
             </div>
 
-            {/* StrokeText Attention Hook & Crisp Value Proposition Pitch */}
+            {/* Crisp Value Proposition Pitch with wipe animation */}
             <div className="enter mt-2.5 sm:mt-3.5" style={step(3)}>
-              <div className="max-w-[340px] sm:max-w-[400px]">
-                <StrokeText
-                  text="Draw Attention"
-                  strokeColor="#A78BFA"
-                  strokeStyle="solid"
-                  strokeWidth={1.4}
-                  dashLength={10}
-                  drawDuration={1.6}
-                  fillDelay={0.2}
-                  stagger={0.05}
-                  ease="power2.out"
-                  trigger="mount"
-                  fillMode="wipe"
-                  wipeFrom="left"
-                  fontSize={128}
-                  fontWeight={800}
-                  letterSpacing={-4}
-                  marching={false}
-                  hoverRedraw={true}
-                  shadow={false}
-                  fillColor={null}
-                  shadowColor={null}
-                />
-              </div>
-              <p className="mt-2 max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[15.5px]">
-                Building web apps that are fast, intuitive, and reliable. Powered by clean code, secure APIs, and turning real ideas into software that just works.
-              </p>
+              <SplitText
+                text="Building web apps that are fast, intuitive, and reliable. Powered by clean code, secure APIs, and turning real ideas into software that just works."
+                className="max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[15.5px]"
+                splitType="words"
+                tag="p"
+                duration={0.85}
+                delay={35}
+                staggerFrom="start"
+                ease="power2.out"
+                from={{ opacity: 0, x: -6, clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)" }}
+                to={{ opacity: 1, x: 0, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
+                trigger="view"
+              />
             </div>
 
             {/* Call to action buttons */}
