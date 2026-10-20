@@ -15,13 +15,13 @@
   position: relative;
   width: 316px;
   max-width: 100%;
-  perspective: 1000px;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
 }
 
 .profile-card__body {
   position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -31,9 +31,57 @@
   box-shadow: var(--pc-frame-shadow);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
   backdrop-filter: blur(24px) saturate(1.6);
-  transform: rotateX(var(--pc-rotate-x)) rotateY(var(--pc-rotate-y));
-  will-change: transform;
   border: 1px solid var(--pc-frame-edge);
+}
+
+/* Shining Specular Flash Light Sweep across the Profile Card */
+.profile-card__body::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -130%;
+  width: 90px;
+  height: 230%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 15%,
+    rgba(255, 255, 255, 0.4) 42%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.4) 58%,
+    rgba(255, 255, 255, 0.05) 85%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.85));
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 30;
+  animation: profile-card-flash-sweep 5.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes profile-card-flash-sweep {
+  0% {
+    left: -130%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  48% {
+    left: 210%;
+    opacity: 1;
+  }
+  52%, 100% {
+    left: 210%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-card__body::after {
+    animation: none;
+    display: none;
+  }
 }
 
 .profile-card__tile {

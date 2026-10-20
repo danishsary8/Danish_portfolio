@@ -282,11 +282,11 @@ export function Hero() {
                 avatarUrl={ASSETS.profile.photo}
                 holo={0}
                 glare={0}
-                tiltStrength={10}
-                parallax={6}
+                tiltStrength={0}
+                parallax={0}
                 radius={16}
-                enableTilt={true}
-                intro={true}
+                enableTilt={false}
+                intro={false}
                 showUserInfo={true}
                 enableMobileTilt={false}
                 theme={dark ? "dark" : "light"}
