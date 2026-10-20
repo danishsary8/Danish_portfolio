@@ -281,39 +281,41 @@
   .btn-primary-flash::after {
     content: "";
     position: absolute;
-    top: -50%;
-    left: -120%;
-    width: 14px;
-    height: 200%;
+    top: -60%;
+    left: -100%;
+    width: 32px;
+    height: 220%;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.15) 25%,
-      rgba(255, 255, 255, 0.95) 50%,
-      rgba(255, 255, 255, 0.15) 75%,
+      rgba(255, 255, 255, 0.12) 18%,
+      rgba(255, 255, 255, 0.65) 42%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.65) 58%,
+      rgba(255, 255, 255, 0.12) 82%,
       transparent 100%
     );
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.85));
     transform: rotate(25deg);
     pointer-events: none;
     z-index: 1;
-    animation: specular-flash-sweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: specular-flash-sweep 3.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
   }
 
   @keyframes specular-flash-sweep {
-    0%, 65% {
-      left: -120%;
+    0% {
+      left: -90%;
       opacity: 0;
     }
-    70% {
+    4% {
       opacity: 1;
     }
-    85% {
-      left: 190%;
+    44% {
+      left: 170%;
       opacity: 1;
     }
-    86%, 100% {
-      left: 190%;
+    48%, 100% {
+      left: 170%;
       opacity: 0;
     }
   }
