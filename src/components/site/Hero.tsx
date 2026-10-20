@@ -10,6 +10,7 @@ import { ProfileCard } from "@/components/ui/ProfileCard";
 import { VariableProximity } from "@/components/ui/VariableProximity";
 import { SplitText } from "@/components/ui/SplitText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
+import { SplitFlapText } from "@/components/ui/SplitFlapText";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -77,9 +78,31 @@ export function Hero() {
               <span aria-hidden="true" className="text-fg-subtle">
                 /
               </span>
-              <span>
-                {PROFILE.location.split(",")[0]}{" "}
-                <span className="font-mono text-[12px] sm:text-[12.5px] tabular-nums text-fg">{time ?? "--:--"}</span>{" "}
+              <span className="inline-flex items-center gap-1.5 align-middle">
+                <span>{PROFILE.location.split(",")[0]}</span>
+                <span className="inline-flex items-center align-middle font-mono tabular-nums">
+                  <SplitFlapText
+                    words={[time || "--:--"]}
+                    padTo={5}
+                    flipDuration={0.12}
+                    stagger={0.04}
+                    cycleDelay={2400}
+                    charset="0123456789:-"
+                    flipsPerChar={5}
+                    order="left"
+                    align="left"
+                    tileStyle="board"
+                    tileColor={dark ? "#18181b" : "#f4f4f5"}
+                    textColor={dark ? "#ededef" : "#111113"}
+                    glare={0}
+                    depth={0.3}
+                    tileRadius={3}
+                    gap={2}
+                    fontSize={12.5}
+                    loop={false}
+                    intro={true}
+                  />
+                </span>
                 <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
