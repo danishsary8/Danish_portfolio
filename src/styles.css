@@ -15,6 +15,8 @@
 
   --color-bg: var(--bg);
   --color-surface: var(--surface-1);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
   --color-raised: var(--surface-2);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
