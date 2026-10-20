@@ -11,6 +11,7 @@ import { VariableProximity } from "@/components/ui/VariableProximity";
 import { StrokeText } from "@/components/ui/StrokeText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SplitFlapText } from "@/components/ui/SplitFlapText";
+import StarBorder from "@/components/ui/StarBorder";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -223,12 +224,26 @@ export function Hero() {
                   aria-hidden="true"
                 />
               </a>
-              <a
+              <StarBorder
+                as="a"
                 href="#projects"
-                className="btn-neobrutal-secondary inline-flex h-10.5 items-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
+                color={dark ? "#ffffff" : "#111113"}
+                trailColor={dark ? "#ffffff" : "#111113"}
+                duration={4}
+                direction="clockwise"
+                stars={1}
+                trailLength={0.3}
+                thickness={1}
+                radius={12}
+                glow={0.6}
+                hover="lap"
+                sparkle={false}
+                clickPulse
+                theme={dark ? "dark" : "light"}
+                className="h-10.5 px-5 text-[14px] font-semibold cursor-pointer select-none"
               >
                 View projects
-              </a>
+              </StarBorder>
               {hasCv ? (
                 <a
                   {...getCvLinkProps()}

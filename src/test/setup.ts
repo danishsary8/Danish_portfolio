@@ -64,3 +64,7 @@ Object.defineProperty(globalThis, "ResizeObserver", {
 if (typeof Element !== "undefined") {
   Element.prototype.scrollIntoView = () => {};
 }
+
+if (typeof HTMLCanvasElement !== "undefined") {
+  (HTMLCanvasElement.prototype as any).getContext = () => null;
+}
