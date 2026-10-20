@@ -293,13 +293,11 @@
   .btn-neobrutal-primary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #85601f;
-    background-color: #9d7324;
   }
 
   .dark .btn-neobrutal-primary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #5c4110;
-    background-color: #b88629;
   }
 
   /* Bottoming out on click/active */
@@ -356,17 +354,11 @@
   .btn-neobrutal-secondary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #000000;
-    background-color: #000000;
-    border-color: #000000;
-    color: #ffffff;
   }
 
   .dark .btn-neobrutal-secondary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #ffffff;
-    background-color: #ffffff;
-    border-color: #ffffff;
-    color: #000000;
   }
 
   .btn-neobrutal-secondary:active,
@@ -405,31 +397,19 @@
     box-shadow: 4px 4px 0px #ffffff;
   }
 
-  /* Tactile press on hover: clicks down into the shadow + inverts color */
+  /* Tactile press on hover: clicks down into the shadow */
   .btn-neobrutal-github:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #000000;
-    background-color: #000000;
-    border-color: #000000;
-    color: #ffffff;
-  }
-
-  .btn-neobrutal-github:hover svg,
-  .btn-neobrutal-github:hover span {
-    color: #ffffff;
   }
 
   .dark .btn-neobrutal-github:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #ffffff;
-    background-color: #ffffff;
-    border-color: #ffffff;
-    color: #000000;
   }
 
-  .dark .btn-neobrutal-github:hover svg,
-  .dark .btn-neobrutal-github:hover span {
-    color: #000000;
+  .animated-github-lottie svg path {
+    fill: currentColor !important;
   }
 
   .btn-neobrutal-github:active,

@@ -66,5 +66,32 @@ if (typeof Element !== "undefined") {
 }
 
 if (typeof HTMLCanvasElement !== "undefined") {
-  (HTMLCanvasElement.prototype as any).getContext = () => null;
+  (HTMLCanvasElement.prototype as any).getContext = () => ({
+    fillRect: () => {},
+    clearRect: () => {},
+    getImageData: () => ({ data: [] }),
+    putImageData: () => {},
+    createImageData: () => [],
+    setTransform: () => {},
+    drawImage: () => {},
+    save: () => {},
+    fillText: () => {},
+    restore: () => {},
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    closePath: () => {},
+    stroke: () => {},
+    translate: () => {},
+    scale: () => {},
+    rotate: () => {},
+    arc: () => {},
+    fill: () => {},
+    measureText: () => ({ width: 0 }),
+    transform: () => {},
+    rect: () => {},
+    clip: () => {},
+    fillStyle: "",
+    strokeStyle: "",
+  });
 }

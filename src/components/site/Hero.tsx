@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, Code2, FileText, GraduationCap } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
@@ -256,8 +256,9 @@ export function Hero() {
                   className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center gap-2.5 px-5 rounded-control select-none"
                   aria-label="GitHub profile"
                 >
-                  <SiGithub
-                    className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                  <AnimatedGithubIcon
+                    className="h-5 w-5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                    dark={dark}
                     aria-hidden="true"
                   />
                   <span className="font-semibold tracking-[-0.01em] whitespace-nowrap">GitHub</span>
