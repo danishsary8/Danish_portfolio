@@ -24,9 +24,9 @@ describe("Hero", () => {
     expect(screen.getByText(/Junior Web Developer/)).toBeInTheDocument();
     expect(screen.getByText(/Phnom Penh/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Get in touch/ })).toHaveAttribute("href", "#contact");
-    expect(screen.getByRole("link", { name: /Download CV/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /GitHub/i })).toHaveAttribute(
       "href",
-      "/sary-danish-cv.pdf",
+      "https://github.com/danishsary8",
     );
   });
 
@@ -153,6 +153,10 @@ describe("Navigation", () => {
     for (const label of ["Home", "Skills", "Projects", "Experience", "Education", "Contact"]) {
       expect(within(nav).getByRole("link", { name: label })).toBeInTheDocument();
     }
+    expect(within(nav).getByRole("link", { name: /Download CV/ })).toHaveAttribute(
+      "href",
+      "/sary-danish-cv.pdf",
+    );
     expect(
       within(nav).getByRole("button", { name: /Switch to (dark|light) theme/ }),
     ).toBeInTheDocument();

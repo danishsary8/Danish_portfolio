@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, FileText, GraduationCap } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
@@ -284,7 +285,7 @@ export function Hero() {
                 </a>
               </GlareHover>
 
-              {hasCv ? (
+              {PROFILE.github ? (
                 <GlareHover
                   borderRadius="8px"
                   mode="hover"
@@ -299,27 +300,16 @@ export function Hero() {
                   transitionDuration={650}
                   className="inline-grid rounded-control"
                 >
-                  <FuseButton
-                    label="Download CV"
-                    undoLabel="Cancel"
-                    doneLabel="Opening CV..."
-                    icon={<FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />}
-                    href={CV_HREF}
+                  <a
+                    href={PROFILE.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    color={dark ? "#EDEDEF" : "#111113"}
-                    background={dark ? "#18181B" : "#F4F4F3"}
-                    fuseColor="#F59E0B"
-                    undoWindow={1000}
-                    pauseOnHover={false}
-                    fuse="outline"
-                    fuseThickness={2}
-                    radius={8}
-                    size="md"
-                    commitOn="fuseEnd"
-                    settle="reset"
-                    className="btn-neobrutal-tertiary select-none"
-                  />
+                    className="btn-neobrutal-tertiary inline-flex h-10.5 items-center justify-center gap-2 rounded-control px-4.5 text-[14px] font-semibold select-none press"
+                    aria-label="GitHub profile"
+                  >
+                    <SiGithub className="relative z-10 h-4 w-4 shrink-0 text-fg" aria-hidden="true" />
+                    <span className="relative z-10">GitHub</span>
+                  </a>
                 </GlareHover>
               ) : null}
             </div>

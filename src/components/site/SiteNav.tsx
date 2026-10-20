@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Menu, Moon, Sun } from "lucide-react";
+import { FileText, Menu, Moon, Sun } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { GradientText } from "@/components/ui/GradientText";
@@ -101,7 +102,25 @@ export function SiteNav() {
         </div>
 
         {/* Right: Theme Toggle & Mobile Menu outside the pill */}
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-2 sm:gap-2.5">
+          {/* Download CV Pill Button */}
+          {CV_HREF ? (
+            <a
+              href={CV_HREF}
+              {...getCvLinkProps()}
+              className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3 sm:px-3.5 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
+              aria-label="Download CV"
+            >
+              <FileText
+                className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-gold"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+              <span className="hidden sm:inline">Download CV</span>
+              <span className="sm:hidden">CV</span>
+            </a>
+          ) : null}
+
           {/* Theme Switcher SlingButton */}
           <SlingButton
             onSend={toggle}
