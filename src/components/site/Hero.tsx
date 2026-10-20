@@ -10,7 +10,7 @@ import { ProfileCard } from "@/components/ui/ProfileCard";
 import DepthText from "@/components/ui/DepthText";
 import LogoLoop from "@/components/ui/LogoLoop";
 import CountUp from "@/components/ui/CountUp";
-import { SplitText } from "@/components/ui/SplitText";
+import ScrambledText from "@/components/ui/ScrambledText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
@@ -152,21 +152,22 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Crisp Value Proposition Pitch with wipe animation */}
+            {/* Crisp Value Proposition Pitch with ScrambledText interactive animation */}
             <div className="enter mt-2.5 sm:mt-3.5" style={step(3)}>
-              <SplitText
-                text="Building web apps that are fast, intuitive, and reliable. Powered by clean code, secure APIs, and turning real ideas into software that just works."
-                className="max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[15.5px]"
-                splitType="words"
-                tag="p"
-                duration={0.85}
-                delay={35}
-                staggerFrom="start"
-                ease="power2.out"
-                from={{ opacity: 0, x: -6, clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)" }}
-                to={{ opacity: 1, x: 0, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
-                trigger="view"
-              />
+              <ScrambledText
+                className="max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[15.5px] cursor-default select-none"
+                effect="scramble"
+                radius={100}
+                strength={1}
+                trail={0.6}
+                duration={1.2}
+                speed={0.5}
+                scrambleChars=".:"
+                clickBurst
+                intro
+              >
+                Building web apps that are fast, seamless, and reliable. Engineered with clean code, secure APIs, and turning real ideas into software that just works.
+              </ScrambledText>
             </div>
 
             {/* Call to action buttons */}
