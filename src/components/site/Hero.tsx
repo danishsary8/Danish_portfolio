@@ -10,7 +10,6 @@ import { ProfileCard } from "@/components/ui/ProfileCard";
 import ElasticMesh from "@/components/ui/ElasticMesh";
 import { StrokeText } from "@/components/ui/StrokeText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
-import { SplitFlapText } from "@/components/ui/SplitFlapText";
 import StarBorder from "@/components/ui/StarBorder";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
@@ -63,31 +62,9 @@ export function Hero() {
               <span aria-hidden="true" className="text-fg-subtle">
                 /
               </span>
-              <span className="inline-flex items-center gap-1.5 align-middle">
+              <span className="inline-flex items-center gap-1.5">
                 <span>{PROFILE.location.split(",")[0]}</span>
-                <span className="inline-flex items-center align-middle font-mono tabular-nums">
-                  <SplitFlapText
-                    words={[time || "--:--"]}
-                    padTo={5}
-                    flipDuration={0.12}
-                    stagger={0.04}
-                    cycleDelay={2400}
-                    charset="0123456789:-"
-                    flipsPerChar={5}
-                    order="left"
-                    align="left"
-                    tileStyle="board"
-                    tileColor={dark ? "#18181b" : "#f4f4f5"}
-                    textColor={dark ? "#ededef" : "#111113"}
-                    glare={0}
-                    depth={0.3}
-                    tileRadius={3}
-                    gap={2}
-                    fontSize={12.5}
-                    loop={false}
-                    intro={true}
-                  />
-                </span>
+                <span className="font-mono tabular-nums text-fg">{time || "--:--"}</span>
                 <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
