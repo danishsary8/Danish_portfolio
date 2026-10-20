@@ -1,0 +1,119 @@
+/* Smooth Magnetic Follow Cursor */
+.smooth-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  pointer-events: none;
+  user-select: none;
+  contain: layout style size;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
+}
+
+.smooth-cursor--visible {
+  opacity: 1;
+}
+
+/* Precision Center Dot (0ms lag, direct pointer tracking) */
+.smooth-cursor__dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--gold, #c9973a);
+  pointer-events: none;
+  transform: translate3d(-50%, -50%, 0);
+  transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.2s ease;
+  will-change: transform;
+  z-index: 2;
+  box-shadow: 0 0 6px rgba(201, 151, 58, 0.6);
+}
+
+.dark .smooth-cursor__dot {
+  background-color: var(--gold, #c9973a);
+  box-shadow: 0 0 8px rgba(201, 151, 58, 0.7);
+}
+
+/* Smooth Trailing Magnetic Ring (spring lerp inertia) */
+.smooth-cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(176, 130, 45, 0.45);
+  background: rgba(176, 130, 45, 0.04);
+  pointer-events: none;
+  transform: translate3d(-50%, -50%, 0);
+  transition:
+    width 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    height 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    border-radius 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+    transform 0.12s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, width, height;
+  z-index: 1;
+  backdrop-filter: blur(1px);
+}
+
+.dark .smooth-cursor__ring {
+  border-color: rgba(201, 151, 58, 0.4);
+  background: rgba(201, 151, 58, 0.05);
+}
+
+/* Hovering over clickable targets */
+.smooth-cursor--hover .smooth-cursor__ring {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(176, 130, 45, 0.75);
+  background: rgba(176, 130, 45, 0.09);
+  backdrop-filter: blur(2px);
+}
+
+.dark .smooth-cursor--hover .smooth-cursor__ring {
+  border-color: rgba(201, 151, 58, 0.85);
+  background: rgba(201, 151, 58, 0.12);
+  box-shadow: 0 0 16px rgba(201, 151, 58, 0.2);
+}
+
+.smooth-cursor--hover .smooth-cursor__dot {
+  transform: translate3d(-50%, -50%, 0) scale(1.3);
+}
+
+/* Active Click Press */
+.smooth-cursor--down .smooth-cursor__ring {
+  transform: translate3d(-50%, -50%, 0) scale(0.78);
+  border-color: var(--gold, #c9973a);
+  background: rgba(201, 151, 58, 0.2);
+}
+
+.smooth-cursor--down .smooth-cursor__dot {
+  transform: translate3d(-50%, -50%, 0) scale(0.85);
+}
+
+/* Hide default cursor on desktop fine pointer devices when SmoothCursor is active */
+@media (hover: hover) and (pointer: fine) {
+  html.has-smooth-cursor,
+  html.has-smooth-cursor body,
+  html.has-smooth-cursor a,
+  html.has-smooth-cursor button,
+  html.has-smooth-cursor [role="button"],
+  html.has-smooth-cursor .cursor-target {
+    cursor: none !important;
+  }
+}
+
+/* Disable on touch devices and reduced motion */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .smooth-cursor,
+  .smooth-cursor__dot,
+  .smooth-cursor__ring {
+    display: none !important;
+  }
+}
