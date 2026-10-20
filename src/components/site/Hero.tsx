@@ -183,33 +183,17 @@ export function Hero() {
 
             {/* Call to action buttons */}
             <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-2.5 sm:gap-3" style={step(4)}>
-              <SpecularButton
+              <a
                 href="#contact"
-                size="md"
-                radius={8}
-                tint={dark ? "#18181b" : "#111113"}
-                tintOpacity={1}
-                textColor="#ffffff"
-                lineColor="#ffffff"
-                baseColor={dark ? "#3f3f46" : "#27272a"}
-                intensity={1.2}
-                idleIntensity={0.4}
-                shineSize={12}
-                shineFade={34}
-                thickness={1.3}
-                glow={1.2}
-                followMouse
-                proximity={250}
-                flash
-                className="group !h-10.5 !px-5 !text-[14px] !font-medium"
+                className="btn-primary-flash press group inline-flex h-10.5 items-center gap-2 rounded-control px-5 text-[14px] font-medium text-white transition-[background-color,transform,box-shadow] duration-150"
               >
-                <span>Get in touch</span>
+                <span className="relative z-10 font-medium text-white">Get in touch</span>
                 <ArrowRight
-                  className="h-4 w-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                  className="relative z-10 h-4 w-4 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
                   strokeWidth={1.75}
                   aria-hidden="true"
                 />
-              </SpecularButton>
+              </a>
               <a
                 href="#projects"
                 className="press inline-flex h-10.5 items-center rounded-control border border-line-strong bg-surface px-5 text-[14px] font-medium text-fg transition-[background-color,transform] duration-150 hover:bg-raised"

@@ -241,6 +241,77 @@
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
   }
 
+  /* Primary CTA Flash Light Black Button */
+  .btn-primary-flash {
+    position: relative;
+    overflow: hidden;
+    background-color: #111113;
+    color: #ffffff;
+    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.35);
+  }
+
+  .dark .btn-primary-flash {
+    background-color: #18181b;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.6);
+  }
+
+  .btn-primary-flash:hover {
+    background-color: #000000;
+  }
+
+  .dark .btn-primary-flash:hover {
+    background-color: #27272a;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .btn-primary-flash::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -120%;
+    width: 14px;
+    height: 200%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 25%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 100%
+    );
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+    transform: rotate(25deg);
+    pointer-events: none;
+    z-index: 1;
+    animation: specular-flash-sweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes specular-flash-sweep {
+    0%, 65% {
+      left: -120%;
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+    }
+    85% {
+      left: 190%;
+      opacity: 1;
+    }
+    86%, 100% {
+      left: 190%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary-flash::after {
+      animation: none;
+      display: none;
+    }
+  }
+
   /* Interactive Tech Stack Brand Badges with Colored Glow */
   .tech-badge {
     transition:
