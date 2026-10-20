@@ -254,31 +254,49 @@
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
   }
 
-  /* Primary CTA Flash Light Black Button */
-  .btn-primary-flash {
+  /* Neobrutalist Action Buttons (Hero CTAs) */
+  .btn-neobrutal-primary {
     position: relative;
     overflow: hidden;
     background-color: #111113;
     color: #ffffff;
-    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.35);
+    border: 2px solid #111113;
+    box-shadow: 3.5px 3.5px 0px var(--gold);
+    transition:
+      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 150ms ease,
+      border-color 150ms ease;
   }
 
-  .dark .btn-primary-flash {
+  .dark .btn-neobrutal-primary {
     background-color: #18181b;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border: 2px solid #ededef;
+    box-shadow: 3.5px 3.5px 0px var(--gold);
   }
 
-  .btn-primary-flash:hover {
+  .btn-neobrutal-primary:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px var(--gold);
     background-color: #000000;
   }
 
-  .dark .btn-primary-flash:hover {
-    background-color: #27272a;
-    border-color: rgba(255, 255, 255, 0.22);
+  .dark .btn-neobrutal-primary:hover {
+    background-color: #222226;
+    border-color: #ffffff;
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px var(--gold);
   }
 
-  .btn-primary-flash::after {
+  .btn-neobrutal-primary:active,
+  .dark .btn-neobrutal-primary:active {
+    transform: translate(3.5px, 3.5px);
+    box-shadow: 0px 0px 0px transparent;
+  }
+
+  /* Specular Light Sweep on Primary Neobrutalist Button */
+  .btn-neobrutal-primary::after {
     content: "";
     position: absolute;
     top: -60%;
@@ -300,6 +318,80 @@
     pointer-events: none;
     z-index: 1;
     animation: specular-flash-sweep 3.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+  }
+
+  /* Backward compatibility alias */
+  .btn-primary-flash {
+    composes: btn-neobrutal-primary;
+  }
+
+  /* Neobrutalist Secondary Button */
+  .btn-neobrutal-secondary {
+    position: relative;
+    background-color: #ffffff;
+    color: #111113;
+    border: 2px solid #111113;
+    box-shadow: 3.5px 3.5px 0px #111113;
+    transition:
+      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .dark .btn-neobrutal-secondary {
+    background-color: #111113;
+    color: #ededef;
+    border: 2px solid rgba(255, 255, 255, 0.82);
+    box-shadow: 3.5px 3.5px 0px rgba(255, 255, 255, 0.82);
+  }
+
+  .btn-neobrutal-secondary:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px #111113;
+    background-color: #f4f4f3;
+  }
+
+  .dark .btn-neobrutal-secondary:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px #ffffff;
+    background-color: #18181b;
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .btn-neobrutal-secondary:active,
+  .dark .btn-neobrutal-secondary:active {
+    transform: translate(3.5px, 3.5px);
+    box-shadow: 0px 0px 0px transparent;
+  }
+
+  /* Neobrutalist Tertiary Button (Download CV) */
+  .btn-neobrutal-tertiary {
+    position: relative;
+    background-color: transparent;
+    color: var(--fg-muted);
+    border: 2px solid transparent;
+    transition:
+      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .btn-neobrutal-tertiary:hover {
+    color: var(--fg);
+    background-color: var(--surface-1);
+    border-color: var(--line-strong);
+    box-shadow: 2.5px 2.5px 0px var(--line-strong);
+    transform: translate(-1px, -1px);
+  }
+
+  .btn-neobrutal-tertiary:active {
+    transform: translate(2.5px, 2.5px);
+    box-shadow: 0px 0px 0px transparent;
   }
 
   @keyframes specular-flash-sweep {

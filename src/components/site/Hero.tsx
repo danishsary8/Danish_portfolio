@@ -211,28 +211,28 @@ export function Hero() {
             </div>
 
             {/* Call to action buttons */}
-            <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-2.5 sm:gap-3" style={step(4)}>
+            <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-3 sm:gap-3.5" style={step(4)}>
               <a
                 href="#contact"
-                className="btn-primary-flash press group inline-flex h-10.5 items-center gap-2 rounded-control px-5 text-[14px] font-medium text-white transition-[background-color,transform,box-shadow] duration-150"
+                className="btn-neobrutal-primary group inline-flex h-10.5 items-center gap-2 rounded-control px-5 text-[14px] font-semibold text-white cursor-pointer select-none"
               >
-                <span className="relative z-10 font-medium text-white">Get in touch</span>
+                <span className="relative z-10 font-semibold text-white">Get in touch</span>
                 <ArrowRight
                   className="relative z-10 h-4 w-4 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
-                  strokeWidth={1.75}
+                  strokeWidth={2}
                   aria-hidden="true"
                 />
               </a>
               <a
                 href="#projects"
-                className="press inline-flex h-10.5 items-center rounded-control border border-line-strong bg-surface px-5 text-[14px] font-medium text-fg transition-[background-color,transform] duration-150 hover:bg-raised"
+                className="btn-neobrutal-secondary inline-flex h-10.5 items-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
               >
                 View projects
               </a>
               {hasCv ? (
                 <a
                   {...getCvLinkProps()}
-                  className="press inline-flex h-10.5 items-center gap-2 rounded-control px-4 text-[14px] font-medium text-fg-muted transition-[color,transform] duration-150 hover:text-fg"
+                  className="btn-neobrutal-tertiary inline-flex h-10.5 items-center gap-2 rounded-control px-4 text-[14px] font-medium cursor-pointer select-none"
                 >
                   <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
                   Download CV
