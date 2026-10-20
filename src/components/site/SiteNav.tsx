@@ -88,19 +88,19 @@ export function SiteNav() {
       <GradualBlur
         position="top"
         target="page"
-        height="6rem"
-        strength={2}
-        layers={8}
+        height="6.5rem"
+        strength={4.5}
+        layers={10}
         curve="linear"
         exponential
-        tint={dark ? "rgba(18, 15, 23, 0.6)" : "rgba(251, 251, 250, 0.65)"}
+        tint={dark ? "rgba(10, 10, 11, 0.88)" : "rgba(251, 251, 250, 0.88)"}
         autoHide
         zIndex={40}
       />
 
       <header
         className={`fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
-          scrolled ? "border-b border-line/30 shadow-xs" : "bg-transparent"
+          scrolled ? "bg-bg/85 backdrop-blur-xl border-b border-line/40 shadow-xs" : "bg-transparent"
         }`}
       >
         <nav
