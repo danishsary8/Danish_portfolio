@@ -207,12 +207,12 @@ export function ChatbotWidget() {
           ref={cardRef}
           role="dialog"
           aria-labelledby="chatbot-title"
-          className="absolute bottom-20 sm:bottom-24 right-0 mb-1 w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[420px] h-[520px] max-h-[calc(100dvh-7rem)] rounded-2xl border border-line-strong bg-surface-2 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.22),0_0_0_1px_rgba(0,0,0,0.06)] dark:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.08)] backdrop-blur-xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          className="ios-glass-card absolute bottom-20 sm:bottom-24 right-0 mb-1 w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[420px] h-[520px] max-h-[calc(100dvh-7rem)] rounded-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-line px-4 py-3 bg-surface-1">
+          <div className="flex items-center justify-between border-b border-line/60 px-4 py-3 bg-surface-1/65 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-2 border border-line-strong shadow-xs overflow-visible">
+              <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-2/80 border border-line-strong/80 shadow-xs overflow-visible">
                 <BotCharacterSVG state={isThinking ? "listening" : "idle"} className="h-11 w-11" />
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-2" />
               </div>
@@ -230,7 +230,7 @@ export function ChatbotWidget() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="press rounded-lg p-1.5 text-fg-muted hover:bg-surface-2 hover:text-fg transition-colors cursor-pointer"
+              className="press rounded-lg p-1.5 text-fg-muted hover:bg-surface-2/80 hover:text-fg transition-colors cursor-pointer"
               aria-label="Close assistant"
             >
               <X className="h-4 w-4" />
@@ -238,47 +238,47 @@ export function ChatbotWidget() {
           </div>
 
           {/* Quick Suggestion Chips */}
-          <div className="border-b border-line bg-surface-1/70 px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[12px]">
+          <div className="border-b border-line/50 bg-surface-1/45 backdrop-blur-xs px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[12px]">
             <button
               type="button"
               onClick={() => handleSend("Tell me about your projects")}
-              className="whitespace-nowrap rounded-md border border-line bg-surface-2 px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
             >
               📚 Projects
             </button>
             <button
               type="button"
               onClick={() => handleSend("What is your tech stack?")}
-              className="whitespace-nowrap rounded-md border border-line bg-surface-2 px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
             >
               ⚡ Tech Stack
             </button>
             <button
               type="button"
               onClick={() => handleSend("How can I hire or contact you?")}
-              className="whitespace-nowrap rounded-md border border-line bg-surface-2 px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
             >
               ✉️ Contact
             </button>
           </div>
 
           {/* Chat Messages Body */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-[13px] leading-relaxed bg-surface-2">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-[13px] leading-relaxed bg-transparent">
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={`flex gap-2.5 ${m.sender === "user" ? "justify-end" : "justify-start"}`}
               >
                 {m.sender === "bot" && (
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line">
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1/80 border border-line/80 shadow-2xs">
                     <Bot className="h-3.5 w-3.5 text-gold" />
                   </div>
                 )}
                 <div
                   className={`max-w-[82%] rounded-2xl px-3.5 py-2.5 ${
                     m.sender === "user"
-                      ? "bg-fg text-bg rounded-br-xs font-medium"
-                      : "bg-surface-1 text-fg rounded-bl-xs border border-line shadow-xs whitespace-pre-line"
+                      ? "bg-fg text-bg rounded-br-xs font-medium shadow-xs"
+                      : "bg-surface-1/85 backdrop-blur-xs text-fg rounded-bl-xs border border-line/70 shadow-xs whitespace-pre-line"
                   }`}
                 >
                   <p>{m.text}</p>
@@ -291,7 +291,7 @@ export function ChatbotWidget() {
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 rounded-md border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors"
+                            className="inline-flex items-center gap-1 rounded-md border border-line/70 bg-surface-2/85 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors"
                           >
                             <span>{link.label}</span>
                             <ExternalLink className="h-3 w-3 opacity-60" />
@@ -301,7 +301,7 @@ export function ChatbotWidget() {
                             key={idx}
                             type="button"
                             onClick={link.action}
-                            className="inline-flex items-center gap-1 rounded-md border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-md border border-line/70 bg-surface-2/85 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors cursor-pointer"
                           >
                             <span>{link.label}</span>
                             <ArrowRight className="h-3 w-3 opacity-60" />
@@ -322,10 +322,10 @@ export function ChatbotWidget() {
             ))}
             {isThinking && (
               <div className="flex gap-2.5 justify-start">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line">
+                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1/80 border border-line/80 shadow-2xs">
                   <Bot className="h-3.5 w-3.5 text-gold" />
                 </div>
-                <div className="rounded-2xl rounded-bl-xs bg-surface-1 border border-line px-4 py-2.5 text-fg-muted flex items-center gap-1.5 shadow-xs">
+                <div className="rounded-2xl rounded-bl-xs bg-surface-1/85 backdrop-blur-xs border border-line/70 px-4 py-2.5 text-fg-muted flex items-center gap-1.5 shadow-xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce" />
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:150ms]" />
                   <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:300ms]" />
@@ -341,14 +341,14 @@ export function ChatbotWidget() {
               e.preventDefault();
               handleSend();
             }}
-            className="border-t border-line p-2.5 bg-surface-1 flex items-center gap-2"
+            className="border-t border-line/60 p-2.5 bg-surface-1/65 backdrop-blur-md flex items-center gap-2"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about Danish's work..."
-              className="flex-1 rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-[13px] text-fg placeholder:text-fg-subtle focus:outline-none focus:border-gold/80 transition-colors shadow-2xs"
+              className="flex-1 rounded-xl border border-line/70 bg-surface-2/75 backdrop-blur-xs px-3.5 py-2 text-[13px] text-fg placeholder:text-fg-subtle focus:outline-none focus:border-gold/80 transition-colors shadow-2xs"
             />
             <button
               type="submit"

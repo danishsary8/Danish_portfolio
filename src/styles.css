@@ -658,6 +658,43 @@
 }
 
 /* ==========================================================================
+   iOS Glassmorphism Card System (Chatbot & Floating Modals)
+   Frosted glass container with Apple-style specular edge, vibrancy & depth
+   ========================================================================== */
+.ios-glass-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 255, 255, 0.58) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 2px 0 rgba(0, 0, 0, 0.04),
+    0 24px 60px -12px rgba(10, 10, 12, 0.18),
+    0 8px 24px -4px rgba(10, 10, 12, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+}
+
+.dark .ios-glass-card {
+  background: linear-gradient(
+    135deg,
+    rgba(24, 24, 27, 0.78) 0%,
+    rgba(17, 17, 19, 0.85) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.6),
+    0 24px 60px -12px rgba(0, 0, 0, 0.75),
+    0 8px 24px -4px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* ==========================================================================
    Editorial Print-to-Dossier Stylesheet (@media print)
    Converts the portfolio into a clean, black-and-white architectural dossier.
    ========================================================================== */
