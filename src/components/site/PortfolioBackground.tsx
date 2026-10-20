@@ -9,36 +9,38 @@ export function PortfolioBackground() {
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Dark Theme Ambient Gradient Layer (Cohesive obsidian / charcoal / whisper of warm bronze) */}
+      {/* Dark Theme Ambient Gradient Layer (Rich twilight obsidian / charcoal / radiant warm bronze) */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 ease-out ${
           dark ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
           background: `
-            radial-gradient(ellipse 1200px 750px at 50% -80px, rgba(201, 151, 58, 0.075), transparent 70%),
-            radial-gradient(ellipse 850px 600px at 85% 40%, rgba(201, 151, 58, 0.038), transparent 65%),
-            linear-gradient(165deg, #090A0C 0%, #0D0E12 35%, #101116 70%, #0A0B0E 100%)
+            radial-gradient(ellipse 1100px 750px at 50% -50px, rgba(201, 151, 58, 0.22), transparent 72%),
+            radial-gradient(circle 800px at 88% 35%, rgba(212, 165, 65, 0.15), transparent 65%),
+            radial-gradient(circle 850px at 12% 70%, rgba(201, 151, 58, 0.10), transparent 65%),
+            linear-gradient(155deg, #07080a 0%, #0d0f15 40%, #141622 75%, #090a0d 100%)
           `,
         }}
       />
 
-      {/* Light Theme Ambient Gradient Layer (Editorial warm parchment / linen stone / whisper of warm amber) */}
+      {/* Light Theme Ambient Gradient Layer (Editorial warm parchment / linen stone / radiant amber aura) */}
       <div
         className={`absolute inset-0 transition-opacity duration-700 ease-out ${
           !dark ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
           background: `
-            radial-gradient(ellipse 1200px 750px at 50% -80px, rgba(176, 130, 45, 0.05), transparent 70%),
-            radial-gradient(ellipse 850px 600px at 85% 40%, rgba(176, 130, 45, 0.028), transparent 65%),
-            linear-gradient(165deg, #FAF8F5 0%, #F4F0E8 35%, #EFEAE0 70%, #FAF8F5 100%)
+            radial-gradient(ellipse 1100px 750px at 50% -50px, rgba(195, 145, 45, 0.22), transparent 72%),
+            radial-gradient(circle 800px at 88% 35%, rgba(205, 155, 55, 0.15), transparent 65%),
+            radial-gradient(circle 850px at 12% 70%, rgba(195, 145, 45, 0.10), transparent 65%),
+            linear-gradient(155deg, #FAF7F0 0%, #F3ECDF 35%, #E9DECD 70%, #F6F1E6 100%)
           `,
         }}
       />
 
-      {/* Ultra-Lightweight Calm Drifting Particles Layer (Zero-lag, 20 particles, 0 hover overhead) */}
-      <div className="absolute inset-0 opacity-60 dark:opacity-75 transition-opacity duration-700">
+      {/* Ultra-Lightweight Calm Drifting Particles Layer (Zero-lag, 20 particles) */}
+      <div className="absolute inset-0 opacity-70 dark:opacity-85 transition-opacity duration-700">
         <Particles
           particleCount={20}
           particleSpread={14}
@@ -50,8 +52,8 @@ export function PortfolioBackground() {
           }
           particleBaseSize={60}
           sizeRandomness={0.6}
-          glow={dark ? 0.35 : 0.22}
-          twinkle={0.2}
+          glow={dark ? 0.45 : 0.3}
+          twinkle={0.25}
           moveParticlesOnHover={false}
           hoverEffect="none"
           particleHoverFactor={0}
