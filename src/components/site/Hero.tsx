@@ -77,8 +77,8 @@ export function Hero() {
             >
               <DepthText
                 text="Sary Danish"
-                layers={14}
-                depth={1.3}
+                layers={12}
+                depth={1.15}
                 faceColor={dark ? "#3b82f6" : "#2563eb"}
                 depthColor={dark ? "#1d4ed8" : "#1e40af"}
                 gradientDepth={false}

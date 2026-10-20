@@ -324,8 +324,12 @@ const DepthText = ({
     '--depth-text-font-weight': fontWeight,
     '--depth-text-face-color': faceColor,
     '--depth-text-shadow':
-      shadow && !gradientDepth ? `0 0.18em 0.32em color-mix(in srgb, ${depthColor} 24%, rgba(0, 0, 0, 0.42))` : 'none',
-    '--depth-text-face-shadow': shadow ? '0 0.035em 0.07em rgba(0, 0, 0, 0.28)' : 'none'
+      shadow && !gradientDepth
+        ? `0 1px 3px color-mix(in srgb, ${depthColor} 18%, rgba(0, 0, 0, 0.1))`
+        : 'none',
+    '--depth-text-face-shadow': shadow
+      ? '0 1px 1px rgba(0, 0, 0, 0.12)'
+      : 'none'
   };
 
   return (
