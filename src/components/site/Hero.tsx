@@ -366,8 +366,8 @@ export function Hero() {
                   tint={dark ? "#ffffff" : "#000000"}
                   tintOpacity={dark ? 0.05 : 0.04}
                   textColor={dark ? "#f5f5f5" : "#111113"}
-                  lineColor={dark ? "#ffffff" : "#B0822D"}
-                  baseColor={dark ? "#525252" : "#d4d4d8"}
+                  lineColor={dark ? "#c9973a" : "#b0822d"}
+                  baseColor={dark ? "rgba(255,255,255,0.14)" : "rgba(10,10,12,0.12)"}
                   intensity={1}
                   idleIntensity={0.35}
                   shineSize={10}
@@ -376,7 +376,7 @@ export function Hero() {
                   glow={1}
                   followMouse
                   proximity={250}
-                  className="group gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer"
+                  className="group inline-flex items-center gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer whitespace-nowrap"
                   onClick={() => {
                     const el = document.getElementById("experience");
                     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -401,8 +401,8 @@ export function Hero() {
                   tint={dark ? "#ffffff" : "#000000"}
                   tintOpacity={dark ? 0.05 : 0.04}
                   textColor={dark ? "#f5f5f5" : "#111113"}
-                  lineColor={dark ? "#ffffff" : "#B0822D"}
-                  baseColor={dark ? "#525252" : "#d4d4d8"}
+                  lineColor={dark ? "#c9973a" : "#b0822d"}
+                  baseColor={dark ? "rgba(255,255,255,0.14)" : "rgba(10,10,12,0.12)"}
                   intensity={1}
                   idleIntensity={0.35}
                   shineSize={10}
@@ -411,7 +411,7 @@ export function Hero() {
                   glow={1}
                   followMouse
                   proximity={250}
-                  className="group gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer"
+                  className="group inline-flex items-center gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer whitespace-nowrap"
                   onClick={() => {
                     const el = document.getElementById("education");
                     if (el) el.scrollIntoView({ behavior: "smooth" });

@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-bg text-fg">
+    <div className="relative min-h-screen overflow-x-clip text-fg">
       <a
         href="#main-content"
         className="sr-only z-[60] rounded-control bg-fg px-4 py-2.5 text-[14px] font-medium text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
