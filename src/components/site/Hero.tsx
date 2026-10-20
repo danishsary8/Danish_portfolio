@@ -187,11 +187,11 @@ export function Hero() {
                 href="#contact"
                 size="md"
                 radius={8}
-                tint="#0a0a0b"
-                tintOpacity={0.94}
-                textColor="#f5f5f5"
+                tint={dark ? "#18181b" : "#111113"}
+                tintOpacity={1}
+                textColor="#ffffff"
                 lineColor="#ffffff"
-                baseColor="#525252"
+                baseColor={dark ? "#3f3f46" : "#27272a"}
                 intensity={1.2}
                 idleIntensity={0.4}
                 shineSize={12}
