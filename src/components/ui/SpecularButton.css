@@ -88,17 +88,17 @@
   position: absolute;
   top: -50%;
   left: -120%;
-  width: 28px;
+  width: 12px;
   height: 200%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.15) 25%,
     rgba(255, 255, 255, 0.95) 50%,
-    rgba(255, 255, 255, 0.08) 75%,
+    rgba(255, 255, 255, 0.15) 75%,
     transparent 100%
   );
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
   transform: rotate(25deg);
   pointer-events: none;
   z-index: 3;
