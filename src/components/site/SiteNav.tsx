@@ -6,7 +6,6 @@ import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { GradientText } from "@/components/ui/GradientText";
-import { SlingButton } from "@/components/ui/SlingButton";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -135,13 +134,13 @@ export function SiteNav() {
         </div>
 
         {/* Right: Theme Toggle & Mobile Menu outside the pill */}
-        <div className="flex items-center justify-end gap-2 sm:gap-2.5">
+        <div className="flex items-center justify-end gap-2.5 sm:gap-3">
           {/* Download CV Pill Button */}
           {CV_HREF ? (
             <a
               href={CV_HREF}
               {...getCvLinkProps()}
-              className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3 sm:px-3.5 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
+              className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
               aria-label="Download CV"
             >
               <FileText
@@ -154,30 +153,19 @@ export function SiteNav() {
             </a>
           ) : null}
 
-          {/* Theme Switcher SlingButton */}
-          <SlingButton
-            onSend={toggle}
-            ariaLabel={themeLabel}
-            padColor={dark ? "#1c1c20" : "#ffffff"}
-            iconColor={dark ? "#EDEDEF" : "#111113"}
-            accentColor={dark ? "#c9973a" : "#b0822d"}
-            wellColor={dark ? "#111113" : "#e4e4e7"}
-            bandColor={dark ? "#c9973a" : "#b0822d"}
-            size={40}
-            strokeWidth={2.5}
-            armAt={32}
-            maxPull={110}
-            launchSpeed={2600}
-            recoil={0.2}
-            flight={100}
-            particles={14}
-            spread={60}
-            axis="any"
-            tapSends={true}
-            className="shadow-2xs"
+          {/* Theme Toggle Button - matching Download CV glass pill */}
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={themeLabel}
+            className="ios-glass-pill ios-glass-pill-interactive group inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-fg transition-all duration-150 select-none press shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
           >
-            <ThemeIcon className="h-4.5 w-4.5 transition-transform duration-200" strokeWidth={2} aria-hidden="true" />
-          </SlingButton>
+            <ThemeIcon
+              className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-fg-subtle transition-all duration-300 group-hover:text-gold group-hover:rotate-12 group-active:scale-90"
+              strokeWidth={1.8}
+              aria-hidden="true"
+            />
+          </button>
 
           {/* Mobile Menu trigger (Sheet drawer) */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -185,9 +173,9 @@ export function SiteNav() {
               <button
                 type="button"
                 aria-label="Open menu"
-                className="inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-line bg-surface/80 backdrop-blur-md text-fg transition-all duration-150 hover:border-line-strong hover:bg-surface shadow-xs md:hidden active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+                className="ios-glass-pill ios-glass-pill-interactive group inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-fg transition-all duration-150 select-none press shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus md:hidden"
               >
-                <Menu className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+                <Menu className="h-4 w-4 text-fg-subtle transition-colors duration-150 group-hover:text-gold" strokeWidth={1.75} aria-hidden="true" />
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">

@@ -1,8 +1,9 @@
 .glare-hover {
   position: relative;
-  display: inline-grid;
-  vertical-align: top;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
   width: var(--gh-width);
   height: var(--gh-height);
   background: var(--gh-bg);

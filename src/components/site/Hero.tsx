@@ -240,7 +240,7 @@ export function Hero() {
             <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-3.5 sm:gap-4" style={step(4)}>
               <a
                 href="#contact"
-                className="btn-neobrutal-primary group inline-flex h-10.5 items-center justify-center rounded-control select-none"
+                className="btn-neobrutal-primary group inline-flex h-10.5 items-center justify-center rounded-control select-none overflow-hidden"
               >
                 <GlareHover
                   borderRadius="6px"
@@ -254,11 +254,11 @@ export function Hero() {
                   blendMode="screen"
                   rimGlint={true}
                   transitionDuration={650}
-                  className="h-full w-full px-5 flex items-center gap-2"
+                  className="h-full w-full px-5 inline-flex flex-row items-center justify-center gap-2 select-none"
                 >
-                  <span className="font-semibold text-white">Get in touch</span>
+                  <span className="font-semibold text-white whitespace-nowrap">Get in touch</span>
                   <ArrowRight
-                    className="h-4 w-4 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                    className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
                     strokeWidth={2}
                     aria-hidden="true"
                   />
@@ -270,7 +270,7 @@ export function Hero() {
                   href={PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center rounded-control select-none"
+                  className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center rounded-control select-none overflow-hidden"
                   aria-label="GitHub profile"
                 >
                   <GlareHover
@@ -285,13 +285,13 @@ export function Hero() {
                     blendMode="screen"
                     rimGlint={true}
                     transitionDuration={650}
-                    className="h-full w-full px-5 flex items-center justify-center gap-2.5"
+                    className="h-full w-full px-5 inline-flex flex-row items-center justify-center gap-2.5 select-none"
                   >
                     <SiGithub
                       className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
                       aria-hidden="true"
                     />
-                    <span className="font-semibold tracking-[-0.01em]">GitHub</span>
+                    <span className="font-semibold tracking-[-0.01em] whitespace-nowrap">GitHub</span>
                   </GlareHover>
                 </a>
               ) : null}
