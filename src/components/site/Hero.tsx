@@ -46,24 +46,28 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="home" aria-labelledby="hero-title" className="relative isolate overflow-hidden">
+    <section
+      id="home"
+      aria-labelledby="hero-title"
+      className="relative isolate overflow-hidden min-h-[100dvh] flex flex-col justify-center"
+    >
       {/* Ambient background glow */}
       <div
         aria-hidden="true"
-        className="hero-glow absolute inset-x-0 top-0 -z-10 h-[640px] pointer-events-none opacity-80"
+        className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute right-[10%] top-24 -z-10 h-[360px] w-[360px] rounded-full bg-gold/10 blur-[110px] dark:bg-gold/15"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 pt-28 pb-14 sm:px-6 sm:pt-32 sm:pb-16 lg:pt-32 lg:pb-16">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.2fr_auto] lg:gap-12 xl:gap-16">
+      <div className="mx-auto w-full max-w-[1180px] px-5 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-10 lg:pt-20 lg:pb-10 xl:pt-24 xl:pb-12">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.2fr_auto] lg:gap-10 xl:gap-14">
           {/* Left Column: Status, Headline, Rotating Role, Bio Pitch, CTAs & Facts */}
           <div className="min-w-0">
             {/* Status & Phnom Penh time */}
-            <div className="enter flex flex-wrap items-center gap-3 text-[13px] text-fg-muted" style={step(0)}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-line-strong/80 bg-surface/80 px-3 py-1 shadow-2xs backdrop-blur-md">
+            <div className="enter flex flex-wrap items-center gap-2.5 text-[12.5px] sm:text-[13px] text-fg-muted" style={step(0)}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-line-strong/80 bg-surface/80 px-2.5 py-1 sm:px-3 shadow-2xs backdrop-blur-md">
                 <span aria-hidden="true" className="relative inline-flex h-2 w-2">
                   <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
                   <span className="relative h-2 w-2 rounded-full bg-gold" />
@@ -75,7 +79,7 @@ export function Hero() {
               </span>
               <span>
                 {PROFILE.location.split(",")[0]}{" "}
-                <span className="font-mono text-[12.5px] tabular-nums text-fg">{time ?? "--:--"}</span>{" "}
+                <span className="font-mono text-[12px] sm:text-[12.5px] tabular-nums text-fg">{time ?? "--:--"}</span>{" "}
                 <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
@@ -84,7 +88,7 @@ export function Hero() {
             <h1
               ref={headlineRef}
               id="hero-title"
-              className="enter hero-name-heading relative mt-4 cursor-pointer select-none text-[clamp(2.85rem,6.4vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.03em]"
+              className="enter hero-name-heading relative mt-2.5 sm:mt-3.5 cursor-pointer select-none text-[clamp(2.5rem,5.2vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.03em]"
               style={step(1)}
               onPointerEnter={() => {
                 isPausedRef.current = true;
@@ -128,8 +132,8 @@ export function Hero() {
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
-            <div className="enter mt-3 flex items-center" style={step(2)}>
-              <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-3 py-1 text-[15px] sm:text-[17px] font-medium text-fg-muted shadow-2xs backdrop-blur-sm">
+            <div className="enter mt-2 sm:mt-2.5 flex items-center" style={step(2)}>
+              <div className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong/80 bg-surface/80 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[14px] sm:text-[16px] font-medium text-fg-muted shadow-2xs backdrop-blur-sm">
                 <span className="sr-only">Junior Web Developer</span>
                 <span aria-hidden="true" className="font-medium text-fg-muted">Junior</span>
                 <span aria-hidden="true" className="inline-flex items-center font-medium text-fg-muted">
@@ -156,7 +160,7 @@ export function Hero() {
             <div className="enter" style={step(3)}>
               <SplitText
                 text="Building web apps that are fast, intuitive, and reliable. Powered by clean code, secure APIs, and turning real ideas into software that just works."
-                className="mt-5 max-w-[52ch] text-[15.5px] leading-[1.65] text-fg-muted sm:text-[16.5px]"
+                className="mt-3 sm:mt-4 max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[16px]"
                 effect="rise"
                 splitType="chars"
                 delay={40}
@@ -178,7 +182,7 @@ export function Hero() {
             </div>
 
             {/* Call to action buttons */}
-            <div className="enter mt-7 flex flex-wrap items-center gap-3" style={step(4)}>
+            <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-2.5 sm:gap-3" style={step(4)}>
               <SpecularButton
                 href="#contact"
                 size="md"
@@ -224,7 +228,7 @@ export function Hero() {
             </div>
 
             {/* Core Tech Stack & Current Focus Telemetry */}
-            <div className="enter mt-9 flex flex-col gap-3.5 sm:max-w-[580px]" style={step(5)}>
+            <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-mono text-[12px] text-fg-subtle">Core Stack</span>
                 <span aria-hidden="true" className="text-fg-subtle/50">/</span>
@@ -256,7 +260,7 @@ export function Hero() {
               </div>
 
               {/* Current Role & University Trajectory */}
-              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[12.5px]">
+              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[12px] sm:text-[12.5px]">
                 <a
                   href="#experience"
                   className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-1/70 px-3 py-1.5 transition-all duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-1 hover:shadow-xs press"
