@@ -445,7 +445,7 @@ export function Hero() {
               <ProfileCard
                 name={PROFILE.name}
                 title="Software & Web Developer"
-                handle={PROFILE.githubHandle}
+                handle={PROFILE.phone || "087 680 999"}
                 status="Available to work full-time"
                 statusColor={dark ? "#c9973a" : "#b0822d"}
                 contactText="Contact"

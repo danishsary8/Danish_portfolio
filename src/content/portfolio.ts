@@ -8,6 +8,7 @@ export const PROFILE = {
   timezone: "Asia/Phnom_Penh",
   timezoneLabel: "ICT",
   email: "danishsary4@gmail.com",
+  phone: '087 680 999',
   github: "https://github.com/danishsary8",
   githubHandle: "danishsary8",
   telegram: "https://t.me/danishsary",

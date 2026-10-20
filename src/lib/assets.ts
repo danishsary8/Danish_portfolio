@@ -6,6 +6,7 @@
  */
 
 import photo from "@/assets/danish-photo.jpg";
+import { DANISH_PHOTO_DATA_URI } from "@/assets/danish-photo.base64";
 import chatbotIcon from "@/assets/chatbot.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
@@ -23,7 +24,8 @@ export const ASSETS = {
     alt: "Sary Danish AI Assistant",
   },
   profile: {
-    photo,
+    photo: DANISH_PHOTO_DATA_URI || photo,
+    photoUrl: photo,
     alt: "Sary Danish — Junior Full-Stack Developer & Software Development Student",
   },
   projects: {

@@ -349,7 +349,21 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
               </span>
             )}
             <div className="profile-card__meta">
-              {handle && <span className="profile-card__handle">@{handle}</span>}
+              {handle && (
+                /^\+?\d/.test(handle) ? (
+                  <a
+                    href={`tel:${handle.replace(/\s+/g, '')}`}
+                    className="profile-card__handle font-mono hover:text-gold transition-colors duration-150 select-none inline-flex items-center gap-1"
+                    title={`Call ${name || 'Sary Danish'}`}
+                  >
+                    {handle}
+                  </a>
+                ) : (
+                  <span className="profile-card__handle">
+                    {handle.startsWith('@') ? handle : `@${handle}`}
+                  </span>
+                )
+              )}
               {status && <span className="profile-card__status">{status}</span>}
             </div>
             {contactText && (
