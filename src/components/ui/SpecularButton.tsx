@@ -187,7 +187,7 @@ export interface SpecularButtonProps {
   disabled?: boolean;
   flash?: boolean;
   href?: string;
-  onClick?: () => void;
+  onClick?: (event?: any) => void;
   className?: string;
   type?: "button" | "submit" | "reset";
   style?: CSSProperties;
@@ -214,7 +214,7 @@ export const SpecularButton = ({
   proximity = 250,
   autoAnimate = false,
   disabled = false,
-  flash = true,
+  flash = false,
   href,
   onClick,
   className = "",

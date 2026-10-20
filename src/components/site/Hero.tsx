@@ -15,7 +15,7 @@ import ScrambledText from "@/components/ui/ScrambledText";
 import FuseButton from "@/components/ui/FuseButton";
 import GradientText from "@/components/ui/GradientText";
 import GlareHover from "@/components/ui/GlareHover";
-import StarBorder from "@/components/ui/StarBorder";
+import SpecularButton from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -359,27 +359,28 @@ export function Hero() {
 
               {/* Current Role & University Trajectory */}
               <div className="flex flex-wrap items-center gap-2.5 pt-1 text-[12px] sm:text-[12.5px]">
-                <StarBorder
-                  as="a"
+                <SpecularButton
                   href="#experience"
-                  className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
-                  color={dark ? "#C9973A" : "#B0822D"}
-                  trailColor={dark ? "#E5C378" : "#85601F"}
-                  duration={8.5}
-                  direction="clockwise"
-                  sync
-                  syncOffset={0}
-                  stars={1}
-                  trailLength={0.28}
+                  size="sm"
+                  radius={18}
+                  tint={dark ? "#ffffff" : "#000000"}
+                  tintOpacity={dark ? 0.05 : 0.04}
+                  textColor={dark ? "#f5f5f5" : "#111113"}
+                  lineColor={dark ? "#ffffff" : "#B0822D"}
+                  baseColor={dark ? "#525252" : "#d4d4d8"}
+                  intensity={1}
+                  idleIntensity={0.35}
+                  shineSize={10}
+                  shineFade={34}
                   thickness={1.2}
-                  radius={9999}
-                  glow={0.55}
-                  hover="lap"
-                  sparkle={false}
-                  clickPulse
-                  backgroundColor="transparent"
-                  borderColor="transparent"
-                  theme={dark ? "dark" : "light"}
+                  glow={1}
+                  followMouse
+                  proximity={250}
+                  className="group gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer"
+                  onClick={() => {
+                    const el = document.getElementById("experience");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
                   <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
                     <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
@@ -391,29 +392,30 @@ export function Hero() {
                   <span className="relative z-10 text-fg-subtle">
                     at <span className="font-normal text-fg-muted">ETEC & KruITSolution</span>
                   </span>
-                </StarBorder>
+                </SpecularButton>
 
-                <StarBorder
-                  as="a"
+                <SpecularButton
                   href="#education"
-                  className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
-                  color={dark ? "#C9973A" : "#B0822D"}
-                  trailColor={dark ? "#E5C378" : "#85601F"}
-                  duration={8.5}
-                  direction="counterclockwise"
-                  sync
-                  syncOffset={0}
-                  stars={1}
-                  trailLength={0.28}
+                  size="sm"
+                  radius={18}
+                  tint={dark ? "#ffffff" : "#000000"}
+                  tintOpacity={dark ? 0.05 : 0.04}
+                  textColor={dark ? "#f5f5f5" : "#111113"}
+                  lineColor={dark ? "#ffffff" : "#B0822D"}
+                  baseColor={dark ? "#525252" : "#d4d4d8"}
+                  intensity={1}
+                  idleIntensity={0.35}
+                  shineSize={10}
+                  shineFade={34}
                   thickness={1.2}
-                  radius={9999}
-                  glow={0.55}
-                  hover="lap"
-                  sparkle={false}
-                  clickPulse
-                  backgroundColor="transparent"
-                  borderColor="transparent"
-                  theme={dark ? "dark" : "light"}
+                  glow={1}
+                  followMouse
+                  proximity={250}
+                  className="group gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer"
+                  onClick={() => {
+                    const el = document.getElementById("education");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }}
                 >
                   <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-fg/[0.06] dark:bg-white/[0.08]">
                     <GraduationCap
@@ -428,7 +430,7 @@ export function Hero() {
                   <span className="relative z-10 text-fg-subtle">
                     at <span className="font-normal text-fg-muted">Norton University</span>
                   </span>
-                </StarBorder>
+                </SpecularButton>
               </div>
             </div>
           </div>
