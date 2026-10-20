@@ -15,7 +15,7 @@
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
-  filter: blur(0.14em);
+  filter: blur(0.08em);
   pointer-events: none;
   user-select: none;
 }
