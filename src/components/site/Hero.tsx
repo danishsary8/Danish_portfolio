@@ -322,14 +322,20 @@ export function Hero() {
             <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
               <div className="flex items-center gap-2.5 overflow-hidden">
                 <GradientText
-                  colors={dark ? ["#60a5fa", "#a78bfa", "#f472b6"] : ["#2563eb", "#7c3aed", "#ec4899"]}
-                  animationSpeed={6}
+                  colors={
+                    dark
+                      ? ["#40ffaa", "#4079ff", "#a78bfa", "#40ffaa"]
+                      : ["#059669", "#2563eb", "#7c3aed", "#059669"]
+                  }
+                  animationSpeed={3}
+                  scale={1.2}
+                  glow={dark ? 0.35 : 0.15}
                   showBorder={false}
-                  className="shrink-0 font-mono text-[12px] font-semibold"
+                  className="shrink-0 font-mono text-[12px] sm:text-[12.5px] font-bold tracking-wider uppercase select-none"
                 >
                   Core Stack
                 </GradientText>
-                <span aria-hidden="true" className="shrink-0 text-fg-subtle/50">/</span>
+                <span aria-hidden="true" className="shrink-0 text-fg-subtle/50 font-mono">/</span>
                 <div className="min-w-0 flex-1 overflow-hidden">
                   <LogoLoop
                     logos={CORE_STACK.map((tech) => ({
