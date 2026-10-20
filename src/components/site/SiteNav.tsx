@@ -76,7 +76,7 @@ export function SiteNav() {
               glow={0.1}
               angle={115}
               trigger="loop"
-              className="font-display text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
+              className="font-display nav-brand-text text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
             />
           </a>
         </div>

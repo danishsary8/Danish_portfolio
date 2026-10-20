@@ -223,6 +223,24 @@
       0 0 56px rgba(201, 151, 58, 0.2);
   }
 
+  /* Nav Brand Mark Dimensional Shadows */
+  .nav-brand-text {
+    filter: drop-shadow(0 1px 2px rgba(10, 10, 12, 0.22)) drop-shadow(0 3px 6px rgba(10, 10, 12, 0.12));
+    transition: filter 200ms var(--ease-out);
+  }
+
+  .nav-brand-text:hover {
+    filter: drop-shadow(0 2px 4px rgba(10, 10, 12, 0.28)) drop-shadow(0 4px 10px rgba(10, 10, 12, 0.16));
+  }
+
+  .dark .nav-brand-text {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.22));
+  }
+
+  .dark .nav-brand-text:hover {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+  }
+
   /* Interactive Tech Stack Brand Badges with Colored Glow */
   .tech-badge {
     transition:
