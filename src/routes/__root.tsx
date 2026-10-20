@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { ChatbotWidget } from "@/components/site/ChatbotWidget";
 
 const primaryBtn =
   "press inline-flex h-10 items-center justify-center rounded-control bg-fg px-4 text-[14px] font-medium text-bg transition-[transform,opacity] duration-150 hover:opacity-90";
@@ -162,7 +163,8 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      {/* Required: nested routes render here. Removing <Outlet />
+      <ChatbotWidget /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );
