@@ -56,8 +56,8 @@
 
 @layer base {
   :root {
-    --bg: #fbfbfa;
-    --surface-1: #f4f4f3;
+    --bg: #ffffff;
+    --surface-1: #f6f6f7;
     --surface-2: #ffffff;
     --line: rgba(10, 10, 12, 0.08);
     --line-strong: rgba(10, 10, 12, 0.14);
