@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from "react";
-import { Mail } from "lucide-react";
+import { Eye, Mail } from "lucide-react";
 import GlareHover from "@/components/ui/GlareHover";
 import "./ProfileCard.css";
 
@@ -66,6 +66,8 @@ export interface ProfileCardProps {
   statusColor?: string;
   contactText?: string;
   showUserInfo?: boolean;
+  showViewButton?: boolean;
+  onViewClick?: () => void;
   onContactClick?: () => void;
   theme?: "dark" | "light";
   backdropColor?: string;
@@ -92,6 +94,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
   statusColor = "#b0822d",
   contactText = "Contact",
   showUserInfo = true,
+  showViewButton = true,
+  onViewClick,
   onContactClick,
   theme = "dark",
   backdropColor,
@@ -337,6 +341,21 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
                 {title && <p className="profile-card__title">{title}</p>}
               </div>
             </>
+          )}
+          {showViewButton && (
+            <button
+              type="button"
+              className="profile-card__view-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewClick?.();
+              }}
+              aria-label="View portrait photo"
+              title="View full portrait"
+            >
+              <Eye className="profile-card__view-icon" strokeWidth={2} aria-hidden="true" />
+              <span>View</span>
+            </button>
           )}
           <span className="profile-card__tile-rim" />
         </div>

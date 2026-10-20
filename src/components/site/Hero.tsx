@@ -454,6 +454,14 @@ export function Hero() {
                 statusColor={dark ? "#c9973a" : "#b0822d"}
                 contactText="Contact"
                 avatarUrl={ASSETS.profile.photo}
+                showViewButton={true}
+                onViewClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(
+                      new CustomEvent("open-photo-modal", { detail: { photo: ASSETS.profile.photo } })
+                    );
+                  }
+                }}
                 holo={0}
                 glare={0}
                 tiltStrength={0}
