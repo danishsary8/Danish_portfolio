@@ -312,8 +312,21 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
               blendMode="screen"
               rimGlint={true}
               transitionDuration={650}
+              className="absolute inset-0 w-full h-full"
             >
-              <img className="profile-card__photo" src={avatarUrl} alt={name || ""} loading="lazy" draggable={false} />
+              <img
+                className="profile-card__photo"
+                src={avatarUrl}
+                alt={name || "Sary Danish"}
+                loading="eager"
+                draggable={false}
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.src.endsWith("/danish-photo.jpg")) {
+                    target.src = "/danish-photo.jpg";
+                  }
+                }}
+              />
             </GlareHover>
           )}
           {(name || title) && (
