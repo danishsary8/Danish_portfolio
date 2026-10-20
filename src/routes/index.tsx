@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen overflow-x-clip bg-bg text-fg">
+    <div className="relative min-h-screen overflow-x-clip bg-bg text-fg">
       <a
         href="#main-content"
         className="sr-only z-[60] rounded-control bg-fg px-4 py-2.5 text-[14px] font-medium text-bg focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
@@ -41,7 +41,7 @@ function Index() {
       </a>
       <PortfolioBackground />
       <SiteNav />
-      <main id="main-content">
+      <main id="main-content" className="relative z-10">
         <Hero />
         <About />
         <Skills />
@@ -50,7 +50,9 @@ function Index() {
         <Education />
         <Contact />
       </main>
-      <SiteFooter />
+      <div className="relative z-10">
+        <SiteFooter />
+      </div>
     </div>
   );
 }

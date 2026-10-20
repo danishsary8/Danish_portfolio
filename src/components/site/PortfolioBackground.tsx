@@ -7,36 +7,44 @@ export function PortfolioBackground() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none -z-20 overflow-hidden select-none"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Subtle Cohesive Ambient Gradient Surface */}
+      {/* Smooth Cohesive Ambient Gradient Background */}
       <div
         className="absolute inset-0 transition-opacity duration-700 ease-out"
         style={{
           background: dark
-            ? "radial-gradient(circle 900px at 50% -120px, rgba(201, 151, 58, 0.08), transparent 70%), radial-gradient(circle 700px at 85% 45%, rgba(201, 151, 58, 0.035), transparent 65%), radial-gradient(circle 800px at 15% 85%, rgba(255, 255, 255, 0.02), transparent 70%), #0A0A0B"
-            : "radial-gradient(circle 900px at 50% -120px, rgba(176, 130, 45, 0.055), transparent 70%), radial-gradient(circle 700px at 85% 45%, rgba(176, 130, 45, 0.025), transparent 65%), radial-gradient(circle 800px at 15% 85%, rgba(10, 10, 12, 0.015), transparent 70%), #FBFBFA",
+            ? `radial-gradient(ellipse 1100px 700px at 50% -80px, rgba(201, 151, 58, 0.14), transparent 75%),
+               radial-gradient(ellipse 900px 600px at 90% 35%, rgba(201, 151, 58, 0.08), transparent 70%),
+               radial-gradient(ellipse 850px 650px at 10% 75%, rgba(212, 175, 55, 0.06), transparent 70%),
+               radial-gradient(circle 800px at 50% 100%, rgba(201, 151, 58, 0.05), transparent 70%),
+               #0A0A0B`
+            : `radial-gradient(ellipse 1100px 700px at 50% -80px, rgba(176, 130, 45, 0.10), transparent 75%),
+               radial-gradient(ellipse 900px 600px at 90% 35%, rgba(176, 130, 45, 0.06), transparent 70%),
+               radial-gradient(ellipse 850px 650px at 10% 75%, rgba(190, 145, 55, 0.045), transparent 70%),
+               radial-gradient(circle 800px at 50% 100%, rgba(176, 130, 45, 0.04), transparent 70%),
+               #FBFBFA`,
         }}
       />
 
-      {/* Living Drifting Particles Layer (Optimized for 60fps & zero lag) */}
-      <div className="absolute inset-0 opacity-60 dark:opacity-80 transition-opacity duration-500">
+      {/* Living Drifting Particles Layer (Smooth 60fps & calm drift) */}
+      <div className="absolute inset-0 opacity-85 dark:opacity-90 transition-opacity duration-500">
         <Particles
-          particleCount={75}
+          particleCount={85}
           particleSpread={12}
-          speed={0.04}
+          speed={0.05}
           particleColors={
             dark
-              ? ["#C9973A", "#EDEDEF", "#8A8A93"]
-              : ["#B0822D", "#71717A", "#A1A1AA"]
+              ? ["#C9973A", "#E5C378", "#D4AF37", "#EDEDEF"]
+              : ["#B0822D", "#C9973A", "#85601F", "#71717A"]
           }
-          particleBaseSize={70}
-          sizeRandomness={0.75}
-          glow={dark ? 0.35 : 0.15}
-          twinkle={0.2}
+          particleBaseSize={80}
+          sizeRandomness={0.7}
+          glow={dark ? 0.45 : 0.3}
+          twinkle={0.25}
           moveParticlesOnHover
           hoverEffect="parallax"
-          particleHoverFactor={0.35}
+          particleHoverFactor={0.25}
           hoverRadius={180}
           disableRotation
           pixelRatio={1.2}
