@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ArrowRight, FileText, GraduationCap } from "lucide-react";
+import { ArrowRight, Code2, FileText, GraduationCap } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
@@ -191,9 +191,11 @@ export function Hero() {
             <div className="enter mt-3 sm:mt-4 flex items-center" style={step(2)}>
               <div className="ios-glass-pill cursor-target inline-flex items-center gap-2.5 px-4 py-2 sm:px-5 sm:py-2.5 font-display text-[16px] sm:text-[19px] font-bold tracking-tight text-fg select-none transition-all duration-200">
                 <span className="sr-only">Junior Web Developer</span>
-                <span className="relative flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20" aria-hidden="true">
-                  <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
-                  <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_8px_var(--gold)]" />
+                <span
+                  className="flex h-5 w-5 sm:h-5.5 sm:w-5.5 shrink-0 items-center justify-center rounded-[6px] bg-gold/12 text-gold border border-gold/25 shadow-2xs"
+                  aria-hidden="true"
+                >
+                  <Code2 className="h-3.5 w-3.5" strokeWidth={2.4} />
                 </span>
                 <span aria-hidden="true" className="font-display font-bold text-fg tracking-tight">Junior</span>
                 <span aria-hidden="true" className="inline-flex items-center font-display font-extrabold text-gold tracking-tight">
