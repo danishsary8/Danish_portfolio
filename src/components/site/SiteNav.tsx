@@ -11,21 +11,54 @@ import { SlingButton } from "@/components/ui/SlingButton";
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
 function useActiveSection() {
-  const [active, setActive] = useState<string>(SECTION_IDS[0] ?? "");
+  const [active, setActive] = useState<string>("");
+
   useEffect(() => {
-    const els = SECTION_IDS.map((id) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => el !== null,
-    );
+    const allIds = ["home", ...SECTION_IDS];
+    const els = allIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
     if (!els.length || !("IntersectionObserver" in window)) return;
+
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            if (e.target.id === "home") {
+              setActive("");
+            } else {
+              setActive(e.target.id);
+            }
+          }
+        }
       },
-      { rootMargin: "-40% 0px -55% 0px" },
+      { rootMargin: "-30% 0px -50% 0px" },
     );
+
     els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    const handleScroll = () => {
+      const aboutEl = document.getElementById("about");
+      if (aboutEl) {
+        const rect = aboutEl.getBoundingClientRect();
+        if (rect.top > window.innerHeight * 0.45) {
+          setActive("");
+        }
+      } else if (window.scrollY < 200) {
+        setActive("");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
   return active;
 }
 

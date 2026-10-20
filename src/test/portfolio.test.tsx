@@ -150,7 +150,7 @@ describe("Navigation", () => {
   it("links all six sections and offers a theme toggle and menu", () => {
     render(<SiteNav />);
     const nav = screen.getByRole("navigation", { name: "Primary" });
-    for (const label of ["Home", "Skills", "Projects", "Experience", "Education", "Contact"]) {
+    for (const label of ["About", "Skills", "Projects", "Experience", "Education", "Contact"]) {
       expect(within(nav).getByRole("link", { name: label })).toBeInTheDocument();
     }
     expect(within(nav).getByRole("link", { name: /Download CV/ })).toHaveAttribute(
