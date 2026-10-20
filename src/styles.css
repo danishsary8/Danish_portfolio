@@ -371,17 +371,27 @@
   .btn-neobrutal-github:hover {
     transform: translate(-1.5px, -1.5px);
     box-shadow: 5px 5px 0px #64748b;
-    background-color: #f8fafc;
-    border-color: #000000;
-    color: #000000;
+    background-color: #111113;
+    border-color: #111113;
+    color: #ffffff;
+  }
+
+  .btn-neobrutal-github:hover svg,
+  .btn-neobrutal-github:hover span {
+    color: #ffffff;
   }
 
   .dark .btn-neobrutal-github:hover {
     transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #94a3b8;
-    background-color: #27272A;
+    box-shadow: 5px 5px 0px #e2e8f0;
+    background-color: #ffffff;
     border-color: #ffffff;
-    color: #ffffff;
+    color: #09090b;
+  }
+
+  .dark .btn-neobrutal-github:hover svg,
+  .dark .btn-neobrutal-github:hover span {
+    color: #09090b;
   }
 
   .btn-neobrutal-github:active,

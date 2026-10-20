@@ -270,9 +270,9 @@ export function Hero() {
                   borderRadius="8px"
                   mode="hover"
                   variant="streak"
-                  glareColor={dark ? "#ffffff" : "#111113"}
-                  glareOpacity={dark ? 0.35 : 0.2}
-                  glareSize={35}
+                  glareColor="#ffffff"
+                  glareOpacity={0.4}
+                  glareSize={30}
                   softness={0.6}
                   glareAngle={-45}
                   blendMode="screen"
