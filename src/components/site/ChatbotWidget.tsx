@@ -200,37 +200,39 @@ export function ChatbotWidget() {
         : "idle";
 
   return (
-    <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 select-none">
+    <div className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end pointer-events-none select-none">
       {/* Chat Window / Dialog Modal */}
       {isOpen && (
         <div
           ref={cardRef}
           role="dialog"
           aria-labelledby="chatbot-title"
-          className="ios-glass-card absolute bottom-20 sm:bottom-24 right-0 mb-1 w-[calc(100vw-1.5rem)] sm:w-[380px] max-w-[420px] h-[520px] max-h-[calc(100dvh-7rem)] rounded-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          className="pointer-events-auto mb-2.5 w-[min(380px,calc(100vw-1.5rem))] h-[min(520px,calc(100dvh-6.5rem))] rounded-2xl flex flex-col overflow-hidden bg-surface-2 border border-line-strong shadow-[0_20px_50px_-10px_rgba(0,0,0,0.18),0_10px_20px_-5px_rgba(0,0,0,0.08)] dark:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85),0_8px_24px_-4px_rgba(0,0,0,0.6)] ring-1 ring-black/[0.04] dark:ring-white/[0.06] origin-bottom-right animate-in fade-in zoom-in-95 duration-200"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-line/60 px-4 py-3 bg-surface-1/65 backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-2/80 border border-line-strong/80 shadow-xs overflow-visible">
-                <BotCharacterSVG state={isThinking ? "listening" : "idle"} className="h-11 w-11" />
+          <div className="flex items-center justify-between border-b border-line px-4 py-3 bg-surface-1">
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-xl bg-surface-2 border border-line-strong shadow-2xs overflow-visible">
+                <BotCharacterSVG state={isThinking ? "listening" : "idle"} className="h-10 w-10" />
                 <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-2" />
               </div>
               <div>
-                <h3 id="chatbot-title" className="text-[14px] font-semibold text-fg leading-tight flex items-center gap-1.5">
+                <h3 id="chatbot-title" className="text-[13.5px] font-semibold text-fg leading-tight flex items-center gap-1.5">
                   Danish AI Assistant
-                  <Sparkles className="h-3 w-3 text-gold" />
+                  <span className="rounded bg-gold/15 px-1 py-0.2 text-[9.5px] font-mono font-medium text-gold-ink dark:text-gold">
+                    AI
+                  </span>
                 </h3>
-                <p className="text-[11px] text-fg-subtle flex items-center gap-1.5 font-mono">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  {isThinking ? "Thinking..." : "Online • Phnom Penh"}
+                <p className="text-[11px] text-fg-subtle flex items-center gap-1.5 font-mono mt-0.5">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {isThinking ? "Thinking..." : "Online • Phnom Penh (ICT)"}
                 </p>
               </div>
             </div>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="press rounded-lg p-1.5 text-fg-muted hover:bg-surface-2/80 hover:text-fg transition-colors cursor-pointer"
+              className="press flex h-7.5 w-7.5 items-center justify-center rounded-lg border border-line bg-surface-2 text-fg-muted hover:text-fg hover:border-line-strong transition-colors cursor-pointer"
               aria-label="Close assistant"
             >
               <X className="h-4 w-4" />
@@ -238,52 +240,52 @@ export function ChatbotWidget() {
           </div>
 
           {/* Quick Suggestion Chips */}
-          <div className="border-b border-line/50 bg-surface-1/45 backdrop-blur-xs px-3 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[12px]">
+          <div className="border-b border-line bg-surface-1/60 px-3.5 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[12px]">
             <button
               type="button"
               onClick={() => handleSend("Tell me about your projects")}
-              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="press whitespace-nowrap rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
             >
               📚 Projects
             </button>
             <button
               type="button"
               onClick={() => handleSend("What is your tech stack?")}
-              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="press whitespace-nowrap rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
             >
               ⚡ Tech Stack
             </button>
             <button
               type="button"
               onClick={() => handleSend("How can I hire or contact you?")}
-              className="whitespace-nowrap rounded-md border border-line/70 bg-surface-2/80 backdrop-blur-xs px-2.5 py-1 text-fg-muted hover:border-gold hover:text-fg transition-all cursor-pointer shadow-2xs"
+              className="press whitespace-nowrap rounded-lg border border-line bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
             >
               ✉️ Contact
             </button>
           </div>
 
           {/* Chat Messages Body */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-[13px] leading-relaxed bg-transparent">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-[13px] leading-relaxed bg-surface-2">
             {messages.map((m) => (
               <div
                 key={m.id}
                 className={`flex gap-2.5 ${m.sender === "user" ? "justify-end" : "justify-start"}`}
               >
                 {m.sender === "bot" && (
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1/80 border border-line/80 shadow-2xs">
-                    <Bot className="h-3.5 w-3.5 text-gold" />
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line shadow-2xs">
+                    <Bot className="h-3.5 w-3.5 text-gold-ink dark:text-gold" />
                   </div>
                 )}
                 <div
-                  className={`max-w-[82%] rounded-2xl px-3.5 py-2.5 ${
+                  className={`max-w-[84%] rounded-2xl px-3.5 py-2.5 ${
                     m.sender === "user"
-                      ? "bg-fg text-bg rounded-br-xs font-medium shadow-xs"
-                      : "bg-surface-1/85 backdrop-blur-xs text-fg rounded-bl-xs border border-line/70 shadow-xs whitespace-pre-line"
+                      ? "bg-fg text-bg rounded-tr-xs font-medium shadow-xs"
+                      : "bg-surface-1 text-fg rounded-tl-xs border border-line shadow-2xs whitespace-pre-line"
                   }`}
                 >
                   <p>{m.text}</p>
                   {m.links && (
-                    <div className="mt-2.5 flex flex-wrap gap-1.5 pt-1 border-t border-line/40">
+                    <div className="mt-2.5 flex flex-wrap gap-1.5 pt-1.5 border-t border-line/60">
                       {m.links.map((link, idx) =>
                         link.href ? (
                           <a
@@ -291,7 +293,7 @@ export function ChatbotWidget() {
                             href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 rounded-md border border-line/70 bg-surface-2/85 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors"
+                            className="press inline-flex items-center gap-1 rounded-md border border-line-strong bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold-ink dark:hover:text-gold transition-colors shadow-2xs"
                           >
                             <span>{link.label}</span>
                             <ExternalLink className="h-3 w-3 opacity-60" />
@@ -301,7 +303,7 @@ export function ChatbotWidget() {
                             key={idx}
                             type="button"
                             onClick={link.action}
-                            className="inline-flex items-center gap-1 rounded-md border border-line/70 bg-surface-2/85 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold transition-colors cursor-pointer"
+                            className="press inline-flex items-center gap-1 rounded-md border border-line-strong bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold-ink dark:hover:text-gold transition-colors cursor-pointer shadow-2xs"
                           >
                             <span>{link.label}</span>
                             <ArrowRight className="h-3 w-3 opacity-60" />
@@ -311,7 +313,7 @@ export function ChatbotWidget() {
                     </div>
                   )}
                   <span
-                    className={`block mt-1 text-[10px] ${
+                    className={`block mt-1 text-[10px] font-mono ${
                       m.sender === "user" ? "text-bg/60 text-right" : "text-fg-subtle text-left"
                     }`}
                   >
@@ -322,13 +324,13 @@ export function ChatbotWidget() {
             ))}
             {isThinking && (
               <div className="flex gap-2.5 justify-start">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1/80 border border-line/80 shadow-2xs">
-                  <Bot className="h-3.5 w-3.5 text-gold" />
+                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line shadow-2xs">
+                  <Bot className="h-3.5 w-3.5 text-gold-ink dark:text-gold" />
                 </div>
-                <div className="rounded-2xl rounded-bl-xs bg-surface-1/85 backdrop-blur-xs border border-line/70 px-4 py-2.5 text-fg-muted flex items-center gap-1.5 shadow-xs">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:150ms]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:300ms]" />
+                <div className="rounded-2xl rounded-tl-xs bg-surface-1 border border-line px-4 py-2.5 text-fg-muted flex items-center gap-1.5 shadow-2xs">
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce [animation-delay:150ms]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce [animation-delay:300ms]" />
                 </div>
               </div>
             )}
@@ -341,19 +343,19 @@ export function ChatbotWidget() {
               e.preventDefault();
               handleSend();
             }}
-            className="border-t border-line/60 p-2.5 bg-surface-1/65 backdrop-blur-md flex items-center gap-2"
+            className="border-t border-line p-2.5 sm:p-3 bg-surface-1 flex items-center gap-2"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about Danish's work..."
-              className="flex-1 rounded-xl border border-line/70 bg-surface-2/75 backdrop-blur-xs px-3.5 py-2 text-[13px] text-fg placeholder:text-fg-subtle focus:outline-none focus:border-gold/80 transition-colors shadow-2xs"
+              className="flex-1 rounded-xl border border-line-strong bg-surface-2 px-3.5 py-2 text-[13px] text-fg placeholder:text-fg-subtle focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all shadow-2xs"
             />
             <button
               type="submit"
               disabled={!input.trim()}
-              className="press flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-fg text-bg disabled:opacity-40 transition-opacity cursor-pointer"
+              className="press flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-fg text-bg disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer shadow-xs"
               aria-label="Send message"
             >
               <Send className="h-4 w-4" />
@@ -363,16 +365,16 @@ export function ChatbotWidget() {
       )}
 
       {/* Floating 3D AI Robot Widget Trigger */}
-      <div className="relative flex flex-col items-end">
+      <div className="relative flex flex-col items-end pointer-events-auto">
         {/* Hover Speech Bubble / Greeting Badge (Active State) */}
         <div
-          className={`pointer-events-none mb-1.5 mr-1 flex items-center gap-1.5 rounded-full border border-cyan-400/40 bg-surface-2/95 px-3 py-1 shadow-lg backdrop-blur-md transition-all duration-300 ${
+          className={`pointer-events-none mb-1.5 mr-1 flex items-center gap-1.5 rounded-full border border-line-strong bg-surface-2 px-3 py-1 shadow-md transition-all duration-300 ${
             isHovered && !isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-1.5 scale-95"
           }`}
         >
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
           <span className="text-[12px] font-semibold text-fg">Ask Danish AI</span>
           <span className="text-[13px]">✨</span>
@@ -387,12 +389,12 @@ export function ChatbotWidget() {
           onMouseLeave={() => setIsHovered(false)}
           aria-expanded={isOpen}
           aria-label="Toggle Danish AI Assistant"
-          className="group relative flex h-18 w-18 sm:h-20 sm:w-20 items-center justify-center p-0 transition-transform duration-300 hover:scale-108 cursor-pointer focus:outline-none"
+          className="group relative flex h-16 w-16 sm:h-18 sm:w-18 items-center justify-center p-0 transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
         >
           {/* Ambient Cyber Aura Glow */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-1 rounded-full bg-gradient-to-tr from-cyan-400/35 via-blue-500/25 to-purple-500/35 opacity-70 blur-xl transition-all duration-300 group-hover:opacity-100 group-hover:blur-2xl animate-pulse [animation-duration:3.2s]"
+            className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400/25 via-blue-500/20 to-purple-500/25 opacity-70 blur-lg transition-all duration-300 group-hover:opacity-100 group-hover:blur-xl animate-pulse [animation-duration:3.2s]"
           />
 
           {/* Floating / Bobbing Animated Bot Character */}
@@ -403,7 +405,7 @@ export function ChatbotWidget() {
           {/* Live Online Signal Beacon */}
           <span
             aria-hidden="true"
-            className="absolute top-1.5 right-1.5 flex h-3.5 w-3.5 items-center justify-center"
+            className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center"
           >
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 [animation-duration:2.5s]" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-2" />
@@ -413,7 +415,7 @@ export function ChatbotWidget() {
         {/* Dynamic Breathing Ground Shadow */}
         <div
           aria-hidden="true"
-          className="pointer-events-none -mt-2 h-2.5 w-12 rounded-[100%] bg-black/35 blur-[2.5px] motion-safe:animate-[bot-shadow-breathe_2.8s_ease-in-out_infinite]"
+          className="pointer-events-none -mt-2 h-2.5 w-11 rounded-[100%] bg-black/25 dark:bg-black/50 blur-[2px] motion-safe:animate-[bot-shadow-breathe_2.8s_ease-in-out_infinite]"
         />
       </div>
     </div>
