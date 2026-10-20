@@ -257,43 +257,52 @@
   }
 
   /* Neobrutalist Action Buttons (Hero CTAs) */
+  /* Neo-brutalist Primary Button (Get in touch) */
   .btn-neobrutal-primary {
     position: relative;
-    overflow: hidden;
-    background-color: #111113;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
     color: #ffffff;
-    border: 2px solid #111113;
-    box-shadow: 3.5px 3.5px 0px #94a3b8;
+    border: 2px solid #000000;
+    border-radius: var(--radius-control);
+    box-shadow: 4px 4px 0px #000000;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
     transition:
-      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      background-color 150ms ease,
-      border-color 150ms ease;
+      transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 160ms ease,
+      border-color 160ms ease;
   }
 
   .dark .btn-neobrutal-primary {
-    background-color: #18181b;
+    background-color: #000000;
     color: #ffffff;
-    border: 2px solid #ededef;
-    box-shadow: 3.5px 3.5px 0px #cbd5e1;
+    border: 2px solid #ffffff;
+    box-shadow: 4px 4px 0px #ffffff;
   }
 
+  /* Tactile press on hover: clicks down into the shadow like a real physical button */
   .btn-neobrutal-primary:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #64748b;
-    background-color: #000000;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #000000;
+    background-color: #111113;
   }
 
   .dark .btn-neobrutal-primary:hover {
-    background-color: #222226;
-    border-color: #ffffff;
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #e2e8f0;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #ffffff;
+    background-color: #18181b;
   }
 
+  /* Bottoming out on click/active */
   .btn-neobrutal-primary:active,
   .dark .btn-neobrutal-primary:active {
-    transform: translate(3.5px, 3.5px);
+    transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px transparent;
   }
 
@@ -305,76 +314,91 @@
   /* Neobrutalist Secondary Button (White Button) */
   .btn-neobrutal-secondary {
     position: relative;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: #ffffff;
-    color: #111113;
-    border: 2px solid #111113;
-    box-shadow: 3.5px 3.5px 0px #94a3b8;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: var(--radius-control);
+    box-shadow: 4px 4px 0px #000000;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
     transition:
-      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      background-color 150ms ease,
-      border-color 150ms ease,
-      color 150ms ease;
+      transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
   }
 
   .dark .btn-neobrutal-secondary {
-    background-color: #ffffff;
-    color: #111113;
+    background-color: #09090b;
+    color: #ffffff;
     border: 2px solid #ffffff;
-    box-shadow: 3.5px 3.5px 0px #cbd5e1;
+    box-shadow: 4px 4px 0px #ffffff;
   }
 
   .btn-neobrutal-secondary:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #64748b;
-    background-color: #f8fafc;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #000000;
+    background-color: #000000;
     border-color: #000000;
-    color: #000000;
+    color: #ffffff;
   }
 
   .dark .btn-neobrutal-secondary:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #e2e8f0;
-    background-color: #f8fafc;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #ffffff;
+    background-color: #ffffff;
     border-color: #ffffff;
     color: #000000;
   }
 
   .btn-neobrutal-secondary:active,
   .dark .btn-neobrutal-secondary:active {
-    transform: translate(3.5px, 3.5px);
+    transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px transparent;
   }
 
   /* Neobrutalist GitHub Button */
   .btn-neobrutal-github {
     position: relative;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: #ffffff;
-    color: #111113;
-    border: 2px solid #111113;
-    box-shadow: 3.5px 3.5px 0px #94a3b8;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: var(--radius-control);
+    box-shadow: 4px 4px 0px #000000;
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
     transition:
-      transform 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      box-shadow 120ms cubic-bezier(0.23, 1, 0.32, 1),
-      background-color 150ms ease,
-      border-color 150ms ease,
-      color 150ms ease;
+      transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
   }
 
   .dark .btn-neobrutal-github {
-    background-color: #18181B;
-    color: #EDEDEF;
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 3.5px 3.5px 0px #475569;
+    background-color: #09090b;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    box-shadow: 4px 4px 0px #ffffff;
   }
 
+  /* Tactile press on hover: clicks down into the shadow + inverts color */
   .btn-neobrutal-github:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #64748b;
-    background-color: #111113;
-    border-color: #111113;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #000000;
+    background-color: #000000;
+    border-color: #000000;
     color: #ffffff;
   }
 
@@ -384,21 +408,21 @@
   }
 
   .dark .btn-neobrutal-github:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px #e2e8f0;
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px #ffffff;
     background-color: #ffffff;
     border-color: #ffffff;
-    color: #09090b;
+    color: #000000;
   }
 
   .dark .btn-neobrutal-github:hover svg,
   .dark .btn-neobrutal-github:hover span {
-    color: #09090b;
+    color: #000000;
   }
 
   .btn-neobrutal-github:active,
   .dark .btn-neobrutal-github:active {
-    transform: translate(3.5px, 3.5px);
+    transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px transparent;
   }
 
