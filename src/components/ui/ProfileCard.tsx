@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef } from "react";
 import { Mail } from "lucide-react";
+import GlareHover from "@/components/ui/GlareHover";
 import "./ProfileCard.css";
 
 const THEMES = {
@@ -297,7 +298,23 @@ export const ProfileCard: React.FC<ProfileCardProps> = memo(({
             <span className="profile-card__holo-shift" />
           </span>
           {avatarUrl && (
-            <img className="profile-card__photo" src={avatarUrl} alt={name || ""} loading="lazy" draggable={false} />
+            <GlareHover
+              width="100%"
+              height="100%"
+              borderRadius="var(--pc-radius)"
+              mode="hover"
+              variant="streak"
+              glareColor="#ffffff"
+              glareOpacity={0.5}
+              glareSize={30}
+              softness={0.6}
+              glareAngle={-45}
+              blendMode="screen"
+              rimGlint={true}
+              transitionDuration={650}
+            >
+              <img className="profile-card__photo" src={avatarUrl} alt={name || ""} loading="lazy" draggable={false} />
+            </GlareHover>
           )}
           {(name || title) && (
             <>

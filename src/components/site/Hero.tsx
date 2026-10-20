@@ -13,6 +13,7 @@ import CountUp from "@/components/ui/CountUp";
 import ScrambledText from "@/components/ui/ScrambledText";
 import FuseButton from "@/components/ui/FuseButton";
 import GradientText from "@/components/ui/GradientText";
+import GlareHover from "@/components/ui/GlareHover";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 
 const CORE_STACK = [
@@ -174,44 +175,91 @@ export function Hero() {
 
             {/* Call to action buttons */}
             <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-3 sm:gap-3.5" style={step(4)}>
-              <a
-                href="#contact"
-                className="btn-neobrutal-primary group inline-flex h-10.5 items-center gap-2 rounded-control px-5 text-[14px] font-semibold text-white cursor-pointer select-none"
+              <GlareHover
+                borderRadius="8px"
+                mode="hover"
+                variant="streak"
+                glareColor="#ffffff"
+                glareOpacity={0.4}
+                glareSize={30}
+                softness={0.6}
+                glareAngle={-45}
+                blendMode="screen"
+                rimGlint={true}
+                transitionDuration={650}
+                className="inline-grid rounded-control"
               >
-                <span className="relative z-10 font-semibold text-white">Get in touch</span>
-                <ArrowRight
-                  className="relative z-10 h-4 w-4 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
-              </a>
-              <a
-                href="#projects"
-                className="btn-neobrutal-secondary inline-flex h-10.5 items-center justify-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
+                <a
+                  href="#contact"
+                  className="btn-neobrutal-primary group inline-flex h-10.5 items-center gap-2 rounded-control px-5 text-[14px] font-semibold text-white cursor-pointer select-none"
+                >
+                  <span className="relative z-10 font-semibold text-white">Get in touch</span>
+                  <ArrowRight
+                    className="relative z-10 h-4 w-4 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </a>
+              </GlareHover>
+
+              <GlareHover
+                borderRadius="8px"
+                mode="hover"
+                variant="streak"
+                glareColor={dark ? "#ffffff" : "#111113"}
+                glareOpacity={dark ? 0.35 : 0.18}
+                glareSize={30}
+                softness={0.6}
+                glareAngle={-45}
+                blendMode="screen"
+                rimGlint={true}
+                transitionDuration={650}
+                className="inline-grid rounded-control"
               >
-                <span className="relative z-10">View projects</span>
-              </a>
+                <a
+                  href="#projects"
+                  className="btn-neobrutal-secondary inline-flex h-10.5 items-center justify-center rounded-control px-5 text-[14px] font-semibold cursor-pointer select-none"
+                >
+                  <span className="relative z-10">View projects</span>
+                </a>
+              </GlareHover>
+
               {hasCv ? (
-                <FuseButton
-                  label="Download CV"
-                  undoLabel="Cancel"
-                  doneLabel="Opening CV..."
-                  icon={<FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />}
-                  href={CV_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color={dark ? "#EDEDEF" : "#111113"}
-                  background={dark ? "#18181B" : "#F4F4F3"}
-                  fuseColor="#F59E0B"
-                  undoWindow={2000}
-                  fuse="outline"
-                  fuseThickness={2}
-                  radius={8}
-                  size="md"
-                  commitOn="fuseEnd"
-                  settle="reset"
-                  className="btn-neobrutal-tertiary select-none"
-                />
+                <GlareHover
+                  borderRadius="8px"
+                  mode="hover"
+                  variant="streak"
+                  glareColor={dark ? "#ffffff" : "#111113"}
+                  glareOpacity={dark ? 0.35 : 0.18}
+                  glareSize={30}
+                  softness={0.6}
+                  glareAngle={-45}
+                  blendMode="screen"
+                  rimGlint={true}
+                  transitionDuration={650}
+                  className="inline-grid rounded-control"
+                >
+                  <FuseButton
+                    label="Download CV"
+                    undoLabel="Cancel"
+                    doneLabel="Opening CV..."
+                    icon={<FileText className="relative z-10 h-4 w-4" strokeWidth={1.5} aria-hidden="true" />}
+                    href={CV_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color={dark ? "#EDEDEF" : "#111113"}
+                    background={dark ? "#18181B" : "#F4F4F3"}
+                    fuseColor="#F59E0B"
+                    undoWindow={2000}
+                    fuse="outline"
+                    fuseThickness={2}
+                    radius={8}
+                    size="md"
+                    commitOn="fuseEnd"
+                    settle="reset"
+                    className="btn-neobrutal-tertiary select-none"
+                  />
+                </GlareHover>
               ) : null}
             </div>
 
