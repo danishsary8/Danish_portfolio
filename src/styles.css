@@ -317,7 +317,7 @@
     transform: rotate(25deg);
     pointer-events: none;
     z-index: 1;
-    animation: specular-flash-sweep 3.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+    animation: specular-flash-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
   /* Backward compatibility alias */
@@ -399,21 +399,22 @@
       left: -90%;
       opacity: 0;
     }
-    4% {
+    6% {
       opacity: 1;
     }
-    44% {
-      left: 170%;
+    48% {
+      left: 175%;
       opacity: 1;
     }
-    48%, 100% {
-      left: 170%;
+    52%, 100% {
+      left: 175%;
       opacity: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .btn-primary-flash::after {
+    .btn-primary-flash::after,
+    .btn-neobrutal-primary::after {
       animation: none;
       display: none;
     }
