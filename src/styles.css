@@ -263,7 +263,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #c49437 0%, #b0822d 100%);
+    background-color: #b0822d;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(0, 0, 0, 0.08) 100%);
     color: #ffffff;
     border: 2px solid #85601f;
     border-radius: var(--radius-control);
@@ -271,16 +272,18 @@
     cursor: pointer;
     text-decoration: none;
     user-select: none;
+    outline: none;
     -webkit-tap-highlight-color: transparent;
     transition:
       transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
       box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      background 160ms ease,
+      background-color 160ms ease,
       border-color 160ms ease;
   }
 
   .dark .btn-neobrutal-primary {
-    background: linear-gradient(135deg, #d8a74a 0%, #c9973a 100%);
+    background-color: #c9973a;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(0, 0, 0, 0.1) 100%);
     color: #ffffff;
     border: 2px solid #f0c36d;
     box-shadow: 4px 4px 0px #5c4110;
@@ -290,13 +293,13 @@
   .btn-neobrutal-primary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #85601f;
-    background: #9d7324;
+    background-color: #9d7324;
   }
 
   .dark .btn-neobrutal-primary:hover {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0px #5c4110;
-    background: #b88629;
+    background-color: #b88629;
   }
 
   /* Bottoming out on click/active */
@@ -304,6 +307,15 @@
   .dark .btn-neobrutal-primary:active {
     transform: translate(4px, 4px);
     box-shadow: 0px 0px 0px transparent;
+  }
+
+  .btn-neobrutal-primary:focus {
+    outline: none;
+  }
+
+  .btn-neobrutal-primary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
   }
 
   /* Backward compatibility alias */
