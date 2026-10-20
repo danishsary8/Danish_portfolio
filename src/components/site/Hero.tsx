@@ -7,7 +7,8 @@ import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
-import ElasticMesh from "@/components/ui/ElasticMesh";
+import DepthText from "@/components/ui/DepthText";
+import LogoLoop from "@/components/ui/LogoLoop";
 import { SplitText } from "@/components/ui/SplitText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
@@ -68,26 +69,32 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Interactive 3D ElasticMesh */}
+            {/* Main Headline: Interactive 3D DepthText */}
             <h1
               id="hero-title"
-              className="enter relative mt-1 sm:mt-2 select-none"
+              className="enter relative mt-1.5 sm:mt-2.5 select-none"
               style={step(1)}
             >
-              <span className="sr-only">Sary Danish</span>
-              <div className="relative w-full max-w-[560px] h-[130px] sm:h-[160px] md:h-[185px]">
-                <ElasticMesh
-                  text="Sary Danish"
-                  material="balloon"
-                  color={dark ? "#3b82f6" : "#2563eb"}
-                  inflate={1}
-                  stiffness={0.5}
-                  wobble={0.6}
-                  theme={dark ? "dark" : "light"}
-                  fontFamily="Syne, Geist, sans-serif"
-                  fontWeight={800}
-                />
-              </div>
+              <DepthText
+                text="Sary Danish"
+                layers={14}
+                depth={1.3}
+                faceColor={dark ? "#3b82f6" : "#2563eb"}
+                depthColor={dark ? "#1d4ed8" : "#1e40af"}
+                gradientDepth={false}
+                hoverPush={0.35}
+                float={false}
+                tilt={4.5}
+                pointerTracking
+                smoothing={0.14}
+                perspective={950}
+                autoOrbit={false}
+                fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
+                fontWeight={800}
+                shadow
+                outline={false}
+                intro
+              />
             </h1>
 
             {/* Dynamic Typing Role: Junior [Software / Web / Fullstack] Developer */}
@@ -164,33 +171,48 @@ export function Hero() {
 
             {/* Core Tech Stack & Current Focus Telemetry */}
             <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-[12px] text-fg-subtle">Core Stack</span>
-                <span aria-hidden="true" className="text-fg-subtle/50">/</span>
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {CORE_STACK.map((tech) => {
-                    const brandColor = getSkillColor(tech);
-                    const brandGlow = getSkillGlow(tech);
-                    return (
-                      <span
-                        key={tech}
-                        className="tech-badge group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/80 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted cursor-default select-none hover:bg-surface-1 hover:text-fg"
-                        style={
-                          {
-                            "--badge-color": brandColor,
-                            "--badge-glow": brandGlow,
-                          } as CSSProperties
-                        }
-                      >
+              <div className="flex items-center gap-2.5 overflow-hidden">
+                <span className="shrink-0 font-mono text-[12px] text-fg-subtle">Core Stack</span>
+                <span aria-hidden="true" className="shrink-0 text-fg-subtle/50">/</span>
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <LogoLoop
+                    logos={CORE_STACK.map((tech) => ({
+                      title: tech,
+                      color: getSkillColor(tech),
+                      glow: getSkillGlow(tech),
+                      node: (
                         <SkillIcon
                           name={tech}
                           useBrandColor
                           className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 ease-out group-hover:scale-110"
                         />
-                        <span>{tech}</span>
+                      ),
+                    }))}
+                    speed={32}
+                    direction="left"
+                    logoHeight={28}
+                    gap={10}
+                    pauseOnHover={true}
+                    fadeOut={true}
+                    fadeOutWidth={0.08}
+                    draggable={true}
+                    intro={false}
+                    ariaLabel="Core Tech Stack"
+                    renderItem={(item) => (
+                      <span
+                        className="tech-badge group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/80 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted cursor-default select-none hover:bg-surface-1 hover:text-fg whitespace-nowrap"
+                        style={
+                          {
+                            "--badge-color": item.color,
+                            "--badge-glow": item.glow,
+                          } as CSSProperties
+                        }
+                      >
+                        {item.node}
+                        <span>{item.title}</span>
                       </span>
-                    );
-                  })}
+                    )}
+                  />
                 </div>
               </div>
 
