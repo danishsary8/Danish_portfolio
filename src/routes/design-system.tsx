@@ -77,7 +77,7 @@ const TYPE_SCALE = [
     label: "Title",
     spec: "Geist 500 · 17 / 1.4",
     className: "text-[17px] font-medium leading-[1.4] tracking-[-0.01em]",
-    sample: "Web Developer Trainee",
+    sample: "Web Developer Trainee Intern",
   },
   {
     label: "Body",

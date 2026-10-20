@@ -138,7 +138,7 @@ export type Skill = (typeof SKILL_GROUPS)[number]["skills"][number];
 
 export const EXPERIENCE = [
   {
-    title: "Web Developer Trainee",
+    title: "Web Developer Trainee Intern",
     org: "ETEC & KruITSolution",
     period: "Jul 2026 – Present",
     detail: "Weekend internship · Phnom Penh",

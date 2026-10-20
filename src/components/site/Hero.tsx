@@ -277,7 +277,7 @@ export function Hero() {
                     <span className="relative h-2 w-2 rounded-full bg-gold" />
                   </span>
                   <span className="font-medium text-fg transition-colors duration-150 group-hover:text-gold">
-                    Web Developer Trainee
+                    Web Developer Trainee Intern
                   </span>
                   <span className="text-fg-subtle">
                     at <span className="font-normal text-fg-muted">ETEC & KruITSolution</span>
