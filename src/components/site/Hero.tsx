@@ -83,12 +83,12 @@ export function Hero() {
           <div className="min-w-0">
             {/* Status & Phnom Penh time */}
             <div className="enter flex flex-wrap items-center gap-2.5 text-[12.5px] sm:text-[13px] text-fg-muted" style={step(0)}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-line-strong/80 bg-surface/80 px-2.5 py-1 sm:px-3 shadow-2xs backdrop-blur-md">
-                <span aria-hidden="true" className="relative inline-flex h-2 w-2">
-                  <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
-                  <span className="relative h-2 w-2 rounded-full bg-gold" />
+              <span className="ios-glass-pill cursor-target gap-2 px-3 py-1.5 sm:px-3.5 select-none">
+                <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
+                  <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
+                  <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_6px_var(--gold)]" />
                 </span>
-                <span className="text-fg font-medium">Available to work full-time</span>
+                <span className="text-fg font-medium tracking-[-0.01em]">Available to work full-time</span>
               </span>
               <span aria-hidden="true" className="text-fg-subtle">
                 /
@@ -373,16 +373,16 @@ export function Hero() {
               </div>
 
               {/* Current Role & University Trajectory */}
-              <div className="flex flex-wrap items-center gap-2 pt-0.5 text-[12px] sm:text-[12.5px]">
+              <div className="flex flex-wrap items-center gap-2.5 pt-1 text-[12px] sm:text-[12.5px]">
                 <a
                   href="#experience"
-                  className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-1/70 px-3 py-1.5 transition-all duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-1 hover:shadow-xs press"
+                  className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
                 >
-                  <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
-                    <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
-                    <span className="relative h-2 w-2 rounded-full bg-gold" />
+                  <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
+                    <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
+                    <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_6px_var(--gold)]" />
                   </span>
-                  <span className="font-medium text-fg transition-colors duration-150 group-hover:text-gold">
+                  <span className="font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-gold">
                     Web Developer Trainee Intern
                   </span>
                   <span className="text-fg-subtle">
@@ -392,14 +392,16 @@ export function Hero() {
 
                 <a
                   href="#education"
-                  className="group inline-flex items-center gap-2 rounded-lg border border-line bg-surface-1/70 px-3 py-1.5 transition-all duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:border-line-strong hover:bg-surface-1 hover:shadow-xs press"
+                  className="ios-glass-pill ios-glass-pill-interactive cursor-target group gap-2 px-3.5 py-1.5 select-none press"
                 >
-                  <GraduationCap
-                    className="h-3.5 w-3.5 shrink-0 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
-                    strokeWidth={1.75}
-                    aria-hidden="true"
-                  />
-                  <span className="font-medium text-fg transition-colors duration-150 group-hover:text-fg">
+                  <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-fg/[0.06] dark:bg-white/[0.08]">
+                    <GraduationCap
+                      className="h-3 w-3 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-fg">
                     4th-Year Software Development
                   </span>
                   <span className="text-fg-subtle">
