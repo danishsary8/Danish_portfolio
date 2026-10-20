@@ -427,7 +427,7 @@ export function Hero() {
                   color={dark ? "#C9973A" : "#B0822D"}
                   trailColor={dark ? "#E5C378" : "#85601F"}
                   duration={8.5}
-                  direction="clockwise"
+                  direction="counterclockwise"
                   sync
                   syncOffset={0}
                   stars={1}

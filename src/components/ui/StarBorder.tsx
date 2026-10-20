@@ -523,7 +523,10 @@ export const StarBorder = <T extends ElementType = 'button'>({
         state.lapOffset = wrap(state.lapOffset, total);
       }
 
-      state.motion = state.velocity + (state.lap >= 0 ? extra / dt : 0);
+      state.motion =
+        s.sync && !reduce && cruise !== 0
+          ? cruise + (state.lap >= 0 ? extra / dt : 0)
+          : state.velocity + (state.lap >= 0 ? extra / dt : 0);
 
       if (s.sync && !reduce) {
         const cycleProgress = wrap(((now - GLOBAL_START_TIME) / 1000 / s.duration) * s.direction + s.syncOffset, 1);
