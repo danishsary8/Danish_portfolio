@@ -279,7 +279,8 @@ export function Hero() {
                 name={PROFILE.name}
                 title="Software & Web Developer"
                 handle={PROFILE.githubHandle}
-                status="Available to work"
+                status="Available to work full-time"
+                statusColor={dark ? "#c9973a" : "#b0822d"}
                 contactText="Contact"
                 avatarUrl={ASSETS.profile.photo}
                 holo={0}
