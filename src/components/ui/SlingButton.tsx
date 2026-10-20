@@ -44,6 +44,7 @@ export interface SlingButtonProps {
   axis?: "any" | "horizontal" | "vertical";
   tapSends?: boolean;
   disabled?: boolean;
+  shadow?: string;
   ariaLabel?: string;
   className?: string;
   style?: CSSProperties;
@@ -69,6 +70,7 @@ export function SlingButton({
   axis = "any",
   tapSends = true,
   disabled = false,
+  shadow,
   ariaLabel = "Send",
   className = "",
   style,
@@ -377,6 +379,7 @@ export function SlingButton({
         "--sl-band": bandColor,
         "--sl-stroke": `${strokeWidth}px`,
         "--sl-dot": `${DOT}px`,
+        ...(shadow ? { "--sl-shadow": shadow } : {}),
         ...style,
       } as CSSProperties}
     >

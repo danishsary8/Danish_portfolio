@@ -9,6 +9,7 @@
   --sl-stroke: 3px;
   --sl-dot: 8px;
   --sl-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --sl-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(125, 125, 125, 0.2);
 
   position: relative;
   display: inline-block;
@@ -114,7 +115,7 @@
   border-radius: 50%;
   background: var(--sl-pad);
   color: var(--sl-icon);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(125, 125, 125, 0.2);
+  box-shadow: var(--sl-shadow, 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(125, 125, 125, 0.2));
   transition: transform 160ms var(--sl-ease-out), box-shadow 160ms var(--sl-ease-out);
 }
 

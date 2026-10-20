@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { FileText, Menu, Moon, Sun } from "lucide-react";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { FileText, Moon, Sun } from "lucide-react";
 import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { GradientText } from "@/components/ui/GradientText";
+import { SlingButton } from "@/components/ui/SlingButton";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
@@ -64,7 +64,6 @@ function useActiveSection() {
 export function SiteNav() {
   const { dark, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const active = useActiveSection();
 
   useEffect(() => {
@@ -133,7 +132,7 @@ export function SiteNav() {
           />
         </div>
 
-        {/* Right: Theme Toggle & Mobile Menu outside the pill */}
+        {/* Right: Download CV & SlingButton Theme Toggle */}
         <div className="flex items-center justify-end gap-2.5 sm:gap-3">
           {/* Download CV Pill Button */}
           {CV_HREF ? (
@@ -153,60 +152,32 @@ export function SiteNav() {
             </a>
           ) : null}
 
-          {/* Theme Toggle Button - matching Download CV glass pill */}
-          <button
-            type="button"
-            onClick={toggle}
-            aria-label={themeLabel}
-            className="ios-glass-pill ios-glass-pill-interactive group inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-fg transition-all duration-150 select-none press shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+          {/* ReactBits SlingButton Theme Toggle */}
+          <SlingButton
+            onSend={toggle}
+            ariaLabel={themeLabel}
+            size={38}
+            strokeWidth={2}
+            padColor={dark ? "#18181B" : "#FFFFFF"}
+            iconColor={dark ? "#EDEDEF" : "#111113"}
+            accentColor={dark ? "#C9973A" : "#B0822D"}
+            wellColor={dark ? "#27272A" : "#E5E5E3"}
+            bandColor={dark ? "rgba(255,255,255,0.35)" : "rgba(10,10,12,0.3)"}
+            shadow={
+              dark
+                ? "0 4px 14px -2px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.16)"
+                : "0 3px 10px -1px rgba(10, 10, 12, 0.16), 0 1px 3px 0 rgba(10, 10, 12, 0.1), 0 0 0 1px rgba(10, 10, 12, 0.12)"
+            }
+            flight={70}
+            particles={8}
+            className="group"
           >
             <ThemeIcon
-              className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-fg-subtle transition-all duration-300 group-hover:text-gold group-hover:rotate-12 group-active:scale-90"
-              strokeWidth={1.8}
+              className="h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold"
+              strokeWidth={2.2}
               aria-hidden="true"
             />
-          </button>
-
-          {/* Mobile Menu trigger (Sheet drawer) */}
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                aria-label="Open menu"
-                className="ios-glass-pill ios-glass-pill-interactive group inline-flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full text-fg transition-all duration-150 select-none press shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus md:hidden"
-              >
-                <Menu className="h-4 w-4 text-fg-subtle transition-colors duration-150 group-hover:text-gold" strokeWidth={1.75} aria-hidden="true" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="right" className="flex w-[84vw] max-w-sm flex-col pt-20">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <ul className="flex flex-col gap-1">
-                {NAV_LINKS.map((l) => {
-                  const isItemActive = active === l.href.slice(1);
-                  return (
-                    <li key={l.href}>
-                      <a
-                        href={l.href}
-                        onClick={() => setOpen(false)}
-                        className={`flex min-h-12 items-center border-b border-line text-[20px] font-medium tracking-tight transition-colors ${
-                          isItemActive ? "text-fg font-semibold" : "text-fg-muted hover:text-fg"
-                        }`}
-                      >
-                        {l.label}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-              <a
-                href={`mailto:${PROFILE.email}`}
-                onClick={() => setOpen(false)}
-                className="mt-auto inline-flex h-11 items-center justify-center rounded-full bg-fg px-5 text-[14px] font-bold tracking-wider uppercase text-bg shadow-md transition-opacity hover:opacity-90"
-              >
-                Email me
-              </a>
-            </SheetContent>
-          </Sheet>
+          </SlingButton>
         </div>
       </nav>
     </header>
