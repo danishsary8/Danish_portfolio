@@ -9,6 +9,7 @@ import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
 import DepthText from "@/components/ui/DepthText";
 import LogoLoop from "@/components/ui/LogoLoop";
+import CountUp from "@/components/ui/CountUp";
 import { SplitText } from "@/components/ui/SplitText";
 import { SpecularButton } from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
@@ -27,6 +28,9 @@ const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
 export function Hero() {
   const time = useLocalTime(PROFILE.timezone);
+  const timeParts = time ? time.split(":").map((v) => parseInt(v, 10)) : null;
+  const hours = timeParts?.[0] ?? 0;
+  const minutes = timeParts?.[1] ?? 0;
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
 
@@ -64,7 +68,33 @@ export function Hero() {
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <span>{PROFILE.location.split(",")[0]}</span>
-                <span className="font-mono tabular-nums text-fg">{time || "--:--"}</span>
+                {time && timeParts ? (
+                <span className="inline-flex items-center font-mono tabular-nums text-fg">
+                  <CountUp
+                    from={0}
+                    to={hours}
+                    mode="count"
+                    easing="easeOut"
+                    duration={1.2}
+                    padDigits={2}
+                    replayOnHover
+                    trigger="view"
+                  />
+                  <span className="motion-safe:animate-pulse mx-px">:</span>
+                  <CountUp
+                    from={0}
+                    to={minutes}
+                    mode="count"
+                    easing="easeOut"
+                    duration={1.2}
+                    padDigits={2}
+                    replayOnHover
+                    trigger="view"
+                  />
+                </span>
+              ) : (
+                <span className="font-mono tabular-nums text-fg">--:--</span>
+              )}
                 <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
