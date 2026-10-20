@@ -186,16 +186,28 @@
   .hero-name-word {
     font-family: "Syne", var(--font-sans);
     transition:
-      color 750ms cubic-bezier(0.4, 0, 0.2, 1),
-      text-shadow 750ms cubic-bezier(0.4, 0, 0.2, 1);
+      color 850ms cubic-bezier(0.22, 1, 0.36, 1),
+      text-shadow 850ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: color, text-shadow;
   }
 
+  .hero-name-word span {
+    color: inherit;
+    text-shadow: inherit;
+    transition:
+      color 850ms cubic-bezier(0.22, 1, 0.36, 1),
+      text-shadow 850ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: color, text-shadow;
+  }
+
+  /* Light Mode Headline Shadows - 4 Matched Layers for Continuous Interpolation */
   .hero-name-word--primary {
     color: var(--fg);
     text-shadow:
       0 1px 2px rgba(10, 10, 12, 0.12),
       0 4px 12px rgba(10, 10, 12, 0.08),
-      0 12px 24px rgba(10, 10, 12, 0.04);
+      0 12px 24px rgba(10, 10, 12, 0.04),
+      0 0 32px rgba(10, 10, 12, 0);
   }
 
   .dark .hero-name-word--primary {
@@ -203,7 +215,8 @@
     text-shadow:
       0 2px 4px rgba(0, 0, 0, 0.95),
       0 8px 24px rgba(0, 0, 0, 0.8),
-      0 0 32px rgba(255, 255, 255, 0.08);
+      0 0 28px rgba(255, 255, 255, 0.08),
+      0 0 56px rgba(255, 255, 255, 0);
   }
 
   .hero-name-word--gold {
@@ -211,7 +224,8 @@
     text-shadow:
       0 1px 2px rgba(176, 130, 45, 0.28),
       0 4px 14px rgba(176, 130, 45, 0.2),
-      0 14px 28px rgba(176, 130, 45, 0.1);
+      0 14px 28px rgba(176, 130, 45, 0.1),
+      0 0 32px rgba(176, 130, 45, 0.15);
   }
 
   .dark .hero-name-word--gold {
@@ -223,7 +237,6 @@
       0 0 56px rgba(201, 151, 58, 0.2);
   }
 
-  /* Nav Brand Mark Dimensional Shadows */
   .nav-brand-text {
     filter: drop-shadow(0 1px 2px rgba(10, 10, 12, 0.22)) drop-shadow(0 3px 6px rgba(10, 10, 12, 0.12));
     transition: filter 200ms var(--ease-out);
