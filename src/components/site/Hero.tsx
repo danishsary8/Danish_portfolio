@@ -35,6 +35,31 @@ export function Hero() {
   const minutes = timeParts?.[1] ?? 0;
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
+  const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    const interval = setInterval(() => {
+      if (!isPausedRef.current) {
+        setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
+      }
+    }, 3400);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const primaryFace = dark ? "#EDEDEF" : "#111113";
+  const primaryDepth = dark ? "#3F3F46" : "#52525B";
+  const goldFace = dark ? "#C9973A" : "#B0822D";
+  const goldDepth = dark ? "#85601F" : "#785618";
+
+  const saryFace = goldTarget === "sary" ? goldFace : primaryFace;
+  const saryDepth = goldTarget === "sary" ? goldDepth : primaryDepth;
+  const danishFace = goldTarget === "danish" ? goldFace : primaryFace;
+  const danishDepth = goldTarget === "danish" ? goldDepth : primaryDepth;
 
   return (
     <section
@@ -101,27 +126,57 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Interactive 3D DepthText */}
+            {/* Main Headline: Interactive 3D DepthText with smooth alternating Gold/Default colors */}
             <h1
               id="hero-title"
-              className="enter relative mt-1.5 sm:mt-2.5 select-none"
+              className="enter relative mt-1.5 sm:mt-2.5 select-none cursor-pointer flex items-center gap-3 sm:gap-4 flex-wrap"
               style={step(1)}
+              onPointerEnter={() => {
+                isPausedRef.current = true;
+              }}
+              onPointerLeave={() => {
+                isPausedRef.current = false;
+              }}
+              onClick={() => {
+                setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
+              }}
+              title="Click to alternate highlight"
             >
               <DepthText
-                text="Sary Danish"
-                layers={18}
-                depth={1.65}
-                faceColor={dark ? "#3b82f6" : "#2563eb"}
-                depthColor={dark ? "#1d4ed8" : "#1e40af"}
+                text="Sary"
+                layers={16}
+                depth={1.5}
+                faceColor={saryFace}
+                depthColor={saryDepth}
                 gradientDepth={false}
                 hoverPush={0.35}
                 float={false}
-                tilt={6}
+                tilt={5.5}
                 pointerTracking
                 smoothing={0.14}
                 perspective={850}
                 autoOrbit={false}
-                orbitSpeed={0.2}
+                fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
+                fontWeight={800}
+                shadow
+                outline={false}
+                intro
+              />
+              {" "}
+              <DepthText
+                text="Danish"
+                layers={16}
+                depth={1.5}
+                faceColor={danishFace}
+                depthColor={danishDepth}
+                gradientDepth={false}
+                hoverPush={0.35}
+                float={false}
+                tilt={5.5}
+                pointerTracking
+                smoothing={0.14}
+                perspective={850}
+                autoOrbit={false}
                 fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
                 fontWeight={800}
                 shadow
