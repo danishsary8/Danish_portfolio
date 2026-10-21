@@ -8,6 +8,7 @@ import {
 import Lanyard from "@/components/ui/Lanyard";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
+import executiveBadge from "@/assets/executive-badge.svg";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import {
@@ -140,7 +141,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             {mounted && open ? (
               <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
                 <Lanyard
-                  frontImage={ASSETS.profile.photo}
+                  frontImage={executiveBadge}
                   backImage={BADGE_BACK_SVG}
                   cardColor="#111113"
                   strapLength={0.55}
@@ -156,11 +157,11 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center p-6">
                 <img
-                  src={ASSETS.profile.photo}
-                  alt={PROFILE.name}
-                  className="w-48 h-64 object-cover rounded-xl border border-white/10 shadow-2xl"
+                  src={executiveBadge}
+                  alt={`${PROFILE.name} Executive Pass`}
+                  className="w-52 h-72 object-contain rounded-2xl shadow-2xl"
                 />
               </div>
             )}
