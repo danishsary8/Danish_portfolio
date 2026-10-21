@@ -16,6 +16,7 @@ import FuseButton from "@/components/ui/FuseButton";
 import GradientText from "@/components/ui/GradientText";
 import SpecularButton from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
+import { ProfileModal } from "./ProfileModal";
 
 const CORE_STACK = [
   "React",
@@ -37,7 +38,14 @@ export function Hero() {
   const { dark } = useTheme();
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
   const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const handleOpen = () => setIsProfileModalOpen(true);
+    window.addEventListener("open-photo-modal", handleOpen);
+    return () => window.removeEventListener("open-photo-modal", handleOpen);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -426,11 +434,7 @@ export function Hero() {
                 avatarUrl={ASSETS.profile.photo}
                 showViewButton={true}
                 onViewClick={() => {
-                  if (typeof window !== "undefined") {
-                    window.dispatchEvent(
-                      new CustomEvent("open-photo-modal", { detail: { photo: ASSETS.profile.photo } })
-                    );
-                  }
+                  setIsProfileModalOpen(true);
                 }}
                 holo={0}
                 glare={0}
@@ -455,6 +459,8 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <ProfileModal open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen} />
     </section>
   );
 }
