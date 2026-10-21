@@ -1,20 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ArrowRight, Code2, FileText, GraduationCap } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { ArrowRight, Code2, GraduationCap } from "lucide-react";
 import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
-import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
-import { TextType } from "@/components/ui/TextType";
 import { ProfileCard } from "@/components/ui/ProfileCard";
-import DepthText from "@/components/ui/DepthText";
 import LogoLoop from "@/components/ui/LogoLoop";
 import CountUp from "@/components/ui/CountUp";
-import ScrambledText from "@/components/ui/ScrambledText";
-import FuseButton from "@/components/ui/FuseButton";
-import GradientText from "@/components/ui/GradientText";
-import SpecularButton from "@/components/ui/SpecularButton";
 import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
 import { ProfileModal } from "./ProfileModal";
 
@@ -36,39 +29,14 @@ export function Hero() {
   const hours = timeParts?.[0] ?? 0;
   const minutes = timeParts?.[1] ?? 0;
   const { dark } = useTheme();
-  const hasCv = CV_HREF !== "#" && CV_HREF !== "";
   const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const isPausedRef = useRef(false);
 
   useEffect(() => {
     const handleOpen = () => setIsProfileModalOpen(true);
     window.addEventListener("open-photo-modal", handleOpen);
     return () => window.removeEventListener("open-photo-modal", handleOpen);
   }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-    const interval = setInterval(() => {
-      if (!isPausedRef.current) {
-        setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
-      }
-    }, 3400);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const primaryFace = dark ? "#EDEDEF" : "#111113";
-  const primaryDepth = dark ? "#3F3F46" : "#52525B";
-  const goldFace = dark ? "#C9973A" : "#B0822D";
-  const goldDepth = dark ? "#85601F" : "#785618";
-
-  const saryFace = goldTarget === "sary" ? goldFace : primaryFace;
-  const saryDepth = goldTarget === "sary" ? goldDepth : primaryDepth;
-  const danishFace = goldTarget === "danish" ? goldFace : primaryFace;
-  const danishDepth = goldTarget === "danish" ? goldDepth : primaryDepth;
 
   return (
     <section
@@ -135,122 +103,69 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Main Headline: Interactive 3D DepthText with smooth alternating Gold/Default colors */}
+            {/* Main Headline: Razor-Sharp Architectural Display Typography */}
             <h1
               id="hero-title"
-              className="enter relative mt-1.5 sm:mt-2.5 select-none cursor-pointer flex items-center gap-3 sm:gap-4 flex-wrap"
+              className="enter mt-2 sm:mt-2.5 text-[44px] sm:text-[58px] lg:text-[70px] font-semibold tracking-[-0.04em] leading-[1.02] select-none cursor-pointer group"
               style={step(1)}
-              onPointerEnter={() => {
-                isPausedRef.current = true;
-              }}
-              onPointerLeave={() => {
-                isPausedRef.current = false;
-              }}
               onClick={() => {
                 setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
               }}
               title="Click to alternate highlight"
             >
-              <DepthText
-                text="Sary"
-                layers={16}
-                depth={1.5}
-                faceColor={saryFace}
-                depthColor={saryDepth}
-                gradientDepth={false}
-                hoverPush={0.35}
-                float={false}
-                tilt={5.5}
-                pointerTracking
-                smoothing={0.14}
-                perspective={850}
-                autoOrbit={false}
-                fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
-                fontWeight={800}
-                shadow
-                outline={false}
-                intro
-              />
-              {" "}
-              <DepthText
-                text="Danish"
-                layers={16}
-                depth={1.5}
-                faceColor={danishFace}
-                depthColor={danishDepth}
-                gradientDepth={false}
-                hoverPush={0.35}
-                float={false}
-                tilt={5.5}
-                pointerTracking
-                smoothing={0.14}
-                perspective={850}
-                autoOrbit={false}
-                fontSize="clamp(2.4rem, 6.2vw, 4.4rem)"
-                fontWeight={800}
-                shadow
-                outline={false}
-                intro
-              />
+              <span
+                className={`transition-colors duration-300 ${
+                  goldTarget === "sary"
+                    ? "text-gold-ink dark:text-gold"
+                    : "text-fg group-hover:text-fg/80"
+                }`}
+              >
+                Sary{" "}
+              </span>
+              <span
+                className={`transition-colors duration-300 ${
+                  goldTarget === "danish"
+                    ? "text-gold-ink dark:text-gold"
+                    : "text-fg group-hover:text-fg/80"
+                }`}
+              >
+                Danish
+              </span>
             </h1>
 
-            {/* Dynamic Typing Role: Junior Full-Stack Developer */}
-            <div className="enter mt-3 sm:mt-4 flex items-center" style={step(2)}>
-              <div className="ios-glass-pill cursor-target inline-flex items-center gap-2.5 px-4 py-2 sm:px-5 sm:py-2.5 font-display text-[16px] sm:text-[19px] font-bold tracking-tight text-fg select-none transition-all duration-200">
-                <span className="sr-only">Junior Web Developer — Junior Full-Stack Developer</span>
-                <span
-                  className="flex h-5 w-5 sm:h-5.5 sm:w-5.5 shrink-0 items-center justify-center rounded-[6px] bg-gold/12 text-gold border border-gold/25 shadow-2xs"
-                  aria-hidden="true"
-                >
-                  <Code2 className="h-3.5 w-3.5" strokeWidth={2.4} />
+            {/* Confident Architectural Subtitle */}
+            <div className="enter mt-2.5 sm:mt-3 flex items-center gap-2.5" style={step(2)}>
+              <span className="sr-only">Junior Web Developer — Junior Full-Stack Developer</span>
+              <span
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gold/12 text-gold-ink dark:text-gold border border-gold/25 shadow-2xs"
+                aria-hidden="true"
+              >
+                <Code2 className="h-3.5 w-3.5" strokeWidth={2.2} />
+              </span>
+              <p className="text-[17px] sm:text-[19px] font-medium tracking-tight text-fg">
+                Junior{" "}
+                <span className="font-semibold text-gold-ink dark:text-gold">
+                  Full-Stack Developer
                 </span>
-                <span aria-hidden="true" className="font-display font-bold text-fg tracking-tight">Junior</span>
-                <span aria-hidden="true" className="inline-flex items-center font-display font-extrabold text-gold tracking-tight min-w-[190px] sm:min-w-[225px]">
-                  <TextType
-                    text={["Fullstack Developer"]}
-                    typingSpeed={60}
-                    pauseDuration={3500}
-                    deletingSpeed={35}
-                    deleteMode="backspace"
-                    typeEffect="fade"
-                    mistakes={0}
-                    cursorStyle="bar"
-                    cursorGlide
-                    showCursor
-                    cursorColor={dark ? "#C9973A" : "#B0822D"}
-                    className="font-display font-extrabold text-gold whitespace-nowrap"
-                  />
-                </span>
-              </div>
+              </p>
             </div>
 
-            {/* Crisp Value Proposition Pitch with ScrambledText interactive animation */}
-            <div className="enter mt-2.5 sm:mt-3.5" style={step(3)}>
-              <ScrambledText
-                className="max-w-[50ch] text-[14.5px] leading-[1.58] text-fg-muted sm:text-[15.5px] cursor-default select-none"
-                effect="scramble"
-                radius={100}
-                strength={1}
-                trail={0.6}
-                duration={1.2}
-                speed={0.5}
-                scrambleChars=".:"
-                clickBurst
-                intro
-              >
+            {/* Value Proposition Pitch */}
+            <div className="enter mt-3 sm:mt-3.5" style={step(3)}>
+              <p className="max-w-[50ch] text-[14.5px] leading-[1.6] text-fg-muted sm:text-[15.5px]">
                 Building web apps that are fast, seamless, and reliable. Engineered with clean code, secure APIs, and turning real ideas into software that just works.
-              </ScrambledText>
+              </p>
             </div>
 
             {/* Call to action buttons */}
-            <div className="enter mt-4 sm:mt-5.5 flex flex-wrap items-center gap-3.5 sm:gap-4" style={step(4)}>
+            <div className="enter mt-5 sm:mt-6 flex flex-wrap items-center gap-3 sm:gap-3.5" style={step(4)}>
               <a
                 href="#contact"
-                className="btn-neobrutal-primary group inline-flex h-10.5 items-center justify-center gap-2 px-5 rounded-control select-none"
+                className="press group inline-flex h-10.5 items-center justify-center gap-2 px-5 rounded-control bg-gold hover:bg-gold-ink text-white font-medium text-[13.5px] sm:text-[14px] shadow-xs transition-colors duration-150 select-none cursor-pointer"
               >
-                <span className="font-semibold text-white whitespace-nowrap">Get in touch</span>
+                <span>Get in touch</span>
                 <ArrowRight
-                  className="h-4 w-4 shrink-0 text-white transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
+                  className="h-4 w-4 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
                   strokeWidth={2}
                   aria-hidden="true"
                 />
@@ -261,15 +176,15 @@ export function Hero() {
                   href={PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-neobrutal-github group inline-flex h-10.5 items-center justify-center gap-2.5 px-5 rounded-control select-none"
+                  className="press group inline-flex h-10.5 items-center justify-center gap-2.5 px-5 rounded-control bg-surface-2 hover:bg-surface-1 border border-line-strong text-fg font-medium text-[13.5px] sm:text-[14px] shadow-2xs transition-colors duration-150 select-none cursor-pointer"
                   aria-label="GitHub profile"
                 >
                   <AnimatedGithubIcon
-                    className="h-5 w-5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
+                    className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
                     dark={dark}
                     aria-hidden="true"
                   />
-                  <span className="font-semibold tracking-[-0.01em] whitespace-nowrap">GitHub</span>
+                  <span>GitHub</span>
                 </a>
               ) : null}
             </div>
@@ -277,22 +192,10 @@ export function Hero() {
             {/* Core Tech Stack & Current Focus Telemetry */}
             <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
               <div className="flex items-center gap-2.5 overflow-hidden">
-                <GradientText
-                  colors={
-                    dark
-                      ? ["#40ffaa", "#38bdf8", "#818cf8", "#c084fc", "#40ffaa"]
-                      : ["#059669", "#0284c7", "#4f46e5", "#9333ea", "#059669"]
-                  }
-                  animationSpeed={5}
-                  variant="flow"
-                  scale={1.8}
-                  glow={dark ? 0.35 : 0.15}
-                  showBorder={false}
-                  className="shrink-0 font-mono text-[12px] sm:text-[12.5px] font-bold tracking-wider uppercase select-none"
-                >
+                <span className="shrink-0 font-mono text-[11px] font-semibold tracking-wider text-fg-subtle uppercase select-none">
                   Core Stack
-                </GradientText>
-                <span aria-hidden="true" className="shrink-0 text-fg-subtle/50 font-mono">/</span>
+                </span>
+                <span aria-hidden="true" className="shrink-0 text-fg-subtle/40 font-mono">/</span>
                 <div className="min-w-0 flex-1 overflow-hidden">
                   <LogoLoop
                     logos={CORE_STACK.map((tech) => ({
@@ -335,80 +238,42 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Current Role & University Trajectory */}
-              <div className="flex flex-wrap items-center gap-2.5 pt-1 text-[12px] sm:text-[12.5px]">
-                <SpecularButton
+              {/* Current Role & University Trajectory: Elegant Hairline Ledger */}
+              <div className="mt-1 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 pt-2.5 border-t border-line/60 text-[12px] sm:text-[12.5px] text-fg-muted">
+                <a
                   href="#experience"
-                  size="sm"
-                  radius={18}
-                  tint={dark ? "#ffffff" : "#000000"}
-                  tintOpacity={dark ? 0.05 : 0.04}
-                  textColor={dark ? "#f5f5f5" : "#111113"}
-                  lineColor={dark ? "#c9973a" : "#b0822d"}
-                  baseColor={dark ? "rgba(255,255,255,0.14)" : "rgba(10,10,12,0.12)"}
-                  intensity={1}
-                  idleIntensity={0.35}
-                  shineSize={10}
-                  shineFade={34}
-                  thickness={1.2}
-                  glow={1}
-                  followMouse
-                  proximity={250}
-                  className="group inline-flex items-center gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer whitespace-nowrap"
-                  onClick={() => {
-                    const el = document.getElementById("experience");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  className="group inline-flex items-center gap-1.5 hover:text-fg transition-colors duration-150 select-none cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
-                    <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s]" />
-                    <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_6px_var(--gold)]" />
+                  <span className="relative flex h-1.5 w-1.5 shrink-0 items-center justify-center">
+                    <span className="absolute h-full w-full rounded-full bg-gold opacity-75 motion-safe:animate-ping" />
+                    <span className="relative h-1.5 w-1.5 rounded-full bg-gold" />
                   </span>
-                  <span className="relative z-10 font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-gold">
-                    Web Developer Trainee Intern
+                  <span className="font-medium text-fg group-hover:text-gold transition-colors">
+                    Web Developer Trainee
                   </span>
-                  <span className="relative z-10 text-fg-subtle">
-                    at <span className="font-normal text-fg-muted">ETEC & KruITSolution</span>
-                  </span>
-                </SpecularButton>
+                  <span className="text-fg-subtle">at ETEC & KruITSolution</span>
+                </a>
 
-                <SpecularButton
+                <span aria-hidden="true" className="text-line-strong select-none">•</span>
+
+                <a
                   href="#education"
-                  size="sm"
-                  radius={18}
-                  tint={dark ? "#ffffff" : "#000000"}
-                  tintOpacity={dark ? 0.05 : 0.04}
-                  textColor={dark ? "#f5f5f5" : "#111113"}
-                  lineColor={dark ? "#c9973a" : "#b0822d"}
-                  baseColor={dark ? "rgba(255,255,255,0.14)" : "rgba(10,10,12,0.12)"}
-                  intensity={1}
-                  idleIntensity={0.35}
-                  shineSize={10}
-                  shineFade={34}
-                  thickness={1.2}
-                  glow={1}
-                  followMouse
-                  proximity={250}
-                  className="group inline-flex items-center gap-2 !px-3.5 !py-1.5 select-none press cursor-pointer whitespace-nowrap"
-                  onClick={() => {
-                    const el = document.getElementById("education");
-                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  className="group inline-flex items-center gap-1.5 hover:text-fg transition-colors duration-150 select-none cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("education")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span aria-hidden="true" className="relative z-10 flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-fg/[0.06] dark:bg-white/[0.08]">
-                    <GraduationCap
-                      className="h-3 w-3 text-fg-subtle transition-colors duration-150 group-hover:text-fg"
-                      strokeWidth={1.75}
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <span className="relative z-10 font-medium text-fg tracking-[-0.01em] transition-colors duration-150 group-hover:text-fg">
+                  <GraduationCap className="h-3.5 w-3.5 text-fg-subtle group-hover:text-fg transition-colors shrink-0" strokeWidth={1.8} />
+                  <span className="font-medium text-fg group-hover:text-gold transition-colors">
                     4th-Year Software Development
                   </span>
-                  <span className="relative z-10 text-fg-subtle">
-                    at <span className="font-normal text-fg-muted">Norton University</span>
-                  </span>
-                </SpecularButton>
+                  <span className="text-fg-subtle">at Norton University</span>
+                </a>
               </div>
             </div>
           </div>
