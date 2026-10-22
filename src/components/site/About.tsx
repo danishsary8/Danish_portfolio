@@ -74,17 +74,20 @@ export function About() {
 
           <Reveal index={4} className="mt-12">
             <h3 className="text-[15px] font-medium text-fg">How I work</h3>
-            <dl className="mt-4 divide-y divide-line border-y border-line">
+            <dl className="tactile squircle [--r:20px] mt-4 grid gap-px overflow-hidden bg-[var(--edge)]">
               {PRACTICES.map(({ icon: Icon, term, detail }) => (
                 <div
                   key={term}
-                  className="grid gap-x-8 gap-y-1.5 py-5 sm:grid-cols-[200px_minmax(0,1fr)]"
+                  className="grid grid-cols-[36px_minmax(0,1fr)] gap-x-4 bg-surface-2 px-5 py-5 sm:grid-cols-[36px_200px_minmax(0,1fr)] sm:items-center"
                 >
-                  <dt className="flex items-center gap-2.5 text-[14.5px] font-medium text-fg">
-                    <Icon aria-hidden="true" strokeWidth={1.5} className="h-4 w-4 text-fg-subtle" />
-                    {term}
-                  </dt>
-                  <dd className="text-[14.5px] leading-[1.6] text-fg-muted">{detail}</dd>
+                  <span
+                    aria-hidden="true"
+                    className="icon-tile squircle [--r:9px] row-span-2 grid h-9 w-9 place-items-center sm:row-span-1"
+                  >
+                    <Icon strokeWidth={1.75} className="h-[18px] w-[18px]" />
+                  </span>
+                  <dt className="self-center text-[15px] font-medium tracking-[-0.01em] text-fg">{term}</dt>
+                  <dd className="mt-1 text-[14.5px] leading-[1.6] text-fg-muted sm:mt-0">{detail}</dd>
                 </div>
               ))}
             </dl>

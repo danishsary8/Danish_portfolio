@@ -25,8 +25,8 @@ function CertificateRow({
     <>
       <span
         aria-hidden="true"
-        className={`squircle [--r:8px] grid h-9 w-9 shrink-0 place-items-center ${
-          isAward ? "bg-gold text-white dark:text-bg" : "border border-[var(--edge)] bg-surface-1 text-fg-muted"
+        className={`squircle [--r:9px] grid h-9 w-9 shrink-0 place-items-center ${
+          isAward ? "icon-tile-gold" : "icon-tile-light text-fg-muted"
         }`}
       >
         <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
@@ -52,7 +52,7 @@ function CertificateRow({
           type="button"
           onClick={() => onOpen(cert)}
           aria-label={`View certificate: ${cert.title}`}
-          className="group flex w-full items-start gap-4 py-5 text-left"
+          className="group flex w-full items-start gap-4 bg-surface-2 px-5 py-5 text-left transition-colors duration-150 hover:bg-surface-1"
         >
           {body}
           <Maximize2
@@ -62,7 +62,7 @@ function CertificateRow({
           />
         </button>
       ) : (
-        <div className="flex items-start gap-4 py-5">{body}</div>
+        <div className="flex items-start gap-4 bg-surface-2 px-5 py-5">{body}</div>
       )}
     </Reveal>
   );
@@ -87,7 +87,7 @@ export function Education() {
         <Reveal className="tactile squircle [--r:20px] flex flex-col p-7 sm:p-8">
           <span
             aria-hidden="true"
-            className="squircle [--r:10px] grid h-11 w-11 place-items-center bg-fg text-bg"
+            className="icon-tile squircle [--r:11px] grid h-12 w-12 place-items-center"
           >
             <GraduationCap className="h-5 w-5" strokeWidth={1.5} />
           </span>
@@ -95,12 +95,12 @@ export function Education() {
             {degree.title}
           </h3>
           <p className="mt-2 text-[15px] text-fg-muted">{degree.org}</p>
-          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-[var(--edge)] bg-[var(--edge)] text-[13px]">
-            <div className="bg-surface-2 px-4 py-3">
+          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[14px] border border-[var(--edge)] bg-[var(--edge)] text-[13px] shadow-[var(--field-inset)]">
+            <div className="bg-surface-1 px-4 py-3">
               <dt className="text-fg-subtle">Years</dt>
               <dd className="mt-0.5 font-mono tabular-nums text-fg">{degree.period}</dd>
             </div>
-            <div className="bg-surface-2 px-4 py-3">
+            <div className="bg-surface-1 px-4 py-3">
               <dt className="text-fg-subtle">Now</dt>
               <dd className="mt-0.5 text-fg">{degree.detail}</dd>
             </div>
@@ -127,7 +127,7 @@ export function Education() {
           <Reveal>
             <h3 className="text-[15px] font-medium text-fg">Courses &amp; awards</h3>
           </Reveal>
-          <ul className="mt-2 divide-y divide-line border-b border-line">
+          <ul className="tactile squircle [--r:20px] mt-4 grid gap-px overflow-hidden bg-[var(--edge)]">
             {CERTIFICATES.map((c, i) => (
               <CertificateRow
                 key={c.title}

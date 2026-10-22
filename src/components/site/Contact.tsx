@@ -11,7 +11,7 @@ import { useLocalTime } from "@/lib/use-local-time";
 import { Reveal, SECTION } from "./Reveal";
 
 const FOCUS =
-  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
 
 function CopyEmail() {
   const [copied, setCopied] = useState(false);
@@ -38,7 +38,7 @@ function CopyEmail() {
         aria-hidden="true"
       />
       <Check
-        className={`${icon} text-gold-ink dark:text-gold ${copied ? "opacity-100" : "scale-75 opacity-0"}`}
+        className={`${icon} text-fg ${copied ? "opacity-100" : "scale-75 opacity-0"}`}
         strokeWidth={2}
         aria-hidden="true"
       />
@@ -52,10 +52,10 @@ function CopyEmail() {
 /** One row of the grouped contact list: icon tile, label, value. */
 function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
   return (
-    <li className="flex min-h-[72px] items-center gap-4 bg-surface-2 px-5 py-3">
+    <li className="flex min-h-[72px] items-center gap-4 bg-surface-2 bg-[image:var(--sheen)] px-5 py-3">
       <span
         aria-hidden="true"
-        className="squircle [--r:8px] grid h-9 w-9 shrink-0 place-items-center border border-[var(--edge)] bg-surface-1 text-fg-muted"
+        className="icon-tile-light squircle [--r:9px] grid h-9 w-9 shrink-0 place-items-center text-fg-muted"
       >
         {icon}
       </span>
@@ -99,6 +99,7 @@ function ContactForm() {
           autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="field h-11 border-transparent px-3.5 text-[16px] sm:text-[15px]"
           aria-invalid={nameError ? true : undefined}
           aria-describedby={nameError ? "contact-name-error" : undefined}
         />
@@ -118,7 +119,7 @@ function ContactForm() {
           onChange={(e) => setMessage(e.target.value)}
           aria-invalid={messageError ? true : undefined}
           aria-describedby={messageError ? "contact-message-error" : undefined}
-          className="min-h-[140px] w-full resize-y rounded-control border border-line-strong bg-surface-1 px-3 py-2.5 text-[16px] leading-[1.55] text-fg transition-[border-color,background-color] duration-150 placeholder:text-fg-subtle hover:border-fg-subtle focus-visible:border-fg focus-visible:bg-surface-2 focus-visible:outline-none aria-[invalid=true]:border-destructive sm:text-[15px]"
+          className="field min-h-[140px] w-full resize-y px-3.5 py-3 text-[16px] leading-[1.55] text-fg placeholder:text-fg-subtle sm:text-[15px]"
         />
         {messageError ? (
           <p id="contact-message-error" className="text-[13px] text-destructive">
