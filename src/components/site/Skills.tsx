@@ -46,7 +46,7 @@ export function Skills() {
                   >
                     <span
                       aria-hidden="true"
-                      className="squircle [--r:7px] grid h-7 w-7 shrink-0 place-items-center border border-[var(--edge)] bg-surface-1"
+                      className="icon-tile-light squircle [--r:8px] grid h-8 w-8 shrink-0 place-items-center"
                     >
                       <SkillIcon
                         name={skill}
@@ -64,10 +64,19 @@ export function Skills() {
       </Reveal>
 
       <Reveal index={1} className="mt-8">
-        <p className="text-[14.5px] leading-[1.7] text-fg-muted">
-          <span className="font-medium text-fg">Beyond the code: </span>
-          {SOFT_SKILLS.join(" · ")}
-        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="mr-2 text-[14.5px] font-medium text-fg">Beyond the code</h3>
+          <ul className="contents">
+            {SOFT_SKILLS.map((s) => (
+              <li
+                key={s}
+                className="icon-tile-light squircle [--r:9px] inline-flex h-9 items-center px-3.5 text-[13.5px] text-fg-muted"
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        </div>
       </Reveal>
     </section>
   );

@@ -23,7 +23,11 @@ describe("Hero", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Sary Danish");
     expect(screen.getByText(/Junior Web Developer/)).toBeInTheDocument();
     expect(screen.getByText(/Phnom Penh/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /Get in touch/ })).toHaveAttribute("href", "#contact");
+    expect(screen.getByRole("link", { name: /Email me/ })).toHaveAttribute(
+      "href",
+      "mailto:danishsary4@gmail.com",
+    );
+    expect(screen.getByRole("link", { name: /View projects/ })).toHaveAttribute("href", "#projects");
     expect(screen.getByRole("link", { name: /GitHub/i })).toHaveAttribute(
       "href",
       "https://github.com/danishsary8",

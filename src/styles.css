@@ -81,6 +81,19 @@
     --edge: rgba(10, 10, 12, 0.1);
     --deck-dim: 0.93;
     --shadow-hero: 0 32px 64px -28px rgba(70, 50, 18, 0.28), 0 6px 16px -8px rgba(70, 50, 18, 0.1);
+    /* iOS elevation: hairline ring + contact + warm ambient, stacked so edges stay crisp. */
+    --elev-1:
+      0 0 0 0.5px rgba(10, 10, 12, 0.04), 0 1px 2px rgba(10, 10, 12, 0.05),
+      0 6px 14px -6px rgba(46, 32, 10, 0.07), 0 18px 36px -18px rgba(46, 32, 10, 0.1);
+    --elev-2:
+      0 0 0 0.5px rgba(10, 10, 12, 0.05), 0 2px 4px rgba(10, 10, 12, 0.05),
+      0 12px 24px -10px rgba(46, 32, 10, 0.12), 0 32px 56px -28px rgba(46, 32, 10, 0.18);
+    --elev-3:
+      0 0 0 0.5px rgba(10, 10, 12, 0.05), 0 2px 6px rgba(10, 10, 12, 0.05),
+      0 20px 40px -18px rgba(46, 32, 10, 0.16), 0 48px 96px -40px rgba(46, 32, 10, 0.26);
+    /* Sheen: the light that falls on the top of an iOS card. */
+    --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 42%);
+    --field-inset: inset 0 1px 2px rgba(10, 10, 12, 0.06);
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -120,6 +133,11 @@
     --edge: rgba(255, 255, 255, 0.08);
     --deck-dim: 0.7;
     --shadow-hero: 0 32px 64px -24px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --elev-1: 0 1px 2px rgba(0, 0, 0, 0.45), 0 8px 20px -8px rgba(0, 0, 0, 0.55);
+    --elev-2: 0 2px 4px rgba(0, 0, 0, 0.45), 0 16px 32px -12px rgba(0, 0, 0, 0.7);
+    --elev-3: 0 2px 6px rgba(0, 0, 0, 0.5), 0 32px 64px -24px rgba(0, 0, 0, 0.8);
+    --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0) 45%);
+    --field-inset: inset 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 
   * {
@@ -219,21 +237,73 @@
     -webkit-backdrop-filter: blur(16px) saturate(170%);
   }
 
-  /* Tactile surface: chips, frames, secondary buttons. */
+  /* Tactile surface: iOS card. Sheen on top, specular rim, soft layered elevation. */
   .tactile {
-    background: var(--surface-2);
+    background-color: var(--surface-2);
+    background-image: var(--sheen);
     border: 1px solid var(--edge);
     box-shadow:
       inset 0 1px 0 var(--specular),
       inset 0 -1px 0 var(--shade-inner),
-      var(--shadow-contact);
+      var(--elev-1);
   }
 
-  /* Hero object: the one resting element allowed a real lift. */
+  /* Hero object and project cards: the deepest resting lift. */
   .frame-float {
     box-shadow:
       inset 0 1px 0 var(--specular),
-      var(--shadow-hero);
+      var(--elev-3);
+  }
+
+  /* Pointer lift for cards that are links: rises 2px onto the next elevation. */
+  .lift {
+    transition:
+      transform 200ms var(--ease-out),
+      box-shadow 200ms var(--ease-out),
+      background-color 150ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .lift:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 1px 0 var(--specular),
+        inset 0 -1px 0 var(--shade-inner),
+        var(--elev-2);
+    }
+  }
+
+  /* iOS Settings-style icon tiles: glossy squircles with a drop of depth. */
+  .icon-tile {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--fg) 78%, var(--bg)) 0%,
+      var(--fg) 100%
+    );
+    color: var(--bg);
+    box-shadow:
+      inset 0 1px 0 var(--specular-on-fill),
+      0 1px 2px rgba(10, 10, 12, 0.18),
+      0 4px 10px -4px rgba(10, 10, 12, 0.3);
+  }
+  .icon-tile-gold {
+    background-image: linear-gradient(180deg, #c99a44 0%, var(--gold) 55%, #94691f 100%);
+    color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      0 1px 2px rgba(70, 50, 18, 0.25),
+      0 4px 10px -4px rgba(70, 50, 18, 0.4);
+  }
+  .dark .icon-tile-gold {
+    color: var(--bg);
+  }
+  .icon-tile-light {
+    background-color: var(--surface-2);
+    background-image: var(--sheen);
+    border: 1px solid var(--edge);
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      0 1px 2px rgba(10, 10, 12, 0.06),
+      0 3px 8px -4px rgba(46, 32, 10, 0.12);
   }
 
   .btn-apple {
@@ -243,43 +313,77 @@
       background-color 150ms ease,
       border-color 150ms ease,
       box-shadow 150ms ease,
-      color 150ms ease;
+      color 150ms ease,
+      filter 150ms ease;
   }
   .btn-apple:active {
     transform: scale(0.97);
   }
-  .btn-apple-primary {
-    background: linear-gradient(180deg, #9a7128 0%, #7f5c1d 100%);
-    color: #fff;
+  /* One tint for every primary action (iOS uses one): glossy ink. Gold stays for awards. */
+  .btn-apple-primary,
+  .btn-apple-ink {
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--fg) 80%, var(--bg)) 0%,
+      var(--fg) 100%
+    );
+    color: var(--bg);
     box-shadow:
       inset 0 1px 0 var(--specular-on-fill),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.18),
-      var(--shadow-contact);
+      0 1px 2px rgba(10, 10, 12, 0.2),
+      0 8px 18px -8px rgba(10, 10, 12, 0.45);
   }
-  .dark .btn-apple-primary {
-    background: var(--gold);
-    color: var(--bg);
+  .dark .btn-apple-primary,
+  .dark .btn-apple-ink {
+    background-image: linear-gradient(180deg, #ffffff 0%, var(--fg) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 1px 2px rgba(0, 0, 0, 0.5),
+      0 8px 20px -8px rgba(0, 0, 0, 0.7);
+  }
+  /* Hero Live Activity: floats past the portrait frame's edge, so it earns a float shadow. */
+  .live-activity {
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      var(--elev-2);
+    transition: transform 160ms var(--ease-out);
+  }
+  .live-activity:active {
+    transform: scale(0.97);
   }
   .btn-apple-secondary {
-    background: var(--surface-2);
+    background-color: var(--surface-2);
+    background-image: var(--sheen);
     border: 1px solid var(--edge);
     color: var(--fg);
-    box-shadow: inset 0 1px 0 var(--specular), var(--shadow-contact);
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      0 1px 2px rgba(10, 10, 12, 0.06),
+      0 6px 14px -8px rgba(46, 32, 10, 0.16);
+  }
+  .dark .btn-apple-secondary {
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      var(--elev-1);
   }
   @media (hover: hover) and (pointer: fine) {
-    .btn-apple-primary:hover {
-      background: linear-gradient(180deg, #8c6624 0%, #72531a 100%);
+    .btn-apple-primary:hover,
+    .btn-apple-ink:hover {
+      filter: brightness(1.12);
     }
-    .dark .btn-apple-primary:hover {
-      background: color-mix(in oklab, var(--gold) 88%, #fff);
+    .dark .btn-apple-primary:hover,
+    .dark .btn-apple-ink:hover {
+      filter: brightness(0.94);
     }
     .btn-apple-secondary:hover {
-      background: var(--surface-1);
+      background-color: var(--surface-1);
       border-color: color-mix(in oklab, var(--fg) 22%, transparent);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .btn-apple:active {
+    .btn-apple:active,
+    .live-activity:active,
+    .lift:hover {
       transform: none;
     }
   }
@@ -591,6 +695,19 @@
   animation-delay: calc(var(--i, 0) * 60ms);
 }
 
+/* Hero portrait: settles in after the name lands (first paint only, pre-hydration). */
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(4px);
+  }
+}
+.enter-settle {
+  animation: settle 600ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
 /* Scroll reveal: only hidden once the inline head script has marked JS as available. */
 .js [data-reveal] {
   opacity: 0;
@@ -614,7 +731,9 @@
       opacity: 0;
     }
   }
-  .enter {
+  .enter,
+  .enter-settle {
+    animation-name: enter;
     animation-duration: 200ms;
     animation-delay: 0ms;
   }
@@ -982,5 +1101,79 @@
   }
   .js [data-reveal]:not([data-visible]) .mask-rise > span {
     transform: none;
+  }
+}
+
+/* Unlayered on purpose: beats the shadcn Input's utility classes. */
+/* iOS filled field: recessed, quiet until focused, then a soft focus halo. */
+.field {
+  background: var(--surface-1);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: var(--field-inset);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+.field:hover {
+  border-color: var(--edge);
+}
+.field:focus-visible {
+  outline: none;
+  background: var(--surface-2);
+  border-color: color-mix(in oklab, var(--fg) 35%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--fg) 10%, transparent);
+}
+.field[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+
+/* Hero profile card glare: a laminate highlight that follows the pointer (--gx/--gy are
+   set per event on the card). Fine pointers only; off under reduced motion. */
+.card-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  background:
+    radial-gradient(
+      circle at var(--gx, 50%) var(--gy, 0%),
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.35) 24%,
+      transparent 55%
+    ),
+    linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.5) 50%, transparent 64%);
+  background-size:
+    100% 100%,
+    220% 220%;
+  background-position:
+    0 0,
+    var(--gx, 50%) var(--gy, 0%);
+  mix-blend-mode: overlay;
+}
+/* A faint plain-light pass so the glare also reads on the dark info panel. */
+.card-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 0%),
+    rgba(255, 255, 255, 0.12),
+    transparent 48%
+  );
+}
+@media (hover: hover) and (pointer: fine) {
+  .profile-card:hover .card-glare {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-glare {
+    display: none;
   }
 }

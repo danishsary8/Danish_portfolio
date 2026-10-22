@@ -17,7 +17,7 @@ import { SkillIcon, hasSkillIcon, themedSkillColor } from "./SkillIcon";
 const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
 
 const FOCUS =
-  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
 
 const host = (url: string) => {
   try {
@@ -31,13 +31,13 @@ const host = (url: string) => {
 function BrowserFrame({ url, children }: { url: string; children: ReactNode }) {
   return (
     <div className="tactile squircle [--r:18px] w-full overflow-hidden whitespace-normal">
-      <div className="flex h-10 items-center gap-3 border-b border-[var(--edge)] bg-surface-1 px-4">
+      <div className="flex h-10 items-center gap-3 border-b border-[var(--edge)] bg-surface-1 px-4 shadow-[inset_0_-1px_0_var(--specular)]">
         <span aria-hidden="true" className="flex gap-1.5">
           {[0, 1, 2].map((i) => (
             <span key={i} className="h-2.5 w-2.5 rounded-full bg-[var(--line-strong)]" />
           ))}
         </span>
-        <span className="mx-auto flex h-6 min-w-0 max-w-[70%] items-center gap-1.5 rounded-[7px] bg-surface-2 px-2.5 font-mono text-[11.5px] text-fg-subtle">
+        <span className="icon-tile-light mx-auto flex h-6 min-w-0 max-w-[70%] items-center gap-1.5 rounded-[7px] px-2.5 font-mono text-[11.5px] text-fg-subtle">
           <Lock aria-hidden="true" strokeWidth={1.75} className="h-3 w-3 shrink-0" />
           <span className="truncate">{host(url)}</span>
         </span>
@@ -129,7 +129,7 @@ function StackChips({ stack, dark }: { stack: string[]; dark: boolean }) {
       {stack.map((s) => (
         <li
           key={s}
-          className="squircle [--r:7px] inline-flex h-7 items-center gap-1.5 border border-[var(--edge)] bg-surface-1 px-2.5 text-[12.5px] text-fg-muted"
+          className="icon-tile-light squircle [--r:8px] inline-flex h-7 items-center gap-1.5 px-2.5 text-[12.5px] text-fg-muted"
         >
           {hasSkillIcon(s) ? (
             <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s, dark) }} />
@@ -185,7 +185,7 @@ function ProjectTitle({ project, size }: { project: Project; size: "lg" | "md" }
             role="img"
             aria-label="Award winner"
             title={project.award}
-            className="squircle [--r:8px] inline-flex h-7 items-center gap-1.5 bg-gold px-2.5 text-[12px] font-medium tracking-normal text-white dark:text-bg"
+            className="icon-tile-gold squircle [--r:8px] inline-flex h-7 items-center gap-1.5 px-2.5 text-[12px] font-medium tracking-normal"
           >
             <Award aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
             <span aria-hidden="true">Award 2026</span>

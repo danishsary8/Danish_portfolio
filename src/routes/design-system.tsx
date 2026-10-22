@@ -435,7 +435,7 @@ function SurfacesSection() {
     <Section
       id="surfaces"
       title="Surfaces"
-      intro="Depth comes from three flat layers and hairline borders. The Apple layer below adds a specular top edge and a contact shadow of 2px or less; large shadows stay on floating layers like dialogs and the portrait."
+      intro="Three surface layers and hairline borders, lifted by a soft iOS elevation scale: --elev-1 for resting cards, --elev-2 for hover and floating chips, --elev-3 for the portrait and project cards. Cards carry a faint top sheen (--sheen)."
     >
       <div className="grid gap-4 md:grid-cols-[1fr_1.15fr]">
         <div className="panel p-4">
@@ -462,6 +462,39 @@ function SurfacesSection() {
           ))}
         </ul>
       </div>
+
+      <h3 className="mb-4 mt-10 text-[13px] font-medium text-fg-muted">Elevation · --elev-1 / 2 / 3</h3>
+      <div className="grid gap-5 sm:grid-cols-3">
+        {(["--elev-1", "--elev-2", "--elev-3"] as const).map((e) => (
+          <div
+            key={e}
+            className="squircle [--r:20px] border border-[var(--edge)] bg-surface-2 bg-[image:var(--sheen)] p-5"
+            style={{ boxShadow: `inset 0 1px 0 var(--specular), var(${e})` }}
+          >
+            <p className="font-mono text-[12px] text-fg-subtle">{e}</p>
+            <p className="mt-2 text-[14px] text-fg">
+              {e === "--elev-1" ? "Resting card" : e === "--elev-2" ? "Hover · floating chip" : "Portrait · project card"}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <h3 className="mb-4 mt-10 text-[13px] font-medium text-fg-muted">
+        Icon tiles · .icon-tile / .icon-tile-gold / .icon-tile-light · Field · .field
+      </h3>
+      <div className="flex flex-wrap items-center gap-4">
+        <span aria-hidden="true" className="icon-tile squircle [--r:9px] grid h-10 w-10 place-items-center">
+          <Globe className="h-[18px] w-[18px]" strokeWidth={1.75} />
+        </span>
+        <span aria-hidden="true" className="icon-tile-gold squircle [--r:9px] grid h-10 w-10 place-items-center">
+          <Award className="h-[18px] w-[18px]" strokeWidth={1.75} />
+        </span>
+        <span aria-hidden="true" className="icon-tile-light squircle [--r:9px] grid h-10 w-10 place-items-center text-fg-muted">
+          <Github className="h-[18px] w-[18px]" strokeWidth={1.5} />
+        </span>
+        <label className="sr-only" htmlFor="ds-field">Sample field</label>
+        <input id="ds-field" placeholder="Filled field" className="field h-11 w-64 px-3.5 text-[15px] text-fg placeholder:text-fg-subtle" />
+      </div>
     </Section>
   );
 }
@@ -469,7 +502,7 @@ function SurfacesSection() {
 function AppleLayerSection() {
   const { dark } = useTheme();
   const focus =
-    "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
+    "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
   const proofRows = [
     { icon: Globe, title: "4 live projects", meta: "Vercel · Render · Netlify", gold: false },
     { icon: Award, title: "Award Winner (Team)", meta: "Sep 2026", gold: true },
@@ -488,7 +521,7 @@ function AppleLayerSection() {
               type="button"
               className={`btn-apple btn-apple-primary group inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${focus}`}
             >
-              Get in touch
+              Email me
               <ArrowRight
                 aria-hidden="true"
                 strokeWidth={1.75}
@@ -557,7 +590,7 @@ function AppleLayerSection() {
                   <span
                     aria-hidden="true"
                     className={`squircle [--r:8px] grid h-8 w-8 place-items-center ${
-                      gold ? "bg-gold text-white dark:text-bg" : "bg-fg text-bg"
+                      gold ? "icon-tile-gold" : "icon-tile"
                     }`}
                   >
                     <Icon className="h-4 w-4" strokeWidth={1.75} />

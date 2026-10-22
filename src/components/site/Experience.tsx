@@ -27,7 +27,7 @@ export function Experience() {
               className="grid gap-x-12 gap-y-3 lg:grid-cols-[240px_minmax(0,1fr)]"
             >
               {/* Dates */}
-              <div className="lg:pt-0.5">
+              <div className="lg:pt-8">
                 <p className="font-mono text-[13px] tabular-nums text-fg">{entry.period}</p>
                 {isCurrent ? (
                   <p className="mt-2 inline-flex items-center gap-2 text-[12.5px] text-fg-muted">
@@ -42,16 +42,17 @@ export function Experience() {
                 {!last ? (
                   <span
                     aria-hidden="true"
-                    className="timeline-rail absolute bottom-0 left-[7px] top-6 w-px bg-line-strong"
+                    className="timeline-rail absolute bottom-0 left-[7px] top-14 w-px bg-line-strong"
                   />
                 ) : null}
                 <span
                   aria-hidden="true"
-                  className={`absolute left-0 top-1 grid h-[15px] w-[15px] place-items-center rounded-full border-2 ${
+                  className={`absolute left-0 top-9 grid h-[15px] w-[15px] place-items-center rounded-full border-2 shadow-[0_0_0_4px_var(--bg)] ${
                     isAward ? "border-gold bg-gold" : "border-fg bg-bg"
                   }`}
                 />
 
+                <div className="tactile squircle [--r:22px] p-7 lg:p-8">
                 <h3 className="flex flex-wrap items-center gap-2.5 text-[22px] font-semibold leading-[1.2] tracking-[-0.025em] text-fg">
                   {isAward ? (
                     <Award
@@ -94,11 +95,19 @@ export function Experience() {
                     />
                   </a>
                 ) : (
-                  <p className="mt-5 text-[13.5px] text-fg-subtle">
-                    <span className="text-fg-muted">Worked with: </span>
-                    {WORKED_WITH.join(" · ")}
-                  </p>
+                  <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-line pt-5">
+                    <span className="mr-1 text-[13.5px] text-fg-muted">Worked with</span>
+                    {WORKED_WITH.map((w) => (
+                      <span
+                        key={w}
+                        className="icon-tile-light squircle [--r:8px] inline-flex h-8 items-center px-3 text-[13px] text-fg-muted"
+                      >
+                        {w}
+                      </span>
+                    ))}
+                  </div>
                 )}
+                </div>
               </div>
             </Reveal>
           );
