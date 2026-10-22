@@ -58,8 +58,8 @@
 
 @layer base {
   :root {
-    --bg: #f8f9fc;
-    --surface-1: #f3f4f8;
+    --bg: #faf9f6;
+    --surface-1: #f3f2ee;
     --surface-2: #ffffff;
     --line: rgba(10, 10, 12, 0.08);
     --line-strong: rgba(10, 10, 12, 0.14);
@@ -72,6 +72,15 @@
     --destructive: #c4332b;
     --glow: rgba(201, 151, 58, 0.12);
     --shadow-float: 0 24px 48px -16px rgba(10, 10, 12, 0.18), 0 2px 6px rgba(10, 10, 12, 0.04);
+    /* Apple surface layer: specular top edge, inner shade, contact shadow, frosted fill */
+    --specular: rgba(255, 255, 255, 0.85);
+    --specular-on-fill: rgba(255, 255, 255, 0.28);
+    --shade-inner: rgba(10, 10, 12, 0.04);
+    --shadow-contact: 0 1px 2px rgba(10, 10, 12, 0.06), 0 0 0 0.5px rgba(10, 10, 12, 0.04);
+    --glass: color-mix(in oklab, var(--surface-2) 74%, transparent);
+    --edge: rgba(10, 10, 12, 0.1);
+    --deck-dim: 0.93;
+    --shadow-hero: 0 32px 64px -28px rgba(70, 50, 18, 0.28), 0 6px 16px -8px rgba(70, 50, 18, 0.1);
 
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -103,6 +112,14 @@
     --destructive: #ef6b62;
     --glow: rgba(201, 151, 58, 0.22);
     --shadow-float: 0 24px 48px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --specular: rgba(255, 255, 255, 0.08);
+    --specular-on-fill: rgba(255, 255, 255, 0.3);
+    --shade-inner: rgba(0, 0, 0, 0.35);
+    --shadow-contact: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --glass: color-mix(in oklab, var(--surface-2) 55%, transparent);
+    --edge: rgba(255, 255, 255, 0.08);
+    --deck-dim: 0.7;
+    --shadow-hero: 0 32px 64px -24px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04);
   }
 
   * {
@@ -176,6 +193,95 @@
 
   .hero-glow {
     background: radial-gradient(60% 55% at 50% 0%, var(--glow), transparent 70%);
+  }
+
+  /* ------------------------------------------------------------------
+     Apple layer (Hero). Squircle corners, specular top edge, tactile press.
+     Kept separate from the legacy .ios-glass-* classes used by nav/chatbot.
+     ------------------------------------------------------------------ */
+  .squircle {
+    border-radius: var(--r, 12px);
+  }
+  @supports (corner-shape: squircle) {
+    /* Continuous corners read smaller at the same radius; compensate. */
+    .squircle {
+      corner-shape: squircle;
+      border-radius: calc(var(--r, 12px) * 1.6);
+    }
+  }
+
+  /* Frosted capsule: only where it floats over the hero glow. */
+  .glass-pill {
+    background: var(--glass);
+    border: 1px solid var(--edge);
+    box-shadow: inset 0 1px 0 var(--specular), var(--shadow-contact);
+    backdrop-filter: blur(16px) saturate(170%);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+  }
+
+  /* Tactile surface: chips, frames, secondary buttons. */
+  .tactile {
+    background: var(--surface-2);
+    border: 1px solid var(--edge);
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      inset 0 -1px 0 var(--shade-inner),
+      var(--shadow-contact);
+  }
+
+  /* Hero object: the one resting element allowed a real lift. */
+  .frame-float {
+    box-shadow:
+      inset 0 1px 0 var(--specular),
+      var(--shadow-hero);
+  }
+
+  .btn-apple {
+    position: relative;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      color 150ms ease;
+  }
+  .btn-apple:active {
+    transform: scale(0.97);
+  }
+  .btn-apple-primary {
+    background: linear-gradient(180deg, #9a7128 0%, #7f5c1d 100%);
+    color: #fff;
+    box-shadow:
+      inset 0 1px 0 var(--specular-on-fill),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+      var(--shadow-contact);
+  }
+  .dark .btn-apple-primary {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  .btn-apple-secondary {
+    background: var(--surface-2);
+    border: 1px solid var(--edge);
+    color: var(--fg);
+    box-shadow: inset 0 1px 0 var(--specular), var(--shadow-contact);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-apple-primary:hover {
+      background: linear-gradient(180deg, #8c6624 0%, #72531a 100%);
+    }
+    .dark .btn-apple-primary:hover {
+      background: color-mix(in oklab, var(--gold) 88%, #fff);
+    }
+    .btn-apple-secondary:hover {
+      background: var(--surface-1);
+      border-color: color-mix(in oklab, var(--fg) 22%, transparent);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-apple:active {
+      transform: none;
+    }
   }
 
   /* Architectural Display Typography & Ambient Text Shadows for Hero Headline */
@@ -480,7 +586,8 @@
   }
 }
 .enter {
-  animation: enter 600ms var(--ease-out) both;
+  /* backwards: hidden during the delay, then no residual filter layer once done (keeps text crisp) */
+  animation: enter 600ms var(--ease-out) backwards;
   animation-delay: calc(var(--i, 0) * 60ms);
 }
 
@@ -808,5 +915,72 @@
   }
   50% {
     transform: translate3d(14px, -20px, 0);
+  }
+}
+
+/* Hero clock: proportional-width tiles for Geist tabular numerals; narrow colon. */
+.hero-clock .split-flap-text__tile {
+  width: 0.62em;
+}
+.hero-clock .split-flap-text__tile:nth-of-type(4) {
+  width: 0.32em;
+}
+
+/* Experience timeline: the rail draws downward as its entry scrolls into view. */
+.timeline-rail {
+  transform-origin: top;
+  transition: transform 1000ms var(--ease-out) 200ms;
+}
+.js [data-reveal]:not([data-visible]) .timeline-rail {
+  transform: scaleY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-rail {
+    transition: none;
+  }
+  .js [data-reveal]:not([data-visible]) .timeline-rail {
+    transform: none;
+  }
+}
+
+/* Project deck: earlier cards recede as the next one slides over them.
+   Scroll-driven (off the main thread); plain sticky stacking where unsupported. */
+@keyframes deck-recede {
+  to {
+    transform: scale(0.94);
+    filter: brightness(var(--deck-dim));
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .deck-card {
+      transform-origin: 50% 0%;
+      animation: deck-recede linear both;
+      animation-timeline: var(--deck-tl);
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+/* Section titles rise out of a mask once, as they enter. */
+.mask-rise {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.mask-rise > span {
+  display: inline-block;
+  transition: transform 700ms var(--ease-out);
+}
+.js [data-reveal]:not([data-visible]) .mask-rise > span {
+  transform: translateY(105%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mask-rise > span {
+    transition: none;
+  }
+  .js [data-reveal]:not([data-visible]) .mask-rise > span {
+    transform: none;
   }
 }

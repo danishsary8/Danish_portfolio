@@ -52,11 +52,11 @@ export const PROJECTS: Project[] = [
     summary:
       "A full e-commerce platform for buying books: OTP and Google login, cart, checkout, order tracking, reviews, an admin dashboard, and a Telegram bot for order updates.",
     highlights: [
-      "Laravel REST API with JWT sessions, OTP verification, and Google OAuth",
-      "Admin dashboard for catalogue, orders, and reviews",
-      "Cloudinary for book media; Telegram bot for order notifications",
+      "Laravel REST API with role-based authorization",
+      "Book covers and media hosted on Cloudinary",
+      "Public API documentation on Render",
     ],
-    stack: ["Laravel", "React", "TypeScript", "PostgreSQL", "JWT", "Cloudinary"],
+    stack: ["Laravel", "React", "PostgreSQL", "REST APIs", "Cloudinary"],
     hosting: "Vercel & Railway",
     liveUrl: "https://bookly-frontend-five.vercel.app/",
     githubUrl: "https://github.com/danishsary8",
@@ -71,9 +71,9 @@ export const PROJECTS: Project[] = [
     summary:
       "A productivity app where people build daily routines and reminders, with secure login, Google sign-in, and email verification.",
     highlights: [
-      "Daily routines, reminders, and streaks",
-      "Google sign-in and email verification",
-      "Smooth Framer Motion interactions",
+      "Laravel and PostgreSQL backend",
+      "Framer Motion for smooth transitions",
+      "Tailwind CSS layouts that adapt to any screen",
     ],
     stack: ["React", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL"],
     hosting: "Render",
@@ -89,9 +89,9 @@ export const PROJECTS: Project[] = [
     summary:
       "A bilingual English/Khmer system for early diabetes screening, with explainable rule-based risk assessments and care plans. I contributed Google sign-in, UI improvements, and testing.",
     highlights: [
-      "Explainable, rule-based risk assessment",
-      "Role-based access with JWT",
-      "Bilingual interface: English and Khmer",
+      "Flask API with PostgreSQL",
+      "Role-based access secured by JWT",
+      "Each risk result comes with a care plan",
     ],
     stack: ["React", "Flask", "PostgreSQL", "JWT", "RBAC"],
     hosting: "Vercel & Railway",
@@ -106,7 +106,7 @@ export const PROJECTS: Project[] = [
     kind: "Driving theory learning app",
     summary:
       "An offline, bilingual Khmer/English app for Cambodia's driving theory exam, with road-sign lessons and practice exams.",
-    highlights: ["Works offline with local storage", "Road-sign lessons and practice exams"],
+    highlights: ["Built with Flutter and Dart", "Lessons and practice saved on the device"],
     stack: ["Flutter", "Dart", "Local Storage"],
     hosting: "Netlify",
     liveUrl: "https://drivingruletest.netlify.app/",
@@ -119,7 +119,7 @@ export const PROJECTS: Project[] = [
 export const SKILL_GROUPS = [
   {
     title: "Languages",
-    skills: ["JavaScript", "TypeScript", "PHP", "Python", "Java", "HTML5", "CSS3"],
+    skills: ["JavaScript", "PHP", "Python", "Java", "HTML5", "CSS3"],
   },
   {
     title: "Frameworks & UI",
@@ -127,7 +127,7 @@ export const SKILL_GROUPS = [
   },
   {
     title: "Databases",
-    skills: ["PostgreSQL", "Supabase", "SQLite", "Oracle"],
+    skills: ["PostgreSQL", "Supabase", "Oracle"],
   },
   {
     title: "Tools & APIs",
@@ -142,7 +142,7 @@ export const EXPERIENCE = [
     title: "Web Developer Trainee Intern",
     org: "ETEC & KruITSolution",
     period: "Jul 2026 – Present",
-    detail: "Weekend internship · Phnom Penh",
+    detail: "Weekend internship",
     points: [
       "Web developer on a team tour booking platform, building UI dashboards and fetching and integrating REST APIs.",
       "Collaborated through Git and GitHub using feature branches, commits, and pull requests.",
@@ -151,7 +151,7 @@ export const EXPERIENCE = [
   },
   {
     title: "AI Expert System and Innovation 2026",
-    org: "Award Winner (Team) · Norton University",
+    org: "Award Winner (Team)",
     period: "Sep 2026",
     detail: "Presented the Diabetes Expert System",
     points: ["Won with a bilingual, AI-based screening tool for early diabetes risk."],
@@ -163,7 +163,7 @@ export const EDUCATION = [
     title: "Bachelor of Software Development",
     org: "Norton University",
     period: "2024 – Present",
-    detail: "Fourth year · Phnom Penh",
+    detail: "Fourth year",
   },
   {
     title: "General English Program",
@@ -184,7 +184,7 @@ export type Certificate = {
 export const CERTIFICATES: Certificate[] = [
   {
     title: "AI Expert System and Innovation 2026 — Award Winner (Team)",
-    issuer: "Norton University",
+    issuer: "Team award · Diabetes Expert System",
     date: "Sep 2026",
   },
   {

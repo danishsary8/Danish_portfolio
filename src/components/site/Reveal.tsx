@@ -41,20 +41,28 @@ export function Reveal({ children, as: Tag = "div", index = 0, className }: Reve
   );
 }
 
+/** Shared section frame: same width and rhythm as the Hero. */
+export const SECTION = "mx-auto w-full max-w-[1180px] px-5 py-24 sm:px-6 lg:py-32";
+
+/** Title left, one-line summary right (desktop). The heading carries the weight; no eyebrow. */
 export function SectionHeader({ id, title, lede }: { id: string; title: string; lede?: string }) {
   return (
-    <div className="mb-10 flex flex-col gap-3 sm:mb-12">
+    <div className="mb-12 grid gap-4 lg:mb-16 lg:grid-cols-2 lg:items-end lg:gap-16">
       <Reveal>
         <h2
           id={id}
-          className="text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] sm:text-[32px]"
+          className="text-balance text-[32px] font-semibold leading-[1.05] tracking-[-0.035em] text-fg sm:text-[40px] lg:text-[48px]"
         >
-          {title}
+          <span className="mask-rise">
+            <span>{title}</span>
+          </span>
         </h2>
       </Reveal>
       {lede ? (
-        <Reveal index={1}>
-          <p className="max-w-[58ch] text-fg-muted">{lede}</p>
+        <Reveal index={1} className="lg:justify-self-end">
+          <p className="max-w-[46ch] text-pretty text-[15.5px] leading-[1.6] text-fg-muted lg:pb-1.5">
+            {lede}
+          </p>
         </Reveal>
       ) : null}
     </div>

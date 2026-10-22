@@ -1,7 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, Check, Copy, Github, Moon, RotateCcw, Sun } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Award,
+  Check,
+  ChevronRight,
+  Copy,
+  Github,
+  Globe,
+  Lock,
+  Moon,
+  RotateCcw,
+  Sun,
+} from "lucide-react";
+import { SkillIcon, themedSkillColor } from "@/components/site/SkillIcon";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -29,14 +44,15 @@ const SECTIONS = [
   { id: "type", label: "Typography" },
   { id: "components", label: "Components" },
   { id: "surfaces", label: "Surfaces" },
+  { id: "apple", label: "Apple layer" },
   { id: "motion", label: "Motion" },
 ] as const;
 
 type Token = { name: string; role: string; light: string; dark: string };
 
 const SURFACE_TOKENS: Token[] = [
-  { name: "--bg", role: "Page canvas", light: "#FBFBFA", dark: "#0A0A0B" },
-  { name: "--surface-1", role: "Panels, hovered rows", light: "#F4F4F3", dark: "#111113" },
+  { name: "--bg", role: "Page canvas", light: "#FAF9F6", dark: "#0A0A0B" },
+  { name: "--surface-1", role: "Panels, hovered rows", light: "#F3F2EE", dark: "#111113" },
   { name: "--surface-2", role: "Raised: dialogs, popovers", light: "#FFFFFF", dark: "#18181B" },
   {
     name: "--line",
@@ -163,6 +179,7 @@ function DesignSystemPage() {
         <TypeSection />
         <ComponentsSection />
         <SurfacesSection />
+        <AppleLayerSection />
         <MotionSection />
       </main>
 
@@ -372,7 +389,7 @@ function ComponentsSection() {
               users · books · orders · order_items
             </TabsContent>
             <TabsContent value="stack" className="font-mono text-[12.5px] text-fg-subtle">
-              Laravel · React · TypeScript · PostgreSQL
+              Laravel · React · PostgreSQL · Cloudinary
             </TabsContent>
           </Tabs>
         </div>
@@ -418,7 +435,7 @@ function SurfacesSection() {
     <Section
       id="surfaces"
       title="Surfaces"
-      intro="Depth comes from three flat layers and hairline borders, not blur. Shadows appear only on floating layers like dialogs and the project preview."
+      intro="Depth comes from three flat layers and hairline borders. The Apple layer below adds a specular top edge and a contact shadow of 2px or less; large shadows stay on floating layers like dialogs and the portrait."
     >
       <div className="grid gap-4 md:grid-cols-[1fr_1.15fr]">
         <div className="panel p-4">
@@ -444,6 +461,172 @@ function SurfacesSection() {
             </li>
           ))}
         </ul>
+      </div>
+    </Section>
+  );
+}
+
+function AppleLayerSection() {
+  const { dark } = useTheme();
+  const focus =
+    "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
+  const proofRows = [
+    { icon: Globe, title: "4 live projects", meta: "Vercel · Render · Netlify", gold: false },
+    { icon: Award, title: "Award Winner (Team)", meta: "Sep 2026", gold: true },
+  ];
+  return (
+    <Section
+      id="apple"
+      title="Apple layer"
+      intro="The classes behind the iOS feel, rendered live: .squircle with --r, .glass-pill, .tactile, .frame-float, and .btn-apple. Use the classes, never ad-hoc values."
+    >
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="panel p-5 sm:p-6">
+          <h3 className="mb-4 text-[13px] font-medium text-fg-muted">Capsule buttons · .btn-apple</h3>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              className={`btn-apple btn-apple-primary group inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${focus}`}
+            >
+              Get in touch
+              <ArrowRight
+                aria-hidden="true"
+                strokeWidth={1.75}
+                className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+              />
+            </button>
+            <button
+              type="button"
+              className={`btn-apple btn-apple-secondary inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${focus}`}
+            >
+              <Github aria-hidden="true" strokeWidth={1.5} className="h-4 w-4" />
+              Secondary
+            </button>
+          </div>
+
+          <h3 className="mb-3 mt-9 text-[13px] font-medium text-fg-muted">
+            Status capsule · .glass-pill
+          </h3>
+          <span className="glass-pill inline-flex h-8 items-center gap-2.5 rounded-full pl-3 pr-3.5 text-[13px]">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
+            <span className="font-medium text-fg">Open to Web Developer roles</span>
+          </span>
+
+          <h3 className="mb-3 mt-9 text-[13px] font-medium text-fg-muted">Stack chips · .tactile</h3>
+          <ul className="flex flex-wrap gap-2">
+            {["React", "Laravel", "PostgreSQL", "Docker"].map((tech) => (
+              <li
+                key={tech}
+                className="tactile squircle [--r:7px] inline-flex h-8 items-center gap-2 pl-2.5 pr-3 text-[12.5px] font-medium text-fg"
+              >
+                <SkillIcon
+                  name={tech}
+                  className="h-4 w-4"
+                  style={{ color: themedSkillColor(tech, dark) }}
+                />
+                {tech}
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="mb-3 mt-9 text-[13px] font-medium text-fg-muted">Squircle radii · --r</h3>
+          <div className="flex items-end gap-4">
+            {[8, 14, 20, 28].map((radius) => (
+              <div key={radius} className="text-center">
+                <div
+                  className="tactile squircle h-16 w-16"
+                  style={{ "--r": `${radius}px` } as CSSProperties}
+                />
+                <p className="mt-2 font-mono text-[11.5px] text-fg-subtle">{radius}px</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid content-start gap-4">
+          <div className="panel p-5 sm:p-6">
+            <h3 className="mb-4 text-[13px] font-medium text-fg-muted">
+              Inset-grouped row (Hero proof strip)
+            </h3>
+            <div className="squircle [--r:16px] grid gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] sm:grid-cols-2">
+              {proofRows.map(({ icon: Icon, title, meta, gold }) => (
+                <div
+                  key={title}
+                  className="grid grid-cols-[32px_minmax(0,1fr)_16px] items-start gap-3 bg-surface-2 p-4"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={`squircle [--r:8px] grid h-8 w-8 place-items-center ${
+                      gold ? "bg-gold text-white dark:text-bg" : "bg-fg text-bg"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={1.75} />
+                  </span>
+                  <span>
+                    <span className="block text-[14px] font-medium text-fg">{title}</span>
+                    <span className="mt-1.5 block font-mono text-[11.5px] tabular-nums text-fg-subtle">
+                      {meta}
+                    </span>
+                  </span>
+                  <ChevronRight
+                    aria-hidden="true"
+                    strokeWidth={1.75}
+                    className="mt-2 h-4 w-4 text-fg-subtle"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="panel p-5 sm:p-6">
+            <h3 className="mb-4 text-[13px] font-medium text-fg-muted">
+              Browser frame · .tactile .frame-float
+            </h3>
+            <div className="tactile frame-float squircle [--r:18px] overflow-hidden">
+              <div className="flex h-10 items-center gap-3 border-b border-[var(--edge)] bg-surface-1 px-4">
+                <span aria-hidden="true" className="flex gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <span key={i} className="h-2.5 w-2.5 rounded-full bg-[var(--line-strong)]" />
+                  ))}
+                </span>
+                <span className="mx-auto flex h-6 items-center gap-1.5 rounded-[7px] bg-surface-2 px-2.5 font-mono text-[11.5px] text-fg-subtle">
+                  <Lock aria-hidden="true" strokeWidth={1.75} className="h-3 w-3" />
+                  bookly-frontend-five.vercel.app
+                </span>
+                <span aria-hidden="true" className="w-[42px]" />
+              </div>
+              <div className="grid aspect-[16/7] place-items-center bg-surface-1 text-[22px] font-semibold tracking-[-0.03em] text-fg-subtle">
+                Bookly
+              </div>
+            </div>
+          </div>
+
+          <div className="panel p-5 sm:p-6">
+            <h3 className="mb-4 text-[13px] font-medium text-fg-muted">
+              Timeline markers · .timeline-rail
+            </h3>
+            <div className="relative pl-10">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-2 left-[7px] top-6 w-px bg-line-strong"
+              />
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full border-2 border-fg bg-bg"
+              />
+              <p className="text-[16px] font-semibold tracking-[-0.02em] text-fg">Current role</p>
+              <p className="mt-1 text-[13.5px] text-fg-muted">Outlined node in ink</p>
+              <div className="relative mt-6">
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-10 top-1 h-[15px] w-[15px] rounded-full border-2 border-gold bg-gold"
+                />
+                <p className="text-[16px] font-semibold tracking-[-0.02em] text-fg">Award</p>
+                <p className="mt-1 text-[13.5px] text-fg-muted">Filled node in gold</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Section>
   );

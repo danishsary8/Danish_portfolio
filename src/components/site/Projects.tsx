@@ -1,12 +1,5 @@
-import { useEffect, useRef, useState, type PointerEvent } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "framer-motion";
-import { ArrowUpRight, Award, Check, FileText, Github } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { ArrowUpRight, Award, Check, FileText, Github, Lock } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,47 +7,89 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { GlareHover } from "@/components/ui/GlareHover";
 import { PROJECTS, type Project } from "@/content/portfolio";
-import { SPRING_FOLLOW } from "@/lib/motion";
-import { useFinePointer } from "@/lib/use-fine-pointer";
-import { Reveal, SectionHeader } from "./Reveal";
-import { SkillIcon, hasSkillIcon } from "./SkillIcon";
+import { useTheme } from "@/lib/use-theme";
+import { Reveal, SECTION, SectionHeader } from "./Reveal";
+import { SkillIcon, hasSkillIcon, themedSkillColor } from "./SkillIcon";
 
-const PREVIEW_W = 320;
-const PREVIEW_OFFSET = 20;
+// Deck order: flagship first, award second, then the two lighter apps.
+const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
 
-function ProjectShot({ project, className = "" }: { project: Project; className?: string }) {
+const FOCUS =
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
+
+const host = (url: string) => {
+  try {
+    return new URL(url).host;
+  } catch {
+    return url;
+  }
+};
+
+/** Safari-style window chrome: the real live URL, so the frame states a fact. */
+function BrowserFrame({ url, children }: { url: string; children: ReactNode }) {
+  return (
+    <div className="tactile squircle [--r:18px] w-full overflow-hidden whitespace-normal">
+      <div className="flex h-10 items-center gap-3 border-b border-[var(--edge)] bg-surface-1 px-4">
+        <span aria-hidden="true" className="flex gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <span key={i} className="h-2.5 w-2.5 rounded-full bg-[var(--line-strong)]" />
+          ))}
+        </span>
+        <span className="mx-auto flex h-6 min-w-0 max-w-[70%] items-center gap-1.5 rounded-[7px] bg-surface-2 px-2.5 font-mono text-[11.5px] text-fg-subtle">
+          <Lock aria-hidden="true" strokeWidth={1.75} className="h-3 w-3 shrink-0" />
+          <span className="truncate">{host(url)}</span>
+        </span>
+        <span aria-hidden="true" className="w-[42px]" />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function ProjectShot({ project }: { project: Project }) {
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
-  // An image that fails before hydration never fires React's onError, so check once mounted.
+  // An image that errored before hydration never fires React's onError. Only an image that
+  // has actually finished (complete with a resolved currentSrc) and has no pixels counts.
   useEffect(() => {
     const img = imgRef.current;
-    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+    if (img && img.complete && img.currentSrc && img.naturalWidth === 0) setFailed(true);
   }, []);
 
   if (!project.image || failed) {
+    if (project.id !== "diabetes") {
+      return (
+        <div className="grid aspect-[16/10] place-items-center bg-surface-1">
+          <span className="text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold tracking-[-0.04em] text-fg-subtle">
+            {project.title}
+          </span>
+        </div>
+      );
+    }
+    // No screenshot: say what the product is, in both of its languages.
     return (
-      <div
-        className={`grid place-items-center overflow-hidden rounded-[10px] border border-line bg-surface ${className}`}
-      >
-        {project.id === "diabetes" ? (
-          <span className="text-[clamp(1.6rem,4vw,2.4rem)] font-semibold tracking-[-0.04em] text-fg">
+      <div className="relative grid aspect-[16/10] place-items-center overflow-hidden bg-surface-1">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_45%,var(--glow),transparent_70%)]"
+        />
+        <div className="relative text-center">
+          <p className="text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-fg">
             EN <span className="text-fg-subtle">/</span>{" "}
             <span lang="km" className="font-khmer">
               ខ្មែរ
             </span>
-          </span>
-        ) : (
-          <span className="text-[clamp(1.4rem,3.5vw,2rem)] font-semibold tracking-[-0.04em] text-fg-subtle">
-            {project.title}
-          </span>
-        )}
+          </p>
+          <p className="mt-4 text-[13.5px] text-fg-muted">Early diabetes screening</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={`overflow-hidden rounded-[10px] border border-line bg-surface ${className}`}>
+    <div className="aspect-[16/10] overflow-hidden bg-surface-1">
       <img
         ref={imgRef}
         src={project.image}
@@ -64,106 +99,177 @@ function ProjectShot({ project, className = "" }: { project: Project; className?
         width={1600}
         height={1000}
         onError={() => setFailed(true)}
-        className="h-full w-full object-cover object-top"
+        className="h-full w-full object-cover object-top transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.02]"
       />
     </div>
   );
 }
 
-function HoverPreview({
-  project,
-  visible,
-  x,
-  y,
-}: {
-  project: Project | null;
-  visible: boolean;
-  x: ReturnType<typeof useSpring>;
-  y: ReturnType<typeof useSpring>;
-}) {
-  const transform = useMotionTemplate`translate3d(${x}px, ${y}px, 0)`;
+function ProjectVisual({ project }: { project: Project }) {
   return (
-    <motion.div
-      aria-hidden="true"
-      style={{ transform, width: PREVIEW_W }}
-      className="pointer-events-none fixed left-0 top-0 z-40"
+    <GlareHover
+      glareColor="#ffffff"
+      glareOpacity={0.18}
+      variant="sheen"
+      borderRadius="18px"
+      transitionDuration={900}
+      width="100%"
+      className="block w-full max-w-full"
     >
-      <div
-        className={`origin-top-left rounded-xl border border-line bg-raised p-1.5 shadow-[var(--shadow-float)] transition-[opacity,transform] duration-200 ease-[var(--ease-out)] ${
-          visible ? "scale-100 opacity-100" : "scale-[0.96] opacity-0"
-        }`}
-      >
-        {project ? <ProjectShot project={project} className="aspect-[16/10]" /> : null}
-      </div>
-    </motion.div>
+      <BrowserFrame url={project.liveUrl}>
+        <ProjectShot project={project} />
+      </BrowserFrame>
+    </GlareHover>
   );
 }
 
-function ProjectRow({
-  project,
-  index,
-  onOpen,
-  onHover,
-}: {
-  project: Project;
-  index: number;
-  onOpen: (p: Project) => void;
-  onHover: (p: Project | null) => void;
-}) {
+function StackChips({ stack, dark }: { stack: string[]; dark: boolean }) {
   return (
-    <Reveal as="li" index={index}>
+    <ul className="flex flex-wrap gap-1.5" aria-label="Built with">
+      {stack.map((s) => (
+        <li
+          key={s}
+          className="squircle [--r:7px] inline-flex h-7 items-center gap-1.5 border border-[var(--edge)] bg-surface-1 px-2.5 text-[12.5px] text-fg-muted"
+        >
+          {hasSkillIcon(s) ? (
+            <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s, dark) }} />
+          ) : null}
+          {s}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Actions({ project, onOpen }: { project: Project; onOpen: (p: Project) => void }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2.5">
+      <a
+        href={project.liveUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Visit ${project.title} (live site)`}
+        className={`btn-apple btn-apple-primary group/live inline-flex h-11 items-center sm:h-10 gap-1.5 rounded-full px-4 text-[13.5px] font-medium ${FOCUS}`}
+      >
+        Live site
+        <ArrowUpRight
+          aria-hidden="true"
+          strokeWidth={1.75}
+          className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover/live:-translate-y-px group-hover/live:translate-x-px"
+        />
+      </a>
       <button
         type="button"
         onClick={() => onOpen(project)}
-        onPointerEnter={() => onHover(project)}
-        onPointerLeave={() => onHover(null)}
         aria-label={`${project.title}: view details`}
-        className="group grid w-full gap-x-8 gap-y-2 px-5 py-6 text-left transition-colors duration-150 hover:bg-surface sm:px-6 md:grid-cols-[220px_minmax(0,1fr)_150px] md:items-center"
+        className={`btn-apple btn-apple-secondary inline-flex h-11 items-center rounded-full px-4 sm:h-10 text-[13.5px] font-medium ${FOCUS}`}
       >
-        <span className="min-w-0">
-          <span className="flex items-center gap-2 text-[16px] font-medium tracking-[-0.01em] text-fg">
-            {project.title}
-            {project.award ? (
-              <Award
-                className="h-4 w-4 text-gold-ink"
-                strokeWidth={1.5}
-                aria-label="Award winner"
-              />
-            ) : null}
-          </span>
-          <span className="mt-0.5 block text-[13px] text-fg-subtle">{project.kind}</span>
-        </span>
-        <span className="line-clamp-2 text-[14px] leading-[1.55] text-fg-muted">
-          {project.summary}
-        </span>
-        <span className="flex items-center justify-between gap-4 md:justify-end">
-          <span className="font-mono text-[12px] text-fg-subtle">{project.hosting}</span>
-          <ArrowUpRight
-            className="h-4 w-4 text-fg-subtle transition-[transform,color] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-fg"
-            strokeWidth={1.5}
-            aria-hidden="true"
-          />
-        </span>
+        Details
       </button>
-    </Reveal>
+    </div>
   );
 }
 
-const linkBtn =
-  "press inline-flex h-10 items-center gap-2 rounded-control px-4 text-[14px] font-medium transition-[background-color,opacity,transform] duration-150";
+function ProjectTitle({ project, size }: { project: Project; size: "lg" | "md" }) {
+  return (
+    <div>
+      <p className="text-[13px] text-fg-subtle">{project.kind}</p>
+      <h3
+        className={`mt-2 flex flex-wrap items-center gap-3 font-semibold tracking-[-0.03em] text-fg ${
+          size === "lg" ? "text-[30px] leading-[1.1] lg:text-[34px]" : "text-[24px] leading-[1.15]"
+        }`}
+      >
+        {project.title}
+        {project.award ? (
+          <span
+            role="img"
+            aria-label="Award winner"
+            title={project.award}
+            className="squircle [--r:8px] inline-flex h-7 items-center gap-1.5 bg-gold px-2.5 text-[12px] font-medium tracking-normal text-white dark:text-bg"
+          >
+            <Award aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
+            <span aria-hidden="true">Award 2026</span>
+          </span>
+        ) : null}
+      </h3>
+    </div>
+  );
+}
 
-function ProjectDetails({ project }: { project: Project }) {
+/**
+ * One card in the stacked project deck. On desktop each card pins near the top; the next card
+ * slides over it while this one recedes (CSS scroll-driven, see .deck-* in styles.css).
+ */
+function DeckCard({
+  project,
+  index,
+  last,
+  onOpen,
+  dark,
+}: {
+  project: Project;
+  index: number;
+  last: boolean;
+  onOpen: (p: Project) => void;
+  dark: boolean;
+}) {
+  const flip = index % 2 === 1;
+  // The <li> pins (its parent is the whole list, so every card stays stuck until the deck ends).
+  // Card N recedes while card N+1 rises: N+1's view timeline (--deck-N) drives N's animation.
+  const slotStyle = {
+    top: `calc(104px + ${index * 18}px)`,
+    ...(index > 0 ? { viewTimeline: `--deck-${index - 1} block` } : {}),
+  } as CSSProperties;
+  const cardStyle = (last ? {} : { "--deck-tl": `--deck-${index}` }) as CSSProperties;
+  return (
+    <li className={`lg:sticky ${last ? "" : "pb-10 lg:pb-[16vh]"}`} style={slotStyle}>
+      <article
+        className={`${last ? "" : "deck-card"} group tactile frame-float squircle [--r:28px] bg-surface-2 p-5 sm:p-7 lg:p-9`}
+        style={cardStyle}
+      >
+        <Reveal className="grid items-center gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12">
+          <div className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
+            <ProjectVisual project={project} />
+          </div>
+          <div className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>
+            <ProjectTitle project={project} size="lg" />
+            <p className="mt-4 text-pretty text-[15.5px] leading-[1.65] text-fg-muted">
+              {project.summary}
+            </p>
+            <div className="mt-6">
+              <StackChips stack={project.stack} dark={dark} />
+            </div>
+            <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+              <Actions project={project} onOpen={onOpen} />
+              <span className="inline-flex items-center gap-2 font-mono text-[12px] text-fg-subtle">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-gold" />
+                Live · {project.hosting}
+              </span>
+            </div>
+          </div>
+        </Reveal>
+      </article>
+    </li>
+  );
+}
+
+const dialogLink =
+  "btn-apple inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13.5px] font-medium";
+
+function ProjectDetails({ project, dark }: { project: Project; dark: boolean }) {
   return (
     <>
       <DialogHeader className="pr-10">
-        <DialogTitle>{project.title}</DialogTitle>
+        <DialogTitle className="text-[24px] tracking-[-0.03em]">{project.title}</DialogTitle>
         <DialogDescription>
           {project.kind} · {project.hosting}
         </DialogDescription>
       </DialogHeader>
-      <ProjectShot project={project} className="aspect-[16/10]" />
+      <BrowserFrame url={project.liveUrl}>
+        <ProjectShot project={project} />
+      </BrowserFrame>
       {project.award ? (
-        <p className="inline-flex w-fit items-center gap-2 rounded-[6px] border border-gold/40 bg-gold/10 px-2 py-1 text-[13px] text-gold-ink">
+        <p className="inline-flex w-fit items-center gap-2 text-[13.5px] font-medium text-gold-ink dark:text-gold">
           <Award className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
           {project.award}
         </p>
@@ -173,42 +279,32 @@ function ProjectDetails({ project }: { project: Project }) {
         {project.highlights.map((h) => (
           <li key={h} className="flex gap-2.5 text-[14px] leading-[1.5] text-fg">
             <Check
-              className="mt-[3px] h-4 w-4 shrink-0 text-fg-subtle"
-              strokeWidth={1.5}
+              className="mt-[3px] h-4 w-4 shrink-0 text-gold-ink dark:text-gold"
+              strokeWidth={1.75}
               aria-hidden="true"
             />
             {h}
           </li>
         ))}
       </ul>
-      <ul className="flex flex-wrap gap-1.5" aria-label="Built with">
-        {project.stack.map((s) => (
-          <li
-            key={s}
-            className="inline-flex h-7 items-center gap-1.5 rounded-[6px] border border-line bg-surface px-2 font-mono text-[12px] text-fg-muted"
-          >
-            {hasSkillIcon(s) ? <SkillIcon name={s} className="h-3.5 w-3.5" /> : null}
-            {s}
-          </li>
-        ))}
-      </ul>
+      <StackChips stack={project.stack} dark={dark} />
       <div className="flex flex-wrap gap-2 pt-1">
         <a
           href={project.liveUrl}
           target="_blank"
           rel="noreferrer"
           aria-label={`Open the live ${project.title} site`}
-          className={`${linkBtn} bg-fg text-bg hover:opacity-90`}
+          className={`${dialogLink} btn-apple-primary ${FOCUS}`}
         >
           Live site
-          <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
         </a>
         <a
           href={project.githubUrl}
           target="_blank"
           rel="noreferrer"
           aria-label={`${project.title} source on GitHub`}
-          className={`${linkBtn} border border-line-strong text-fg hover:bg-surface`}
+          className={`${dialogLink} btn-apple-secondary ${FOCUS}`}
         >
           <Github className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
           Source
@@ -219,7 +315,7 @@ function ProjectDetails({ project }: { project: Project }) {
             target="_blank"
             rel="noreferrer"
             aria-label={`${project.title} API documentation`}
-            className={`${linkBtn} border border-line-strong text-fg hover:bg-surface`}
+            className={`${dialogLink} btn-apple-secondary ${FOCUS}`}
           >
             <FileText className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
             API docs
@@ -231,88 +327,52 @@ function ProjectDetails({ project }: { project: Project }) {
 }
 
 export function Projects() {
-  const fine = useFinePointer();
-  const reduce = useReducedMotion();
-  const previewEnabled = fine && !reduce;
-
-  const [hovered, setHovered] = useState<Project | null>(null);
-  const [lastHovered, setLastHovered] = useState<Project | null>(null);
+  const { dark } = useTheme();
   const [selected, setSelected] = useState<Project | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
+
   const openProject = (p: Project) => {
     triggerRef.current = document.activeElement as HTMLElement | null;
     setSelected(p);
     setDialogOpen(true);
   };
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, SPRING_FOLLOW);
-  const y = useSpring(my, SPRING_FOLLOW);
-
-  const place = (e: PointerEvent, jump: boolean) => {
-    const flip = e.clientX + PREVIEW_OFFSET + PREVIEW_W > window.innerWidth - 16;
-    const nx = flip ? e.clientX - PREVIEW_OFFSET - PREVIEW_W : e.clientX + PREVIEW_OFFSET;
-    const ny = e.clientY + PREVIEW_OFFSET;
-    mx.set(nx);
-    my.set(ny);
-    if (jump) {
-      x.jump(nx);
-      y.jump(ny);
-    }
-  };
-
-  const onHover = (p: Project | null) => {
-    setHovered(p);
-    if (p) setLastHovered(p);
-  };
+  const byId = (id: Project["id"]) => PROJECTS.find((p) => p.id === id)!;
 
   return (
-    <section
-      id="projects"
-      aria-labelledby="projects-title"
-      className="mx-auto max-w-[1120px] px-5 py-20 sm:px-6 lg:py-28"
-    >
+    <section id="projects" aria-labelledby="projects-title" className={SECTION}>
       <SectionHeader
         id="projects-title"
         title="Projects"
         lede="Four apps that are live today, from a full e-commerce platform to an award-winning clinical assistant."
       />
-      <ul
-        className="divide-y divide-line overflow-hidden rounded-brand border border-line"
-        onPointerMove={previewEnabled ? (e) => place(e, hovered === null) : undefined}
-        onPointerEnter={previewEnabled ? (e) => place(e, true) : undefined}
+
+      <ol
+        aria-label="Projects"
+        style={{ timelineScope: ORDER.slice(0, -1).map((_, i) => `--deck-${i}`).join(", ") } as CSSProperties}
       >
-        {PROJECTS.map((p, i) => (
-          <ProjectRow
-            key={p.id}
-            project={p}
+        {ORDER.map((id, i) => (
+          <DeckCard
+            key={id}
+            project={byId(id)}
             index={i}
+            last={i === ORDER.length - 1}
             onOpen={openProject}
-            onHover={previewEnabled ? onHover : () => {}}
+            dark={dark}
           />
         ))}
-      </ul>
-
-      {previewEnabled ? (
-        <HoverPreview
-          project={hovered ?? lastHovered}
-          visible={hovered !== null && !dialogOpen}
-          x={x}
-          y={y}
-        />
-      ) : null}
+      </ol>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
-          className="max-w-xl"
+          className="squircle [--r:24px] max-w-2xl gap-5 border-[var(--edge)] bg-surface-2 p-7"
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             triggerRef.current?.focus();
           }}
         >
-          {selected ? <ProjectDetails project={selected} /> : null}
+          {selected ? <ProjectDetails project={selected} dark={dark} /> : null}
         </DialogContent>
       </Dialog>
     </section>

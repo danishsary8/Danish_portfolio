@@ -101,6 +101,18 @@ export function getSkillColor(name: string): string {
   return SKILL_COLORS[name] ?? "#A1A1AA";
 }
 
+// Brand marks that vanish on light surfaces get a deeper shade of the same brand colour.
+const LIGHT_OVERRIDES: Record<string, string> = {
+  JavaScript: "#9C7A00",
+  GitHub: "#181717",
+  "Local Storage": "#B45309",
+};
+
+/** Brand colour tuned for the active theme, so every mark stays visible. */
+export function themedSkillColor(name: string, dark: boolean): string {
+  return (!dark && LIGHT_OVERRIDES[name]) || getSkillColor(name);
+}
+
 export function getSkillGlow(name: string): string {
   const color = SKILL_COLORS[name] ?? "#A1A1AA";
   if (color.startsWith("#") && color.length === 7) {

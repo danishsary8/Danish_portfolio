@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Award, FileBadge, Maximize2 } from "lucide-react";
+import { Award, BookOpen, FileBadge, GraduationCap, Maximize2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -8,10 +8,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CERTIFICATES, EDUCATION, type Certificate } from "@/content/portfolio";
-import { Reveal, SectionHeader } from "./Reveal";
-import { TimelineRow } from "./Experience";
+import { Reveal, SECTION, SectionHeader } from "./Reveal";
 
-function CertificateCard({
+function CertificateRow({
   cert,
   index,
   onOpen,
@@ -22,105 +21,132 @@ function CertificateCard({
 }) {
   const isAward = cert.title.includes("Award");
   const Icon = isAward ? Award : FileBadge;
-  const meta = (
+  const body = (
     <>
-      <p className="text-[14.5px] font-medium leading-[1.4] text-fg">{cert.title}</p>
-      <p className="mt-1 text-[13px] text-fg-subtle">
-        {cert.issuer} · <span className="font-mono text-[12px] tabular-nums">{cert.date}</span>
-      </p>
+      <span
+        aria-hidden="true"
+        className={`squircle [--r:8px] grid h-9 w-9 shrink-0 place-items-center ${
+          isAward ? "bg-gold text-white dark:text-bg" : "border border-[var(--edge)] bg-surface-1 text-fg-muted"
+        }`}
+      >
+        <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[15px] font-medium leading-[1.4] text-fg">{cert.title}</span>
+        <span
+          className={`mt-1 block text-[13.5px] ${isAward ? "text-gold-ink dark:text-gold" : "text-fg-subtle"}`}
+        >
+          {cert.issuer}
+        </span>
+      </span>
+      <span className="shrink-0 pt-0.5 font-mono text-[12px] tabular-nums text-fg-subtle">
+        {cert.date}
+      </span>
     </>
   );
 
-  if (!cert.image) {
-    return (
-      <Reveal as="li" index={index}>
-        <div className="flex h-full gap-4 rounded-brand border border-line bg-bg p-4">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-control border border-line bg-surface">
-            <Icon
-              className={`h-[18px] w-[18px] ${isAward ? "text-gold-ink" : "text-fg-subtle"}`}
-              strokeWidth={1.5}
-              aria-hidden="true"
-            />
-          </span>
-          <div className="min-w-0">{meta}</div>
-        </div>
-      </Reveal>
-    );
-  }
-
   return (
     <Reveal as="li" index={index}>
-      <button
-        type="button"
-        onClick={() => onOpen(cert)}
-        aria-label={`View certificate: ${cert.title}`}
-        className="press group block h-full w-full overflow-hidden rounded-brand border border-line bg-bg text-left transition-[border-color,transform] duration-150 hover:border-line-strong"
-      >
-        <div className="relative aspect-[4/3] overflow-hidden border-b border-line bg-surface">
-          <img
-            src={cert.image}
-            alt={`${cert.title} certificate`}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover transition-transform duration-300 ease-[var(--ease-out)] group-hover:scale-[1.02]"
+      {cert.image ? (
+        <button
+          type="button"
+          onClick={() => onOpen(cert)}
+          aria-label={`View certificate: ${cert.title}`}
+          className="group flex w-full items-start gap-4 py-5 text-left"
+        >
+          {body}
+          <Maximize2
+            aria-hidden="true"
+            strokeWidth={1.5}
+            className="mt-1 h-4 w-4 text-fg-subtle opacity-0 transition-opacity duration-150 group-hover:opacity-100"
           />
-          <span className="absolute right-2.5 top-2.5 grid h-8 w-8 place-items-center rounded-[7px] border border-line bg-raised text-fg-muted opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-            <Maximize2 className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden="true" />
-          </span>
-        </div>
-        <div className="p-4">{meta}</div>
-      </button>
+        </button>
+      ) : (
+        <div className="flex items-start gap-4 py-5">{body}</div>
+      )}
     </Reveal>
   );
 }
+
 export function Education() {
   const [selected, setSelected] = useState<Certificate | null>(null);
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const [degree, ...studies] = EDUCATION;
 
   return (
-    <section
-      id="education"
-      aria-labelledby="education-title"
-      className="mx-auto max-w-[1120px] px-5 py-20 sm:px-6 lg:py-28"
-    >
+    <section id="education" aria-labelledby="education-title" className={SECTION}>
       <SectionHeader
         id="education-title"
-        title="Education & certificates"
+        title="Education"
         lede="University, language study, and focused frontend and backend courses."
       />
-      <ol>
-        {EDUCATION.map((ed, i) => (
-          <TimelineRow
-            key={ed.title}
-            index={i}
-            period={ed.period}
-            title={ed.title}
-            org={ed.org}
-            detail={ed.detail}
-          />
-        ))}
-      </ol>
 
-      <h3 className="mb-5 mt-14 text-[13px] font-medium text-fg-muted">Certificates</h3>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {CERTIFICATES.map((c, i) => (
-          <CertificateCard
-            key={c.title}
-            cert={c}
-            index={i}
-            onOpen={(cert) => {
-              triggerRef.current = document.activeElement as HTMLElement | null;
-              setSelected(cert);
-              setOpen(true);
-            }}
-          />
-        ))}
-      </ul>
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+        {/* Degree */}
+        <Reveal className="tactile squircle [--r:20px] flex flex-col p-7 sm:p-8">
+          <span
+            aria-hidden="true"
+            className="squircle [--r:10px] grid h-11 w-11 place-items-center bg-fg text-bg"
+          >
+            <GraduationCap className="h-5 w-5" strokeWidth={1.5} />
+          </span>
+          <h3 className="mt-6 text-balance text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">
+            {degree.title}
+          </h3>
+          <p className="mt-2 text-[15px] text-fg-muted">{degree.org}</p>
+          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-[var(--edge)] bg-[var(--edge)] text-[13px]">
+            <div className="bg-surface-2 px-4 py-3">
+              <dt className="text-fg-subtle">Years</dt>
+              <dd className="mt-0.5 font-mono tabular-nums text-fg">{degree.period}</dd>
+            </div>
+            <div className="bg-surface-2 px-4 py-3">
+              <dt className="text-fg-subtle">Now</dt>
+              <dd className="mt-0.5 text-fg">{degree.detail}</dd>
+            </div>
+          </dl>
+
+          {studies.map((s) => (
+            <div key={s.title} className="mt-8 flex items-start gap-3.5 border-t border-line pt-6">
+              <BookOpen aria-hidden="true" strokeWidth={1.5} className="mt-0.5 h-4 w-4 text-fg-subtle" />
+              <div className="min-w-0 flex-1">
+                <p className="text-[15px] font-medium text-fg">{s.title}</p>
+                <p className="mt-0.5 text-[13.5px] text-fg-muted">
+                  {s.org} · {s.detail}
+                </p>
+              </div>
+              <span className="shrink-0 font-mono text-[12px] tabular-nums text-fg-subtle">
+                {s.period}
+              </span>
+            </div>
+          ))}
+        </Reveal>
+
+        {/* Courses and awards */}
+        <div>
+          <Reveal>
+            <h3 className="text-[15px] font-medium text-fg">Courses &amp; awards</h3>
+          </Reveal>
+          <ul className="mt-2 divide-y divide-line border-b border-line">
+            {CERTIFICATES.map((c, i) => (
+              <CertificateRow
+                key={c.title}
+                cert={c}
+                index={i + 1}
+                onOpen={(cert) => {
+                  triggerRef.current = document.activeElement as HTMLElement | null;
+                  setSelected(cert);
+                  setOpen(true);
+                }}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
-          className="max-w-3xl"
+          className="squircle [--r:24px] max-w-3xl border-[var(--edge)] bg-surface-2"
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             triggerRef.current?.focus();
@@ -138,7 +164,7 @@ export function Education() {
                 <img
                   src={selected.image}
                   alt={`${selected.title} certificate`}
-                  className="w-full rounded-[10px] border border-line"
+                  className="w-full rounded-[12px] border border-line"
                 />
               ) : null}
             </>

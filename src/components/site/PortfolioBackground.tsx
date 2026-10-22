@@ -26,7 +26,7 @@ export function PortfolioBackground() {
     >
       {/* Dark Theme Ambient Gradient Layer (Rich twilight obsidian / charcoal / radiant warm bronze) */}
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+        className={`absolute inset-0 ${
           dark ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -43,18 +43,15 @@ export function PortfolioBackground() {
 
       {/* Light Theme Ambient Gradient Layer (Distinct, luminous, multi-tone warm gold & cool slate atmosphere) */}
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+        className={`absolute inset-0 ${
           !dark ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
           background: `
-            radial-gradient(ellipse 950px 650px at 82% 10%, rgba(201, 151, 58, 0.18), transparent 70%),
-            radial-gradient(ellipse 1100px 520px at 50% -20px, rgba(255, 255, 255, 0.85), transparent 65%),
-            radial-gradient(circle 850px at 8% 38%, rgba(180, 210, 248, 0.38), transparent 65%),
-            radial-gradient(circle 800px at 92% 64%, rgba(218, 172, 70, 0.16), transparent 60%),
-            radial-gradient(circle 900px at 14% 88%, rgba(195, 212, 242, 0.42), transparent 65%),
-            radial-gradient(circle 650px at 70% 92%, rgba(225, 185, 95, 0.14), transparent 60%),
-            linear-gradient(142deg, #F8FAFD 0%, #F1F4FA 28%, #FAF7F1 62%, #EFF3F9 88%, #F7F5EF 100%)
+            radial-gradient(ellipse 900px 640px at 78% 22%, rgba(214, 168, 82, 0.2), transparent 70%),
+            radial-gradient(ellipse 1200px 520px at 35% -60px, rgba(255, 255, 255, 0.95), transparent 65%),
+            radial-gradient(circle 760px at 4% 96%, rgba(196, 206, 222, 0.28), transparent 65%),
+            linear-gradient(165deg, #FBFAF7 0%, #F8F6F1 55%, #F3F1EB 100%)
           `,
         }}
       />

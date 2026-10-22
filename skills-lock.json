@@ -19,6 +19,12 @@
       "skillPath": "skills/artistic/SKILL.md",
       "computedHash": "e408d4f957fba0a274d631f7c1c249b4a70a50f3ef6556cdffdbad86666bfb9f"
     },
+    "baseline-ui": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/baseline-ui/SKILL.md",
+      "computedHash": "016ad266e4e3bfd058096bb032ae890b09973267a547048414a371f5b1b266de"
+    },
     "basic": {
       "source": "bergside/awesome-design-skills",
       "sourceType": "github",
@@ -79,6 +85,12 @@
       "skillPath": "skills/colorful/SKILL.md",
       "computedHash": "c5047898919167bb9eef68eadb199f1a19a7b6e66d9b7db3341ad071ed97689f"
     },
+    "component-canvas": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/component-canvas/SKILL.md",
+      "computedHash": "cf9589f0b82135b17a6ca0952b6247f949654bb029a01185fe7c95ed1c73a47a"
+    },
     "contemporary": {
       "source": "bergside/awesome-design-skills",
       "sourceType": "github",
@@ -96,6 +108,18 @@
       "sourceType": "github",
       "skillPath": "skills/cosmic/SKILL.md",
       "computedHash": "29494f05cb4842148e32f6b32cd4a79ae159ea249718cc2f28b046579598fc58"
+    },
+    "create-canvas": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/create-canvas/SKILL.md",
+      "computedHash": "0a5fd0e02fd787f199ab45b87b87f6109af9a388386a960d545ec0c8ad457d24"
+    },
+    "create-design-md": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/create-design-md/SKILL.md",
+      "computedHash": "67691b3fe0bea438415652a8743c60ae77f41a70cdaff893fb50cc2da43e2a59"
     },
     "creative": {
       "source": "bergside/awesome-design-skills",
@@ -151,6 +175,30 @@
       "skillPath": "skills/fiction/SKILL.md",
       "computedHash": "e9f1aa33a1eec0ba47ff4f5f9119dce07b209c7b209afc9d9a64a186a50cb4c2"
     },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "d6cb30212b3b19f531378574784af1da09928b2e5078f299eaeaedd50191a4af"
+    },
+    "fixing-accessibility": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/fixing-accessibility/SKILL.md",
+      "computedHash": "f8ddcb0a8c7b8728105eab18e17223e41d74fb8649becba58a6deb90c6a5ce8d"
+    },
+    "fixing-metadata": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/fixing-metadata/SKILL.md",
+      "computedHash": "10047222b01c2c9b6e904ef90079880d9dbc09de3241df7f311b238dbcb7869a"
+    },
+    "fixing-motion-performance": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/fixing-motion-performance/SKILL.md",
+      "computedHash": "c1aca76fe18e8594f401cf78e5e76be24f182ce63167a398bdd4458f2a07639f"
+    },
     "flat": {
       "source": "bergside/awesome-design-skills",
       "sourceType": "github",
@@ -194,10 +242,16 @@
       "computedHash": "ebd4362f17a22a6ada3a96c734aca2995f06a96e6dfe50fa5acb6615ff0cb052"
     },
     "impeccable": {
-      "source": "bergside/awesome-design-skills",
+      "source": "pbakaus/impeccable",
       "sourceType": "github",
-      "skillPath": "skills/impeccable/SKILL.md",
-      "computedHash": "9c72340b1d6b7acbe00ff0be664d8add2e6eb7c13e7860359b3ebc04580380fd"
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "1a563228fc964107046ceda86034c60f527b1037a40b9372fac16e2473a83c82"
+    },
+    "improve-ui": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/improve-ui/SKILL.md",
+      "computedHash": "31c09b79a1c196adccb1637a225cef54f537da87430fda0ba309ef83e78f10e5"
     },
     "levels": {
       "source": "bergside/awesome-design-skills",
@@ -390,6 +444,66 @@
       "sourceType": "github",
       "skillPath": "skills/tetris/SKILL.md",
       "computedHash": "c4b11cbde10aa2dc8a8d6afa743350491019c9995a1aa120d8e84911ca96f9ef"
+    },
+    "ui-skills-root": {
+      "source": "ibelick/ui-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ui-skills-root/SKILL.md",
+      "computedHash": "76a520772c9532b141562d2b2e659f4e6636cf04d2f2c9b9cf5828702f0ad048"
+    },
+    "understand": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand/SKILL.md",
+      "computedHash": "34396da7b8b77373ab736a6572b0d27c041fd068dcbcb47361a74b2b0168e5d1"
+    },
+    "understand-chat": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-chat/SKILL.md",
+      "computedHash": "0d278aa332c0753190f90f87f78b2d68c32d6b2c49fbfa4b0f0a30f646556496"
+    },
+    "understand-dashboard": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-dashboard/SKILL.md",
+      "computedHash": "74ca8636b275307bd69d1f03890f3a37e6688332983ea462f12b90159e28b8f6"
+    },
+    "understand-diff": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-diff/SKILL.md",
+      "computedHash": "89134f9ea476b4b5135ea8b21b9052b25038661d11e3700e49912d781c3caa0f"
+    },
+    "understand-domain": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-domain/SKILL.md",
+      "computedHash": "042afe2c765d807dfb04ab4ba50c314d9a63cf73067250a8d2018f6e572f25a3"
+    },
+    "understand-explain": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-explain/SKILL.md",
+      "computedHash": "26c3ff71816181cecbd1384c8ed1c2b63e4ff5e294762797f041201ce4295bbb"
+    },
+    "understand-figma": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-figma/SKILL.md",
+      "computedHash": "98d381bdb6d511604d84f0af73751e5b413ad8b9fa59ab7ccb8822da660146c3"
+    },
+    "understand-knowledge": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-knowledge/SKILL.md",
+      "computedHash": "0f202b94248c3c87da7a395b2c8f82411fb344176800999e1115e7b9f8a9f7b0"
+    },
+    "understand-onboard": {
+      "source": "Egonex-AI/Understand-Anything",
+      "sourceType": "github",
+      "skillPath": "understand-anything-plugin/skills/understand-onboard/SKILL.md",
+      "computedHash": "88bd79c05c3bbb8ba83125086465da7751741162f3f9b4305538979fac495141"
     },
     "vibrant": {
       "source": "bergside/awesome-design-skills",

@@ -122,7 +122,7 @@ export function ChatbotWidget() {
         ];
       } else if (q.includes("loomora")) {
         const p = PROJECTS.find((x) => x.id === "loomora");
-        botResponse = `Loomora is a daily routine & habit planner built with React, Tailwind CSS, Framer Motion, and Laravel with PostgreSQL. Features secure authentication, habit streaks, and reminders.`;
+        botResponse = `Loomora is a daily routine & habit planner built with React, Tailwind CSS, Framer Motion, and Laravel with PostgreSQL. Features secure login, Google sign-in, email verification, and reminders.`;
         links = p?.liveUrl ? [{ label: "Loomora Live App", href: p.liveUrl }] : [];
       } else if (q.includes("diabetes") || q.includes("expert") || q.includes("award")) {
         const p = PROJECTS.find((x) => x.id === "diabetes");
@@ -146,14 +146,14 @@ export function ChatbotWidget() {
       } else if (q.includes("skill") || q.includes("stack") || q.includes("tech") || q.includes("react") || q.includes("laravel")) {
         botResponse =
           "Danish's core stack covers full-stack web development:\n\n" +
-          "• Frontend: React, TypeScript, Tailwind CSS, Framer Motion\n" +
+          "• Frontend: React, Tailwind CSS, Bootstrap, Framer Motion\n" +
           "• Backend: Laravel, PHP, Python/Flask, RESTful APIs\n" +
-          "• Database: PostgreSQL, Supabase, SQLite, Oracle\n" +
+          "• Database: PostgreSQL, Supabase, Oracle\n" +
           "• Workflow: Git/GitHub, Docker, JWT & OAuth, Postman";
         links = [{ label: "View Complete Skills Grid", action: () => scrollToSection("skills") }];
       } else if (q.includes("contact") || q.includes("hire") || q.includes("email") || q.includes("telegram")) {
         botResponse =
-          `You can reach Danish directly via email at ${PROFILE.email} or Telegram at ${PROFILE.telegram}. He is based in Phnom Penh (UTC+7) and actively available for full-time opportunities!`;
+          `You can reach Danish directly via email at ${PROFILE.email} or Telegram at ${PROFILE.telegram}. He is based in Phnom Penh (UTC+7) and open to Web Developer roles.`;
         links = [
           { label: "Open Contact Form", action: () => scrollToSection("contact") },
           { label: "Send Email", href: `mailto:${PROFILE.email}` },

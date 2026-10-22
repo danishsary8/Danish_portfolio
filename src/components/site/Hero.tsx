@@ -1,33 +1,126 @@
-import { useEffect, useState, type CSSProperties } from "react";
-import { ArrowRight, Code2, GraduationCap } from "lucide-react";
+import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
+import { ArrowRight, Award, Briefcase, ChevronRight, Globe, GraduationCap } from "lucide-react";
 import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
-import { ProfileCard } from "@/components/ui/ProfileCard";
+import { SplitFlapText } from "@/components/ui/SplitFlapText";
 import LogoLoop from "@/components/ui/LogoLoop";
-import CountUp from "@/components/ui/CountUp";
-import { SkillIcon, getSkillColor, getSkillGlow } from "./SkillIcon";
+import { SkillIcon, themedSkillColor } from "./SkillIcon";
 import { ProfileModal } from "./ProfileModal";
+import { PortraitCard } from "./PortraitCard";
 
+// Main core stack only, from the CV.
 const CORE_STACK = [
   "React",
-  "TypeScript",
+  "JavaScript",
   "Laravel",
+  "PHP",
   "PostgreSQL",
   "Tailwind CSS",
-  "REST APIs",
+  "Flask",
   "Docker",
 ] as const;
+const CORE_LOGOS = CORE_STACK.map((tech) => ({ title: tech }));
+
+// Recruiter proof strip: every fact is from the CV.
+const FACTS = [
+  {
+    href: "#projects",
+    icon: Globe,
+    title: "4 live projects",
+    sub: "Bookly · Loomora · Diabetes Expert System · Driving Rules",
+    meta: "Vercel · Render · Netlify",
+    tone: "ink",
+  },
+  {
+    href: "#experience",
+    icon: Briefcase,
+    title: "Web Developer Intern",
+    sub: "ETEC & KruITSolution",
+    meta: "Jul 2026 – Now",
+    tone: "ink",
+  },
+  {
+    href: "#education",
+    icon: Award,
+    title: "Award Winner (Team)",
+    sub: "AI Expert System & Innovation 2026",
+    meta: "Sep 2026",
+    tone: "gold",
+  },
+  {
+    href: "#education",
+    icon: GraduationCap,
+    title: "B.S. Software Development",
+    sub: "Norton University · 4th year",
+    meta: "2024 – Now",
+    tone: "ink",
+  },
+] as const;
+
+const NAME = [
+  { key: "sary", text: "Sary" },
+  { key: "danish", text: "Danish" },
+] as const;
+
+const FOCUS =
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
 
 const step = (i: number) => ({ "--i": i }) as CSSProperties;
 
+const brandColor = themedSkillColor;
+
+// Official full-colour logos (Devicon, MIT), pinned for stable rendering.
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
+const LOGOS: Record<string, { src: string; invertInDark?: boolean }> = {
+  React: { src: `${DEVICON}/react/react-original.svg` },
+  JavaScript: { src: `${DEVICON}/javascript/javascript-original.svg` },
+  Laravel: { src: `${DEVICON}/laravel/laravel-original.svg` },
+  PHP: { src: `${DEVICON}/php/php-original.svg` },
+  PostgreSQL: { src: `${DEVICON}/postgresql/postgresql-original.svg` },
+  "Tailwind CSS": { src: `${DEVICON}/tailwindcss/tailwindcss-original.svg` },
+  Flask: { src: `${DEVICON}/flask/flask-original.svg`, invertInDark: true }, // black mark
+  Docker: { src: `${DEVICON}/docker/docker-original.svg` },
+};
+
+function StackChip({ tech, dark }: { tech: string; dark: boolean }) {
+  const logo = LOGOS[tech];
+  return (
+    <span
+      className="tactile squircle [--r:7px] inline-flex h-8 items-center gap-2 whitespace-nowrap pl-2.5 pr-3 text-[12.5px] font-medium leading-none text-fg transition-[color,border-color,background-color] duration-150 hover:border-[color-mix(in_oklab,var(--brand)_45%,transparent)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,var(--surface-2))] hover:text-fg"
+      style={{ "--brand": brandColor(tech, dark) } as CSSProperties}
+    >
+      {logo ? (
+        <img
+          src={logo.src}
+          alt=""
+          width={16}
+          height={16}
+          decoding="async"
+          draggable={false}
+          // Inline size beats LogoLoop's `.logoloop__item img { height: row }` rule.
+          style={{ width: 16, height: 16 }}
+          className={`shrink-0 object-contain ${logo.invertInDark ? "dark:invert" : ""}`}
+        />
+      ) : (
+        <SkillIcon name={tech} className="h-4 w-4 shrink-0" style={{ color: "var(--brand)" }} />
+      )}
+      {tech}
+    </span>
+  );
+}
+
+function scrollToHash(e: MouseEvent<HTMLAnchorElement>, hash: string) {
+  const el = document.getElementById(hash.slice(1));
+  if (!el) return;
+  e.preventDefault();
+  el.scrollIntoView({ behavior: "smooth" });
+}
+
 export function Hero() {
   const time = useLocalTime(PROFILE.timezone);
-  const timeParts = time ? time.split(":").map((v) => parseInt(v, 10)) : null;
-  const hours = timeParts?.[0] ?? 0;
-  const minutes = timeParts?.[1] ?? 0;
   const { dark } = useTheme();
   const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -38,136 +131,129 @@ export function Hero() {
     return () => window.removeEventListener("open-photo-modal", handleOpen);
   }, []);
 
+  let letterIndex = 0;
+
   return (
     <section
       id="home"
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden min-h-[100dvh] flex flex-col justify-center"
     >
-      {/* Ambient background glow */}
       <div
         aria-hidden="true"
         className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[10%] top-24 -z-10 h-[360px] w-[360px] rounded-full bg-gold/10 blur-[110px] dark:bg-gold/15"
-      />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-10 lg:pt-20 lg:pb-10 xl:pt-24 xl:pb-12">
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.2fr_auto] lg:gap-10 xl:gap-14">
-          {/* Left Column: Status, Headline, Rotating Role, Bio Pitch, CTAs & Facts */}
+      <div className="mx-auto w-full max-w-[1180px] px-5 pt-24 pb-16 sm:px-6 lg:pt-28 lg:pb-20">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-16">
+          {/* Left column */}
           <div className="min-w-0">
-            {/* Status & Phnom Penh time */}
-            <div className="enter flex flex-wrap items-center gap-2.5 text-[12.5px] sm:text-[13px] text-fg-muted" style={step(0)}>
-              <span className="ios-glass-pill cursor-target gap-2 px-3 py-1.5 sm:px-3.5 select-none">
-                <span aria-hidden="true" className="relative flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-gold/15 dark:bg-gold/20">
-                  <span className="absolute h-2 w-2 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
-                  <span className="relative h-2 w-2 rounded-full bg-gold shadow-[0_0_6px_var(--gold)]" />
+            {/* Status + Phnom Penh time (split-flap telemetry) */}
+            <div className="enter flex items-center gap-3" style={step(0)}>
+            <img
+              src={ASSETS.profile.photo}
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-10 shrink-0 rounded-full object-cover ring-1 ring-[var(--edge)] lg:hidden"
+            />
+            <div
+              className="inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1.5 glass-pill rounded-[16px] sm:rounded-full min-h-8 py-1.5 sm:py-1 pl-3 pr-3.5 text-[13px] leading-none select-none"
+            >
+              <span className="inline-flex items-center gap-2.5">
+                <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
+                  <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
+                  <span className="relative h-2 w-2 rounded-full bg-gold" />
                 </span>
-                <span className="text-fg font-medium tracking-[-0.01em]">Available to work full-time</span>
+                <span className="font-medium text-fg">Open to Web Developer roles</span>
               </span>
-              <span aria-hidden="true" className="text-fg-subtle">
-                /
-              </span>
-              <span className="inline-flex items-center gap-1.5">
+              <span aria-hidden="true" className="hidden h-3.5 w-px bg-line-strong sm:block" />
+              <span className="inline-flex items-center gap-1.5 text-fg-muted">
                 <span>{PROFILE.location.split(",")[0]}</span>
-                {time && timeParts ? (
-                <span className="inline-flex items-center font-mono tabular-nums text-fg">
-                  <CountUp
-                    from={0}
-                    to={hours}
-                    mode="count"
-                    easing="easeOut"
-                    duration={1.2}
-                    padDigits={2}
-                    replayOnHover
-                    trigger="view"
-                  />
-                  <span className="motion-safe:animate-pulse mx-px">:</span>
-                  <CountUp
-                    from={0}
-                    to={minutes}
-                    mode="count"
-                    easing="easeOut"
-                    duration={1.2}
-                    padDigits={2}
-                    replayOnHover
-                    trigger="view"
-                  />
-                </span>
-              ) : (
-                <span className="font-mono tabular-nums text-fg">--:--</span>
-              )}
-                <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
+                <SplitFlapText
+                  text={time ?? "--:--"}
+                  padTo={5}
+                  charset="0123456789"
+                  intro={false}
+                  loop={false}
+                  tileStyle="minimal"
+                  tileColor="transparent"
+                  textColor="var(--fg)"
+                  fontSize={13}
+                  gap={0}
+                  tileRadius={0}
+                  flipsPerChar={4}
+                  flipDuration={0.07}
+                  stagger={0.03}
+                  glare={0}
+                  depth={0}
+                  className="hero-clock"
+                  style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
+                />
+                <span className="font-mono text-[12px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
               </span>
             </div>
+            </div>
 
-            {/* Main Headline: Razor-Sharp Architectural Display Typography */}
+            {/* Name: per-letter blur rise (CSS, pre-hydration). Click swaps the gold word. */}
             <h1
               id="hero-title"
-              className="enter mt-2 sm:mt-2.5 text-[44px] sm:text-[58px] lg:text-[70px] font-semibold tracking-[-0.04em] leading-[1.02] select-none cursor-pointer group"
-              style={step(1)}
-              onClick={() => {
-                setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"));
-              }}
+              aria-label="Sary Danish"
+              className="mt-8 text-[46px] sm:text-[60px] lg:text-[72px] font-semibold tracking-[-0.04em] leading-[1.02] select-none cursor-pointer group"
+              onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
               title="Click to alternate highlight"
             >
-              <span
-                className={`transition-colors duration-300 ${
-                  goldTarget === "sary"
-                    ? "text-gold-ink dark:text-gold"
-                    : "text-fg group-hover:text-fg/80"
-                }`}
-              >
-                Sary{" "}
-              </span>
-              <span
-                className={`transition-colors duration-300 ${
-                  goldTarget === "danish"
-                    ? "text-gold-ink dark:text-gold"
-                    : "text-fg group-hover:text-fg/80"
-                }`}
-              >
-                Danish
-              </span>
+              {NAME.map((word, w) => (
+                <span key={word.key}>
+                  {w > 0 ? " " : null}
+                  <span
+                    className={`inline-block whitespace-nowrap transition-colors duration-150 ${
+                      goldTarget === word.key
+                        ? "text-gold"
+                        : "text-fg group-hover:text-fg/80"
+                    }`}
+                  >
+                    {word.text.split("").map((ch) => (
+                      <span
+                        key={letterIndex}
+                        aria-hidden="true"
+                        className="enter inline-block"
+                        style={step(1 + letterIndex++ * 0.45)}
+                      >
+                        {ch}
+                      </span>
+                    ))}
+                  </span>
+                </span>
+              ))}
             </h1>
 
-            {/* Confident Architectural Subtitle */}
-            <div className="enter mt-2.5 sm:mt-3 flex items-center gap-2.5" style={step(2)}>
-              <span className="sr-only">Junior Web Developer — Junior Full-Stack Developer</span>
-              <span
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-gold/12 text-gold-ink dark:text-gold border border-gold/25 shadow-2xs"
-                aria-hidden="true"
-              >
-                <Code2 className="h-3.5 w-3.5" strokeWidth={2.2} />
-              </span>
-              <p className="text-[17px] sm:text-[19px] font-medium tracking-tight text-fg">
-                Junior{" "}
-                <span className="font-semibold text-gold-ink dark:text-gold">
-                  Full-Stack Developer
-                </span>
+            {/* Pitch */}
+            <div className="enter mt-5 max-w-[56ch]" style={step(6)}>
+              <p className="text-[19px] sm:text-[22px] font-medium leading-[1.35] tracking-[-0.02em] text-fg text-pretty">
+                Junior Web Developer experienced in building full-stack apps — from PostgreSQL
+                schema to React screen.
+              </p>
+              <p className="mt-3 text-[15px] leading-[1.6] text-fg-muted text-pretty">
+                Clean React interfaces, Laravel and Flask APIs, and sign-in secured with JWT, OTP, and
+                Google OAuth, built to hold up for real users.
               </p>
             </div>
 
-            {/* Value Proposition Pitch */}
-            <div className="enter mt-3 sm:mt-3.5" style={step(3)}>
-              <p className="max-w-[50ch] text-[14.5px] leading-[1.6] text-fg-muted sm:text-[15.5px]">
-                Building web apps that are fast, seamless, and reliable. Engineered with clean code, secure APIs, and turning real ideas into software that just works.
-              </p>
-            </div>
-
-            {/* Call to action buttons */}
-            <div className="enter mt-5 sm:mt-6 flex flex-wrap items-center gap-3 sm:gap-3.5" style={step(4)}>
+            {/* CTAs: iOS capsules */}
+            <div
+              className="enter mt-10 flex flex-wrap items-center gap-3"
+              style={step(7)}
+            >
               <a
                 href="#contact"
-                className="press group inline-flex h-10.5 items-center justify-center gap-2 px-5 rounded-control bg-gold hover:bg-gold-ink text-white font-medium text-[13.5px] sm:text-[14px] shadow-xs transition-colors duration-150 select-none cursor-pointer"
+                className={`btn-apple btn-apple-primary group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 text-[15px] font-medium tracking-[-0.01em] sm:h-11 sm:text-[14px] select-none ${FOCUS}`}
               >
-                <span>Get in touch</span>
+                Get in touch
                 <ArrowRight
-                  className="h-4 w-4 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1"
-                  strokeWidth={2}
                   aria-hidden="true"
+                  strokeWidth={1.75}
+                  className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
                 />
               </a>
 
@@ -176,157 +262,92 @@ export function Hero() {
                   href={PROFILE.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="press group inline-flex h-10.5 items-center justify-center gap-2.5 px-5 rounded-control bg-surface-2 hover:bg-surface-1 border border-line-strong text-fg font-medium text-[13.5px] sm:text-[14px] shadow-2xs transition-colors duration-150 select-none cursor-pointer"
                   aria-label="GitHub profile"
+                  className={`btn-apple btn-apple-secondary inline-flex h-12 items-center justify-center gap-2.5 whitespace-nowrap rounded-full px-5 text-[15px] font-medium tracking-[-0.01em] sm:h-11 sm:text-[14px] select-none ${FOCUS}`}
                 >
-                  <AnimatedGithubIcon
-                    className="h-4.5 w-4.5 shrink-0 transition-transform duration-200 ease-[var(--ease-out)] group-hover:scale-110"
-                    dark={dark}
-                    aria-hidden="true"
-                  />
-                  <span>GitHub</span>
+                  <AnimatedGithubIcon className="h-4 w-4 shrink-0" dark={dark} aria-hidden="true" />
+                  GitHub
                 </a>
               ) : null}
+
             </div>
 
-            {/* Core Tech Stack & Current Focus Telemetry */}
-            <div className="enter mt-5 sm:mt-6.5 flex flex-col gap-2.5 sm:gap-3 sm:max-w-[580px]" style={step(5)}>
-              <div className="flex items-center gap-2.5 overflow-hidden">
-                <span className="shrink-0 font-mono text-[11px] font-semibold tracking-wider text-fg-subtle uppercase select-none">
-                  Core Stack
-                </span>
-                <span aria-hidden="true" className="shrink-0 text-fg-subtle/40 font-mono">/</span>
-                <div className="min-w-0 flex-1 overflow-hidden">
-                  <LogoLoop
-                    logos={CORE_STACK.map((tech) => ({
-                      title: tech,
-                      color: getSkillColor(tech),
-                      glow: getSkillGlow(tech),
-                      node: (
-                        <SkillIcon
-                          name={tech}
-                          useBrandColor
-                          className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 ease-out group-hover:scale-110"
-                        />
-                      ),
-                    }))}
-                    speed={32}
-                    direction="left"
-                    logoHeight={28}
-                    gap={10}
-                    pauseOnHover={true}
-                    fadeOut={true}
-                    fadeOutWidth={0.08}
-                    draggable={true}
-                    intro={false}
-                    ariaLabel="Core Tech Stack"
-                    renderItem={(item: any) => (
-                      <span
-                        className="tech-badge group inline-flex items-center gap-1.5 rounded-md border border-line bg-surface-1/80 px-2.5 py-1 text-[12.5px] font-medium text-fg-muted cursor-default select-none hover:bg-surface-1 hover:text-fg whitespace-nowrap"
-                        style={
-                          {
-                            "--badge-color": item.color,
-                            "--badge-glow": item.glow,
-                          } as CSSProperties
-                        }
-                      >
-                        {item.node}
-                        <span>{item.title}</span>
-                      </span>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* Current Role & University Trajectory: Elegant Hairline Ledger */}
-              <div className="mt-1 flex flex-wrap items-center gap-x-3.5 gap-y-1.5 pt-2.5 border-t border-line/60 text-[12px] sm:text-[12.5px] text-fg-muted">
-                <a
-                  href="#experience"
-                  className="group inline-flex items-center gap-1.5 hover:text-fg transition-colors duration-150 select-none cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("experience")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span className="relative flex h-1.5 w-1.5 shrink-0 items-center justify-center">
-                    <span className="absolute h-full w-full rounded-full bg-gold opacity-75 motion-safe:animate-ping" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-gold" />
-                  </span>
-                  <span className="font-medium text-fg group-hover:text-gold transition-colors">
-                    Web Developer Trainee
-                  </span>
-                  <span className="text-fg-subtle">at ETEC & KruITSolution</span>
-                </a>
-
-                <span aria-hidden="true" className="text-line-strong select-none">•</span>
-
-                <a
-                  href="#education"
-                  className="group inline-flex items-center gap-1.5 hover:text-fg transition-colors duration-150 select-none cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("education")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <GraduationCap className="h-3.5 w-3.5 text-fg-subtle group-hover:text-fg transition-colors shrink-0" strokeWidth={1.8} />
-                  <span className="font-medium text-fg group-hover:text-gold transition-colors">
-                    4th-Year Software Development
-                  </span>
-                  <span className="text-fg-subtle">at Norton University</span>
-                </a>
+            {/* Core stack: React Bits LogoLoop of brand chips */}
+            <div className="mt-14 max-w-[580px]">
+              <p className="enter text-[13px] text-fg-subtle" style={step(8)}>
+                Core stack
+              </p>
+              <div className="enter mt-3" style={step(9)}>
+                <LogoLoop
+                  logos={CORE_LOGOS}
+                  renderItem={(item: { title: string }) => <StackChip tech={item.title} dark={dark} />}
+                  speed={24}
+                  direction="left"
+                  logoHeight={32}
+                  gap={8}
+                  hoverSpeed={6}
+                  fadeOut
+                  fadeOutWidth={0.1}
+                  intro={false}
+                  draggable
+                  ariaLabel="Core stack"
+                  style={{ "--logoloop-pad": "3px" } as CSSProperties}
+                />
               </div>
             </div>
+
           </div>
 
-          {/* Right Column: ProfileCard */}
-          <div
-            className="enter flex justify-center lg:justify-end"
-            style={step(2)}
-          >
-            <div className="relative">
-              {/* Subtle radiant background aura */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-4 -z-10 rounded-[28px] bg-gradient-to-b from-gold/20 via-transparent to-transparent opacity-60 blur-2xl"
-              />
-              <ProfileCard
-                name={PROFILE.name}
-                title="Junior Fullstack Developer"
-                handle={PROFILE.phone || "087 680 999"}
-                status="Available to work full-time"
-                statusColor={dark ? "#c9973a" : "#b0822d"}
-                contactText="Contact"
-                avatarUrl={ASSETS.profile.photo}
-                showViewButton={true}
-                onViewClick={() => {
-                  setIsProfileModalOpen(true);
-                }}
-                holo={0}
-                glare={0}
-                tiltStrength={0}
-                parallax={0}
-                radius={16}
-                enableTilt={false}
-                intro={false}
-                showUserInfo={true}
-                enableMobileTilt={false}
-                theme={dark ? "dark" : "light"}
-                onContactClick={() => {
-                  const el = document.getElementById("contact");
-                  if (el) {
-                    el.scrollIntoView({ behavior: "smooth" });
-                  } else {
-                    window.location.hash = "#contact";
-                  }
-                }}
-              />
-            </div>
+          {/* Right column: portrait frame */}
+          <div className="enter flex justify-center lg:justify-end" style={step(4)}>
+            <PortraitCard onView={() => setIsProfileModalOpen(true)} />
           </div>
         </div>
+
+        {/* Proof strip: iOS inset-grouped panel, hairline cells, one scan for recruiters */}
+        <nav
+          aria-label="Highlights"
+          className="enter mt-14 grid gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] shadow-[var(--shadow-contact)] squircle [--r:16px] sm:grid-cols-2 lg:mt-16 lg:grid-cols-4"
+          style={step(10)}
+        >
+          {FACTS.map((fact) => {
+            const Icon = fact.icon;
+            return (
+              <a
+                key={fact.title}
+                href={fact.href}
+                onClick={(e) => scrollToHash(e, fact.href)}
+                className={`group grid grid-cols-[32px_minmax(0,1fr)_16px] items-start gap-3 bg-surface-2 p-4 transition-colors duration-150 hover:bg-surface-1 ${FOCUS} focus-visible:-outline-offset-2`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`squircle [--r:8px] grid h-8 w-8 place-items-center ${
+                    fact.tone === "gold" ? "bg-gold text-white dark:text-bg" : "bg-fg text-bg"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" strokeWidth={1.75} />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[14px] font-medium leading-tight tracking-[-0.01em] text-fg">
+                    {fact.title}
+                  </span>
+                  <span className="mt-1 block text-[12.5px] leading-snug text-fg-muted">{fact.sub}</span>
+                  <span className="mt-2 block font-mono text-[11.5px] tabular-nums text-fg-subtle">
+                    {fact.meta}
+                  </span>
+                </span>
+                <ChevronRight
+                  aria-hidden="true"
+                  strokeWidth={1.75}
+                  className="mt-2 h-4 w-4 text-fg-subtle transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                />
+              </a>
+            );
+          })}
+        </nav>
       </div>
 
       <ProfileModal open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen} />
     </section>
   );
 }
-

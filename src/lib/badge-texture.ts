@@ -24,7 +24,7 @@ export const BADGE_FRONT_FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="htt
   <rect x="20" y="20" width="560" height="810" rx="26" fill="none" stroke="%23c9973a" stroke-width="2" stroke-opacity="0.45"/>
   <rect x="250" y="24" width="100" height="14" rx="7" fill="%2309090b" stroke="%233f3f46" stroke-width="1.5"/>
   
-  <text x="300" y="85" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="14" letter-spacing="4" font-weight="bold">EXECUTIVE DEVELOPER PASS</text>
+  <text x="300" y="85" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="14" letter-spacing="4" font-weight="bold">DEVELOPER PORTFOLIO</text>
   <text x="300" y="112" text-anchor="middle" fill="%2371717a" font-family="sans-serif" font-size="12" letter-spacing="1">NORTON UNIVERSITY • ICT UTC+7</text>
   <line x1="50" y1="135" x2="550" y2="135" stroke="%2327272a" stroke-width="1.5"/>
 
@@ -45,19 +45,19 @@ export const BADGE_FRONT_FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="htt
   </g>
 
   <text x="300" y="468" text-anchor="middle" fill="%23ededef" font-family="sans-serif" font-size="34" font-weight="bold" letter-spacing="1">SARY DANISH</text>
-  <text x="300" y="505" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="16" font-weight="bold" letter-spacing="1">Junior Fullstack Developer</text>
+  <text x="300" y="505" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="16" font-weight="bold" letter-spacing="1">Junior Web Developer</text>
   <text x="300" y="535" text-anchor="middle" fill="%23a1a1aa" font-family="sans-serif" font-size="14">React • Laravel • PostgreSQL • REST</text>
 
   <g transform="translate(160, 560)">
-    <rect width="280" height="36" rx="18" fill="%2318181b" stroke="%2322c55e" stroke-width="1.5" stroke-opacity="0.6"/>
-    <circle cx="24" cy="18" r="6" fill="%2322c55e"/>
-    <text x="42" y="23" fill="%2322c55e" font-family="sans-serif" font-size="13" font-weight="bold">AVAILABLE FOR FULL-TIME</text>
+    <rect width="280" height="36" rx="18" fill="%2318181b" stroke="%23c9973a" stroke-width="1.5" stroke-opacity="0.6"/>
+    <circle cx="24" cy="18" r="6" fill="%23c9973a"/>
+    <text x="42" y="23" fill="%23c9973a" font-family="sans-serif" font-size="13" font-weight="bold">OPEN TO WEB DEV ROLES</text>
   </g>
 
   <line x1="50" y1="625" x2="550" y2="625" stroke="%2327272a" stroke-width="1.5"/>
-  <text x="70" y="660" fill="%2371717a" font-family="monospace" font-size="12">SECURITY IDENTIFIER</text>
-  <text x="70" y="690" fill="%23ededef" font-family="monospace" font-size="19" font-weight="bold">DANISH-DEV-2026</text>
-  <text x="530" y="690" text-anchor="end" fill="%23c9973a" font-family="monospace" font-size="14" font-weight="bold">VERIFIED</text>
+  <text x="70" y="660" fill="%2371717a" font-family="monospace" font-size="12">GITHUB</text>
+  <text x="70" y="690" fill="%23ededef" font-family="monospace" font-size="19" font-weight="bold">danishsary8</text>
+  <text x="530" y="690" text-anchor="end" fill="%23c9973a" font-family="monospace" font-size="14" font-weight="bold">@danishsary</text>
 
   <g transform="translate(70, 720)" fill="%23c9973a" opacity="0.85">
     <rect x="0" y="0" width="5" height="45"/>
@@ -93,19 +93,19 @@ export const BADGE_FRONT_FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="htt
     <rect x="426" y="0" width="11" height="45"/>
     <rect x="444" y="0" width="6" height="45"/>
   </g>
-  <text x="300" y="795" text-anchor="middle" fill="%2352525b" font-family="monospace" font-size="11">CAMBODIA ICT TELEMETRY • VERIFIED PASS</text>
+  <text x="300" y="795" text-anchor="middle" fill="%2352525b" font-family="monospace" font-size="11">PHNOM PENH, CAMBODIA • 2026</text>
 </svg>`;
 
 // Crisp SVG texture for the back of the physical developer badge
 export const BADGE_BACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="850" viewBox="0 0 600 850" fill="%23111113">
   <rect width="600" height="850" fill="%23111113"/>
   <rect x="24" y="24" width="552" height="802" rx="20" fill="none" stroke="%23c9973a" stroke-width="2" stroke-opacity="0.35"/>
-  <text x="300" y="85" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="20" letter-spacing="4" font-weight="bold">DEVELOPER PASSPORT</text>
-  <text x="300" y="120" text-anchor="middle" fill="%23a1a1aa" font-family="sans-serif" font-size="14">KINGDOM OF CAMBODIA • ICT UTC+7</text>
+  <text x="300" y="85" text-anchor="middle" fill="%23c9973a" font-family="monospace" font-size="20" letter-spacing="4" font-weight="bold">DEVELOPER PROFILE</text>
+  <text x="300" y="120" text-anchor="middle" fill="%23a1a1aa" font-family="sans-serif" font-size="14">PHNOM PENH, CAMBODIA • ICT UTC+7</text>
   <line x1="50" y1="145" x2="550" y2="145" stroke="%2327272a" stroke-width="1.5"/>
   
-  <text x="70" y="200" fill="%2371717a" font-family="monospace" font-size="12">IDENTIFIER</text>
-  <text x="70" y="230" fill="%23ededef" font-family="monospace" font-size="20" font-weight="bold">DANISH-DEV-2026</text>
+  <text x="70" y="200" fill="%2371717a" font-family="monospace" font-size="12">ROLE</text>
+  <text x="70" y="230" fill="%23ededef" font-family="monospace" font-size="20" font-weight="bold">Junior Web Developer</text>
   
   <text x="70" y="290" fill="%2371717a" font-family="monospace" font-size="12">ORGANIZATION</text>
   <text x="70" y="320" fill="%23ededef" font-family="sans-serif" font-size="17" font-weight="bold">Norton University</text>
@@ -114,7 +114,7 @@ export const BADGE_BACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3
   <text x="70" y="405" fill="%2371717a" font-family="monospace" font-size="12">CORE EXPERTISE</text>
   <text x="70" y="435" fill="%23c9973a" font-family="monospace" font-size="16" font-weight="bold">React • Laravel • PostgreSQL • REST</text>
   
-  <text x="70" y="495" fill="%2371717a" font-family="monospace" font-size="12">DIRECT TELEMETRY</text>
+  <text x="70" y="495" fill="%2371717a" font-family="monospace" font-size="12">CONTACT</text>
   <text x="70" y="525" fill="%23ededef" font-family="monospace" font-size="15">github.com/danishsary8</text>
   <text x="70" y="555" fill="%23ededef" font-family="monospace" font-size="15">t.me/danishsary</text>
   
@@ -152,8 +152,8 @@ export const BADGE_BACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3
     <rect x="426" y="0" width="11" height="50"/>
     <rect x="444" y="0" width="6" height="50"/>
   </g>
-  <text x="300" y="700" text-anchor="middle" fill="%2371717a" font-family="monospace" font-size="12" letter-spacing="3">8 8 0 2 0 2 6 0 8 7 6 8 0 9 9 9</text>
-  <text x="300" y="755" text-anchor="middle" fill="%2352525b" font-family="monospace" font-size="11">SECURITY PASS VERIFIED • PHNOM PENH</text>
+  <text x="300" y="700" text-anchor="middle" fill="%2371717a" font-family="monospace" font-size="12" letter-spacing="3">danishsary4@gmail.com</text>
+  <text x="300" y="755" text-anchor="middle" fill="%2352525b" font-family="monospace" font-size="11">PORTFOLIO 2026 • PHNOM PENH</text>
 </svg>`;
 
 /**
@@ -198,7 +198,7 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "6px";
   }
-  ctx.fillText("EXECUTIVE DEVELOPER PASS", width / 2, 170);
+  ctx.fillText("DEVELOPER PORTFOLIO", width / 2, 170);
 
   ctx.fillStyle = "#71717a";
   ctx.font = "500 24px Geist, -apple-system, BlinkMacSystemFont, sans-serif";
@@ -289,7 +289,7 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   ctx.stroke();
 
   // Green status beacon inside the pill
-  ctx.fillStyle = "#22c55e";
+  ctx.fillStyle = "#c9973a";
   ctx.beginPath();
   ctx.arc(photoX + photoW - 128, photoY + photoH - 28, 5, 0, Math.PI * 2);
   ctx.fill();
@@ -316,7 +316,7 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "1.5px";
   }
-  ctx.fillText("Junior Fullstack Developer", width / 2, 1010);
+  ctx.fillText("Junior Web Developer", width / 2, 1010);
 
   ctx.fillStyle = "#a1a1aa";
   ctx.font = "500 26px Geist, -apple-system, BlinkMacSystemFont, sans-serif";
@@ -325,37 +325,37 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   }
   ctx.fillText("React • Laravel • PostgreSQL • REST", width / 2, 1060);
 
-  // 7. Status Pill: Available For Full-Time Roles
+  // 7. Status pill: open to Web Developer roles
   const pillW = 540;
   const pillH = 64;
   const pillX = (width - pillW) / 2;
   const pillY = 1110;
 
   ctx.fillStyle = "#18181b";
-  ctx.strokeStyle = "rgba(34, 197, 94, 0.65)";
+  ctx.strokeStyle = "rgba(201, 151, 58, 0.65)";
   ctx.lineWidth = 2.5;
   roundRect(ctx, pillX, pillY, pillW, pillH, 32);
   ctx.fill();
   ctx.stroke();
 
   // Green status dot with aura
-  ctx.fillStyle = "rgba(34, 197, 94, 0.25)";
+  ctx.fillStyle = "rgba(201, 151, 58, 0.25)";
   ctx.beginPath();
   ctx.arc(pillX + 42, pillY + 32, 16, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = "#22c55e";
+  ctx.fillStyle = "#c9973a";
   ctx.beginPath();
   ctx.arc(pillX + 42, pillY + 32, 9, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = "#22c55e";
+  ctx.fillStyle = "#c9973a";
   ctx.font = "bold 23px Geist, -apple-system, BlinkMacSystemFont, sans-serif";
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "0.5px";
   }
   ctx.textAlign = "left";
-  ctx.fillText("AVAILABLE FOR FULL-TIME ROLES", pillX + 68, pillY + 40);
+  ctx.fillText("OPEN TO WEB DEVELOPER ROLES", pillX + 68, pillY + 40);
 
   // Divider
   ctx.strokeStyle = "#27272a";
@@ -365,30 +365,30 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   ctx.lineTo(width - 100, 1225);
   ctx.stroke();
 
-  // 8. Security Identifier & Verification Metadata
+  // 8. Contact handles
   ctx.textAlign = "left";
   ctx.fillStyle = "#71717a";
   ctx.font = "500 22px Geist, ui-monospace, monospace";
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "1px";
   }
-  ctx.fillText("SECURITY IDENTIFIER", 140, 1285);
+  ctx.fillText("GITHUB", 140, 1285);
 
   ctx.fillStyle = "#ededef";
   ctx.font = "bold 34px Geist, ui-monospace, monospace";
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "1px";
   }
-  ctx.fillText("DANISH-DEV-2026", 140, 1335);
+  ctx.fillText("danishsary8", 140, 1335);
 
   ctx.textAlign = "right";
   ctx.fillStyle = "#71717a";
   ctx.font = "500 22px Geist, ui-monospace, monospace";
-  ctx.fillText("SECURITY STATUS", width - 140, 1285);
+  ctx.fillText("TELEGRAM", width - 140, 1285);
 
   ctx.fillStyle = "#c9973a";
   ctx.font = "bold 32px Geist, ui-monospace, monospace";
-  ctx.fillText("VERIFIED PASS", width - 140, 1335);
+  ctx.fillText("@danishsary", width - 140, 1335);
 
   // 9. Precision Barcode
   drawBarcode(ctx, 140, 1385, width - 280, 85, "#c9973a");
@@ -400,14 +400,14 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "6px";
   }
-  ctx.fillText("8 8 0 2 0 2 6 0 8 7 6 8 0 9 9 9", width / 2, 1520);
+  ctx.fillText("danishsary4@gmail.com", width / 2, 1520);
 
   ctx.fillStyle = "#52525b";
   ctx.font = "500 20px Geist, ui-monospace, monospace";
   if ("letterSpacing" in ctx) {
     (ctx as unknown as { letterSpacing: string }).letterSpacing = "2px";
   }
-  ctx.fillText("KINGDOM OF CAMBODIA • ICT VERIFIED CREDENTIAL", width / 2, 1575);
+  ctx.fillText("PHNOM PENH, CAMBODIA • PORTFOLIO 2026", width / 2, 1575);
 
   return canvas.toDataURL("image/png");
 }

@@ -17,6 +17,59 @@ This document serves as the immutable, permanent Master Architecture & Design Co
 
 ---
 
+## 0. Agent Operating Protocol (read first, every task)
+
+Context is the scarcest resource. These rules keep each task focused, cheap, and consistent.
+
+### A. Scope discipline
+1. **One task, one target.** Before starting, state the target file(s) and the single goal in one line. Anything outside that list is out of scope unless the user adds it.
+2. **Read narrowly.** Read the target file and only its direct imports when needed. No repo-wide `grep`/`glob` sweeps, no re-reading files already in context, no reading `src/routeTree.gen.ts` (generated).
+3. **This file is the design authority.** Do not re-derive tokens, fonts, or rules from CSS/components when §2–§4 already state them. Content comes only from §5; never invent copy or claims.
+4. **Edit in one pass.** Plan the full change, then write it. No incremental screenshot/tweak loops.
+5. **Reserved files stay untouched** unless the active phase names them (see §0.D).
+
+### B. Skill routing (use the smallest skill that fits)
+
+| Need | Skill | Notes |
+| --- | --- | --- |
+| Find/install a capability not yet available | `/find-skills` | Install with `npx -y skills add <repo> -y` (non-interactive). Skills live in `.agents/skills/`, symlinked into `.claude/skills/`. |
+| Multi-file or multi-phase work | `/planning` | Split into small vertical slices; each slice ends green (tsc + tests). |
+| Any UI build, redesign, polish, audit | `/impeccable` | Windows launcher: `.claude/skills/impeccable/scripts/impeccable.cmd`. Run `context --target <file>` once per session, `detect --json <file>` once after edits. Product truth is in `PRODUCT.md`; design authority is this file. |
+| Aesthetic direction for a new layout | `/frontend-design`, `/taste-skill` | Only for new surfaces; refinements follow §2 directly. |
+| Codebase questions / onboarding | `/understand`, `/understand-explain`, `/understand-diff` | Prefer over manual broad scans. `understand-dashboard` and `understand-figma` were flagged High Risk at install — do not run without user approval. |
+
+### C. Verification (mandatory before reporting done)
+- Run `npx tsc --noEmit` then `npm test -- --run`. All tests must pass (currently 17).
+- Tests assert visible copy (e.g. Hero must render the text `Junior Web Developer`, `Phnom Penh`, a `Get in touch` link to `#contact`, and a GitHub link). Do not rename these strings.
+- Report honestly: what changed, what was verified, what was not (e.g. no browser check).
+- Shell is Windows PowerShell 5.1: chain with `;` + `if ($?) { … }`, not `&&`.
+
+### D. Phase log (update when a phase completes)
+Product truth lives in `PRODUCT.md` (from the CV `public/sary-danish-cv.pdf`).
+
+**Autonomous mode (owner request):** do not stop for approval between phases or steps. Plan → build → verify (tsc + tests + screenshots) → fix → move on, then report once at the end with what changed and what was not verified. Ask only when a fact is missing from the CV/PRODUCT.md or a choice is irreversible. Still never commit, push, or deploy unless the owner asks in that message (Lovable sync, see top of file).
+
+1. **Hero** (`Hero.tsx`, `PortraitCard.tsx`): approved. "Open to Web Developer roles" pill + split-flap Phnom Penh clock, per-letter CSS blur-rise name, punchy two-line pitch, Get in touch + GitHub capsules (CV only in navbar), one-row React Bits LogoLoop of the 8 main core-stack chips (reuse `src/components/ui/LogoLoop.tsx`; do not reinstall via shadcn — it would overwrite local additions), full-width iOS inset-grouped proof strip (4 live projects, ETEC, award, Norton), mobile avatar, `PortraitCard` (4:5 photo, View profile, copy email).
+2. **Profile modal** (`ProfileModal.tsx`, `badge-texture.ts`): approved. Lanyard stage on tokens, CV-true copy, 2×2 hairline facts panel, capsule actions (copy email, Telegram, GitHub); badge texture shows real handles instead of invented ID text.
+3. **Navigation** (`SiteNav.tsx`): untouched by owner request.
+4. **About** (`About.tsx`): approved. Pull quote from bio, CV-true paragraphs, "How I work" hairline list.
+5. **Skills** (`Skills.tsx`): approved. One tactile panel, 4 hairline columns, brand-coloured icons (`themedSkillColor`), CV soft skills line.
+6. **Projects** (`Projects.tsx`): approved, then upgraded to a stacked deck. Desktop: each `<li>` pins (`lg:sticky`, top offset +18px per card); card N recedes (`.deck-card`, scale 0.94 + `--deck-dim`) driven by card N+1's view timeline via `timeline-scope` on the `<ol>`. Scroll-driven CSS only; plain stacking where unsupported; off under reduced motion; normal list on phones. Section titles rise from a mask (`.mask-rise`). Skills groups dim siblings on hover (desktop). Screenshots use Lovable `/__l5e/` asset URLs (404 on localhost).
+7. **Experience** (`Experience.tsx`): approved. Real timeline; `.timeline-rail` draws on reveal.
+8. **Education** (`Education.tsx`): approved. Tactile degree panel + courses & awards ledger.
+9. **Contact + footer** (`Contact.tsx`): approved. React Bits `VariableProximity` closing headline (Geist loaded as variable 100..900), iOS grouped contact list, form.
+10. **Global pass**: approved. Copy de-duplicated across sections (each phrase appears once; paraphrases elsewhere). `/design-system` synced: light tokens, Apple layer section (capsules, glass pill, tactile chips, squircle radii, proof row, browser frame, timeline nodes). Touch targets ≥44px on phones. Open: chatbot button overlaps content on phones.
+
+**Shared:** `SECTION` + `SectionHeader` in `Reveal.tsx` (title left, lede right). Content fixed to CV: no TypeScript/SQLite claims, Loomora has no "streaks", award organiser not stated.
+
+**Decisions:** role title "Junior Web Developer" (full-stack shown in pitch); availability "Open to Web Developer roles"; audience = local hiring teams in Phnom Penh; no TypeScript claim (not on CV).
+
+### E. Output style
+- No narration of options you will not pursue. Final report: short bullets of changes + verification result.
+- Commit only when the user asks; never rewrite pushed history (see Lovable note above).
+
+---
+
 ## 1. Mandatory Skill & MCP Server Orchestration Matrix
 
 Every component, layout, and interaction must pass through this orchestration matrix. Combine and filter installed tools according to their exact domains of mastery:
@@ -88,8 +141,9 @@ The portfolio uses a calm, high-craft, Linear-inspired look: monochrome greys, o
 8. **ZERO Symmetrical 3-Card Feature Rows:** No row of three equal icon-topped cards. Prefer lists, hairline grids, and asymmetric columns.
 9. **Radius scale:** 12px panels/cards, 8px buttons/inputs, 6px badges/chips. `rounded-full` only for the status dot and the avatar.
 10. **Fonts:** Geist and Geist Mono (plus Kantumruy Pro for Khmer). Never `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
-11. **Monochrome + one accent:** Gold (`--gold` / `--gold-ink`) is reserved for the status dot, award markers, and gold text. No terracotta, rust, indigo, violet, or cyan.
-12. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders.
+11. **Monochrome + one accent:** Gold (`--gold` / `--gold-ink`) is reserved for the status dot, award markers, and gold text. No terracotta, rust, indigo, violet, or cyan. **Exception (owner request):** tech-stack brand marks may use their real brand colour (`getSkillColor`) on the icon and as a faint hover tint; never on text or glows.
+12. **Apple layer (owner request, Hero first):** use the classes in `styles.css`, never ad-hoc values. `.squircle` + `--r` for continuous corners (progressive `corner-shape`); `.glass-pill` frosted capsule only where it floats over the hero glow; `.tactile` (specular top edge + inner shade) for chips, frames, secondary controls; `.btn-apple-primary` / `.btn-apple-secondary` for buttons (specular edge + `--shadow-contact`, `scale(0.97)` press). Contact shadows ≤2px are allowed on these controls; large shadows stay floating-only. Data rows/ledgers stay flat. Legacy `.ios-glass-*` belongs to nav/chatbot — don't reuse it for new work.
+13. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders.
 
 ---
 
@@ -111,8 +165,8 @@ The portfolio uses a calm, high-craft, Linear-inspired look: monochrome greys, o
 
 | Token           | Light                | Dark                    | Use                       |
 | --------------- | -------------------- | ----------------------- | ------------------------- |
-| `--bg`          | `#FBFBFA`            | `#0A0A0B`               | Page canvas               |
-| `--surface-1`   | `#F4F4F3`            | `#111113`               | Panels, hovered rows      |
+| `--bg`          | `#FAF9F6`            | `#0A0A0B`               | Page canvas               |
+| `--surface-1`   | `#F3F2EE`            | `#111113`               | Panels, hovered rows      |
 | `--surface-2`   | `#FFFFFF`            | `#18181B`               | Dialogs, popovers         |
 | `--line`        | `rgba(10,10,12,.08)` | `rgba(255,255,255,.08)` | Hairline borders          |
 | `--line-strong` | `rgba(10,10,12,.14)` | `rgba(255,255,255,.14)` | Inputs, secondary buttons |
