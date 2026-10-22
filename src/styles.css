@@ -1129,51 +1129,56 @@
   border-color: var(--destructive);
 }
 
-/* Hero profile card glare: a laminate highlight that follows the pointer (--gx/--gy are
-   set per event on the card). Fine pointers only; off under reduced motion. */
-.card-glare {
+/* Hero profile card shine: a flash of light that sweeps diagonally across the card.
+   It plays once after the card settles in (first load), then on each pointer hover:
+   the band rests off-card, hover transitions it across, leaving snaps it back unseen. */
+.card-shine {
   position: absolute;
   inset: 0;
   z-index: 20;
   border-radius: inherit;
+  overflow: hidden;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 300ms var(--ease-out);
-  background:
-    radial-gradient(
-      circle at var(--gx, 50%) var(--gy, 0%),
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0.35) 24%,
-      transparent 55%
-    ),
-    linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.5) 50%, transparent 64%);
-  background-size:
-    100% 100%,
-    220% 220%;
-  background-position:
-    0 0,
-    var(--gx, 50%) var(--gy, 0%);
-  mix-blend-mode: overlay;
 }
-/* A faint plain-light pass so the glare also reads on the dark info panel. */
-.card-glare::after {
+.card-shine::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    circle at var(--gx, 50%) var(--gy, 0%),
-    rgba(255, 255, 255, 0.12),
-    transparent 48%
+  top: -25%;
+  bottom: -25%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    rgba(255, 255, 255, 0.65) 47%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.65) 53%,
+    rgba(255, 255, 255, 0.08) 70%,
+    transparent 100%
   );
+  transform: translateX(-170%) skewX(-18deg);
+  animation: card-shine 1100ms var(--ease-in-out) 1300ms;
+}
+.dark .card-shine::before {
+  opacity: 0.6;
+}
+@keyframes card-shine {
+  from {
+    transform: translateX(-170%) skewX(-18deg);
+  }
+  to {
+    transform: translateX(380%) skewX(-18deg);
+  }
 }
 @media (hover: hover) and (pointer: fine) {
-  .profile-card:hover .card-glare {
-    opacity: 1;
+  .profile-card:hover .card-shine::before {
+    transform: translateX(380%) skewX(-18deg);
+    transition: transform 900ms var(--ease-in-out);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .card-glare {
+  .card-shine {
     display: none;
   }
 }
