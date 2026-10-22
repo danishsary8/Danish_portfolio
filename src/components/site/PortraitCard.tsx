@@ -1,27 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, BookOpen, Check, Clock, Copy, Languages, Mail, Maximize2 } from "lucide-react";
+import { ArrowUpRight, Award, BookOpen, Check, Copy, Mail, Maximize2 } from "lucide-react";
 import { GlareHover } from "@/components/ui/GlareHover";
 import { PROFILE, PROJECTS } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 
 const FOCUS =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
+const FOCUS_ON_PHOTO =
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
-const ON_PHOTO =
-  "border border-white/20 bg-black/30 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] backdrop-blur-md";
+// Frosted controls that sit on the photo.
+const GLASS =
+  "border border-white/20 bg-white/12 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] backdrop-blur-md";
 
 const BOOKLY = PROJECTS.find((p) => p.id === "bookly");
 
-// Personal details, all from the CV. "Phnom Penh" and the role title live in the hero copy already.
-const DETAILS = [
-  { icon: Languages, label: "Khmer, English" },
-  { icon: Clock, label: "ICT · UTC+7" },
-] as const;
-
 /**
- * Hero profile card: a square portrait with the name set on it and a React Bits
- * GlareHover streak that crosses the photo on hover, then a compact panel with
- * languages, time zone and the email + copy row.
+ * Hero profile card, after an iOS-style creator card: a full-bleed portrait that melts
+ * into a blurred, darkened copy of itself, with the name, a one-line bio, three CV facts
+ * and the contact actions set on top. React Bits GlareHover owns the hover streak.
+ * The card is always dark (it is a photo), so it reads the same in both themes.
  */
 export function PortraitCard({ onView }: { onView: () => void }) {
   const [copied, setCopied] = useState(false);
@@ -41,69 +39,139 @@ export function PortraitCard({ onView }: { onView: () => void }) {
   };
 
   return (
-    <figure className="tactile frame-float squircle [--r:28px] relative w-full max-w-[360px] p-2">
-      {/* Photo: square crop of the 4:5 source, anchored low so the face sits in the upper
-          half and the suit carries the name. GlareHover owns the hover streak. */}
-      <div className="relative aspect-square">
-        <GlareHover
-          width="100%"
-          height="100%"
-          borderRadius="20px"
-          mode="hover"
-          variant="streak"
-          glareColor="#ffffff"
-          glareOpacity={0.5}
-          glareSize={30}
-          softness={0.6}
-          glareAngle={-45}
-          blendMode="screen"
-          rimGlint={true}
-          transitionDuration={650}
-          className="bg-surface-1"
-        >
+    <div className="relative h-[560px] w-full max-w-[344px]">
+      <GlareHover
+        width="100%"
+        height="100%"
+        borderRadius="32px"
+        mode="hover"
+        variant="streak"
+        glareColor="#ffffff"
+        glareOpacity={0.5}
+        glareSize={30}
+        softness={0.6}
+        glareAngle={-45}
+        blendMode="screen"
+        rimGlint={true}
+        transitionDuration={650}
+        background="#0b0b0d"
+        className="frame-float"
+      >
+        <figure className="absolute inset-0 m-0 whitespace-normal text-left">
+          {/* Backdrop: the same photo, blurred and dimmed, so the sharp portrait melts into it. */}
+          <img
+            src={ASSETS.profile.photo}
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            className="absolute inset-0 h-full w-full scale-125 object-cover object-bottom blur-2xl brightness-[0.45] saturate-[0.9]"
+          />
+          {/* Portrait: starts above the card edge to trim the source's tall headroom, and fades
+              out at the bottom so the text block sits on the soft backdrop. */}
           <img
             src={ASSETS.profile.photo}
             alt={`Portrait of ${PROFILE.name}`}
             width={680}
             height={850}
             decoding="async"
-            className="block h-full w-full object-cover object-[50%_85%]"
+            className="absolute inset-x-0 -top-[60px] h-[500px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_58%,transparent_100%)]"
           />
-        </GlareHover>
+          {/* Legibility: a deep floor shade behind the text. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%] bg-gradient-to-t from-black/85 via-black/45 to-transparent"
+          />
 
-        {/* Legibility scrim + name, set on the photo like a profile card. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 rounded-b-[20px] bg-gradient-to-t from-black/70 via-black/25 to-transparent"
-        />
-        <figcaption className="pointer-events-none absolute inset-x-0 bottom-0 px-5 pb-4 text-white">
-          <span className="block text-[23px] font-semibold leading-tight tracking-[-0.025em]">
-            {PROFILE.name}
-          </span>
-          <span className="mt-0.5 block text-[13.5px] text-white/80">
-            Developer &amp; Software Development student
-          </span>
-        </figcaption>
+          <figcaption className="absolute inset-x-0 bottom-0 px-5 pb-5 text-white">
+            <p className="flex items-center gap-2 text-[26px] font-semibold leading-tight tracking-[-0.03em]">
+              {PROFILE.name}
+              <span
+                role="img"
+                aria-label="Available for work"
+                title="Available for work"
+                className="h-2.5 w-2.5 shrink-0 rounded-full bg-gold shadow-[0_0_0_3px_rgba(0,0,0,0.35)]"
+              />
+            </p>
+            <p className="mt-2 text-pretty text-[14.5px] leading-[1.5] text-white/75">
+              I focus on responsive interfaces and clean, maintainable code.
+            </p>
 
-        <button
-          type="button"
-          onClick={onView}
-          aria-label="View profile"
-          title="View profile"
-          className={`${ON_PHOTO} btn-apple absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full hover:bg-black/45 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white`}
-        >
-          <Maximize2 aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
-        </button>
-      </div>
+            {/* Three CV facts, divided by hairlines */}
+            <dl className="mt-5 grid grid-cols-3 text-center">
+              {/* Label first in the markup (dt before dd), value first on screen. */}
+              <div className="flex flex-col-reverse items-center px-1">
+                <dt className="mt-1.5 text-[12px] text-white/65">Live projects</dt>
+                <dd className="text-[19px] font-semibold leading-none tracking-[-0.02em] tabular-nums">4</dd>
+              </div>
+              <div className="flex flex-col-reverse items-center border-x border-white/15 px-1">
+                <dt className="mt-1.5 text-[12px] text-white/65">Award (team)</dt>
+                <dd className="inline-flex items-center gap-1 text-[19px] font-semibold leading-none tracking-[-0.02em] tabular-nums">
+                  <Award aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-gold" />
+                  2026
+                </dd>
+              </div>
+              <div className="flex flex-col-reverse items-center px-1">
+                <dt className="mt-1.5 text-[12px] text-white/65">Languages</dt>
+                <dd className="text-[19px] font-semibold leading-none tracking-[-0.02em]">
+                  EN · <span lang="km" className="font-khmer">ខ្មែរ</span>
+                </dd>
+              </div>
+            </dl>
 
-      {/* Signature: an iOS Live Activity docked on the frame's corner, pointing at shipped work. */}
+            {/* Actions: one bright capsule, one glass square */}
+            <div className="mt-5 flex items-center gap-2.5">
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  const el = document.getElementById("contact");
+                  if (!el) return;
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className={`btn-apple inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-white text-[15px] font-medium tracking-[-0.01em] text-[#111113] shadow-[0_8px_20px_-8px_rgba(0,0,0,0.6)] hover:bg-white/90 ${FOCUS_ON_PHOTO}`}
+              >
+                <Mail aria-hidden="true" strokeWidth={1.75} className="h-[18px] w-[18px]" />
+                Get in touch
+              </a>
+              <button
+                type="button"
+                onClick={copyEmail}
+                aria-label={copied ? "Email copied" : `Copy email address ${PROFILE.email}`}
+                title={copied ? "Copied" : "Copy email"}
+                className={`${GLASS} btn-apple grid h-12 w-14 shrink-0 place-items-center rounded-full hover:bg-white/20 ${FOCUS_ON_PHOTO}`}
+              >
+                {copied ? (
+                  <Check aria-hidden="true" strokeWidth={2} className="h-[18px] w-[18px]" />
+                ) : (
+                  <Copy aria-hidden="true" strokeWidth={1.75} className="h-[18px] w-[18px]" />
+                )}
+                <span aria-live="polite" className="sr-only">
+                  {copied ? "Email copied" : ""}
+                </span>
+              </button>
+            </div>
+          </figcaption>
+
+          <button
+            type="button"
+            onClick={onView}
+            aria-label="View profile"
+            title="View profile"
+            className={`${GLASS} btn-apple absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full hover:bg-white/20 ${FOCUS_ON_PHOTO}`}
+          >
+            <Maximize2 aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
+          </button>
+        </figure>
+      </GlareHover>
+
+      {/* Signature: an iOS Live Activity docked on the card's corner, pointing at shipped work. */}
       {BOOKLY ? (
         <a
           href={BOOKLY.liveUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Bookly, live on Vercel (opens in a new tab)"
-          className={`live-activity tactile absolute left-4 top-4 z-10 inline-flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-3.5 lg:-left-7 lg:top-7 ${FOCUS}`}
+          className={`live-activity tactile absolute left-4 top-4 z-10 inline-flex items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-3.5 lg:-left-8 lg:top-8 ${FOCUS}`}
         >
           <span
             aria-hidden="true"
@@ -118,45 +186,6 @@ export function PortraitCard({ onView }: { onView: () => void }) {
           <ArrowUpRight aria-hidden="true" strokeWidth={1.75} className="ml-1 h-4 w-4 text-fg-subtle" />
         </a>
       ) : null}
-
-      <div className="px-2 pb-1 pt-3">
-        {/* Personal details */}
-        <ul className="flex flex-wrap gap-2" aria-label="Personal details">
-          {DETAILS.map(({ icon: Icon, label }) => (
-            <li
-              key={label}
-              className="icon-tile-light squircle [--r:8px] inline-flex h-8 items-center gap-1.5 px-2.5 text-[12.5px] text-fg-muted"
-            >
-              <Icon aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5 text-fg-subtle" />
-              {label}
-            </li>
-          ))}
-        </ul>
-
-        {/* Email: the action recruiters reach for most */}
-        <div className="mt-3 flex items-center gap-2.5 border-t border-line pl-1 pt-3">
-          <Mail aria-hidden="true" strokeWidth={1.5} className="h-4 w-4 shrink-0 text-fg-subtle" />
-          <a
-            href={`mailto:${PROFILE.email}`}
-            className="min-w-0 truncate text-[13.5px] text-fg-muted transition-colors duration-150 hover:text-fg"
-          >
-            {PROFILE.email}
-          </a>
-          <button
-            type="button"
-            onClick={copyEmail}
-            aria-label={copied ? "Email copied" : "Copy email address"}
-            className={`btn-apple btn-apple-secondary ml-auto inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-[12.5px] font-medium ${FOCUS}`}
-          >
-            {copied ? (
-              <Check aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5" />
-            ) : (
-              <Copy aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
-            )}
-            <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
-          </button>
-        </div>
-      </div>
-    </figure>
+    </div>
   );
 }

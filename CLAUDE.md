@@ -44,7 +44,7 @@ React 19 · TanStack Start + TanStack Router (file routes in `src/routes/`) · T
 - **Tests assert copy.** Hero must render `Junior Web Developer` and `Phnom Penh` exactly once each, an `Email me` mailto link, a `View projects` link to `#projects`, and a GitHub link. Change a test only when the owner asks for that copy change.
 - **SSR safety:** content must read without JavaScript. First-load motion is CSS (`.enter`, `.enter-settle`); scroll reveals hide content only under `html.js`. No inline `opacity: 0`.
 - **Motion:** transform / opacity / blur only, `--ease-out` curves, reduced-motion variants ship with every animation, pointer effects only for `(hover: hover) and (pointer: fine)`.
-- **Content facts:** no TypeScript claim; Flask is not mentioned in the Hero or its core stack (owner request); never repeat "Phnom Penh" or the role title inside the portrait card.
+- **Content facts:** no TypeScript claim; Flask is not mentioned in the Hero or its core stack (owner request); never repeat "Phnom Penh", the role title or "Email me" inside the portrait card (tests expect each once). No invented badges such as a "verified" tick.
 
 ## Before reporting work done
 
@@ -54,10 +54,12 @@ React 19 · TanStack Start + TanStack Router (file routes in `src/routes/`) · T
 4. Update the matching entry in `AGENTS.md` §0.D.
 5. Report what changed, what was verified, and what was not.
 
-## Git and Lovable
+## Git and deploys
 
-- This repo syncs with Lovable. Never force-push, rebase, amend or squash pushed commits.
-- Commit and push only when the owner asks. Changes show on the live site only once they reach the branch Lovable deploys (`main`).
+- **Work directly on `main`** (owner request): no feature branches, no pull requests. When a change is done and verified (see the checklist above), commit and push to `main`.
+- The live site is Vercel project `danish-portfolio` (https://danish-portfolio-nine.vercel.app). It redeploys automatically on every push to `main`, in about 30 seconds.
+- The repo was created from Lovable. Never force-push, rebase, amend or squash pushed commits. The Lovable project is currently not syncing from this repo, so its preview is stale.
+- Keep `index.html` out of the repo root: Nitro would use it as the renderer template and Vercel would serve an empty page.
 
 ## Environment notes
 
