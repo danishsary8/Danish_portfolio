@@ -141,15 +141,15 @@ export function Hero() {
     <section
       id="home"
       aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden min-h-[100dvh] flex flex-col justify-center"
+      className="relative isolate overflow-hidden"
     >
       <div
         aria-hidden="true"
         className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:pt-[104px] lg:pb-20">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_392px] lg:gap-20 xl:gap-24">
+      <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:pt-0 lg:pb-20">
+        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20 lg:pb-8 lg:pt-[88px] xl:gap-24">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) */}
@@ -202,7 +202,7 @@ export function Hero() {
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="mt-6 text-[54px] sm:text-[76px] lg:text-[92px] font-semibold tracking-[-0.045em] leading-[0.95] select-none cursor-pointer group"
+              className="mt-6 text-[54px] sm:text-[76px] lg:text-[clamp(60px,9.6vh,92px)] font-semibold tracking-[-0.045em] leading-[0.95] select-none cursor-pointer group"
               onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
               title="Click to alternate highlight"
             >
@@ -309,7 +309,7 @@ export function Hero() {
             </ul>
 
             {/* Core stack: React Bits LogoLoop of brand chips */}
-            <div className="mt-10 max-w-[580px]">
+            <div className="mt-8 max-w-[580px]">
               <p className="enter text-[13px] text-fg-subtle" style={step(11)}>
                 Core stack
               </p>
@@ -342,7 +342,7 @@ export function Hero() {
         {/* Proof strip: iOS inset-grouped panel, hairline cells, one scan for recruiters */}
         <nav
           aria-label="Highlights"
-          className="enter mt-14 grid gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] shadow-[var(--elev-1)] squircle [--r:18px] sm:grid-cols-2 lg:mt-16 lg:grid-cols-4"
+          className="enter mt-14 grid gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] shadow-[var(--elev-1)] squircle [--r:18px] sm:grid-cols-2 lg:mt-0 lg:grid-cols-4"
           style={step(12)}
         >
           {FACTS.map((fact) => {
