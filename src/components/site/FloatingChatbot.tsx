@@ -96,7 +96,7 @@ export function FloatingChatbot() {
           {/* Quick Actions List */}
           <div className="mt-3 flex flex-col gap-1.5">
             <a
-              href="https://t.me/danishsary"
+              href="https://t.me/sarydanish"
               target="_blank"
               rel="noopener noreferrer"
               className="press flex items-center justify-between rounded-xl border border-line/70 bg-surface-1/50 px-3 py-2 text-[13px] font-medium text-fg hover:border-gold/50 hover:bg-surface-1 transition-all group"
@@ -105,7 +105,7 @@ export function FloatingChatbot() {
                 <Send className="h-3.5 w-3.5 text-gold group-hover:translate-x-0.5 transition-transform" />
                 Chat on Telegram
               </span>
-              <span className="font-mono text-[11px] text-fg-subtle">@danishsary</span>
+              <span className="font-mono text-[11px] text-fg-subtle">@sarydanish</span>
             </a>
 
             <a

@@ -4,7 +4,6 @@ import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
-import { GradientText } from "@/components/ui/GradientText";
 import { SlingButton } from "@/components/ui/SlingButton";
 import { GradualBlur } from "@/components/ui/GradualBlur";
 
@@ -107,25 +106,17 @@ export function SiteNav() {
           aria-label="Primary"
           className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
         >
-        {/* Left: Brand Name outside the pill */}
+        {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow. */}
         <div className="flex items-center justify-start">
           <a
             href="#home"
+            aria-label={`${PROFILE.name}, back to top`}
+            title={PROFILE.name}
             className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
           >
-            <GradientText
-              colors={
-                dark
-                  ? ["#EDEDEF", "#C9973A", "#FFFFFF", "#C9973A"]
-                  : ["#111113", "#B0822D", "#27272A", "#85601F"]
-              }
-              animationSpeed={8}
-              variant="flow"
-              glow={0.35}
-              className="font-display nav-brand-text text-[15px] sm:text-[16px] font-extrabold tracking-[0.05em] uppercase whitespace-nowrap"
-            >
-              {PROFILE.name}
-            </GradientText>
+            <span aria-hidden="true" className="nav-wordmark font-poster text-[17px] font-extrabold uppercase leading-none tracking-[0.14em] sm:text-[18px]">
+              {PROFILE.shortName}
+            </span>
           </a>
         </div>
 

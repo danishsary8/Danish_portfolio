@@ -22,7 +22,7 @@ A junior developer who already ships complete, deployed full-stack apps: four li
 
 - Visitors usually arrive from a CV link, Telegram, or GitHub. They check the live demos and the GitHub profile.
 - The CV PDF is served at `public/sary-danish-cv.pdf`.
-- Contact channels: email danishsary4@gmail.com, Telegram @danishsary, phone 087 680 999.
+- Contact channels: email danishsary4@gmail.com, Telegram @sarydanish, phone 087 680 999.
 
 ## Capabilities and Constraints
 

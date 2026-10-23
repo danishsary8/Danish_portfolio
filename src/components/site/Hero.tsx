@@ -1,7 +1,7 @@
-import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Award, Briefcase, ChevronRight, Globe, GraduationCap, Mail } from "lucide-react";
+import { useEffect, useState, type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { Activity, ArrowRight, ArrowUpRight, Award, Briefcase, GraduationCap, Mail } from "lucide-react";
 import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
-import { PROFILE } from "@/content/portfolio";
+import { PROFILE, PROJECTS } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
@@ -22,48 +22,6 @@ const CORE_STACK = [
   "Docker",
 ] as const;
 const CORE_LOGOS = CORE_STACK.map((tech) => ({ title: tech }));
-
-// Recruiter proof strip: every fact is from the CV.
-const FACTS = [
-  {
-    href: "#projects",
-    icon: Globe,
-    title: "4 live projects",
-    sub: "Bookly · Loomora · Diabetes Expert System · Driving Rules",
-    meta: "Vercel · Render · Netlify",
-    tone: "ink",
-  },
-  {
-    href: "#experience",
-    icon: Briefcase,
-    title: "Web Developer Intern",
-    sub: "ETEC & KruITSolution",
-    meta: "Jul 2026 – Now",
-    tone: "ink",
-  },
-  {
-    href: "#education",
-    icon: Award,
-    title: "Award Winner (Team)",
-    sub: "AI Expert System & Innovation 2026",
-    meta: "Sep 2026",
-    tone: "gold",
-  },
-  {
-    href: "#education",
-    icon: GraduationCap,
-    title: "B.S. Software Development",
-    sub: "Norton University · 4th year",
-    meta: "2024 – Now",
-    tone: "ink",
-  },
-] as const;
-
-// Above-the-fold proof: the two facts a recruiter checks first.
-const PROOF_CHIPS = [
-  { href: "#projects", icon: Globe, label: "4 live projects", tone: "ink" },
-  { href: "#education", icon: Award, label: "Award 2026", tone: "gold" },
-] as const;
 
 const NAME = [
   { key: "sary", text: "Sary" },
@@ -93,7 +51,7 @@ function StackChip({ tech, dark }: { tech: string; dark: boolean }) {
   const logo = LOGOS[tech];
   return (
     <span
-      className="tactile squircle [--r:7px] inline-flex h-8 items-center gap-2 whitespace-nowrap pl-2.5 pr-3 text-[12.5px] font-medium leading-none text-fg transition-[color,border-color,background-color] duration-150 hover:border-[color-mix(in_oklab,var(--brand)_45%,transparent)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,var(--surface-2))] hover:text-fg"
+      className="skeuo-key squircle [--r:7px] inline-flex h-8 items-center gap-2 whitespace-nowrap pl-2.5 pr-3 text-[12.5px] font-medium leading-none text-fg transition-[color,border-color,background-color] duration-150 hover:border-[color-mix(in_oklab,var(--brand)_45%,transparent)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,var(--surface-2))] hover:text-fg"
       style={{ "--brand": brandColor(tech, dark) } as CSSProperties}
     >
       {logo ? (
@@ -123,6 +81,69 @@ function scrollToHash(e: MouseEvent<HTMLAnchorElement>, hash: string) {
   el.scrollIntoView({ behavior: "smooth" });
 }
 
+// Widget shelf data: glanceable facts from the CV that the sections below do not repeat.
+const WEEK = ["M", "T", "W", "T", "F", "S", "S"] as const;
+const YEARS = ["2024", "2025", "2026"] as const;
+
+type WidgetIcon = ComponentType<{ className?: string; strokeWidth?: number }>;
+
+// Widget header: a small glossy icon tile and a sentence-case label.
+function WidgetHead({
+  icon: Icon,
+  label,
+  gold = false,
+  children,
+}: {
+  icon: WidgetIcon;
+  label: string;
+  gold?: boolean;
+  children?: ReactNode;
+}) {
+  return (
+    <span className="flex items-center gap-2">
+      <span
+        aria-hidden="true"
+        className={`squircle [--r:7px] grid h-6 w-6 shrink-0 place-items-center ${gold ? "icon-tile-gold" : "icon-tile"}`}
+      >
+        <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+      </span>
+      <span className="text-[12.5px] font-medium text-fg-muted">{label}</span>
+      {children}
+    </span>
+  );
+}
+
+// A whole widget that links to a section; the arrow appears on hover and keyboard focus.
+function WidgetLink({
+  href,
+  icon,
+  label,
+  gold,
+  children,
+}: {
+  href: string;
+  icon: WidgetIcon;
+  label: string;
+  gold?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      onClick={(e) => scrollToHash(e, href)}
+      className={`tactile lift squircle [--r:22px] group relative flex h-full min-h-[176px] flex-col p-5 ${FOCUS}`}
+    >
+      <WidgetHead icon={icon} label={label} gold={gold ?? false} />
+      <ArrowUpRight
+        aria-hidden="true"
+        strokeWidth={2}
+        className="absolute right-4 top-4 h-4 w-4 text-fg-subtle opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+      />
+      {children}
+    </a>
+  );
+}
+
 export function Hero() {
   const time = useLocalTime(PROFILE.timezone);
   const { dark } = useTheme();
@@ -149,7 +170,7 @@ export function Hero() {
       />
 
       <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:pt-0 lg:pb-20">
-        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20 lg:pb-8 lg:pt-[88px] xl:gap-24">
+        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20 lg:pb-8 lg:pt-[88px] xl:gap-24 min-[90rem]:grid-cols-[minmax(0,1fr)_460px] min-[90rem]:gap-12">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) */}
@@ -190,7 +211,7 @@ export function Hero() {
                     stagger={0.03}
                     glare={0}
                     depth={0}
-                    className="hero-clock"
+                    className="hero-clock skeuo-well rounded-[6px] px-1.5 py-0.5"
                     style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
                   />
                   <span className="font-mono text-[12px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
@@ -229,43 +250,57 @@ export function Hero() {
               ))}
             </h1>
 
-            {/* Role, then the pitch: quieter than the name so the name dominates. */}
+            {/* Role is the second tier under the name; the pitch below carries "full-stack". */}
             <p
-              className="enter mt-4 text-[14px] font-medium tracking-[-0.005em] text-fg-muted"
+              className="enter mt-5 text-[22px] sm:text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg"
               style={step(5.5)}
             >
               Junior Web Developer
             </p>
-            <div className="enter mt-5 max-w-[46ch]" style={step(6)}>
-              <p className="text-[21px] sm:text-[24px] font-medium leading-[1.25] tracking-[-0.025em] text-fg text-balance">
-                I build and ship full-stack web apps.
+            <p className="enter mt-1.5 text-[15px] sm:text-[16px] tracking-[-0.01em] text-fg-muted" style={step(5.75)}>
+              4th-year Software Development student
+            </p>
+            {/* Pitch: the hook, then how he builds. Short on purpose so the core stack stays
+                above the fold. */}
+            <div className="enter mt-4 max-w-[46ch]" style={step(6)}>
+              <p className="text-[18px] sm:text-[20px] font-medium leading-[1.35] tracking-[-0.02em] text-fg text-balance">
+                Hands-on experience building{" "}
+                <span className="whitespace-nowrap">full-stack</span> web apps that actually work
+                in the <span className="whitespace-nowrap">real world</span>.
               </p>
-              <p className="mt-2.5 text-[15px] leading-[1.6] text-fg-muted text-pretty">
-                Four live today, with React, Laravel, and PostgreSQL, including a 2026
-                award-winning team project.
+              <p className="mt-2 text-[15px] sm:text-[16px] leading-[1.6] text-fg-muted text-pretty">
+                I build responsive React front ends on secure Laravel REST APIs and PostgreSQL, with
+                real sign-in through JWT, OTP and Google OAuth, and code that stays clean and
+                maintainable.
               </p>
             </div>
 
-            {/* CTAs: one ink primary, one quiet secondary, GitHub as an icon capsule. */}
-            <div className="enter mt-8 flex flex-wrap items-center gap-2 sm:gap-3" style={step(7)}>
+            {/* CTAs as physical keys: one ink primary, one light secondary, GitHub as a
+                round key. */}
+            <div className="enter mt-7 flex flex-wrap items-center gap-2 sm:gap-3" style={step(7)}>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className={`btn-apple btn-apple-ink inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-6 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key-ink group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-6 select-none ${FOCUS}`}
               >
-                <Mail aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
+                {/* Hover: the envelope tips up, as if being sent. */}
+                <Mail
+                  aria-hidden="true"
+                  strokeWidth={1.75}
+                  className="h-4 w-4 transition-transform duration-300 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:-rotate-[10deg] motion-reduce:transition-none"
+                />
                 Email me
               </a>
 
               <a
                 href="#projects"
                 onClick={(e) => scrollToHash(e, "#projects")}
-                className={`btn-apple btn-apple-secondary group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
               >
                 View projects
                 <ArrowRight
                   aria-hidden="true"
                   strokeWidth={1.75}
-                  className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                  className="h-4 w-4 transition-transform duration-300 ease-[var(--ease-out)] group-hover:translate-x-1 motion-reduce:transition-none"
                 />
               </a>
 
@@ -276,44 +311,22 @@ export function Hero() {
                   rel="noopener noreferrer"
                   aria-label="GitHub profile"
                   title="GitHub profile"
-                  className={`btn-apple btn-apple-secondary inline-flex h-12 w-12 items-center justify-center rounded-full sm:h-11 sm:w-11 ${FOCUS}`}
+                  className={`btn-apple skeuo-key group inline-flex h-12 w-12 items-center justify-center rounded-full sm:h-11 sm:w-11 ${FOCUS}`}
                 >
-                  <AnimatedGithubIcon className="h-[18px] w-[18px] shrink-0" dark={dark} aria-hidden="true" />
+                  {/* Hover: a small playful tilt (the mark itself is a looping Lottie). */}
+                  <span className="inline-flex transition-transform duration-300 ease-[var(--ease-out)] group-hover:-rotate-[8deg] group-hover:scale-110 motion-reduce:transition-none">
+                    <AnimatedGithubIcon className="h-[18px] w-[18px] shrink-0" dark={dark} aria-hidden="true" />
+                  </span>
                 </a>
               ) : null}
             </div>
 
-            {/* Proof chips: the two facts a recruiter checks first, before scrolling. */}
-            <ul className="mt-5 flex flex-wrap gap-2" aria-label="Quick proof">
-              {PROOF_CHIPS.map((chip, i) => {
-                const Icon = chip.icon;
-                return (
-                  <li key={chip.label} className="enter" style={step(9 + i)}>
-                    <a
-                      href={chip.href}
-                      onClick={(e) => scrollToHash(e, chip.href)}
-                      className={`tactile lift squircle [--r:8px] inline-flex h-11 items-center gap-2 px-3 text-[13px] font-medium leading-none transition-colors duration-150 hover:bg-surface-1 sm:h-9 ${
-                        chip.tone === "gold" ? "text-gold-ink dark:text-gold" : "text-fg"
-                      } ${FOCUS}`}
-                    >
-                      <Icon
-                        aria-hidden="true"
-                        strokeWidth={1.75}
-                        className={`h-4 w-4 ${chip.tone === "gold" ? "" : "text-fg-subtle"}`}
-                      />
-                      {chip.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-
             {/* Core stack: React Bits LogoLoop of brand chips */}
-            <div className="mt-8 max-w-[580px]">
-              <p className="enter text-[13px] text-fg-subtle" style={step(11)}>
+            <div className="mt-6 max-w-[580px]">
+              <p className="enter text-[13px] text-fg-subtle" style={step(9)}>
                 Core stack
               </p>
-              <div className="enter mt-2.5" style={step(11.5)}>
+              <div className="enter mt-2.5" style={step(9.5)}>
                 <LogoLoop
                   logos={CORE_LOGOS}
                   renderItem={(item: { title: string }) => <StackChip tech={item.title} dark={dark} />}
@@ -333,52 +346,118 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: portrait frame settles in once the name has landed. */}
-          <div className="enter-settle flex justify-center" style={step(6)}>
+          {/* Right column: portrait frame settles in once the name has landed. On desktop its top
+              lines up with the status pill; on wide screens (1440px+) it moves toward the text. */}
+          <div className="enter-settle flex justify-center lg:self-start min-[90rem]:justify-start" style={step(6)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
           </div>
         </div>
 
-        {/* Proof strip: iOS inset-grouped panel, hairline cells, one scan for recruiters */}
-        <nav
-          aria-label="Highlights"
-          className="enter mt-14 grid gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] shadow-[var(--elev-1)] squircle [--r:18px] sm:grid-cols-2 lg:mt-0 lg:grid-cols-4"
-          style={step(12)}
-        >
-          {FACTS.map((fact) => {
-            const Icon = fact.icon;
-            return (
-              <a
-                key={fact.title}
-                href={fact.href}
-                onClick={(e) => scrollToHash(e, fact.href)}
-                className={`group grid grid-cols-[32px_minmax(0,1fr)_16px] items-start gap-3 bg-surface-2 bg-[image:var(--sheen)] p-4 transition-colors duration-150 hover:bg-surface-1 ${FOCUS} focus-visible:-outline-offset-2`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`squircle [--r:8px] grid h-8 w-8 place-items-center ${
-                    fact.tone === "gold" ? "icon-tile-gold" : "icon-tile"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" strokeWidth={1.75} />
+        {/* Widget shelf: four iOS-style widgets, each with its own micro-visual and only
+            glanceable facts (hosts, weekends, years) that the sections below do not repeat. */}
+        <nav aria-label="At a glance" className="enter mt-14 lg:mt-0" style={step(12)}>
+          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.55fr_1fr_1fr_1fr]">
+            {/* Live now: a status-page list; each row opens the live app. */}
+            <li className="tactile squircle [--r:22px] flex flex-col p-5 sm:col-span-2 lg:col-span-1">
+              <WidgetHead icon={Activity} label="Live now">
+                <span className="relative ml-1 flex h-1.5 w-1.5" aria-hidden="true">
+                  <span className="absolute inset-0 rounded-full bg-fg/50 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
+                  <span className="relative h-1.5 w-1.5 rounded-full bg-fg" />
                 </span>
-                <span className="min-w-0">
-                  <span className="block text-[14px] font-medium leading-tight tracking-[-0.01em] text-fg">
-                    {fact.title}
+                <span className="ml-auto font-mono text-[11.5px] tabular-nums text-fg-subtle">
+                  {PROJECTS.length} apps
+                </span>
+              </WidgetHead>
+              <ul className="mt-3 -mx-2 grid">
+                {PROJECTS.map((p) => (
+                  <li key={p.id}>
+                    <a
+                      href={p.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${p.title}, hosted on ${p.hosting} (opens in a new tab)`}
+                      className={`group flex min-h-9 items-center gap-2.5 rounded-[10px] px-2 transition-colors duration-150 hover:bg-surface-1 ${FOCUS}`}
+                    >
+                      <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-fg/70" />
+                      <span className="min-w-0 truncate text-[13.5px] font-medium tracking-[-0.01em] text-fg">
+                        {p.title}
+                      </span>
+                      <span className="ml-auto shrink-0 font-mono text-[11px] text-fg-subtle">{p.hosting}</span>
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        strokeWidth={2}
+                        className="-ml-1 h-3.5 w-3.5 shrink-0 text-fg-subtle opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+
+            {/* Intern: the week strip lights the weekend, when the internship runs. */}
+            <li>
+              <WidgetLink href="#experience" icon={Briefcase} label="Intern">
+                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg">
+                  ETEC & KruITSolution
+                </span>
+                <span aria-label="Weekends" role="img" className="mt-auto grid grid-cols-7 gap-1 pt-4">
+                  {WEEK.map((d, i) => (
+                    <span
+                      key={i}
+                      className={`squircle [--r:6px] grid h-7 place-items-center font-mono text-[10.5px] ${
+                        i >= 5 ? "icon-tile" : "skeuo-well text-fg-subtle"
+                      }`}
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </span>
+                <span className="mt-2 block font-mono text-[11px] tabular-nums text-fg-subtle">
+                  Weekends · since Jul 2026
+                </span>
+              </WidgetLink>
+            </li>
+
+            {/* Award: the one gold widget. */}
+            <li>
+              <WidgetLink href="#education" icon={Award} label="Award" gold>
+                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg text-pretty">
+                  AI Expert System & Innovation 2026
+                </span>
+                <span className="mt-auto block pt-4 font-mono text-[11px] tabular-nums text-gold-ink dark:text-gold">
+                  Team winner · Sep 2026
+                </span>
+              </WidgetLink>
+            </li>
+
+            {/* Studying: a year track from 2024 to now. */}
+            <li>
+              <WidgetLink href="#education" icon={GraduationCap} label="Studying">
+                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg">
+                  Software Development
+                </span>
+                <span className="mt-0.5 block text-[12.5px] text-fg-muted">Norton University</span>
+                <span aria-label="Studying since 2024, now in the 4th year" role="img" className="mt-auto block pt-4">
+                  <span className="grid grid-cols-3 gap-1">
+                    {YEARS.map((y, i) => (
+                      <span key={y} className="relative h-1.5 rounded-full bg-fg/75">
+                        {i === YEARS.length - 1 ? (
+                          <span className="absolute -right-0.5 -top-[3px] h-3 w-3 rounded-full bg-fg ring-2 ring-surface-2 motion-safe:animate-pulse" />
+                        ) : null}
+                      </span>
+                    ))}
                   </span>
-                  <span className="mt-1 block text-[12.5px] leading-snug text-fg-muted">{fact.sub}</span>
-                  <span className="mt-2 block font-mono text-[11.5px] tabular-nums text-fg-subtle">
-                    {fact.meta}
+                  <span className="mt-2 grid grid-cols-3 font-mono text-[10.5px] tabular-nums text-fg-subtle">
+                    {YEARS.map((y, i) => (
+                      <span key={y} className={i === YEARS.length - 1 ? "text-right text-fg" : ""}>
+                        {i === YEARS.length - 1 ? "4th year" : y}
+                      </span>
+                    ))}
                   </span>
                 </span>
-                <ChevronRight
-                  aria-hidden="true"
-                  strokeWidth={1.75}
-                  className="mt-2 h-4 w-4 text-fg-subtle transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
-                />
-              </a>
-            );
-          })}
+              </WidgetLink>
+            </li>
+          </ul>
         </nav>
       </div>
 

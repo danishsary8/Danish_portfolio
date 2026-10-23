@@ -54,6 +54,8 @@
   --font-body: Geist, "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
   --font-khmer: "Kantumruy Pro", Geist, sans-serif;
+  /* Card name only (owner request): Plus Jakarta Sans. */
+  --font-poster: "Plus Jakarta Sans", Geist, ui-sans-serif, sans-serif;
 }
 
 @layer base {
@@ -388,6 +390,260 @@
     }
   }
 
+  /* Hero skeuomorphic layer (owner request): physical keys lit from above, with a visible
+     bottom edge for thickness, that sink in when pressed. Hero only; the rest of the site
+     stays on the flat Apple layer. */
+  .skeuo-key {
+    background-color: #fbfaf7;
+    background-image: linear-gradient(180deg, #ffffff 0%, #f6f4ef 55%, #ece9e2 100%);
+    border: 1px solid rgba(10, 10, 12, 0.13);
+    color: var(--fg);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -2px 1px rgba(46, 32, 10, 0.08),
+      0 1px 1px rgba(10, 10, 12, 0.08),
+      0 3px 6px -2px rgba(46, 32, 10, 0.14),
+      0 10px 18px -10px rgba(46, 32, 10, 0.24);
+  }
+  .dark .skeuo-key {
+    background-color: #1c1c20;
+    background-image: linear-gradient(180deg, #2a2a30 0%, #1d1d21 55%, #151518 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -2px 1px rgba(0, 0, 0, 0.45),
+      0 1px 1px rgba(0, 0, 0, 0.5),
+      0 4px 8px -2px rgba(0, 0, 0, 0.5),
+      0 12px 22px -10px rgba(0, 0, 0, 0.7);
+  }
+  /* Primary key: glossy ink cap, the top half catches the light. */
+  .skeuo-key-ink {
+    background-color: #17171a;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 48%, transparent 52%),
+      linear-gradient(180deg, #3b3b42 0%, #17171a 100%);
+    border: 1px solid #0a0a0b;
+    color: #fafaf9;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      inset 0 -2px 1px rgba(0, 0, 0, 0.5),
+      0 1px 1px rgba(10, 10, 12, 0.25),
+      0 4px 8px -2px rgba(10, 10, 12, 0.3),
+      0 12px 22px -10px rgba(10, 10, 12, 0.5);
+  }
+  .dark .skeuo-key-ink {
+    background-color: #e9e9ec;
+    background-image:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.15) 48%, transparent 52%),
+      linear-gradient(180deg, #ffffff 0%, #cfcfd4 100%);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #111113;
+    box-shadow:
+      inset 0 1px 0 #ffffff,
+      inset 0 -2px 1px rgba(10, 10, 12, 0.18),
+      0 1px 1px rgba(0, 0, 0, 0.5),
+      0 4px 8px -2px rgba(0, 0, 0, 0.5),
+      0 12px 22px -10px rgba(0, 0, 0, 0.75);
+  }
+  /* Press: the key sinks 1px and its edge disappears into the surface. */
+  .btn-apple.skeuo-key:active,
+  .btn-apple.skeuo-key-ink:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow:
+      inset 0 2px 4px rgba(10, 10, 12, 0.18),
+      0 1px 1px rgba(10, 10, 12, 0.1);
+  }
+  /* Hover (owner request): the key rises toward the finger. It lifts 1.5px, its shadow
+     deepens, and a band of light sweeps once across the cap. The sweep is a pseudo-element
+     clipped by the key (overflow clips children, never the key's own shadow). */
+  .btn-apple.skeuo-key,
+  .btn-apple.skeuo-key-ink {
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      transform 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out),
+      filter 150ms ease,
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+  .btn-apple.skeuo-key::before,
+  .btn-apple.skeuo-key-ink::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      105deg,
+      transparent 32%,
+      rgba(255, 255, 255, var(--sweep, 0.5)) 50%,
+      transparent 68%
+    );
+    opacity: 0;
+    transform: translateX(-110%);
+    /* Leaving: fade out, then reset the band off to the left while it is invisible. */
+    transition:
+      opacity 200ms ease,
+      transform 0s linear 200ms;
+  }
+  .btn-apple.skeuo-key-ink {
+    --sweep: 0.2;
+  }
+  .dark .btn-apple.skeuo-key {
+    --sweep: 0.12;
+  }
+  .dark .btn-apple.skeuo-key-ink {
+    --sweep: 0.75;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-apple.skeuo-key:hover,
+    .btn-apple.skeuo-key-ink:hover {
+      transform: translateY(-1.5px);
+    }
+    .btn-apple.skeuo-key:hover::before,
+    .btn-apple.skeuo-key-ink:hover::before {
+      opacity: 1;
+      transform: translateX(110%);
+      transition:
+        opacity 160ms ease,
+        transform 750ms var(--ease-out);
+    }
+    .btn-apple.skeuo-key:hover {
+      filter: brightness(1.02);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        inset 0 -2px 1px rgba(46, 32, 10, 0.08),
+        0 2px 2px rgba(10, 10, 12, 0.07),
+        0 8px 14px -4px rgba(46, 32, 10, 0.18),
+        0 18px 28px -12px rgba(46, 32, 10, 0.3);
+    }
+    .btn-apple.skeuo-key-ink:hover {
+      filter: brightness(1.1);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.24),
+        inset 0 -2px 1px rgba(0, 0, 0, 0.5),
+        0 2px 2px rgba(10, 10, 12, 0.22),
+        0 8px 14px -4px rgba(10, 10, 12, 0.32),
+        0 18px 30px -12px rgba(10, 10, 12, 0.55);
+    }
+    .dark .btn-apple.skeuo-key:hover {
+      filter: brightness(1.15);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -2px 1px rgba(0, 0, 0, 0.45),
+        0 2px 2px rgba(0, 0, 0, 0.5),
+        0 8px 14px -4px rgba(0, 0, 0, 0.55),
+        0 18px 30px -12px rgba(0, 0, 0, 0.8);
+    }
+    .dark .btn-apple.skeuo-key-ink:hover {
+      filter: brightness(0.96);
+      box-shadow:
+        inset 0 1px 0 #ffffff,
+        inset 0 -2px 1px rgba(10, 10, 12, 0.18),
+        0 2px 2px rgba(0, 0, 0, 0.5),
+        0 8px 14px -4px rgba(0, 0, 0, 0.55),
+        0 18px 30px -12px rgba(0, 0, 0, 0.85);
+    }
+    /* Pressing a raised key still sinks it (this beats the hover lift). */
+    .btn-apple.skeuo-key:hover:active,
+    .btn-apple.skeuo-key-ink:hover:active {
+      transform: translateY(1px) scale(0.985);
+      box-shadow:
+        inset 0 2px 4px rgba(10, 10, 12, 0.18),
+        0 1px 1px rgba(10, 10, 12, 0.1);
+      transition-duration: 90ms;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-apple.skeuo-key:hover,
+    .btn-apple.skeuo-key-ink:hover,
+    .btn-apple.skeuo-key:hover:active,
+    .btn-apple.skeuo-key-ink:hover:active {
+      transform: none;
+    }
+    .btn-apple.skeuo-key::before,
+    .btn-apple.skeuo-key-ink::before {
+      display: none;
+    }
+  }
+  /* Recessed display window (the clock): engraved, with a highlight on its lower lip. */
+  .skeuo-well {
+    background: rgba(10, 10, 12, 0.05);
+    box-shadow:
+      inset 0 1px 2px rgba(10, 10, 12, 0.16),
+      inset 0 0 0 1px rgba(10, 10, 12, 0.06),
+      0 1px 0 rgba(255, 255, 255, 0.85);
+  }
+  .dark .skeuo-well {
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow:
+      inset 0 1px 3px rgba(0, 0, 0, 0.7),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.4),
+      0 1px 0 rgba(255, 255, 255, 0.07);
+  }
+  /* Card back (owner request): the back of a real card. Matte navy card stock (the front's
+     navy), lit softly from the top-left like a card on a desk. */
+  .card-stock {
+    background-color: #0f1a30;
+    background-image:
+      radial-gradient(120% 70% at 18% 0%, rgba(255, 255, 255, 0.07), transparent 60%),
+      linear-gradient(180deg, #13203a 0%, #0c1527 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  /* Magnetic stripe: glossy black-brown oxide with a faint band of reflected light. */
+  .card-magstripe {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.35) 100%),
+      linear-gradient(100deg, #17130f 0%, #2a241e 38%, #1a1611 52%, #0d0b08 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.6),
+      0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+  /* Signature panel: printed security paper with a fine guilloche weave. */
+  .card-sigpanel {
+    background-color: #f1ede3;
+    background-image:
+      repeating-linear-gradient(32deg, rgba(64, 92, 150, 0.13) 0 1px, transparent 1px 5px),
+      repeating-linear-gradient(-32deg, rgba(176, 130, 45, 0.11) 0 1px, transparent 1px 5px),
+      linear-gradient(180deg, #f6f3ea 0%, #e9e4d6 100%);
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.18),
+      0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+  /* Holographic foil sticker: iridescent, with a raised edge. */
+  .card-holo {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, transparent 38%, rgba(255, 255, 255, 0.25) 62%, transparent 100%),
+      conic-gradient(from 200deg at 60% 40%, #c9d6ff, #f5c6e8, #fff1b8, #b8f0e0, #c4d2ff, #f0c8f0, #c9d6ff);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.18),
+      0 1px 2px rgba(0, 0, 0, 0.45);
+  }
+  /* Printed text on the card stock: ink pressed slightly into the surface. */
+  .skeuo-engrave {
+    color: rgba(226, 232, 244, 0.7);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55);
+  }
+
+  /* App-icon gloss for small discs on the portrait card. */
+  .skeuo-gloss {
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 55%);
+    box-shadow:
+      inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+      0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-apple.skeuo-key:active,
+    .btn-apple.skeuo-key-ink:active {
+      transform: none;
+    }
+  }
+
   /* Architectural Display Typography & Ambient Text Shadows for Hero Headline */
   .hero-name-heading {
     font-family: "Syne", var(--font-sans);
@@ -449,21 +705,18 @@
       0 0 56px rgba(201, 151, 58, 0.2);
   }
 
-  .nav-brand-text {
-    filter: drop-shadow(0 1px 2px rgba(10, 10, 12, 0.22)) drop-shadow(0 3px 6px rgba(10, 10, 12, 0.12));
-    transition: filter 200ms var(--ease-out);
+  /* Nav wordmark (owner request): solid ink letters lifted by a crisp letterpress shadow,
+     a 1px highlight on one side and a tight, short shadow on the other. No blur halo. */
+  .nav-wordmark {
+    color: var(--fg);
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9),
+      0 2px 3px rgba(46, 32, 10, 0.18);
   }
-
-  .nav-brand-text:hover {
-    filter: drop-shadow(0 2px 4px rgba(10, 10, 12, 0.28)) drop-shadow(0 4px 10px rgba(10, 10, 12, 0.16));
-  }
-
-  .dark .nav-brand-text {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.22));
-  }
-
-  .dark .nav-brand-text:hover {
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+  .dark .nav-wordmark {
+    text-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.7),
+      0 2px 4px rgba(0, 0, 0, 0.55);
   }
 
   /* Neobrutalist Action Buttons (Hero CTAs) */
@@ -1040,6 +1293,22 @@
 /* Hero clock: proportional-width tiles for Geist tabular numerals; narrow colon. */
 .hero-clock .split-flap-text__tile {
   width: 0.62em;
+  /* Whole-pixel height so the two flap halves meet on a pixel edge: no seam through digits. */
+  height: 16px;
+}
+/* Flat clock: plain token-coloured digits, no hinge line, tile edge or drop shadow. */
+.hero-clock .split-flap-text__tile::before,
+.hero-clock .split-flap-text__tile::after {
+  display: none;
+}
+.hero-clock .split-flap-text__half,
+.hero-clock .split-flap-text__flap {
+  background: none;
+  box-shadow: none;
+}
+.hero-clock .split-flap-text__char {
+  text-shadow: none;
+  font-variant-numeric: tabular-nums;
 }
 .hero-clock .split-flap-text__tile:nth-of-type(4) {
   width: 0.32em;

@@ -11,8 +11,8 @@ export const PROFILE = {
   phone: '087 680 999',
   github: "https://github.com/danishsary8",
   githubHandle: "danishsary8",
-  telegram: "https://t.me/danishsary",
-  telegramHandle: "@danishsary",
+  telegram: "https://t.me/sarydanish",
+  telegramHandle: "@sarydanish",
   pitch:
     "I build secure REST APIs and clean, responsive React interfaces — and ship them to real users.",
   bio: [

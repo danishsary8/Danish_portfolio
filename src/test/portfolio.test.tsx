@@ -21,7 +21,17 @@ describe("Hero", () => {
   it("renders the name, role, and calls to action", () => {
     render(<Hero />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Sary Danish");
-    expect(screen.getByText(/Junior Web Developer/)).toBeInTheDocument();
+    // Role line under the name, plus the portrait card's role capsule (owner request).
+    expect(screen.getAllByText(/Junior Web Developer/)).toHaveLength(2);
+    expect(screen.getByRole("link", { name: /Telegram: @sarydanish/ })).toHaveAttribute(
+      "href",
+      "https://t.me/sarydanish",
+    );
+    expect(screen.getByRole("link", { name: /Phone: 087 680 999/ })).toHaveAttribute(
+      "href",
+      "tel:087680999",
+    );
+    expect(screen.getByRole("button", { name: "View profile" })).toBeInTheDocument();
     expect(screen.getByText(/Phnom Penh/)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Email me/ })).toHaveAttribute(
       "href",
@@ -115,9 +125,9 @@ describe("Contact", () => {
       "href",
       "https://github.com/danishsary8",
     );
-    expect(screen.getByRole("link", { name: /@danishsary/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /@sarydanish/ })).toHaveAttribute(
       "href",
-      "https://t.me/danishsary",
+      "https://t.me/sarydanish",
     );
     expect(screen.getByRole("link", { name: /Download CV/ })).toHaveAttribute(
       "href",

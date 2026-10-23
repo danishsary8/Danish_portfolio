@@ -57,7 +57,7 @@ export const BADGE_FRONT_FALLBACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="htt
   <line x1="50" y1="625" x2="550" y2="625" stroke="%2327272a" stroke-width="1.5"/>
   <text x="70" y="660" fill="%2371717a" font-family="monospace" font-size="12">GITHUB</text>
   <text x="70" y="690" fill="%23ededef" font-family="monospace" font-size="19" font-weight="bold">danishsary8</text>
-  <text x="530" y="690" text-anchor="end" fill="%23c9973a" font-family="monospace" font-size="14" font-weight="bold">@danishsary</text>
+  <text x="530" y="690" text-anchor="end" fill="%23c9973a" font-family="monospace" font-size="14" font-weight="bold">@sarydanish</text>
 
   <g transform="translate(70, 720)" fill="%23c9973a" opacity="0.85">
     <rect x="0" y="0" width="5" height="45"/>
@@ -116,7 +116,7 @@ export const BADGE_BACK_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3
   
   <text x="70" y="495" fill="%2371717a" font-family="monospace" font-size="12">CONTACT</text>
   <text x="70" y="525" fill="%23ededef" font-family="monospace" font-size="15">github.com/danishsary8</text>
-  <text x="70" y="555" fill="%23ededef" font-family="monospace" font-size="15">t.me/danishsary</text>
+  <text x="70" y="555" fill="%23ededef" font-family="monospace" font-size="15">t.me/sarydanish</text>
   
   <g transform="translate(70, 620)" fill="%23c9973a" opacity="0.85">
     <rect x="0" y="0" width="5" height="50"/>
@@ -388,7 +388,7 @@ export function generateExecutiveBadgeWithPhoto(photoImage: HTMLImageElement): s
 
   ctx.fillStyle = "#c9973a";
   ctx.font = "bold 32px Geist, ui-monospace, monospace";
-  ctx.fillText("@danishsary", width - 140, 1335);
+  ctx.fillText("@sarydanish", width - 140, 1335);
 
   // 9. Precision Barcode
   drawBarcode(ctx, 140, 1385, width - 280, 85, "#c9973a");
