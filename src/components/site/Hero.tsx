@@ -1,7 +1,7 @@
-import { useEffect, useState, type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from "react";
-import { Activity, ArrowRight, ArrowUpRight, Award, Briefcase, GraduationCap, Mail } from "lucide-react";
+import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
+import { ArrowRight, Mail } from "lucide-react";
 import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
-import { PROFILE, PROJECTS } from "@/content/portfolio";
+import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
@@ -79,69 +79,6 @@ function scrollToHash(e: MouseEvent<HTMLAnchorElement>, hash: string) {
   if (!el) return;
   e.preventDefault();
   el.scrollIntoView({ behavior: "smooth" });
-}
-
-// Widget shelf data: glanceable facts from the CV that the sections below do not repeat.
-const WEEK = ["M", "T", "W", "T", "F", "S", "S"] as const;
-const YEARS = ["2024", "2025", "2026"] as const;
-
-type WidgetIcon = ComponentType<{ className?: string; strokeWidth?: number }>;
-
-// Widget header: a small glossy icon tile and a sentence-case label.
-function WidgetHead({
-  icon: Icon,
-  label,
-  gold = false,
-  children,
-}: {
-  icon: WidgetIcon;
-  label: string;
-  gold?: boolean;
-  children?: ReactNode;
-}) {
-  return (
-    <span className="flex items-center gap-2">
-      <span
-        aria-hidden="true"
-        className={`squircle [--r:7px] grid h-6 w-6 shrink-0 place-items-center ${gold ? "icon-tile-gold" : "icon-tile"}`}
-      >
-        <Icon className="h-3.5 w-3.5" strokeWidth={2} />
-      </span>
-      <span className="text-[12.5px] font-medium text-fg-muted">{label}</span>
-      {children}
-    </span>
-  );
-}
-
-// A whole widget that links to a section; the arrow appears on hover and keyboard focus.
-function WidgetLink({
-  href,
-  icon,
-  label,
-  gold,
-  children,
-}: {
-  href: string;
-  icon: WidgetIcon;
-  label: string;
-  gold?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      onClick={(e) => scrollToHash(e, href)}
-      className={`tactile lift squircle [--r:22px] group relative flex h-full min-h-[176px] flex-col p-5 ${FOCUS}`}
-    >
-      <WidgetHead icon={icon} label={label} gold={gold ?? false} />
-      <ArrowUpRight
-        aria-hidden="true"
-        strokeWidth={2}
-        className="absolute right-4 top-4 h-4 w-4 text-fg-subtle opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-      />
-      {children}
-    </a>
-  );
 }
 
 export function Hero() {
@@ -353,112 +290,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Widget shelf: four iOS-style widgets, each with its own micro-visual and only
-            glanceable facts (hosts, weekends, years) that the sections below do not repeat. */}
-        <nav aria-label="At a glance" className="enter mt-14 lg:mt-0" style={step(12)}>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.55fr_1fr_1fr_1fr]">
-            {/* Live now: a status-page list; each row opens the live app. */}
-            <li className="tactile squircle [--r:22px] flex flex-col p-5 sm:col-span-2 lg:col-span-1">
-              <WidgetHead icon={Activity} label="Live now">
-                <span className="relative ml-1 flex h-1.5 w-1.5" aria-hidden="true">
-                  <span className="absolute inset-0 rounded-full bg-fg/50 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
-                  <span className="relative h-1.5 w-1.5 rounded-full bg-fg" />
-                </span>
-                <span className="ml-auto font-mono text-[11.5px] tabular-nums text-fg-subtle">
-                  {PROJECTS.length} apps
-                </span>
-              </WidgetHead>
-              <ul className="mt-3 -mx-2 grid">
-                {PROJECTS.map((p) => (
-                  <li key={p.id}>
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${p.title}, hosted on ${p.hosting} (opens in a new tab)`}
-                      className={`group flex min-h-9 items-center gap-2.5 rounded-[10px] px-2 transition-colors duration-150 hover:bg-surface-1 ${FOCUS}`}
-                    >
-                      <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-fg/70" />
-                      <span className="min-w-0 truncate text-[13.5px] font-medium tracking-[-0.01em] text-fg">
-                        {p.title}
-                      </span>
-                      <span className="ml-auto shrink-0 font-mono text-[11px] text-fg-subtle">{p.hosting}</span>
-                      <ArrowUpRight
-                        aria-hidden="true"
-                        strokeWidth={2}
-                        className="-ml-1 h-3.5 w-3.5 shrink-0 text-fg-subtle opacity-0 transition-[opacity,transform] duration-200 ease-[var(--ease-out)] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-                      />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-
-            {/* Intern: the week strip lights the weekend, when the internship runs. */}
-            <li>
-              <WidgetLink href="#experience" icon={Briefcase} label="Intern">
-                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg">
-                  ETEC & KruITSolution
-                </span>
-                <span aria-label="Weekends" role="img" className="mt-auto grid grid-cols-7 gap-1 pt-4">
-                  {WEEK.map((d, i) => (
-                    <span
-                      key={i}
-                      className={`squircle [--r:6px] grid h-7 place-items-center font-mono text-[10.5px] ${
-                        i >= 5 ? "icon-tile" : "skeuo-well text-fg-subtle"
-                      }`}
-                    >
-                      {d}
-                    </span>
-                  ))}
-                </span>
-                <span className="mt-2 block font-mono text-[11px] tabular-nums text-fg-subtle">
-                  Weekends · since Jul 2026
-                </span>
-              </WidgetLink>
-            </li>
-
-            {/* Award: the one gold widget. */}
-            <li>
-              <WidgetLink href="#education" icon={Award} label="Award" gold>
-                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg text-pretty">
-                  AI Expert System & Innovation 2026
-                </span>
-                <span className="mt-auto block pt-4 font-mono text-[11px] tabular-nums text-gold-ink dark:text-gold">
-                  Team winner · Sep 2026
-                </span>
-              </WidgetLink>
-            </li>
-
-            {/* Studying: a year track from 2024 to now. */}
-            <li>
-              <WidgetLink href="#education" icon={GraduationCap} label="Studying">
-                <span className="mt-3 block text-[14.5px] font-medium leading-snug tracking-[-0.01em] text-fg">
-                  Software Development
-                </span>
-                <span className="mt-0.5 block text-[12.5px] text-fg-muted">Norton University</span>
-                <span aria-label="Studying since 2024, now in the 4th year" role="img" className="mt-auto block pt-4">
-                  <span className="grid grid-cols-3 gap-1">
-                    {YEARS.map((y, i) => (
-                      <span key={y} className="relative h-1.5 rounded-full bg-fg/75">
-                        {i === YEARS.length - 1 ? (
-                          <span className="absolute -right-0.5 -top-[3px] h-3 w-3 rounded-full bg-fg ring-2 ring-surface-2 motion-safe:animate-pulse" />
-                        ) : null}
-                      </span>
-                    ))}
-                  </span>
-                  <span className="mt-2 grid grid-cols-3 font-mono text-[10.5px] tabular-nums text-fg-subtle">
-                    {YEARS.map((y, i) => (
-                      <span key={y} className={i === YEARS.length - 1 ? "text-right text-fg" : ""}>
-                        {i === YEARS.length - 1 ? "4th year" : y}
-                      </span>
-                    ))}
-                  </span>
-                </span>
-              </WidgetLink>
-            </li>
-          </ul>
-        </nav>
       </div>
 
       <ProfileModal open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen} />

@@ -1,5 +1,5 @@
 import { useRef, useState, type MouseEvent } from "react";
-import { Award, Phone } from "lucide-react";
+import { ArrowUpRight, Award, Phone } from "lucide-react";
 import { SiTelegram } from "react-icons/si";
 import { GlareHover } from "@/components/ui/GlareHover";
 import { PROFILE } from "@/content/portfolio";
@@ -305,9 +305,14 @@ function CardFront({ onView }: { onView: () => void }) {
             <button
               type="button"
               onClick={onView}
-              className={`btn-apple h-10 shrink-0 rounded-full border border-white/70 bg-[linear-gradient(180deg,#ffffff_0%,#f1f1f4_55%,#dcdce2_100%)] px-5 text-[14px] font-semibold tracking-[-0.01em] text-[#111113] shadow-[inset_0_1px_0_#fff,inset_0_-2px_1px_rgba(10,10,12,0.16),0_1px_1px_rgba(0,0,0,0.45),0_6px_14px_-6px_rgba(0,0,0,0.65)] hover:brightness-[0.97] active:translate-y-px ${FOCUS_ON_PHOTO}`}
+              className={`card-glass-btn group inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full pl-4 pr-3.5 text-[14px] font-semibold tracking-[-0.01em] text-white ${FOCUS_ON_PHOTO}`}
             >
               View profile
+              <ArrowUpRight
+                aria-hidden="true"
+                strokeWidth={2.25}
+                className="h-4 w-4 opacity-80 transition-[transform,opacity] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-px group-hover:opacity-100 motion-reduce:transition-none"
+              />
             </button>
           </div>
         </figcaption>

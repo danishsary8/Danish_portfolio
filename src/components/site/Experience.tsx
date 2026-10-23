@@ -1,5 +1,6 @@
 import { ArrowRight, Award } from "lucide-react";
 import { EXPERIENCE } from "@/content/portfolio";
+import { OrgLogo } from "./OrgLogo";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 
 // What the internship work touched, named from its own bullet points.
@@ -53,6 +54,13 @@ export function Experience() {
                 />
 
                 <div className="tactile squircle [--r:22px] p-7 lg:p-8">
+                {!isAward ? (
+                  // The two organisations behind the internship, as an overlapping logo pair.
+                  <div className="mb-5 flex items-center">
+                    <OrgLogo org="etec" size={44} />
+                    <OrgLogo org="kru" size={44} className="-ml-2.5 ring-[3px] ring-surface-2" />
+                  </div>
+                ) : null}
                 <h3 className="flex flex-wrap items-center gap-2.5 text-[22px] font-semibold leading-[1.2] tracking-[-0.025em] text-fg">
                   {isAward ? (
                     <Award

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Award, BookOpen, FileBadge, GraduationCap, Maximize2 } from "lucide-react";
+import { Award, FileBadge, Maximize2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { CERTIFICATES, EDUCATION, type Certificate } from "@/content/portfolio";
+import { OrgLogo } from "./OrgLogo";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 
 function CertificateRow({
@@ -20,17 +21,22 @@ function CertificateRow({
   onOpen: (c: Certificate) => void;
 }) {
   const isAward = cert.title.includes("Award");
+  const isEtec = cert.issuer === "ETEC";
   const Icon = isAward ? Award : FileBadge;
   const body = (
     <>
-      <span
-        aria-hidden="true"
-        className={`squircle [--r:9px] grid h-9 w-9 shrink-0 place-items-center ${
-          isAward ? "icon-tile-gold" : "icon-tile-light text-fg-muted"
-        }`}
-      >
-        <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
-      </span>
+      {isEtec ? (
+        <OrgLogo org="etec" size={36} />
+      ) : (
+        <span
+          aria-hidden="true"
+          className={`squircle [--r:9px] grid h-9 w-9 shrink-0 place-items-center ${
+            isAward ? "icon-tile-gold" : "icon-tile-light text-fg-muted"
+          }`}
+        >
+          <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+        </span>
+      )}
       <span className="min-w-0 flex-1">
         <span className="block text-[15px] font-medium leading-[1.4] text-fg">{cert.title}</span>
         <span
@@ -85,12 +91,7 @@ export function Education() {
       <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         {/* Degree */}
         <Reveal className="tactile squircle [--r:20px] flex flex-col p-7 sm:p-8">
-          <span
-            aria-hidden="true"
-            className="icon-tile squircle [--r:11px] grid h-12 w-12 place-items-center"
-          >
-            <GraduationCap className="h-5 w-5" strokeWidth={1.5} />
-          </span>
+          <OrgLogo org="norton" size={56} />
           <h3 className="mt-6 text-balance text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">
             {degree.title}
           </h3>
@@ -107,8 +108,8 @@ export function Education() {
           </dl>
 
           {studies.map((s) => (
-            <div key={s.title} className="mt-8 flex items-start gap-3.5 border-t border-line pt-6">
-              <BookOpen aria-hidden="true" strokeWidth={1.5} className="mt-0.5 h-4 w-4 text-fg-subtle" />
+            <div key={s.title} className="mt-8 flex items-center gap-3.5 border-t border-line pt-6">
+              <OrgLogo org="ace" size={32} />
               <div className="min-w-0 flex-1">
                 <p className="text-[15px] font-medium text-fg">{s.title}</p>
                 <p className="mt-0.5 text-[13.5px] text-fg-muted">
