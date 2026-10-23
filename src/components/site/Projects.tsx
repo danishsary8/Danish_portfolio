@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { GlareHover } from "@/components/ui/GlareHover";
 import { PROJECTS, type Project } from "@/content/portfolio";
-import { useTheme } from "@/lib/use-theme";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 import { SkillIcon, hasSkillIcon, themedSkillColor } from "./SkillIcon";
 
@@ -123,7 +122,7 @@ function ProjectVisual({ project }: { project: Project }) {
   );
 }
 
-function StackChips({ stack, dark }: { stack: string[]; dark: boolean }) {
+function StackChips({ stack }: { stack: string[] }) {
   return (
     <ul className="flex flex-wrap gap-1.5" aria-label="Built with">
       {stack.map((s) => (
@@ -132,7 +131,7 @@ function StackChips({ stack, dark }: { stack: string[]; dark: boolean }) {
           className="icon-tile-light squircle [--r:8px] inline-flex h-7 items-center gap-1.5 px-2.5 text-[12.5px] text-fg-muted"
         >
           {hasSkillIcon(s) ? (
-            <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s, dark) }} />
+            <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s) }} />
           ) : null}
           {s}
         </li>
@@ -205,13 +204,11 @@ function DeckCard({
   index,
   last,
   onOpen,
-  dark,
 }: {
   project: Project;
   index: number;
   last: boolean;
   onOpen: (p: Project) => void;
-  dark: boolean;
 }) {
   const flip = index % 2 === 1;
   // The <li> pins (its parent is the whole list, so every card stays stuck until the deck ends).
@@ -237,7 +234,7 @@ function DeckCard({
               {project.summary}
             </p>
             <div className="mt-6">
-              <StackChips stack={project.stack} dark={dark} />
+              <StackChips stack={project.stack} />
             </div>
             <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
               <Actions project={project} onOpen={onOpen} />
@@ -256,7 +253,7 @@ function DeckCard({
 const dialogLink =
   "btn-apple inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13.5px] font-medium";
 
-function ProjectDetails({ project, dark }: { project: Project; dark: boolean }) {
+function ProjectDetails({ project }: { project: Project }) {
   return (
     <>
       <DialogHeader className="pr-10">
@@ -287,7 +284,7 @@ function ProjectDetails({ project, dark }: { project: Project; dark: boolean }) 
           </li>
         ))}
       </ul>
-      <StackChips stack={project.stack} dark={dark} />
+      <StackChips stack={project.stack} />
       <div className="flex flex-wrap gap-2 pt-1">
         <a
           href={project.liveUrl}
@@ -327,7 +324,6 @@ function ProjectDetails({ project, dark }: { project: Project; dark: boolean }) 
 }
 
 export function Projects() {
-  const { dark } = useTheme();
   const [selected, setSelected] = useState<Project | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -359,7 +355,6 @@ export function Projects() {
             index={i}
             last={i === ORDER.length - 1}
             onOpen={openProject}
-            dark={dark}
           />
         ))}
       </ol>
@@ -372,7 +367,7 @@ export function Projects() {
             triggerRef.current?.focus();
           }}
         >
-          {selected ? <ProjectDetails project={selected} dark={dark} /> : null}
+          {selected ? <ProjectDetails project={selected} /> : null}
         </DialogContent>
       </Dialog>
     </section>

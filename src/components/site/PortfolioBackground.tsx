@@ -1,5 +1,3 @@
-import { useTheme } from "@/lib/use-theme";
-
 // Pure CSS starlight motes configuration for smooth ambient drift (Dark mode only)
 const MOTES = [
   { top: "12%", left: "18%", size: 3, delay: "0s", duration: "18s", opacity: 0.45 },
@@ -16,9 +14,10 @@ const MOTES = [
   { top: "8%", left: "50%", size: 2.5, delay: "1.5s", duration: "24s", opacity: 0.45 },
 ];
 
+// The theme layers are chosen in CSS from the `dark` class, which the inline head script sets
+// before first paint. (Choosing them from React state rendered the dark layer on the server for
+// every visitor, so light-theme visitors saw a dark backdrop until hydration.)
 export function PortfolioBackground() {
-  const { dark } = useTheme();
-
   return (
     <div
       aria-hidden="true"
@@ -26,9 +25,7 @@ export function PortfolioBackground() {
     >
       {/* Dark Theme Ambient Gradient Layer (Rich twilight obsidian / charcoal / radiant warm bronze) */}
       <div
-        className={`absolute inset-0 ${
-          dark ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className="absolute inset-0 opacity-0 dark:opacity-100"
         style={{
           background: `
             radial-gradient(ellipse 1100px 750px at 50% -60px, rgba(201, 151, 58, 0.35), transparent 72%),
@@ -43,9 +40,7 @@ export function PortfolioBackground() {
 
       {/* Light Theme Ambient Gradient Layer (Distinct, luminous, multi-tone warm gold & cool slate atmosphere) */}
       <div
-        className={`absolute inset-0 ${
-          !dark ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className="absolute inset-0 opacity-100 dark:opacity-0"
         style={{
           background: `
             radial-gradient(ellipse 900px 640px at 78% 22%, rgba(214, 168, 82, 0.2), transparent 70%),
@@ -57,7 +52,7 @@ export function PortfolioBackground() {
       />
 
       {/* Ultra-Lightweight CSS Ambient Starlight Motes (Active ONLY in dark theme to avoid dirt/speckle artifacts) */}
-      {dark && (
+      <div className="absolute inset-0 hidden dark:block">
         <div className="absolute inset-0 motion-reduce:hidden">
           {MOTES.map((m, idx) => (
             <span
@@ -77,7 +72,7 @@ export function PortfolioBackground() {
             />
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

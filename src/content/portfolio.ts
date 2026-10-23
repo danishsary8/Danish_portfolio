@@ -5,6 +5,11 @@ export const PROFILE = {
   shortName: "Danish",
   role: "Junior Web Developer",
   location: "Phnom Penh, Cambodia",
+  // Owner-supplied personal details (shown in the profile modal only).
+  address: "Russey Keo, Phnom Penh",
+  birthDate: "8 November 2005",
+  // Owner's own goal statement (profile modal pull quote).
+  goal: "My goal is to become a skilled engineer who builds something new: complete, real-world applications that solve real problems and are genuinely useful to people, contributing fresh ideas both as part of a team and on my own.",
   timezone: "Asia/Phnom_Penh",
   timezoneLabel: "ICT",
   email: "danishsary4@gmail.com",

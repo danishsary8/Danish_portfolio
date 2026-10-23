@@ -1,194 +1,56 @@
-import React, { useEffect, useRef, useState } from "react";
-import { MessageSquare, X, Send, Sparkles, User, Bot, ArrowRight, FileText, Mail, Github, ExternalLink } from "lucide-react";
-import { PROFILE, PROJECTS, SKILL_GROUPS } from "@/content/portfolio";
-import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
-
-export interface ChatLink {
-  label: string;
-  href?: string;
-  action?: () => void;
-}
-
-interface Message {
-  id: string;
-  sender: "bot" | "user";
-  text: string;
-  time: string;
-  links?: ChatLink[];
-}
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Sparkles } from "lucide-react";
+import { JarvisChat } from "@/components/JarvisChat";
 
 export type BotState = "idle" | "listening" | "greeting" | "ready";
+
+/** sessionStorage flag: set once the visitor has opened Jarvis, so the unread badge only shows on first visit. */
+const SEEN_KEY = "jarvis-seen-v1";
 
 export function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "welcome",
-      sender: "bot",
-      text: "👋 Hi there! I'm Danish's AI assistant. Ask me anything about his projects, tech stack, experience, or how to get in touch!",
-      time: "Just now",
-      links: [
-        { label: "View Projects", action: () => scrollToSection("projects") },
-        { label: "Check Skills", action: () => scrollToSection("skills") },
-        { label: "Contact Danish", action: () => scrollToSection("contact") },
-      ],
-    },
-  ]);
+  const [unread, setUnread] = useState(false);
 
-  const cardRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isOpenRef = useRef(false);
 
   useEffect(() => {
     setIsMounted(true);
+    try {
+      if (!window.sessionStorage.getItem(SEEN_KEY)) setUnread(true);
+    } catch {
+      setUnread(true);
+    }
   }, []);
 
-  // Scroll messages to bottom on new message
   useEffect(() => {
-    if (isOpen) {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages, isOpen]);
-
-  // Handle Escape key and click outside
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && isOpen) {
-        setIsOpen(false);
-        buttonRef.current?.focus();
-      }
-    }
-
-    function handleClickOutside(e: MouseEvent) {
-      if (
-        isOpen &&
-        cardRef.current &&
-        !cardRef.current.contains(e.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("mousedown", handleClickOutside);
-    };
+    isOpenRef.current = isOpen;
   }, [isOpen]);
 
-  const scrollToSection = (id: string) => {
-    setIsOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+    if (unread) {
+      setUnread(false);
+      try {
+        window.sessionStorage.setItem(SEEN_KEY, "1");
+      } catch {
+        /* ignore blocked storage */
+      }
     }
   };
 
-  const handleSend = (userText?: string) => {
-    const textToSend = (userText ?? input).trim();
-    if (!textToSend) return;
+  const handleClose = useCallback((reason?: string) => {
+    setIsOpen(false);
+    if (reason === "escape") buttonRef.current?.focus();
+  }, []);
 
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      sender: "user",
-      text: textToSend,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setIsThinking(true);
-
-    // Context-aware AI responses based on Danish's verified background
-    setTimeout(() => {
-      setIsThinking(false);
-      const q = textToSend.toLowerCase();
-      let botResponse = "";
-      let links: Message["links"] = undefined;
-
-      if (q.includes("bookly")) {
-        const p = PROJECTS.find((x) => x.id === "bookly");
-        botResponse = `Bookly is an online bookstore platform Danish engineered with Laravel, React, and PostgreSQL. It features OTP & Google authentication, order tracking, admin dashboard, Telegram bot alerts, and Cloudinary media.`;
-        links = [
-          ...(p?.liveUrl ? [{ label: "Bookly Live App", href: p.liveUrl }] : []),
-          ...(p?.apiDocsUrl ? [{ label: "REST API Docs", href: p.apiDocsUrl }] : []),
-        ];
-      } else if (q.includes("loomora")) {
-        const p = PROJECTS.find((x) => x.id === "loomora");
-        botResponse = `Loomora is a daily routine & habit planner built with React, Tailwind CSS, Framer Motion, and Laravel with PostgreSQL. Features secure login, Google sign-in, email verification, and reminders.`;
-        links = p?.liveUrl ? [{ label: "Loomora Live App", href: p.liveUrl }] : [];
-      } else if (q.includes("diabetes") || q.includes("expert") || q.includes("award")) {
-        const p = PROJECTS.find((x) => x.id === "diabetes");
-        botResponse = `The Diabetes Expert System is a bilingual (EN/Khmer) clinical decision assistant built with Flask, React, and PostgreSQL. It won the AI Expert System and Innovation 2026 Team Award at Norton University! Danish contributed Google OAuth, UI refactors, and testing.`;
-        links = p?.liveUrl ? [{ label: "Clinical System Live App", href: p.liveUrl }] : [];
-      } else if (q.includes("driving") || q.includes("flutter")) {
-        const p = PROJECTS.find((x) => x.id === "driving");
-        botResponse = `Driving Rules App is an offline bilingual (Khmer/English) learning app for Cambodia's official driving exam, built with Flutter and Dart with local storage and mock tests.`;
-        links = p?.liveUrl ? [{ label: "Driving App Web Demo", href: p.liveUrl }] : [];
-      } else if (q.includes("project")) {
-        botResponse =
-          "Danish has built 4 key production applications:\n\n" +
-          "1. 📚 Bookly — E-commerce bookstore (Laravel + React + PostgreSQL)\n" +
-          "2. 🗓️ Loomora — Routine & habit tracker (React + Laravel)\n" +
-          "3. 🏥 Diabetes Expert System — Award-winning clinical screening AI (Flask + React)\n" +
-          "4. 🚗 Driving Rules App — Bilingual Cambodia driving theory app (Flutter)";
-        links = [
-          { label: "Explore Projects Section", action: () => scrollToSection("projects") },
-          { label: "View Bookly Live", href: "https://bookly-frontend-five.vercel.app/" },
-        ];
-      } else if (q.includes("skill") || q.includes("stack") || q.includes("tech") || q.includes("react") || q.includes("laravel")) {
-        botResponse =
-          "Danish's core stack covers full-stack web development:\n\n" +
-          "• Frontend: React, Tailwind CSS, Bootstrap, Framer Motion\n" +
-          "• Backend: Laravel, PHP, Python/Flask, RESTful APIs\n" +
-          "• Database: PostgreSQL, Supabase, Oracle\n" +
-          "• Workflow: Git/GitHub, Docker, JWT & OAuth, Postman";
-        links = [{ label: "View Complete Skills Grid", action: () => scrollToSection("skills") }];
-      } else if (q.includes("contact") || q.includes("hire") || q.includes("email") || q.includes("telegram")) {
-        botResponse =
-          `You can reach Danish directly via email at ${PROFILE.email} or Telegram at ${PROFILE.telegram}. He is based in Phnom Penh (UTC+7) and open to Web Developer roles.`;
-        links = [
-          { label: "Open Contact Form", action: () => scrollToSection("contact") },
-          { label: "Send Email", href: `mailto:${PROFILE.email}` },
-        ];
-      } else if (q.includes("cv") || q.includes("resume") || q.includes("download")) {
-        botResponse = "Danish's complete CV details his education at Norton University, internship at ETEC, and full-stack projects.";
-        links = [{ label: "📄 Download CV (PDF)", href: CV_HREF }];
-      } else if (q.includes("experience") || q.includes("intern") || q.includes("job") || q.includes("work")) {
-        botResponse =
-          "Danish is currently a Web Developer Trainee Intern at ETEC & KruITSolution (July 2026 – Present), collaborating on a team tour booking platform with REST API integrations and Git feature branches.";
-        links = [{ label: "View Experience Ledger", action: () => scrollToSection("experience") }];
-      } else if (q.includes("education") || q.includes("university") || q.includes("norton")) {
-        botResponse =
-          "Danish is a 4th-Year Software Development student at Norton University in Phnom Penh, Cambodia (2024 – Present), and graduated from the ACE General English Program.";
-        links = [{ label: "View Education Details", action: () => scrollToSection("education") }];
-      } else {
-        botResponse =
-          "I'm here to help you explore Danish's portfolio! Feel free to ask about his 4 core projects, technical skills in React & Laravel, work experience, or how to get in touch.";
-        links = [
-          { label: "Top Projects", action: () => scrollToSection("projects") },
-          { label: "Tech Stack", action: () => scrollToSection("skills") },
-          { label: "Contact Danish", action: () => scrollToSection("contact") },
-        ];
-      }
-
-      const botMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: "bot",
-        text: botResponse,
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        ...(links && links.length > 0 ? { links } : {}),
-      };
-      setMessages((prev) => [...prev, botMsg]);
-    }, 450);
-  };
+  // A reply that lands while the panel is closed raises the unread badge again.
+  const handleBotMessage = useCallback(() => {
+    if (!isOpenRef.current) setUnread(true);
+  }, []);
 
   // Determine current active visual state
   const currentBotState: BotState = isThinking
@@ -201,175 +63,16 @@ export function ChatbotWidget() {
 
   return (
     <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end pointer-events-none select-none">
-      {/* Chat Window / Dialog Modal */}
-      {isOpen && (
-        <div className="relative pointer-events-auto mb-2.5">
-          <div
-            ref={cardRef}
-            role="dialog"
-            aria-labelledby="chatbot-title"
-            className="w-[min(352px,calc(100vw-2rem))] h-[min(460px,calc(100dvh-7.5rem))] rounded-2xl flex flex-col overflow-hidden bg-surface-2 border border-line-strong shadow-[0_20px_50px_-10px_rgba(0,0,0,0.18),0_10px_20px_-5px_rgba(0,0,0,0.08)] dark:shadow-[0_24px_60px_-12px_rgba(0,0,0,0.85),0_8px_24px_-4px_rgba(0,0,0,0.6)] ring-1 ring-black/[0.04] dark:ring-white/[0.06] origin-bottom-right animate-in fade-in zoom-in-95 duration-200"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-line px-4 py-3 bg-surface-1">
-              <div className="flex items-center gap-2.5">
-                <div className="relative flex h-9.5 w-9.5 shrink-0 items-center justify-center rounded-xl bg-surface-2 border border-line-strong shadow-2xs overflow-visible">
-                  <BotCharacterSVG state={isThinking ? "listening" : "idle"} className="h-10 w-10" />
-                  <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-surface-2" />
-                </div>
-                <div>
-                  <h3 id="chatbot-title" className="text-[13.5px] font-semibold text-fg leading-tight flex items-center gap-1.5">
-                    Danish AI Assistant
-                    <span className="rounded bg-gold/15 px-1 py-0.2 text-[9.5px] font-mono font-medium text-gold-ink dark:text-gold">
-                      AI
-                    </span>
-                  </h3>
-                  <p className="text-[11px] text-fg-subtle flex items-center gap-1.5 font-mono mt-0.5">
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    {isThinking ? "Thinking..." : "Online • Phnom Penh (ICT)"}
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="press flex h-7.5 w-7.5 items-center justify-center rounded-lg border border-line bg-surface-2 text-fg-muted hover:text-fg hover:border-line-strong transition-colors cursor-pointer"
-                aria-label="Close assistant"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            {/* Quick Suggestion Chips */}
-            <div className="border-b border-line bg-surface-1/60 px-3.5 py-2 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[12px]">
-              <button
-                type="button"
-                onClick={() => handleSend("Tell me about your projects")}
-                className="press whitespace-nowrap rounded-full border border-line bg-surface-2 px-3 py-1 text-[11px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
-              >
-                📚 Projects
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSend("What is your tech stack?")}
-                className="press whitespace-nowrap rounded-full border border-line bg-surface-2 px-3 py-1 text-[11px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
-              >
-                ⚡ Tech Stack
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSend("How can I hire or contact you?")}
-                className="press whitespace-nowrap rounded-full border border-line bg-surface-2 px-3 py-1 text-[11px] font-medium text-fg-muted hover:border-gold hover:text-fg hover:bg-surface-1 transition-all cursor-pointer shadow-2xs"
-              >
-                ✉️ Contact
-              </button>
-            </div>
-
-          {/* Chat Messages Body */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-[13px] leading-relaxed bg-surface-2">
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex gap-2.5 ${m.sender === "user" ? "justify-end" : "justify-start"}`}
-              >
-                {m.sender === "bot" && (
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line shadow-2xs">
-                    <Bot className="h-3.5 w-3.5 text-gold-ink dark:text-gold" />
-                  </div>
-                )}
-                <div
-                  className={`max-w-[84%] rounded-2xl px-3.5 py-2.5 ${
-                    m.sender === "user"
-                      ? "bg-fg text-bg rounded-tr-xs font-medium shadow-xs"
-                      : "bg-surface-1 text-fg rounded-tl-xs border border-line shadow-2xs whitespace-pre-line"
-                  }`}
-                >
-                  <p>{m.text}</p>
-                  {m.links && (
-                    <div className="mt-2.5 flex flex-wrap gap-1.5 pt-1.5 border-t border-line/60">
-                      {m.links.map((link, idx) =>
-                        link.href ? (
-                          <a
-                            key={idx}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="press inline-flex items-center gap-1 rounded-md border border-line-strong bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold-ink dark:hover:text-gold transition-colors shadow-2xs"
-                          >
-                            <span>{link.label}</span>
-                            <ExternalLink className="h-3 w-3 opacity-60" />
-                          </a>
-                        ) : (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={link.action}
-                            className="press inline-flex items-center gap-1 rounded-md border border-line-strong bg-surface-2 px-2.5 py-1 text-[11.5px] font-medium text-fg hover:border-gold hover:text-gold-ink dark:hover:text-gold transition-colors cursor-pointer shadow-2xs"
-                          >
-                            <span>{link.label}</span>
-                            <ArrowRight className="h-3 w-3 opacity-60" />
-                          </button>
-                        )
-                      )}
-                    </div>
-                  )}
-                  <span
-                    className={`block mt-1 text-[10px] font-mono ${
-                      m.sender === "user" ? "text-bg/60 text-right" : "text-fg-subtle text-left"
-                    }`}
-                  >
-                    {m.time}
-                  </span>
-                </div>
-              </div>
-            ))}
-            {isThinking && (
-              <div className="flex gap-2.5 justify-start">
-                <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-1 border border-line shadow-2xs">
-                  <Bot className="h-3.5 w-3.5 text-gold-ink dark:text-gold" />
-                </div>
-                <div className="rounded-2xl rounded-tl-xs bg-surface-1 border border-line px-4 py-2.5 text-fg-muted flex items-center gap-1.5 shadow-2xs">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce [animation-delay:150ms]" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold-ink dark:bg-gold animate-bounce [animation-delay:300ms]" />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Footer */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend();
-            }}
-            className="border-t border-line p-2.5 sm:p-3 bg-surface-1 flex items-center gap-2"
-          >
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about Danish's work..."
-              className="flex-1 rounded-xl border border-line-strong bg-surface-2 px-3.5 py-2 text-[13px] text-fg placeholder:text-fg-subtle focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 transition-all shadow-2xs"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim()}
-              className="press flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold text-white disabled:opacity-25 disabled:pointer-events-none transition-all cursor-pointer shadow-xs hover:brightness-105 active:scale-95"
-              aria-label="Send message"
-            >
-              <Send className="h-4 w-4" />
-            </button>
-          </form>
-        </div>
-
-        {/* Speech Bubble Arrow pointing towards the Bot's head */}
-        <div
-          aria-hidden="true"
-          className="absolute -bottom-1.5 right-[21px] sm:right-[25px] h-3.5 w-3.5 rotate-45 border-b border-r border-line-strong bg-surface-1 z-10"
+      {/* Jarvis chat window (client only; stays mounted so a pending reply survives closing) */}
+      {isMounted && (
+        <JarvisChat
+          open={isOpen}
+          onClose={handleClose}
+          triggerRef={buttonRef}
+          avatar={<BotCharacterSVG state={isThinking ? "listening" : "idle"} className="h-10 w-10" />}
+          onBusyChange={setIsThinking}
+          onBotMessage={handleBotMessage}
         />
-      </div>
       )}
 
       {/* Floating 3D AI Robot Widget Trigger */}
@@ -384,8 +87,8 @@ export function ChatbotWidget() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
           </span>
-          <span className="text-[12px] font-semibold text-fg">Ask Danish AI</span>
-          <span className="text-[13px]">✨</span>
+          <span className="text-[12px] font-semibold text-fg">Ask Jarvis</span>
+          <Sparkles className="h-3.5 w-3.5 text-gold-ink dark:text-gold" aria-hidden="true" />
         </div>
 
         {/* Bot Button + Centered Ground Shadow */}
@@ -393,12 +96,12 @@ export function ChatbotWidget() {
           <button
             ref={buttonRef}
             type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={handleToggle}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             aria-expanded={isOpen}
-            aria-label="Toggle Danish AI Assistant"
-            className="group relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center p-0 transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
+            aria-label={unread && !isOpen ? "Chat with Jarvis, 1 new message" : "Chat with Jarvis"}
+            className="group relative flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center p-0 transition-transform duration-200 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]"
           >
             {/* Ambient Cyber Aura Glow */}
             <span
@@ -411,13 +114,23 @@ export function ChatbotWidget() {
               <BotCharacterSVG state={currentBotState} className="h-full w-full drop-shadow-[0_8px_16px_rgba(34,211,238,0.22)]" />
             </div>
 
-            {/* Live Online Signal Beacon / Active Close Badge */}
+            {/* Close badge while open / unread count before the first open / live beacon otherwise */}
             {isOpen ? (
               <span
                 aria-hidden="true"
                 className="absolute -top-0.5 -right-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-surface-2 border border-line-strong text-fg-muted shadow-sm text-[10px] font-bold"
               >
                 ✕
+              </span>
+            ) : unread ? (
+              <span
+                aria-hidden="true"
+                className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center"
+              >
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50 [animation-duration:2.5s]" />
+                <span className="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-500 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-surface-2">
+                  1
+                </span>
               </span>
             ) : (
               <span

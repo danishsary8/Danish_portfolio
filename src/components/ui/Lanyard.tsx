@@ -25,9 +25,22 @@ const RING_TUBE = 0.0135;
 const EYELET_RADIUS = 0.036;
 const CLAMP_BODY = 0.15;
 const FACE_WIDTH = 1024;
+// Card faces sample the full-size texture rather than the blurred half-size mip.
+const FACE_MAP_BIAS = '-0.85';
 
 const FINISHES = {
   glossy: { roughness: 0.42, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.06, foil: 0, anisotropy: 0 },
+  // Printed PVC under a soft coat: reflections stay, but broad and dim (portfolio badge).
+  satin: {
+    roughness: 0.5,
+    metalness: 0,
+    clearcoat: 0.32,
+    clearcoatRoughness: 0.3,
+    foil: 0,
+    anisotropy: 0,
+    env: 0.6,
+    emissive: 0.42
+  },
   matte: { roughness: 0.85, metalness: 0, clearcoat: 0, clearcoatRoughness: 0.6, foil: 0, anisotropy: 0 },
   holographic: { roughness: 0.3, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.04, foil: 1, anisotropy: 0 },
   metallic: { roughness: 0.36, metalness: 0.75, clearcoat: 0.5, clearcoatRoughness: 0.18, foil: 0, anisotropy: 0.7 }
@@ -261,6 +274,73 @@ const buildCardGeometry = layout => {
   }
   uv.needsUpdate = true;
   return { body, face };
+};
+
+// Clear badge holder (portfolio addition): a rounded acrylic slab a little larger than the
+// card, with the clip slot cut through so the ring still passes. Group 0 = faces, group 1 =
+// sides, so the edges can read milkier than the faces, as real acrylic does.
+const CASE_MARGIN = 0.055;
+const CASE_DEPTH = 0.046;
+const buildCaseGeometry = layout => {
+  const { width, height, radius, slot } = layout;
+  const w = width + CASE_MARGIN * 2;
+  const h = height + CASE_MARGIN * 2;
+  const outline = new THREE.Shape();
+  traceRoundedRect(outline, -w / 2, -h / 2, w, h, radius + CASE_MARGIN * 0.7);
+  const hole = new THREE.Path();
+  const pad = BEVEL + 0.012;
+  traceRoundedRect(
+    hole,
+    -slot.width / 2 - pad,
+    slot.y - slot.height / 2 - pad,
+    slot.width + pad * 2,
+    slot.height + pad * 2,
+    slot.height / 2 + pad
+  );
+  outline.holes.push(hole);
+  const geometry = new THREE.ExtrudeGeometry(outline, {
+    depth: CASE_DEPTH,
+    bevelEnabled: true,
+    bevelThickness: 0.006,
+    bevelSize: 0.006,
+    bevelSegments: 4,
+    curveSegments: 24
+  });
+  geometry.translate(0, 0, -CASE_DEPTH / 2);
+  return geometry;
+};
+
+// The holder's visible frame: the border between the card and the case edge, as on real
+// hard badge holders whose surround is tinted or frosted while the card window stays clear.
+const buildFrameGeometry = layout => {
+  const { width, height, radius } = layout;
+  const w = width + CASE_MARGIN * 2;
+  const h = height + CASE_MARGIN * 2;
+  const outline = new THREE.Shape();
+  traceRoundedRect(outline, -w / 2, -h / 2, w, h, radius + CASE_MARGIN * 0.7);
+  // The window overlaps the card edge slightly so no gap shows between frame and card.
+  const inset = 0.012;
+  const cardWindow = new THREE.Path();
+  traceRoundedRect(
+    cardWindow,
+    -width / 2 + inset,
+    -height / 2 + inset,
+    width - inset * 2,
+    height - inset * 2,
+    Math.max(radius - inset, 0.01)
+  );
+  outline.holes.push(cardWindow);
+  const depth = CASE_DEPTH * 0.86;
+  const geometry = new THREE.ExtrudeGeometry(outline, {
+    depth,
+    bevelEnabled: true,
+    bevelThickness: 0.004,
+    bevelSize: 0.004,
+    bevelSegments: 3,
+    curveSegments: 24
+  });
+  geometry.translate(0, 0, -depth / 2);
+  return geometry;
 };
 
 const buildClampGeometry = width => {
@@ -571,14 +651,20 @@ const solvePin = (body, grab, target) => {
 
 const placeHanging = (sim, layout, intro) => {
   const { nodes, previous, velocities, body, anchor } = sim;
+  const drop = intro === 'drop';
   nodes[0].copy(anchor);
   for (let i = 1; i <= JOINTS; i++) {
     nodes[i].copy(nodes[i - 1]);
-    if (intro) nodes[i].x += sim.rest;
+    if (drop) {
+      // Strap folded up above the clip, so the card starts above the stage and falls into
+      // view; a hint of sideways offset gives the catch a natural sway.
+      nodes[i].y += sim.rest * 0.45;
+      nodes[i].x += sim.rest * 0.05;
+    } else if (intro) nodes[i].x += sim.rest;
     else nodes[i].y -= sim.rest;
   }
   body.quaternion.identity();
-  if (intro) body.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2);
+  if (intro && !drop) body.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI / 2);
   body.hang.set(0, layout.hangY, 0);
   const offset = scratch.a.copy(body.hang).applyQuaternion(body.quaternion);
   body.position.copy(nodes[JOINTS]).sub(offset);
@@ -723,6 +809,8 @@ const Lanyard: any = ({
   breeze = 0.5,
   interactive = true,
   intro = true,
+  holder = false,
+  holderColor = '#dfe6f2',
   className = '',
   style
 }) => {
@@ -750,7 +838,9 @@ const Lanyard: any = ({
     elasticity,
     breeze,
     interactive,
-    intro
+    intro,
+    holder,
+    holderColor
   };
 
   useEffect(() => {
@@ -776,7 +866,7 @@ const Lanyard: any = ({
     canvas.setAttribute('aria-hidden', 'true');
     container.appendChild(canvas);
 
-    const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    const anisotropy = Math.min(16, renderer.capabilities.getMaxAnisotropy());
     const scene = new THREE.Scene();
     const environment = buildEnvironment(renderer);
     scene.environment = environment.texture;
@@ -812,19 +902,34 @@ const Lanyard: any = ({
         .replace('#include <common>', `#include <common>\n${FOIL_VERTEX_HEAD}`)
         .replace('#include <project_vertex>', `#include <project_vertex>\n${FOIL_VERTEX_BODY}`);
       shader.fragmentShader = shader.fragmentShader
+        // Mipmap bias: at badge size the GPU otherwise samples the half-size (pre-blurred) mip,
+        // so a 1024px face looks soft. A negative bias prefers the full-size level.
+        .replace(
+          '#include <map_fragment>',
+          THREE.ShaderChunk.map_fragment.replace(
+            'texture2D( map, vMapUv )',
+            `texture2D( map, vMapUv, ${FACE_MAP_BIAS} )`
+          )
+        )
         .replace('#include <common>', `#include <common>\n${FOIL_FRAGMENT_HEAD}`)
         .replace('#include <opaque_fragment>', `${FOIL_FRAGMENT_BODY}\n#include <opaque_fragment>`);
     };
 
     const frontMaterial = new THREE.MeshPhysicalMaterial({
       map: frontTexture,
+      emissive: 0xffffff,
+      emissiveMap: frontTexture,
+      emissiveIntensity: 0,
       normalMap: grain,
-      normalScale: new THREE.Vector2(0.06, 0.06)
+      normalScale: new THREE.Vector2(0.02, 0.02)
     });
     const backMaterial = new THREE.MeshPhysicalMaterial({
       map: backTexture,
+      emissive: 0xffffff,
+      emissiveMap: backTexture,
+      emissiveIntensity: 0,
       normalMap: grain,
-      normalScale: new THREE.Vector2(0.06, 0.06)
+      normalScale: new THREE.Vector2(0.02, 0.02)
     });
     frontMaterial.onBeforeCompile = injectFoil;
     backMaterial.onBeforeCompile = injectFoil;
@@ -841,13 +946,51 @@ const Lanyard: any = ({
       side: THREE.DoubleSide
     });
 
+    // Holder: crystal-clear faces with a faint polycarbonate tint, milkier edges. Drawn after
+    // the card (transparent, no depth write) so the card reads through it. Standard (not
+    // physical) materials on purpose: physical clearcoat programs take seconds to compile on
+    // Windows (ANGLE/D3D), which kept the stage empty while the badge "loaded".
+    const caseFaceMaterial = new THREE.MeshStandardMaterial({
+      color: 0xeef4ff,
+      transparent: true,
+      opacity: 0.05,
+      roughness: 0.22,
+      metalness: 0,
+      envMapIntensity: 0.5,
+      depthWrite: false
+    });
+    const caseEdgeMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf2f6ff,
+      transparent: true,
+      opacity: 0.5,
+      roughness: 0.18,
+      metalness: 0,
+      envMapIntensity: 0.8,
+      depthWrite: false
+    });
+    const caseMesh = new THREE.Mesh(undefined, [caseFaceMaterial, caseEdgeMaterial]);
+    caseMesh.renderOrder = 2;
+    caseMesh.visible = false;
+    // Tinted acrylic surround, smooth enough to catch the studio reflections.
+    const frameMaterial = new THREE.MeshStandardMaterial({
+      transparent: true,
+      opacity: 0.62,
+      roughness: 0.2,
+      metalness: 0,
+      envMapIntensity: 1,
+      depthWrite: false
+    });
+    const frameMesh = new THREE.Mesh(undefined, frameMaterial);
+    frameMesh.renderOrder = 1;
+    frameMesh.visible = false;
+
     const cardGroup = new THREE.Group();
     const bodyMesh = new THREE.Mesh(undefined, edgeMaterial);
     const frontMesh = new THREE.Mesh(undefined, frontMaterial);
     const backMesh = new THREE.Mesh(undefined, backMaterial);
     const ring = new THREE.Mesh(new THREE.TorusGeometry(RING_RADIUS, RING_TUBE, 18, 72), metalMaterial);
     ring.rotation.y = Math.PI / 2 - 0.7;
-    cardGroup.add(bodyMesh, frontMesh, backMesh, ring);
+    cardGroup.add(bodyMesh, frontMesh, backMesh, ring, frameMesh, caseMesh);
     scene.add(cardGroup);
 
     const bandGeometry = buildBandGeometry(SAMPLES);
@@ -952,6 +1095,10 @@ const Lanyard: any = ({
         frontMesh.position.z = THICKNESS / 2 + BEVEL + 0.0006;
         backMesh.rotation.y = Math.PI;
         backMesh.position.z = -(THICKNESS / 2 + BEVEL + 0.0006);
+        caseMesh.geometry?.dispose();
+        caseMesh.geometry = buildCaseGeometry(layout);
+        frameMesh.geometry?.dispose();
+        frameMesh.geometry = buildFrameGeometry(layout);
         ring.position.set(0, layout.ringY, 0);
         applied.framingKey = '';
       }
@@ -959,7 +1106,7 @@ const Lanyard: any = ({
       if (framingKey !== applied.framingKey) {
         frameView();
         if (!placed) {
-          placeHanging(sim, layout, s.intro && !reducedMotion);
+          placeHanging(sim, layout, reducedMotion ? false : s.intro);
           placed = true;
         } else if (layoutKey !== applied.layoutKey) {
           placeHanging(sim, layout, false);
@@ -994,7 +1141,12 @@ const Lanyard: any = ({
         material.clearcoat = finish.clearcoat;
         material.clearcoatRoughness = finish.clearcoatRoughness;
         material.anisotropy = finish.anisotropy;
+        material.envMapIntensity = finish.env ?? 1;
+        material.emissiveIntensity = finish.emissive ?? 0;
       });
+      caseMesh.visible = !!s.holder;
+      frameMesh.visible = !!s.holder;
+      frameMaterial.color.set(s.holderColor || '#dfe6f2');
       foilUniforms.foilStrength.value = finish.foil;
       foilUniforms.foilAspect.value = layout.height / layout.width;
       edgeMaterial.color.setRGB(card[0] * 0.92, card[1] * 0.92, card[2] * 0.92, THREE.SRGBColorSpace);
@@ -1168,7 +1320,8 @@ const Lanyard: any = ({
 
     const pickCard = () => {
       cardGroup.updateMatrixWorld();
-      const hits = raycaster.intersectObjects([bodyMesh, frontMesh, backMesh], false);
+      const targets = caseMesh.visible ? [bodyMesh, frontMesh, backMesh, caseMesh] : [bodyMesh, frontMesh, backMesh];
+      const hits = raycaster.intersectObjects(targets, false);
       return hits[0] || null;
     };
 
@@ -1281,7 +1434,10 @@ const Lanyard: any = ({
       canvas.removeEventListener('pointercancel', onPointerUp);
       canvas.removeEventListener('lostpointercapture', onPointerUp);
       canvas.removeEventListener('touchstart', onTouchStart);
-      [bodyMesh, frontMesh, backMesh, ring, clampMesh, eyelet, band].forEach(mesh => mesh.geometry?.dispose());
+      [bodyMesh, frontMesh, backMesh, ring, clampMesh, eyelet, band, caseMesh, frameMesh].forEach(mesh => mesh.geometry?.dispose());
+      caseFaceMaterial.dispose();
+      caseEdgeMaterial.dispose();
+      frameMaterial.dispose();
       [frontMaterial, backMaterial, edgeMaterial, metalMaterial, bandMaterial].forEach(material => material.dispose());
       [frontTexture, backTexture, strapTexture, grain, weave].forEach(texture => texture.dispose());
       environment.dispose();

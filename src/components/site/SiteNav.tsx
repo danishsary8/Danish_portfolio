@@ -74,7 +74,6 @@ export function SiteNav() {
   }, []);
 
   const themeLabel = dark ? "Switch to light theme" : "Switch to dark theme";
-  const ThemeIcon = dark ? Sun : Moon;
 
   const navItems = NAV_LINKS.map((link) => ({
     label: link.label,
@@ -92,7 +91,7 @@ export function SiteNav() {
         layers={10}
         curve="linear"
         exponential
-        tint={dark ? "rgba(10, 10, 11, 0.88)" : "rgba(251, 251, 250, 0.88)"}
+        tint="var(--nav-tint)"
         autoHide
         zIndex={40}
       />
@@ -132,9 +131,9 @@ export function SiteNav() {
             indicator="dot"
             collapse="never"
             ariaLabel="Sections"
-            theme={dark ? "dark" : "light"}
-            highlightColor={dark ? "#c9973a" : "#b0822d"}
-            highlightTextColor={dark ? "#0a0a0b" : "#ffffff"}
+            theme="auto"
+            highlightColor="var(--gold)"
+            highlightTextColor="var(--nav-pill-ink)"
             className={`transition-all duration-300 shadow-float ${scrolled ? "scale-[0.99] ring-1 ring-line/30" : ""}`}
           />
         </div>
@@ -165,22 +164,24 @@ export function SiteNav() {
             ariaLabel={themeLabel}
             size={38}
             strokeWidth={2}
-            padColor={dark ? "#18181B" : "#FFFFFF"}
-            iconColor={dark ? "#EDEDEF" : "#111113"}
-            accentColor={dark ? "#C9973A" : "#B0822D"}
-            wellColor={dark ? "#27272A" : "#E5E5E3"}
-            bandColor={dark ? "rgba(255,255,255,0.35)" : "rgba(10,10,12,0.3)"}
-            shadow={
-              dark
-                ? "0 4px 14px -2px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.16)"
-                : "0 3px 10px -1px rgba(10, 10, 12, 0.16), 0 1px 3px 0 rgba(10, 10, 12, 0.1), 0 0 0 1px rgba(10, 10, 12, 0.12)"
-            }
+            padColor="var(--sl-c-pad)"
+            iconColor="var(--sl-c-icon)"
+            accentColor="var(--gold)"
+            wellColor="var(--sl-c-well)"
+            bandColor="var(--sl-c-band)"
+            shadow="var(--sl-c-shadow)"
             flight={70}
             particles={8}
             className="group"
           >
-            <ThemeIcon
-              className="h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold"
+            {/* Both icons render; CSS picks one from the `dark` class so the first paint is right. */}
+            <Sun
+              className="hidden h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:block"
+              strokeWidth={2.2}
+              aria-hidden="true"
+            />
+            <Moon
+              className="h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:hidden"
               strokeWidth={2.2}
               aria-hidden="true"
             />

@@ -1,5 +1,4 @@
 import { SKILL_GROUPS } from "@/content/portfolio";
-import { useTheme } from "@/lib/use-theme";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
 
@@ -15,8 +14,6 @@ const SOFT_SKILLS = [
 ];
 
 export function Skills() {
-  const { dark } = useTheme();
-
   return (
     <section id="skills" aria-labelledby="skills-title" className={SECTION}>
       <SectionHeader
@@ -51,7 +48,7 @@ export function Skills() {
                       <SkillIcon
                         name={skill}
                         className="h-4 w-4"
-                        style={{ color: themedSkillColor(skill, dark) }}
+                        style={{ color: themedSkillColor(skill) }}
                       />
                     </span>
                     {skill}

@@ -47,12 +47,12 @@ const LOGOS: Record<string, { src: string; invertInDark?: boolean }> = {
   Docker: { src: `${DEVICON}/docker/docker-original.svg` },
 };
 
-function StackChip({ tech, dark }: { tech: string; dark: boolean }) {
+function StackChip({ tech }: { tech: string }) {
   const logo = LOGOS[tech];
   return (
     <span
       className="skeuo-key squircle [--r:7px] inline-flex h-8 items-center gap-2 whitespace-nowrap pl-2.5 pr-3 text-[12.5px] font-medium leading-none text-fg transition-[color,border-color,background-color] duration-150 hover:border-[color-mix(in_oklab,var(--brand)_45%,transparent)] hover:bg-[color-mix(in_oklab,var(--brand)_8%,var(--surface-2))] hover:text-fg"
-      style={{ "--brand": brandColor(tech, dark) } as CSSProperties}
+      style={{ "--brand": brandColor(tech) } as CSSProperties}
     >
       {logo ? (
         <img
@@ -266,7 +266,7 @@ export function Hero() {
               <div className="enter mt-2.5" style={step(9.5)}>
                 <LogoLoop
                   logos={CORE_LOGOS}
-                  renderItem={(item: { title: string }) => <StackChip tech={item.title} dark={dark} />}
+                  renderItem={(item: { title: string }) => <StackChip tech={item.title} />}
                   speed={24}
                   direction="left"
                   logoHeight={32}

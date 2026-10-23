@@ -29,6 +29,7 @@ A junior developer who already ships complete, deployed full-stack apps: four li
 - **Role title:** "Junior Web Developer", matching the CV. Full-stack capability is shown in the subtitle and pitch, not in the title.
 - **Availability:** "Open to Web Developer roles". He is a 4th-year Software Development student at Norton University (2024 – present).
 - **Location:** Russey Keo, Phnom Penh, Cambodia (ICT, UTC+7).
+- **Date of birth:** 8 November 2005 (owner-supplied as 08/11/2005, day first; shown in the profile modal only).
 - **Languages:** Khmer (native), English (good working proficiency).
 - **Content:** must come from the CV and AGENTS.md §5. TypeScript is not listed on the CV, so do not claim it.
 - **Tech stack:** existing codebase (React + TanStack Router, Tailwind v4, Vitest). Lovable-connected repo.

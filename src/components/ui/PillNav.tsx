@@ -29,7 +29,8 @@ export interface PillNavProps {
   defaultActiveIndex?: number;
   onItemClick?: (item: PillNavItem, index: number, event: MouseEvent) => void;
   linkComponent?: ComponentType<any> | string;
-  theme?: "dark" | "light";
+  /** "auto" reads the --pnx-* palette from CSS, so the theme follows the `dark` class before hydration. */
+  theme?: "dark" | "light" | "auto";
   layout?: "split" | "joined";
   size?: "sm" | "md" | "lg";
   surface?: "glass" | "solid" | "none";
@@ -236,7 +237,10 @@ export const PillNav: React.FC<PillNavProps> = ({
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
 
-  const palette = THEMES[theme] ?? THEMES.dark;
+  const palette =
+    theme === "auto"
+      ? Object.fromEntries(Object.keys(THEMES.dark).map((k) => [k, `var(--pnx-${k.slice(5)})`]))
+      : (THEMES[theme] ?? THEMES.dark);
   const vars: Record<string, string> = { ...palette, ...(SIZES[size] ?? SIZES.md) };
   if (surface === "glass") vars["--pn-blur"] = "blur(28px) saturate(1.8)";
   if (surface === "solid") {

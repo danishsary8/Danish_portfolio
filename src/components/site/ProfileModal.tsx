@@ -1,26 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Lanyard from "@/components/ui/Lanyard";
-import {
-  BADGE_FRONT_FALLBACK_SVG,
-  BADGE_BACK_SVG,
-  generateExecutiveBadgeWithPhoto,
-} from "@/lib/badge-texture";
+import { drawBadgeBack, drawBadgeFront } from "@/lib/badge-faces";
 import { PROFILE } from "@/content/portfolio";
-import { ASSETS } from "@/lib/assets";
-import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
+import { CV_HREF } from "@/lib/cv-link";
+import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
-import {
-  Award,
-  Briefcase,
-  Check,
-  Copy,
-  FileText,
-  GraduationCap,
-  Languages,
-  Move,
-  Phone,
-} from "lucide-react";
+import { ArrowUpRight, Check, Copy, FileText, Mail, Move, Phone } from "lucide-react";
 import { SiGithub, SiTelegram } from "react-icons/si";
 
 interface ProfileModalProps {
@@ -28,77 +14,115 @@ interface ProfileModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// Every fact is from the CV (public/sary-danish-cv.pdf).
-const FACTS = [
-  {
-    icon: Briefcase,
-    title: "Web Developer Intern (Weekends)",
-    sub: "ETEC & KruITSolution",
-    meta: "Jul 2026 – Now",
-    gold: false,
-  },
-  {
-    icon: Award,
-    title: "Award Winner (Team)",
-    sub: "AI Expert System and Innovation 2026",
-    meta: "Sep 2026",
-    gold: true,
-  },
-  {
-    icon: GraduationCap,
-    title: "B.S. Software Development",
-    sub: "Norton University · 4th year",
-    meta: "2024 – Now",
-    gold: false,
-  },
-  {
-    icon: Languages,
-    title: "Khmer & English",
-    sub: "Native · Good working proficiency",
-    meta: "ACE · 2024 – 2026",
-    gold: false,
-  },
-] as const;
-
 const FOCUS =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--gold)]";
 
+// The owner's own goal statement: appears nowhere else on the site.
+const GOAL = PROFILE.goal;
+
+// Glossy app-icon tile for a contact row.
+function Tile({ className, children }: { className: string; children: ReactNode }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`squircle [--r:9px] grid h-8 w-8 shrink-0 place-items-center ${className}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+const ROW =
+  "flex min-h-11 w-full items-center gap-3.5 px-4 py-1.5 text-left transition-colors duration-150 lg:[@media(max-height:740px)]:min-h-10 lg:[@media(max-height:740px)]:py-1";
+
+function RowText({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <span className="flex min-w-0 flex-1 flex-col">
+      <span className="text-[12px] leading-tight text-fg-subtle">{label}</span>
+      <span
+        className={`mt-0.5 truncate text-[14px] leading-tight text-fg ${
+          mono ? "font-mono tabular-nums tracking-[0.01em]" : "font-medium tracking-[-0.01em]"
+        }`}
+      >
+        {value}
+      </span>
+    </span>
+  );
+}
+
+function LinkRow({
+  href,
+  external = false,
+  label,
+  value,
+  mono,
+  tile,
+}: {
+  href: string;
+  external?: boolean;
+  label: string;
+  value: string;
+  mono?: boolean;
+  tile: ReactNode;
+}) {
+  return (
+    <li>
+      <a
+        href={href}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        className={`group ${ROW} hover:bg-surface-1 ${FOCUS} focus-visible:-outline-offset-2`}
+      >
+        {tile}
+        <RowText label={label} value={value} mono={mono ?? false} />
+        <ArrowUpRight
+          aria-hidden="true"
+          strokeWidth={1.75}
+          className="h-4 w-4 shrink-0 text-fg-subtle transition-transform duration-200 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-px motion-reduce:transition-none"
+        />
+      </a>
+    </li>
+  );
+}
+
 export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const { dark } = useTheme();
+  const time = useLocalTime(PROFILE.timezone);
   const [copied, setCopied] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [frontBadgeUrl, setFrontBadgeUrl] = useState<string>("");
+  const [faces, setFaces] = useState<{ front: string; back: string } | null>(null);
   const timer = useRef<number | undefined>(undefined);
 
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  // Badge faces are drawn once, in the background as soon as the page is idle (or at the
+  // latest when the modal opens), so they are ready by the time someone clicks View profile.
+  // One shared draw: opening mid-draw reuses it. The lanyard mounts only when both faces are
+  // ready, so no placeholder flashes.
+  const facesDraw = useRef<Promise<void> | null>(null);
+  const ensureFaces = () => {
+    facesDraw.current ??= Promise.all([drawBadgeFront(), drawBadgeBack()])
+      .then(([front, back]) => setFaces({ front, back }))
+      .catch((err) => {
+        facesDraw.current = null;
+        console.error("Failed to draw the badge faces:", err);
+      });
+  };
+
   useEffect(() => {
-    setMounted(true);
-    return () => window.clearTimeout(timer.current);
-  }, []);
-
-  // Badge front texture: rendered once from the portrait photo.
-  useEffect(() => {
-    let active = true;
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-
-    const renderBadge = () => {
-      if (!active) return;
-      try {
-        const generated = generateExecutiveBadgeWithPhoto(img);
-        if (generated) setFrontBadgeUrl(generated);
-      } catch (err) {
-        console.error("Failed to generate badge texture:", err);
-      }
-    };
-
-    img.onload = renderBadge;
-    img.src = ASSETS.profile.photo;
-    if (img.complete && (img.naturalWidth > 0 || img.width > 0)) renderBadge();
-
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(ensureFaces, { timeout: 4000 })
+      : window.setTimeout(ensureFaces, 2500);
     return () => {
-      active = false;
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
     };
+    // Runs once on mount; ensureFaces only reads refs and stable setters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (open) ensureFaces();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   const copyEmail = async () => {
     try {
@@ -115,27 +139,35 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="squircle [--r:24px] w-[94vw] max-w-[1040px] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0">
-        <DialogTitle className="sr-only">{PROFILE.name}, profile</DialogTitle>
+      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0">
         <DialogDescription className="sr-only">
-          Biography, experience, award, education and contact details for {PROFILE.name}, with an
-          interactive lanyard badge.
+          Goal, personal details and contact options for {PROFILE.name}, with an interactive
+          lanyard badge that shows the same card as the home page.
         </DialogDescription>
 
-        <div className="flex h-full w-full flex-col lg:h-[min(680px,calc(100dvh-4rem))] lg:flex-row">
-          {/* Badge stage */}
-          <div className="relative flex h-[420px] w-full shrink-0 select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:h-full lg:w-[44%] lg:border-b-0 lg:border-r">
+        <div className="flex h-full w-full flex-col lg:h-[min(780px,calc(100dvh-2rem))] lg:flex-row">
+          {/* Badge stage: a softly lit surface the badge hangs over. */}
+          <div className="relative flex h-[440px] w-full shrink-0 select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:h-full lg:w-[40%] lg:border-b-0 lg:border-r">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_30%,var(--glow),transparent_70%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_28%,var(--glow),transparent_72%)]"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.12)] dark:shadow-[inset_0_0_90px_rgba(0,0,0,0.55)]"
             />
 
-            {mounted && open ? (
-              <div className="relative h-full w-full cursor-grab active:cursor-grabbing">
+            {open && faces ? (
+              // The badge drops straight down from the clip and the strap catches it, in view.
+              <div className="relative h-full w-full cursor-grab active:cursor-grabbing motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
                 <Lanyard
-                  frontImage={frontBadgeUrl || BADGE_FRONT_FALLBACK_SVG}
-                  backImage={BADGE_BACK_SVG}
-                  cardColor="#111113"
+                  frontImage={faces.front}
+                  backImage={faces.back}
+                  cardColor="#0c1527"
+                  finish="satin"
+                  holder
+                  // Holder frame contrasts with the stage: frosted white on dark, cool slate on light.
+                  holderColor={dark ? "#dfe6f2" : "#8e98a8"}
                   strapLength={0.55}
                   strapColor="#141416"
                   strapWidth={0.55}
@@ -145,7 +177,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                   elasticity={0.45}
                   breeze={0.35}
                   interactive={true}
-                  intro={true}
+                  intro="drop"
                 />
               </div>
             ) : null}
@@ -158,111 +190,165 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             </div>
           </div>
 
-          {/* Profile */}
-          <div className="flex min-h-0 w-full flex-col overflow-y-auto p-7 sm:p-9 lg:w-[56%] lg:px-10 lg:py-9">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 pr-10">
+          {/* Panel: only what the badge and the page do not already say. */}
+          <div className="flex min-h-0 w-full flex-col overflow-y-auto p-7 sm:p-9 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6">
+            <div className="flex flex-wrap items-center gap-2.5 pr-10">
               <span className="glass-pill inline-flex h-8 items-center gap-2 rounded-full pl-3 pr-3.5 text-[13px] font-medium text-fg">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
                 Open to Web Developer roles
               </span>
-              <span className="font-mono text-[12px] tabular-nums text-fg-subtle">
-                Phnom Penh · {PROFILE.timezoneLabel} (UTC+7)
+              <span className="inline-flex items-center gap-1.5 text-[12.5px] text-fg-subtle">
+                Local time
+                <span className="skeuo-well rounded-[6px] px-1.5 py-0.5 font-mono text-[12.5px] tabular-nums text-fg">
+                  {time ?? "--:--"}
+                </span>
+                {PROFILE.timezoneLabel}
               </span>
             </div>
 
-            <h2 className="mt-5 text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
+            <DialogTitle className="mt-4 text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
               {PROFILE.name}
-            </h2>
-            <p className="mt-2 text-[15px] text-fg-muted">
-              Junior Web Developer · Norton University, 4th year
+            </DialogTitle>
+            <p className="mt-1.5 text-[15px] text-fg-muted">
+              Software Development student at Norton University
             </p>
 
-            <p className="mt-5 max-w-[62ch] shrink-0 text-[14.5px] leading-[1.65] text-fg-muted">
-              {PROFILE.bio[0]}
-            </p>
+            {/* Where he is heading: the one bio line no section repeats. */}
+            <figure className="mt-3.5 shrink-0">
+              {/* 13.5px keeps the owner's full goal sentence to three lines (owner request). */}
+              <blockquote className="text-pretty text-[13.5px] leading-[1.55] tracking-[-0.005em] text-fg">
+                <span aria-hidden="true" className="mr-0.5 text-fg-subtle">
+                  “
+                </span>
+                {GOAL}
+                <span aria-hidden="true" className="ml-0.5 text-fg-subtle">
+                  ”
+                </span>
+              </blockquote>
+            </figure>
 
-            <dl className="squircle [--r:14px] mt-6 grid shrink-0 gap-px overflow-hidden border border-[var(--edge)] bg-[var(--edge)] sm:grid-cols-2">
-              {FACTS.map((fact) => {
-                const Icon = fact.icon;
-                return (
-                  <div key={fact.title} className="flex items-start gap-3 bg-surface-2 p-4">
-                    <span
-                      aria-hidden="true"
-                      className={`squircle [--r:8px] grid h-8 w-8 shrink-0 place-items-center ${
-                        fact.gold ? "bg-gold text-white dark:text-bg" : "bg-fg text-bg"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4" strokeWidth={1.75} />
-                    </span>
-                    <div className="min-w-0">
-                      <dt className="text-[13.5px] font-medium leading-tight tracking-[-0.01em] text-fg">
-                        {fact.title}
-                      </dt>
-                      <dd className="mt-1 text-[12.5px] leading-snug text-fg-muted">{fact.sub}</dd>
-                      <dd className="mt-1.5 font-mono text-[11.5px] tabular-nums text-fg-subtle">
-                        {fact.meta}
-                      </dd>
-                    </div>
+            {/* Personal details as an ID data page: laminated security paper with the badge's
+                holographic seal. Nothing here appears anywhere else on the site. */}
+            <section aria-labelledby="profile-details" className="mt-5 shrink-0">
+              <h3 id="profile-details" className="text-[13px] font-medium text-fg-muted">
+                Details
+              </h3>
+              <div className="id-datapage squircle [--r:16px] relative mt-2 px-5 py-3.5">
+                <span
+                  aria-hidden="true"
+                  className="card-holo absolute bottom-4 right-4 grid h-8 w-8 place-items-center rounded-[8px]"
+                >
+                  <span className="font-poster text-[10.5px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
+                    SD
+                  </span>
+                </span>
+                <dl className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-6 gap-y-2.5">
+                  <div className="min-w-0">
+                    <dt className="text-[11.5px] text-fg-subtle">Address</dt>
+                    <dd className="mt-0.5 text-[14px] font-medium leading-snug tracking-[-0.01em] text-fg">
+                      {PROFILE.address}
+                    </dd>
                   </div>
-                );
-              })}
-            </dl>
+                  <div className="min-w-0">
+                    <dt className="text-[11.5px] text-fg-subtle">Date of birth</dt>
+                    <dd className="mt-0.5 font-mono text-[13.5px] tabular-nums text-fg">
+                      {PROFILE.birthDate}
+                    </dd>
+                  </div>
+                  <div className="col-span-2 min-w-0 pr-10">
+                    <dt className="text-[11.5px] text-fg-subtle">Languages</dt>
+                    <dd className="mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[14px] leading-snug text-fg">
+                      <span>
+                        <span lang="km" className="font-khmer font-medium">
+                          ខ្មែរ
+                        </span>{" "}
+                        <span className="text-fg-muted">Khmer · native</span>
+                      </span>
+                      <span>
+                        <span className="font-medium">English</span>{" "}
+                        <span className="text-fg-muted">· good working proficiency</span>
+                      </span>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </section>
 
-            <div className="mt-auto shrink-0 pt-6">
-              <div className="flex flex-wrap items-center gap-2.5">
+            {/* Contact console: one grouped list, every way to reach him. */}
+            <h3 className="mt-5 text-[13px] font-medium text-fg-muted">Reach me</h3>
+            <ul className="tactile squircle [--r:16px] mt-2 grid shrink-0 divide-y divide-[var(--line)] overflow-hidden">
+              <li className={`${ROW}`}>
+                <Tile className="icon-tile">
+                  <Mail className="h-4 w-4" strokeWidth={1.75} />
+                </Tile>
+                <a
+                  href={`mailto:${PROFILE.email}`}
+                  className={`min-w-0 flex-1 rounded-sm ${FOCUS}`}
+                  aria-label={`Email ${PROFILE.email}`}
+                >
+                  <RowText label="Email" value={PROFILE.email} />
+                </a>
                 <button
                   type="button"
                   onClick={copyEmail}
-                  className={`btn-apple btn-apple-primary inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${FOCUS}`}
+                  className={`btn-apple skeuo-key inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-[12.5px] font-medium ${FOCUS}`}
                 >
                   {copied ? (
-                    <Check aria-hidden="true" strokeWidth={2} className="h-4 w-4" />
+                    <Check aria-hidden="true" strokeWidth={2.25} className="h-3.5 w-3.5" />
                   ) : (
-                    <Copy aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
+                    <Copy aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
                   )}
-                  <span aria-live="polite">{copied ? "Email copied" : "Copy email"}</span>
+                  <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
                 </button>
-                <a
-                  href={PROFILE.telegram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`btn-apple btn-apple-secondary inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${FOCUS}`}
-                >
-                  <SiTelegram aria-hidden="true" className="h-4 w-4 text-[#229ED9]" />
-                  Telegram
-                </a>
-                <a
-                  href={PROFILE.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`btn-apple btn-apple-secondary inline-flex h-11 items-center gap-2 rounded-full px-5 text-[14px] font-medium ${FOCUS}`}
-                >
-                  <SiGithub aria-hidden="true" className="h-4 w-4" />
-                  GitHub
-                </a>
-              </div>
+              </li>
+              <LinkRow
+                href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`}
+                label="Phone"
+                value={PROFILE.phone}
+                mono
+                tile={
+                  <Tile className="skeuo-gloss bg-[#34C759] text-white">
+                    <Phone className="h-4 w-4 fill-white" strokeWidth={1.5} />
+                  </Tile>
+                }
+              />
+              <LinkRow
+                href={PROFILE.telegram}
+                external
+                label="Telegram"
+                value={PROFILE.telegramHandle}
+                tile={
+                  <Tile className="skeuo-gloss bg-[#26A5E4] text-white">
+                    <SiTelegram className="h-[18px] w-[18px]" />
+                  </Tile>
+                }
+              />
+              <LinkRow
+                href={PROFILE.github}
+                external
+                label="GitHub"
+                value={`github.com/${PROFILE.githubHandle}`}
+                tile={
+                  <Tile className="icon-tile">
+                    <SiGithub className="h-4 w-4" />
+                  </Tile>
+                }
+              />
+              {hasCv ? (
+                <LinkRow
+                  href={CV_HREF}
+                  external
+                  label="Résumé"
+                  value="Download CV (PDF)"
+                  tile={
+                    <Tile className="icon-tile-light text-fg">
+                      <FileText className="h-4 w-4" strokeWidth={1.75} />
+                    </Tile>
+                  }
+                />
+              ) : null}
+            </ul>
 
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]">
-                <a
-                  href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`}
-                  className="inline-flex items-center gap-1.5 font-mono tabular-nums text-fg-muted transition-colors duration-150 hover:text-fg"
-                >
-                  <Phone aria-hidden="true" strokeWidth={1.5} className="h-3.5 w-3.5" />
-                  {PROFILE.phone}
-                </a>
-                <span className="text-fg-subtle">{PROFILE.email}</span>
-                {hasCv ? (
-                  <a
-                    href={CV_HREF}
-                    {...getCvLinkProps()}
-                    className="inline-flex items-center gap-1.5 font-medium text-gold-ink underline-offset-4 hover:underline dark:text-gold"
-                  >
-                    <FileText aria-hidden="true" strokeWidth={1.5} className="h-3.5 w-3.5" />
-                    Download CV
-                  </a>
-                ) : null}
-              </div>
-            </div>
           </div>
         </div>
       </DialogContent>

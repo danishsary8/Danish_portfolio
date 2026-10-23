@@ -555,7 +555,7 @@ function AppleLayerSection() {
                 <SkillIcon
                   name={tech}
                   className="h-4 w-4"
-                  style={{ color: themedSkillColor(tech, dark) }}
+                  style={{ color: themedSkillColor(tech) }}
                 />
                 {tech}
               </li>

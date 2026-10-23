@@ -108,9 +108,17 @@ const LIGHT_OVERRIDES: Record<string, string> = {
   "Local Storage": "#B45309",
 };
 
-/** Brand colour tuned for the active theme, so every mark stays visible. */
-export function themedSkillColor(name: string, dark: boolean): string {
-  return (!dark && LIGHT_OVERRIDES[name]) || getSkillColor(name);
+/**
+ * Brand colour tuned for the active theme, so every mark stays visible. Marks with a light-theme
+ * shade resolve through CSS variables keyed on the `dark` class (styles.css), so the server render
+ * is right for both themes before hydration.
+ */
+export function themedSkillColor(name: string): string {
+  return LIGHT_OVERRIDES[name] ? `var(--brand-${slug(name)})` : getSkillColor(name);
+}
+
+function slug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }
 
 export function getSkillGlow(name: string): string {
