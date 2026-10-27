@@ -1,75 +1,18 @@
-import { lazy, Suspense, useEffect, useState } from "react";
-import { useTheme } from "@/lib/use-theme";
-
-// React Bits Particles (WebGL2). Loaded lazily so it never weighs on first paint.
-const Particles = lazy(() => import("@/components/ui/Particles"));
-
-// Monochrome, white to black (owner request). Each theme takes the half of the ramp that reads
-// against its canvas: on dark the brightest dots are nearest white and the rest recede into grey;
-// on light the same field is printed in ink, from near-black out to soft grey.
-const DARK_PARTICLES = ["#ffffff", "#f4f4f5", "#d4d4d8", "#a1a1aa", "#71717a"];
-const LIGHT_PARTICLES = ["#0a0a0b", "#27272a", "#3f3f46", "#52525b", "#71717a"];
-
-type IdleWindow = Window & {
-  requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-  cancelIdleCallback?: (id: number) => void;
-};
-
-// Client-only: nothing renders on the server or before hydration, so the theme read below can
-// never cause a hydration mismatch or a theme flash. Browsers without WebGL2 (and jsdom) keep
-// the plain gradient backdrop.
-function ParticleField() {
-  const { dark } = useTheme();
-  const [ready, setReady] = useState(false);
-  const [still, setStill] = useState(false);
-
-  useEffect(() => {
-    if (typeof window.WebGL2RenderingContext === "undefined") return;
-
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncMotion = () => setStill(motion.matches);
-    syncMotion();
-    motion.addEventListener("change", syncMotion);
-
-    // Start the field after the hero entrance has had the main thread.
-    const w = window as IdleWindow;
-    let idleId = 0;
-    let timerId = 0;
-    if (w.requestIdleCallback) idleId = w.requestIdleCallback(() => setReady(true), { timeout: 1500 });
-    else timerId = window.setTimeout(() => setReady(true), 300);
-
-    return () => {
-      motion.removeEventListener("change", syncMotion);
-      if (idleId) w.cancelIdleCallback?.(idleId);
-      if (timerId) window.clearTimeout(timerId);
-    };
-  }, []);
-
-  if (!ready) return null;
-
-  return (
-    <Suspense fallback={null}>
-      <Particles
-        particleColors={dark ? DARK_PARTICLES : LIGHT_PARTICLES}
-        particleCount={200}
-        particleSpread={10}
-        speed={0.1}
-        particleBaseSize={35}
-        sizeRandomness={1}
-        glow={dark ? 0.5 : 0.2}
-        twinkle={0.3}
-        shimmer={0}
-        opacity={dark ? 0.9 : 0.75}
-        moveParticlesOnHover={false}
-        hoverEffect="parallax"
-        disableRotation
-        clickBurst={false}
-        intro={false}
-        paused={still}
-      />
-    </Suspense>
-  );
-}
+// Pure CSS starlight motes configuration for smooth ambient drift (Dark mode only)
+const MOTES = [
+  { top: "12%", left: "18%", size: 3, delay: "0s", duration: "18s", opacity: 0.45 },
+  { top: "22%", left: "75%", size: 2.5, delay: "3s", duration: "22s", opacity: 0.5 },
+  { top: "35%", left: "42%", size: 3.5, delay: "6s", duration: "25s", opacity: 0.4 },
+  { top: "48%", left: "88%", size: 2, delay: "1s", duration: "20s", opacity: 0.35 },
+  { top: "60%", left: "15%", size: 3, delay: "4s", duration: "24s", opacity: 0.4 },
+  { top: "72%", left: "62%", size: 2.5, delay: "7s", duration: "26s", opacity: 0.38 },
+  { top: "85%", left: "30%", size: 3, delay: "2s", duration: "19s", opacity: 0.42 },
+  { top: "18%", left: "90%", size: 2, delay: "5s", duration: "21s", opacity: 0.3 },
+  { top: "42%", left: "8%", size: 2.5, delay: "8s", duration: "23s", opacity: 0.35 },
+  { top: "68%", left: "82%", size: 3, delay: "3.5s", duration: "27s", opacity: 0.4 },
+  { top: "92%", left: "70%", size: 2, delay: "6.5s", duration: "20s", opacity: 0.3 },
+  { top: "8%", left: "50%", size: 2.5, delay: "1.5s", duration: "24s", opacity: 0.45 },
+];
 
 // The theme layers are chosen in CSS from the `dark` class, which the inline head script sets
 // before first paint. (Choosing them from React state rendered the dark layer on the server for
@@ -108,9 +51,27 @@ export function PortfolioBackground() {
         }}
       />
 
-      {/* Drifting particle field over the gradients, behind all content (main is z-10). */}
-      <div className="absolute inset-0">
-        <ParticleField />
+      {/* Ultra-Lightweight CSS Ambient Starlight Motes (Active ONLY in dark theme to avoid dirt/speckle artifacts) */}
+      <div className="absolute inset-0 hidden dark:block">
+        <div className="absolute inset-0 motion-reduce:hidden">
+          {MOTES.map((m, idx) => (
+            <span
+              key={idx}
+              className="absolute rounded-full transition-opacity duration-700"
+              style={{
+                top: m.top,
+                left: m.left,
+                width: `${m.size}px`,
+                height: `${m.size}px`,
+                backgroundColor: "rgba(201, 151, 58, 0.75)",
+                boxShadow: "0 0 8px 1px rgba(201, 151, 58, 0.55)",
+                opacity: m.opacity,
+                animation: `floatMote ${m.duration} ease-in-out infinite`,
+                animationDelay: m.delay,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
