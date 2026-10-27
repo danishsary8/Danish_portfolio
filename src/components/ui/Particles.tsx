@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import './Particles.css';
 
 const SHAPES = { circle: 0, square: 1, ring: 2, sparkle: 3 };
@@ -280,6 +281,41 @@ const easeOut = t => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
 
 const wrap = (value, span) => ((value % span) + span) % span;
 
+// Local addition: public prop types (the upstream JS file is untyped and kept under @ts-nocheck).
+export interface ParticlesProps {
+  particleCount?: number;
+  particleSpread?: number;
+  speed?: number;
+  particleColors?: string[];
+  moveParticlesOnHover?: boolean;
+  particleHoverFactor?: number;
+  alphaParticles?: boolean;
+  particleBaseSize?: number;
+  sizeRandomness?: number;
+  cameraDistance?: number;
+  disableRotation?: boolean;
+  pixelRatio?: number;
+  shape?: 'circle' | 'square' | 'ring' | 'sparkle';
+  glow?: number;
+  twinkle?: number;
+  depthOfField?: number;
+  connections?: boolean;
+  connectionDistance?: number;
+  hoverEffect?: 'parallax' | 'repel' | 'attract';
+  hoverRadius?: number;
+  clickBurst?: boolean;
+  drift?: 'none' | 'up' | 'down' | 'forward';
+  driftSpeed?: number;
+  variation?: number;
+  intro?: boolean;
+  opacity?: number;
+  lightMode?: boolean;
+  shimmer?: number;
+  paused?: boolean;
+  className?: string;
+  style?: CSSProperties;
+}
+
 const Particles = ({
   particleCount = 200,
   particleSpread = 10,
@@ -308,12 +344,14 @@ const Particles = ({
   intro = true,
   opacity = 1,
   lightMode = false,
+  // Local addition: colour shimmer strength (0 keeps a monochrome palette untinted).
+  // Defaults to the upstream behaviour: 1 in dark mode, 0 in light mode.
+  shimmer,
   paused = false,
   className = '',
   style
-}) => {
+}: ParticlesProps) => {
   const containerRef = useRef(null);
-  const canvasRef = useRef(null);
   const wakeRef = useRef(null);
   const palette = (Array.isArray(particleColors) ? particleColors : [particleColors]).filter(Boolean).map(String);
   const settings = {
@@ -344,6 +382,7 @@ const Particles = ({
     intro,
     opacity: clamp(opacity, 0, 1),
     lightMode,
+    shimmer: shimmer === undefined ? (lightMode ? 0 : 1) : clamp(shimmer, 0, 1),
     paused
   };
   const settingsRef = useRef(settings);
@@ -351,19 +390,30 @@ const Particles = ({
 
   useEffect(() => {
     const container = containerRef.current;
-    const canvas = canvasRef.current;
-    const gl = canvas?.getContext('webgl2', {
+    if (!container) return undefined;
+    // Local change: a fresh canvas per mount. The cleanup below loses the WebGL context, and a
+    // canvas keeps its (lost) context forever, so reusing one canvas across a StrictMode/HMR
+    // remount left the layer blank.
+    const canvas = document.createElement('canvas');
+    canvas.className = 'particles-canvas';
+    canvas.setAttribute('aria-hidden', 'true');
+    const gl = canvas.getContext('webgl2', {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       depth: false,
-      stencil: false
+      stencil: false,
+      powerPreference: 'low-power'
     });
-    if (!container || !canvas || !gl) return undefined;
+    if (!gl) return undefined;
 
     const dots = link(gl, PARTICLE_VERTEX, PARTICLE_FRAGMENT);
     const lines = link(gl, LINE_VERTEX, LINE_FRAGMENT);
-    if (!dots || !lines) return undefined;
+    if (!dots || !lines) {
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      return undefined;
+    }
+    container.appendChild(canvas);
 
     const corners = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, corners);
@@ -456,6 +506,7 @@ const Particles = ({
     let raf = 0;
     let last = 0;
     let visible = true;
+    let lost = false;
 
     const rebuild = s => {
       const key = `${s.count}|${s.variation}|${s.colors.join(',')}|${s.lightMode ? 1 : 0}`;
@@ -653,6 +704,7 @@ const Particles = ({
     };
 
     const render = () => {
+      if (lost) return;
       const s = settingsRef.current;
       rebuild(s);
       const matrix = rotationOf(s);
@@ -710,7 +762,7 @@ const Particles = ({
       gl.uniform1i(u.uBurstCount, burstCount);
       gl.uniform1f(u.uReveal, state.reveal);
       gl.uniform1f(u.uSoft, s.soft ? 0.2 : 0);
-      gl.uniform1f(u.uShimmer, s.lightMode ? 0 : 1);
+      gl.uniform1f(u.uShimmer, s.shimmer);
       gl.uniform1f(u.uOpacity, s.opacity);
       gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, cloud.count);
       gl.bindVertexArray(null);
@@ -756,8 +808,18 @@ const Particles = ({
     };
 
     const wake = () => {
-      if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame);
+      if (!raf && !lost && visible && !document.hidden) raf = requestAnimationFrame(frame);
     };
+
+    // Local addition: if the GPU drops the context (driver reset, too many contexts), stop drawing
+    // and leave the transparent canvas; whatever sits underneath stays as the backdrop.
+    const onContextLost = event => {
+      event.preventDefault();
+      lost = true;
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    canvas.addEventListener('webglcontextlost', onContextLost);
 
     const resize = () => {
       const s = settingsRef.current;
@@ -857,12 +919,16 @@ const Particles = ({
       window.removeEventListener('pointercancel', onPointerUp);
       document.documentElement.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
-      gl.deleteProgram(dots.program);
-      gl.deleteProgram(lines.program);
-      [corners, positionBuffer, randomBuffer, colorBuffer, lineBuffer].forEach(buffer => gl.deleteBuffer(buffer));
-      gl.deleteVertexArray(dotVao);
-      gl.deleteVertexArray(lineVao);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      if (!lost) {
+        gl.deleteProgram(dots.program);
+        gl.deleteProgram(lines.program);
+        [corners, positionBuffer, randomBuffer, colorBuffer, lineBuffer].forEach(buffer => gl.deleteBuffer(buffer));
+        gl.deleteVertexArray(dotVao);
+        gl.deleteVertexArray(lineVao);
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      }
+      canvas.remove();
     };
   }, []);
 
@@ -870,11 +936,7 @@ const Particles = ({
     wakeRef.current?.();
   });
 
-  return (
-    <div ref={containerRef} className={`particles-container${className ? ` ${className}` : ''}`} style={style}>
-      <canvas ref={canvasRef} className="particles-canvas" aria-hidden="true" />
-    </div>
-  );
+  return <div ref={containerRef} className={`particles-container${className ? ` ${className}` : ''}`} style={style} />;
 };
 
 export default Particles;

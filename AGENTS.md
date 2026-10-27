@@ -63,6 +63,8 @@ Product truth lives in `PRODUCT.md` (from the CV `public/sary-danish-cv.pdf`).
 
 **Theme flash fix:** server-rendered markup must not depend on `useTheme()` (its server snapshot is dark, so light visitors saw dark visuals until hydration). Theme-specific visuals resolve in CSS from the `dark` class the head script sets: `PortfolioBackground` layers use `dark:` classes; the nav passes CSS variables (`--nav-tint`, `--nav-pill-ink`, `--sl-c-*`, `--gold`; PillNav `theme="auto"` reads the `--pnx-*` palette) and renders both Sun and Moon icons; brand marks with a light shade use `--brand-*` vars (`themedSkillColor(name)`). Profile modal goal quote is regular weight (owner request).
 
+**Background particles (owner request):** `PortfolioBackground` layers React Bits `Particles` (`src/components/ui/Particles.tsx`, already installed from `@react-bits/Particles-JS-CSS`; do not reinstall, the shadcn add would overwrite the local changes) over the two theme gradients, replacing the old gold CSS motes. Owner config: 200 particles, spread 10, speed 0.1, base size 35, glow 0.5, twinkle 0.3, no rotation, no hover movement, no click burst. Colours are monochrome white to black: dark theme `#ffffff` to `#71717a` (opacity 0.9), light theme `#0a0a0b` to `#71717a` in ink (opacity 0.75, glow 0.2); `shimmer={0}` keeps them untinted. Client-only: mounts after hydration on idle, lazy-loaded chunk, skipped without WebGL2 (and in jsdom), canvas fades in over 1.4s (`intro` off), theme toggle re-tints live, reduced motion draws one still frame (`paused`). Local changes in `Particles.tsx`: typed `ParticlesProps`, `shimmer` prop, a fresh canvas per mount (StrictMode/HMR remounts used to reuse a lost context and go blank), `webglcontextlost` stops the loop.
+
 **Shared:** `SECTION` + `SectionHeader` in `Reveal.tsx` (title left, lede right). Content fixed to CV: no TypeScript/SQLite claims, Loomora has no "streaks", award organiser not stated.
 
 **Decisions:** role title "Junior Web Developer" (full-stack shown in pitch); availability "Open to Web Developer roles"; audience = local hiring teams in Phnom Penh; no TypeScript claim (not on CV).
@@ -115,7 +117,7 @@ Every component, layout, and interaction must pass through this orchestration ma
 
 1. **`reactbits dev` MCP Server**
    - **What to Pull:** Kinetic typography primitives, subtle magnetic button wrappers, decrypted/tabular text reveal mechanics for technical telemetry strings, and smooth scroll-linked layout helpers.
-   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds, or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into this portfolio's monochrome surface, line, and text tokens, with gold used only as an accent.
+   - **What to Reject (Anti-AI Filter):** Never pull neon glow borders, rainbow text shaders, floating particle backgrounds (one owner-approved exception: the site-wide `Particles` field, see the phase log), or `SpotlightCard` radial cursor gradients. Every primitive pulled from `reactbits dev` must be restyled into this portfolio's monochrome surface, line, and text tokens, with gold used only as an accent.
 
 2. **`21st` (`21st.dev`) MCP Server**
    - **What to Pull:** High-craft structural layout inspiration, interactive data tables, list rows, and flat panel patterns.
@@ -146,7 +148,7 @@ The portfolio uses a calm, high-craft, Linear-inspired look: monochrome greys, o
 10. **Fonts:** Geist and Geist Mono (plus Kantumruy Pro for Khmer). **Exception (owner request):** Plus Jakarta Sans (`--font-poster` / `font-poster`) for the name on the hero portrait card only. Never `Cormorant`, `Playfair Display`, `Space Grotesk`, `DM Sans`, or `Inter`.
 11. **Monochrome + one accent:** Gold (`--gold` / `--gold-ink`) is reserved for the status dot, award markers, and gold text. No terracotta, rust, indigo, violet, or cyan. **Exception (owner request):** tech-stack brand marks may use their real brand colour (`getSkillColor`) on the icon and as a faint hover tint; never on text or glows.
 12. **Apple layer (owner request, Hero first):** use the classes in `styles.css`, never ad-hoc values. `.squircle` + `--r` for continuous corners (progressive `corner-shape`); `.glass-pill` frosted capsule only where it floats over the hero glow; `.tactile` (specular top edge + inner shade) for chips, frames, secondary controls; `.btn-apple-primary` / `.btn-apple-secondary` for buttons (specular edge + `--shadow-contact`, `scale(0.97)` press). Contact shadows ≤2px are allowed on these controls; large shadows stay floating-only. Data rows/ledgers stay flat. Legacy `.ios-glass-*` belongs to nav/chatbot — don't reuse it for new work.
-13. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders.
+13. **ZERO Template Gimmicks:** No typewriter loops, cursor-following glow borders, particles, or rainbow shaders. **Exception (owner request):** the one monochrome React Bits `Particles` field behind the whole page (`PortfolioBackground`); no other particle effects.
 
 ---
 
