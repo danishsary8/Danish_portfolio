@@ -89,6 +89,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const time = useLocalTime(PROFILE.timezone);
   const [copied, setCopied] = useState(false);
   const [faces, setFaces] = useState<{ front: string; back: string } | null>(null);
+  const [lanyardVisible, setLanyardVisible] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -119,7 +120,17 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   }, []);
 
   useEffect(() => {
-    if (open) ensureFaces();
+    if (!open) {
+      setLanyardVisible(false);
+      return;
+    }
+    ensureFaces();
+    // Allow the modal dialog popup animation to complete smoothly first at 60fps,
+    // then mount the 3D Lanyard so the card drops down smoothly without initial lag.
+    const t = window.setTimeout(() => {
+      setLanyardVisible(true);
+    }, 450);
+    return () => window.clearTimeout(t);
   }, [open]);
 
   const copyEmail = async () => {
@@ -155,7 +166,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               className="pointer-events-none absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.12)] dark:shadow-[inset_0_0_90px_rgba(0,0,0,0.55)]"
             />
 
-            {open && faces ? (
+            {open && faces && lanyardVisible ? (
               // The badge drops straight down from the clip and the strap catches it, in view.
               <div className="relative h-full w-full cursor-grab active:cursor-grabbing motion-safe:animate-in motion-safe:fade-in motion-safe:duration-500">
                 <Lanyard
@@ -180,7 +191,11 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               </div>
             ) : null}
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center">
+            <div
+              className={`pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center transition-opacity duration-300 ${
+                lanyardVisible ? "opacity-100" : "opacity-0"
+              }`}
+            >
               <span className="glass-pill inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] text-fg-muted">
                 <Move aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
                 Drag to swing · flick to flip
@@ -193,7 +208,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             <div className="flex flex-wrap items-center gap-2.5 pr-10">
               <span className="glass-pill inline-flex h-8 items-center gap-2 rounded-full pl-3 pr-3.5 text-[13px] font-medium text-fg">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
-                Open to Web Developer roles
+                Available for Full-time Work
               </span>
               <span className="inline-flex items-center gap-1.5 text-[12.5px] text-fg-subtle">
                 Local time
