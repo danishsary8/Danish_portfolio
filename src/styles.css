@@ -1665,3 +1665,105 @@
   --brand-github: #ededef;
   --brand-local-storage: #f59e0b;
 }
+
+/* ------------------------------------------------------------------
+   About: soft neumorphism + light skeuomorphism (owner request, About only).
+   Surfaces share the page colour and get their form from a light/dark
+   shadow pair; a faint paper grain gives the quote card a material.
+   ------------------------------------------------------------------ */
+:root {
+  --neu-hi: rgba(255, 255, 255, 0.95);
+  --neu-lo: rgba(110, 86, 48, 0.17);
+  --neu-lo-soft: rgba(110, 86, 48, 0.11);
+}
+.dark {
+  --neu-hi: rgba(255, 255, 255, 0.045);
+  --neu-lo: rgba(0, 0, 0, 0.62);
+  --neu-lo-soft: rgba(0, 0, 0, 0.45);
+}
+.neu-raised {
+  background: var(--bg);
+  border: 1px solid color-mix(in oklab, var(--edge) 60%, transparent);
+  box-shadow:
+    -10px -10px 24px var(--neu-hi),
+    12px 14px 30px var(--neu-lo),
+    inset 0 1px 0 var(--specular);
+}
+.neu-inset {
+  background: color-mix(in oklab, var(--bg) 92%, var(--surface-1));
+  border: 1px solid color-mix(in oklab, var(--edge) 50%, transparent);
+  box-shadow:
+    inset 5px 5px 12px var(--neu-lo-soft),
+    inset -5px -5px 12px var(--neu-hi);
+}
+/* Small raised key that sinks into the surface on hover/press. */
+.neu-key {
+  background: var(--bg);
+  border: 1px solid color-mix(in oklab, var(--edge) 60%, transparent);
+  box-shadow:
+    -5px -5px 12px var(--neu-hi),
+    6px 7px 14px var(--neu-lo);
+  transition:
+    box-shadow 220ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .neu-key:hover {
+    box-shadow:
+      inset 4px 4px 10px var(--neu-lo-soft),
+      inset -4px -4px 10px var(--neu-hi);
+  }
+}
+.neu-key:active {
+  transform: scale(0.98);
+}
+.neu-paper {
+  position: relative;
+  isolation: isolate;
+}
+.neu-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.35;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.45  0 0 0 0 0.38  0 0 0 0 0.28  0 0 0 0.09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.dark .neu-paper::before {
+  opacity: 0.6;
+  mix-blend-mode: soft-light;
+}
+@media (prefers-reduced-motion: reduce) {
+  .neu-key:active {
+    transform: none;
+  }
+}
+
+/* ScrollReveal (React Bits behaviour, CSS-driven): each word of the quote goes
+   from faint and blurred to sharp as the quote scrolls through the viewport.
+   Only under html.js and where scroll-driven animations exist; off under
+   reduced motion. Without support the quote is simply fully visible. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .js .scroll-reveal {
+      view-timeline-name: --scroll-reveal;
+    }
+    .js .scroll-reveal-word {
+      animation: scroll-reveal-word linear both;
+      animation-timeline: --scroll-reveal;
+      animation-range: cover calc(8% + var(--p) * 30%) cover calc(18% + var(--p) * 30%);
+    }
+  }
+}
+@keyframes scroll-reveal-word {
+  from {
+    opacity: 0.16;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
