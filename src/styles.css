@@ -1693,21 +1693,17 @@
   }
 }
 
-/* About portrait: the text ring turns slowly (one turn / 40s) and pauses on hover.
-   Off under reduced motion. */
-.about-ring {
-  animation: about-ring-spin 40s linear infinite;
-  transform-origin: 50% 50%;
+/* About slideshow: columns slide in from opposite sides, like a slide transition. */
+.js [data-reveal].slide-from-left:not([data-visible]) {
+  transform: translateX(-48px);
 }
-@media (hover: hover) and (pointer: fine) {
-  .about-portrait:hover .about-ring {
-    animation-play-state: paused;
-  }
+.js [data-reveal].slide-from-right:not([data-visible]) {
+  transform: translateX(48px);
 }
-@keyframes about-ring-spin {
-  to {
-    transform: rotate(360deg);
-  }
+.js [data-reveal].slide-from-left,
+.js [data-reveal].slide-from-right {
+  transition-duration: 700ms;
+  transition-delay: calc(var(--i, 0) * 90ms);
 }
 /* "Right now" track: the backend bar draws in once its widget is revealed. */
 .about-track-fill {
@@ -1718,8 +1714,9 @@
   transform: scaleX(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .about-ring {
-    animation: none;
+  .js [data-reveal].slide-from-left:not([data-visible]),
+  .js [data-reveal].slide-from-right:not([data-visible]) {
+    transform: none;
   }
   .about-track-fill {
     transition: none;
