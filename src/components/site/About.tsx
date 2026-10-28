@@ -1,7 +1,5 @@
-import type { CSSProperties, ReactNode } from "react";
-import { Check, Code2, LayoutGrid, ShieldCheck } from "lucide-react";
-import { PROFILE } from "@/content/portfolio";
-import { ASSETS } from "@/lib/assets";
+import type { CSSProperties } from "react";
+import { Check, GitBranch, LayoutGrid, ShieldCheck } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
@@ -12,66 +10,37 @@ const STATEMENT =
   "I enjoy turning practical problems and business ideas into working software, as a collaborative teammate or an independent builder.";
 
 // Paraphrase of PROFILE.goal (the modal quotes the original), so the two never repeat.
+// Where he is heading (never PROFILE.goal wording; the modal quotes that).
 const GOAL =
-  "Next, I want to grow into an engineer who ships complete, real-world products that people find genuinely useful.";
+  "Where I’m heading: owning features end to end, from the first sketch to a release people rely on every day.";
 
 const PRINCIPLES = [
-  { icon: LayoutGrid, term: "Effortless interfaces", detail: "Semantic, touch-friendly layouts that hold up on any screen." },
-  { icon: ShieldCheck, term: "Trustworthy APIs", detail: "JWT sessions, OTP checks, Google sign-in, role-based access." },
-  { icon: Code2, term: "Code a team can keep", detail: "Feature branches, reviewed PRs and tidy data models." },
+  { icon: LayoutGrid, term: "Interfaces that feel effortless", detail: "Semantic, touch-friendly, any screen." },
+  { icon: ShieldCheck, term: "APIs you can trust", detail: "JWT, OTP, Google sign-in, roles." },
+  { icon: GitBranch, term: "Code a team can keep", detail: "Branches, reviewed PRs, tidy models." },
 ] as const;
 
-function Tile({ children, label }: { children: ReactNode; label: string }) {
-  return (
-    <span
-      title={label}
-      className="tactile squircle [--r:18px] grid h-full w-full place-items-center bg-surface-2"
-    >
-      {children}
-    </span>
-  );
-}
+// Tools only around the orbit (owner: no photo, no school logos).
+const TECH = ["React", "JavaScript", "Laravel", "PHP", "PostgreSQL", "Tailwind CSS", "Docker", "Git"] as const;
 
-const TECH = ["React", "Laravel", "PostgreSQL", "Tailwind CSS"] as const;
-const ORGS = [
-  ["norton", "Norton University"],
-  ["etec", "ETEC"],
-  ["kru", "KruITSolution"],
-  ["ace", "ACE"],
-] as const;
-
-// Alternate places and tools around the orbit.
-const ORBIT_ITEMS = ORGS.flatMap(([org, label], i) => {
-  const tech = TECH[i] as string;
-  return [
-  <Tile key={org} label={label}>
-    <OrgLogo org={org} size={44} />
-  </Tile>,
-  <Tile key={tech} label={tech}>
-    <SkillIcon name={tech} className="h-8 w-8" style={{ color: themedSkillColor(tech) }} />
-  </Tile>,
-  ];
-});
+const ORBIT_ITEMS = TECH.map((tech) => (
+  <span
+    key={tech}
+    title={tech}
+    className="tactile squircle [--r:18px] grid h-full w-full place-items-center bg-surface-2"
+  >
+    <SkillIcon name={tech} className="h-7 w-7" style={{ color: themedSkillColor(tech) }} />
+  </span>
+));
 
 function OrbitCenter() {
   return (
-    <div className="relative h-[168px] w-[168px] rounded-full p-1.5 tactile frame-float">
-      <div className="h-full w-full overflow-hidden rounded-full bg-surface-1">
-        <img
-          src={ASSETS.profile.photo}
-          alt={`Portrait of ${PROFILE.name}`}
-          width={680}
-          height={850}
-          decoding="async"
-          loading="lazy"
-          className="h-full w-full origin-[50%_42%] scale-[1.22] object-cover object-[50%_76%]"
-        />
+    <div className="tactile frame-float squircle [--r:28px] grid h-[132px] w-[132px] place-items-center bg-surface-2 text-center">
+      <div>
+        <p className="font-poster text-[30px] font-extrabold leading-none tracking-[-0.03em] text-fg">Full</p>
+        <p className="font-poster text-[30px] font-extrabold leading-none tracking-[-0.03em] text-fg">stack</p>
+        <p className="mt-2 font-mono text-[10.5px] text-fg-subtle">UI → API → DB</p>
       </div>
-      <span
-        role="img"
-        aria-label="Available for work"
-        className="absolute bottom-[10%] right-[10%] h-4 w-4 rounded-full bg-gold shadow-[0_0_0_4px_var(--bg)]"
-      />
     </div>
   );
 }
@@ -91,28 +60,30 @@ export function About() {
           <OrbitImages
             images={ORBIT_ITEMS}
             shape="ellipse"
-            radiusX={200}
-            radiusY={70}
+            radiusX={235}
+            radiusY={95}
             rotation={-10}
             duration={32}
-            itemSize={64}
+            itemSize={62}
             depth={0.6}
             showPath
-            height={340}
+            height={420}
             centerContent={<OrbitCenter />}
           />
-          <p className="mt-1 text-center font-mono text-[11.5px] tabular-nums text-fg-subtle">
-            Where I learned · what I build with
-          </p>
         </Reveal>
 
         {/* Right: heading, statement, then the two widgets */}
         <div>
           <Reveal className="slide-from-right">
-            <h2 id="about-title" className="text-[28px] font-semibold tracking-[-0.03em] text-fg">
-              About
+            <h2
+              id="about-title"
+              className="text-[32px] font-semibold leading-[1.05] tracking-[-0.035em] text-fg sm:text-[40px] lg:text-[48px]"
+            >
+              <span className="mask-rise">
+                <span>About</span>
+              </span>
             </h2>
-            <blockquote className="scroll-reveal m-0 mt-4 text-balance text-[25px] font-medium leading-[1.25] tracking-[-0.025em] text-fg xl:text-[28px]">
+            <blockquote className="scroll-reveal m-0 mt-4 text-balance text-[23px] font-medium leading-[1.28] tracking-[-0.025em] text-fg xl:text-[26px]">
               {words.map((w, i) => (
                 <span
                   key={i}
@@ -124,79 +95,69 @@ export function About() {
                 </span>
               ))}
             </blockquote>
-            <p className="mt-4 max-w-[52ch] text-pretty text-[15px] leading-[1.6] text-fg-muted">{GOAL}</p>
+            <p className="mt-4 max-w-[52ch] border-l-2 border-gold/70 pl-4 text-pretty text-[15px] leading-[1.6] text-fg-muted">{GOAL}</p>
           </Reveal>
 
-          <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-            {/* Right now: live status widget */}
-            <Reveal index={1} className="slide-from-right">
-              <div className="tactile squircle [--r:22px] h-full p-5">
-                <p className="flex items-center gap-2 text-[12.5px] font-medium text-fg-subtle">
+          {/* One console: "Now" pane (ink) + how-I-work pane */}
+          <Reveal index={1} className="slide-from-right mt-6">
+            <div className="tactile squircle [--r:24px] grid overflow-hidden xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+              <div className="relative bg-fg p-5 text-bg">
+                <p className="flex items-center gap-2 text-[12px] font-medium opacity-70">
                   <span aria-hidden="true" className="relative flex h-2 w-2">
                     <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
                     <span className="relative h-2 w-2 rounded-full bg-gold" />
                   </span>
                   Right now
                 </p>
-                <div className="mt-3 flex items-center gap-3">
-                  <div className="flex shrink-0 -space-x-2">
-                    <OrgLogo org="etec" size={32} />
-                    <OrgLogo org="kru" size={32} className="ring-2 ring-surface-2" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[15.5px] font-semibold leading-tight tracking-[-0.015em] text-fg">
-                      Backend Developer Intern
-                    </p>
-                    <p className="text-[12.5px] text-fg-muted">ETEC &amp; KruITSolution</p>
-                  </div>
+                <p className="mt-2 text-[19px] font-semibold leading-tight tracking-[-0.02em]">
+                  Backend Developer Intern
+                </p>
+                <div className="mt-1 flex items-center gap-2 text-[12.5px]">
+                  <span className="flex -space-x-1.5">
+                    <OrgLogo org="etec" size={20} />
+                    <OrgLogo org="kru" size={20} />
+                  </span>
+                  <span className="opacity-70">ETEC &amp; KruITSolution</span>
                 </div>
-                <ol className="mt-4 grid grid-cols-2 gap-2" aria-label="Internship track">
-                  <li>
-                    <span aria-hidden="true" className="block h-1.5 rounded-full bg-fg/80" />
-                    <p className="mt-1.5 flex items-center gap-1 text-[12px] font-medium text-fg">
-                      <Check aria-hidden="true" strokeWidth={2.5} className="h-3 w-3 text-fg-subtle" />
-                      Frontend
-                    </p>
-                    <p className="font-mono text-[11px] tabular-nums text-fg-subtle">Jul – Oct 2026</p>
-                  </li>
-                  <li>
-                    <span aria-hidden="true" className="block h-1.5 overflow-hidden rounded-full bg-line-strong">
-                      <span className="about-track-fill block h-full w-[62%] rounded-full bg-gold" />
+                <ol className="mt-5 space-y-2.5" aria-label="Internship track">
+                  <li className="flex items-center gap-2.5 text-[12.5px]">
+                    <span className="grid h-5 w-5 place-items-center rounded-full bg-bg/15">
+                      <Check aria-hidden="true" strokeWidth={2.5} className="h-3 w-3" />
                     </span>
-                    <p className="mt-1.5 text-[12px] font-medium text-fg">Backend</p>
-                    <p className="font-mono text-[11px] tabular-nums text-fg-subtle">Oct 2026 – now</p>
+                    <span className="font-medium">Frontend</span>
+                    <span className="ml-auto font-mono text-[11px] tabular-nums opacity-60">Jul – Oct 2026</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-[12.5px]">
+                    <span className="grid h-5 w-5 place-items-center rounded-full ring-1 ring-gold">
+                      <span className="h-2 w-2 rounded-full bg-gold" />
+                    </span>
+                    <span className="font-medium">Backend</span>
+                    <span className="ml-auto font-mono text-[11px] tabular-nums opacity-60">Oct 2026 – now</span>
                   </li>
                 </ol>
-                <p className="mt-4 flex items-center gap-2 border-t border-line pt-3 text-[12.5px] text-fg-muted">
-                  <OrgLogo org="norton" size={22} />
-                  Also in my 4th year of Software Development
-                </p>
+                <span aria-hidden="true" className="mt-3 block h-1 overflow-hidden rounded-full bg-bg/15">
+                  <span className="about-track-fill block h-full w-[62%] rounded-full bg-gold" />
+                </span>
               </div>
-            </Reveal>
 
-            {/* How I work: compact grouped list */}
-            <Reveal index={2} className="slide-from-right">
-              <dl className="tactile squircle [--r:22px] h-full divide-y divide-line overflow-hidden">
+              <dl className="divide-y divide-line">
                 {PRINCIPLES.map(({ icon: Icon, term, detail }) => (
-                  <div
-                    key={term}
-                    className="group flex items-start gap-3 px-4 py-2.5 transition-colors duration-150 hover:bg-surface-1"
-                  >
+                  <div key={term} className="group flex items-center gap-3 px-5 py-3.5 transition-colors duration-150 hover:bg-surface-1">
                     <span
                       aria-hidden="true"
-                      className="icon-tile squircle [--r:9px] grid h-8 w-8 shrink-0 place-items-center transition-transform duration-200 ease-[var(--ease-out)] group-hover:-rotate-6"
+                      className="icon-tile-light squircle [--r:10px] grid h-9 w-9 shrink-0 place-items-center transition-transform duration-200 ease-[var(--ease-out)] group-hover:-rotate-6"
                     >
-                      <Icon strokeWidth={1.75} className="h-4 w-4" />
+                      <Icon strokeWidth={1.75} className="h-[17px] w-[17px]" />
                     </span>
                     <div className="min-w-0">
-                      <dt className="text-[13.5px] font-medium text-fg">{term}</dt>
-                      <dd className="text-[12.5px] leading-[1.45] text-fg-muted">{detail}</dd>
+                      <dt className="text-[14px] font-medium tracking-[-0.01em] text-fg">{term}</dt>
+                      <dd className="text-[12.5px] text-fg-muted">{detail}</dd>
                     </div>
                   </div>
                 ))}
               </dl>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
