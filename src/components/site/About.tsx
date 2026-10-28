@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Check, GitBranch, Languages, LayoutGrid, Plug } from "lucide-react";
+import { GitBranch, Languages, LayoutGrid, Plug } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
 import { PROFILE } from "@/content/portfolio";
@@ -99,26 +99,23 @@ export function About() {
           </Reveal>
           {/* Quick facts between the title and the orbit: languages, then availability */}
           <Reveal index={1} className="slide-from-left">
-            <dl className="mt-5 space-y-2 border-y border-line py-3 text-[13.5px]">
-              <div className="flex flex-wrap items-center gap-x-2">
+            <dl className="mt-5 space-y-3 border-y border-line py-4">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[13.5px]">
                 <dt className="sr-only">Languages</dt>
-                <Languages aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
-                <dd className="text-fg">
-                  <span lang="km" className="font-medium">ខ្មែរ</span> Khmer
-                  <span className="text-fg-muted"> · fluent</span>
+                <Languages aria-hidden="true" strokeWidth={1.75} className="-mr-2 h-4 w-4 text-fg-subtle" />
+                <dd className="text-fg-muted">
+                  <span lang="km" className="font-medium text-fg">ខ្មែរ Khmer</span> · fluent
                 </dd>
-                <dd className="ml-2 text-fg">
-                  <span className="font-medium">English</span>
-                  <span className="text-fg-muted"> · good working proficiency</span>
+                <dd className="text-fg-muted">
+                  <span className="font-medium text-fg">English</span> · good working proficiency
                 </dd>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <dt className="sr-only">Availability</dt>
-                <span aria-hidden="true" className="relative flex h-4 w-4 items-center justify-center">
-                  <span className="absolute h-2 w-2 rounded-full bg-[#34C759] opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
-                  <span className="relative h-2 w-2 rounded-full bg-[#34C759]" />
+                <span aria-hidden="true" className="grid h-4 w-4 place-items-center">
+                  <span className="about-live-dot relative h-2.5 w-2.5 rounded-full bg-[#34C759]" />
                 </span>
-                <dd className="font-medium text-fg">Open to full-time roles</dd>
+                <dd className="text-[16px] font-semibold tracking-[-0.01em] text-fg">Open to full-time roles</dd>
               </div>
             </dl>
           </Reveal>
@@ -172,40 +169,32 @@ export function About() {
                   <p className="text-[17px] font-semibold leading-tight tracking-[-0.015em] text-fg">
                     Developer Internship Trainee
                   </p>
-                  <p className="mt-0.5 text-[13px] text-fg-muted">ETEC &amp; KruITSolution · team tour booking platform</p>
+                  <p className="mt-0.5 text-[13px] text-fg-muted">ETEC &amp; KruITSolution</p>
                 </div>
                 <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-1 text-[12px] font-medium text-fg">
-                  <span aria-hidden="true" className="relative flex h-2 w-2">
-                    <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
-                    <span className="relative h-2 w-2 rounded-full bg-gold" />
-                  </span>
+                  <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                   Right now
                 </span>
               </div>
 
-              {/* Internship track: newest stage first, one clear row each */}
-              <ol aria-label="Internship track" className="border-t border-line px-5 py-3">
-                <li className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-start gap-x-3 py-1.5 [&>span:first-child]:mt-0.5">
-                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full ring-1 ring-gold">
-                    <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              {/* Internship track: in order, one clear row each; the current stage has the live dot */}
+              <ol aria-label="Internship track" className="relative border-t border-line px-5 py-4">
+                <span aria-hidden="true" className="absolute bottom-[34px] left-[27px] top-[30px] w-px bg-line-strong" />
+                <li className="relative grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3">
+                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-surface-2">
+                    <span className="h-2 w-2 rounded-full bg-fg-subtle" />
                   </span>
-                  <p className="text-[13.5px] text-fg">
-                    <span className="font-medium">Backend</span>
-                    <span className="text-fg-muted"> · in progress</span>
-                    <span className="block text-[12.5px] text-fg-muted">Building REST APIs alongside the product team</span>
-                  </p>
-                  <p className="font-mono text-[11.5px] tabular-nums text-fg-subtle">Oct 2026 – Present</p>
+                  <p className="text-[14px] font-medium text-fg">Frontend</p>
+                  <time className="rounded-md border border-line bg-surface-1 px-2 py-0.5 font-mono text-[12px] font-medium tabular-nums text-fg">Jul – Oct 2026</time>
+                  <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
                 </li>
-                <li className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-start gap-x-3 py-1.5 [&>span:first-child]:mt-0.5">
-                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-fg/80 text-bg">
-                    <Check strokeWidth={3} className="h-2.5 w-2.5" />
+                <li className="relative mt-4 grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3">
+                  <span aria-hidden="true" className="relative grid h-4 w-4 place-items-center rounded-full bg-surface-2">
+                    <span className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                   </span>
-                  <p className="text-[13.5px] text-fg">
-                    <span className="font-medium">Frontend</span>
-                    <span className="text-fg-muted"> · completed</span>
-                    <span className="block text-[12.5px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</span>
-                  </p>
-                  <p className="font-mono text-[11.5px] tabular-nums text-fg-subtle">Jul – Oct 2026</p>
+                  <p className="text-[14px] font-medium text-fg">Backend</p>
+                  <time className="rounded-md border border-line bg-surface-1 px-2 py-0.5 font-mono text-[12px] font-medium tabular-nums text-fg">Oct 2026 – Present</time>
+                  <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Building REST APIs alongside the team</p>
                 </li>
               </ol>
 

@@ -1746,3 +1746,29 @@
     opacity: 0.5;
   }
 }
+
+/* Live status dot (About): a soft green ring breathes out from the dot, forever but slowly. */
+.about-live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: inherit;
+  animation: about-live-pulse 2.2s var(--ease-out) infinite;
+}
+@keyframes about-live-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-live-dot::after {
+    animation: none;
+    opacity: 0;
+  }
+}
