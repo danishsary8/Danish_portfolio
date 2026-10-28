@@ -27,6 +27,8 @@ export interface OrbitImagesProps {
   /** Stage height; defaults to the orbit's own extent plus the item size. */
   height?: number;
   className?: string;
+  /** Pause the orbit while a fine pointer is over it. */
+  pauseOnHover?: boolean;
   /** Accessible names for image items (decorative when omitted). */
   alts?: string[];
 }
@@ -68,6 +70,7 @@ export function OrbitImages({
   height,
   className = "",
   alts,
+  pauseOnHover = false,
 }: OrbitImagesProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -86,11 +89,19 @@ export function OrbitImages({
     let last = performance.now();
     let phase = 0;
     let visible = true;
+    let hovered = false;
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const enter = () => (hovered = true);
+    const leave = () => (hovered = false);
+    if (pauseOnHover && fine) {
+      root.addEventListener("pointerenter", enter);
+      root.addEventListener("pointerleave", leave);
+    }
 
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      phase = (phase + (dt / duration) * TAU) % TAU;
+      if (!hovered) phase = (phase + (dt / duration) * TAU) % TAU;
       itemRefs.current.forEach((el, i) => {
         if (!el) return;
         const p = place(phase + (i / n) * TAU, rx, ry, tilt, depth);
@@ -113,8 +124,10 @@ export function OrbitImages({
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
+      root.removeEventListener("pointerenter", enter);
+      root.removeEventListener("pointerleave", leave);
     };
-  }, [n, rx, ry, tilt, depth, duration]);
+  }, [n, rx, ry, tilt, depth, duration, pauseOnHover]);
 
   return (
     <div
