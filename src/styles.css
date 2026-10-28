@@ -1725,3 +1725,24 @@
     transform: none;
   }
 }
+
+/* About orbit core: two hairline rings ripple out from the centre tile. */
+.about-core-ring {
+  animation: about-core-ripple 3.2s var(--ease-out) infinite;
+}
+@keyframes about-core-ripple {
+  from {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-core-ring {
+    animation: none;
+    opacity: 0.5;
+  }
+}
