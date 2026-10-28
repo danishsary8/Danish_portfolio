@@ -295,18 +295,18 @@
 
 .pill-nav__dot {
   position: absolute;
-  bottom: 2px;
+  bottom: 4px;
   left: 0;
-  width: 5px;
-  height: 5px;
-  margin-left: -2.5px;
+  width: 28px;
+  height: 2px;
+  margin-left: -14px;
   border-radius: 9999px;
   background: var(--pn-dot);
   box-shadow: 0 0 8px var(--pn-dot);
   opacity: 0;
   pointer-events: none;
   transition: background-color 0.3s ease;
-  will-change: transform, opacity;
+  will-change: transform, opacity, width;
 }
 
 .pill-nav[data-dot-lit] .pill-nav__dot {

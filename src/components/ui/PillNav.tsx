@@ -36,7 +36,7 @@ export interface PillNavProps {
   surface?: "glass" | "solid" | "none";
   itemStyle?: "pill" | "default";
   hoverEffect?: "fill" | "glide";
-  indicator?: "dot" | "pill";
+  indicator?: "dot" | "pill" | "underline";
   highlightColor?: string;
   highlightTextColor?: string;
   barColor?: string;
@@ -181,7 +181,7 @@ export const PillNav: React.FC<PillNavProps> = ({
   surface = "glass",
   itemStyle = "pill",
   hoverEffect = "fill",
-  indicator = "dot",
+  indicator = "underline",
   highlightColor,
   highlightTextColor,
   barColor,
@@ -285,7 +285,9 @@ export const PillNav: React.FC<PillNavProps> = ({
       press: 1,
       pressVelocity: 0,
       dotX: 0,
+      dotWidth: 0,
       dotVelocity: 0,
+      dotWidthVelocity: 0,
       dotAlpha: 0,
       hover: -1,
       focus: false,
@@ -294,7 +296,7 @@ export const PillNav: React.FC<PillNavProps> = ({
       waiting: slideRef.current && !reduce,
     };
     slideRef.current = false;
-    const rects: { left: number; width: number }[] = [];
+    const rects: { left: number; width: number; textWidth?: number }[] = [];
     let trackWidth = 0;
     let trackHeight = 0;
     let raf = 0;
@@ -307,7 +309,13 @@ export const PillNav: React.FC<PillNavProps> = ({
       trackHeight = track.offsetHeight;
       slotRefs.current.forEach((slot, index) => {
         if (!slot) return;
-        rects[index] = { left: slot.offsetLeft, width: slot.offsetWidth };
+        const textSpan = slot.querySelector(`.${FACE} span`) as HTMLElement | null;
+        const textWidth = textSpan && textSpan.offsetWidth > 0 ? textSpan.offsetWidth : Math.round(slot.offsetWidth * 0.65);
+        rects[index] = {
+          left: slot.offsetLeft,
+          width: slot.offsetWidth,
+          textWidth: Math.max(20, textWidth),
+        };
         const reach = Math.ceil(2 * Math.sqrt((slot.offsetWidth / 2) ** 2 + slot.offsetHeight ** 2)) + 2;
         slot.style.setProperty("--pn-fill", `${reach}px`);
       });
@@ -356,8 +364,11 @@ export const PillNav: React.FC<PillNavProps> = ({
         ink.style.opacity = `${state.alpha}`;
       }
       if (dot) {
-        const pull = clamp(Math.abs(state.dotVelocity) / 700, 0, 2.2);
-        dot.style.transform = `translate3d(${state.dotX}px, 0, 0) scaleX(${1 + pull})`;
+        const pull = clamp(Math.abs(state.dotVelocity) / 700, 0, 1.6);
+        const w = Math.max(16, state.dotWidth || 28);
+        dot.style.width = `${w}px`;
+        dot.style.marginLeft = `-${w / 2}px`;
+        dot.style.transform = `translate3d(${state.dotX}px, 0, 0) scaleX(${1 + pull * 0.2})`;
         dot.style.opacity = `${state.dotAlpha}`;
       }
     };
@@ -430,16 +441,24 @@ export const PillNav: React.FC<PillNavProps> = ({
       }
       if (Math.abs(state.press - pressTarget) > 0.0005 || Math.abs(state.pressVelocity) > 0.01) busy = true;
 
-      const dotTarget = s.indicator === "dot" && s.activeIndex >= 0 ? rects[s.activeIndex] : null;
+      const dotTarget =
+        (s.indicator === "dot" || s.indicator === "underline") && s.activeIndex >= 0
+          ? rects[s.activeIndex]
+          : null;
       if (dotTarget && !state.waiting) {
         const center = dotTarget.left + dotTarget.width / 2;
+        const targetWidth = dotTarget.textWidth || Math.max(20, Math.round(dotTarget.width * 0.65));
         if (state.dotAlpha < 0.02) {
           state.dotX = center;
+          state.dotWidth = targetWidth;
           state.dotVelocity = 0;
+          state.dotWidthVelocity = 0;
         }
         if (reduce) {
           state.dotX = center;
+          state.dotWidth = targetWidth;
           state.dotVelocity = 0;
+          state.dotWidthVelocity = 0;
         } else {
           const k = 360;
           const steps = Math.ceil(dt / (1 / 240));
@@ -448,10 +467,20 @@ export const PillNav: React.FC<PillNavProps> = ({
             state.dotVelocity +=
               (-k * (state.dotX - center) - 2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotVelocity) * h;
             state.dotX += state.dotVelocity * h;
+
+            state.dotWidthVelocity +=
+              (-k * (state.dotWidth - targetWidth) - 2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotWidthVelocity) * h;
+            state.dotWidth += state.dotWidthVelocity * h;
           }
         }
         state.dotAlpha += (1 - state.dotAlpha) * (reduce ? 1 : 1 - Math.exp(-dt / 0.1));
-        if (Math.abs(state.dotX - center) > 0.05 || Math.abs(state.dotVelocity) > 0.5 || state.dotAlpha < 0.999)
+        if (
+          Math.abs(state.dotX - center) > 0.05 ||
+          Math.abs(state.dotWidth - targetWidth) > 0.05 ||
+          Math.abs(state.dotVelocity) > 0.5 ||
+          Math.abs(state.dotWidthVelocity) > 0.5 ||
+          state.dotAlpha < 0.999
+        )
           busy = true;
       } else {
         state.dotAlpha += (0 - state.dotAlpha) * (reduce ? 1 : 1 - Math.exp(-dt / 0.1));
@@ -753,7 +782,7 @@ export const PillNav: React.FC<PillNavProps> = ({
                 ))}
               </div>
             )}
-            {indicator === "dot" && <span ref={dotRef} className={DOT} aria-hidden="true" />}
+            {(indicator === "dot" || indicator === "underline") && <span ref={dotRef} className={DOT} aria-hidden="true" />}
           </div>
           {!joined && <span className={RIM} />}
         </div>
