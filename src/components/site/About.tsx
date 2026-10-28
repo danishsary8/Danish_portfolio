@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Code2, GitBranch, LayoutGrid, ShieldCheck } from "lucide-react";
+import { Check, Code2, GitBranch, LayoutGrid, ShieldCheck } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
@@ -106,48 +106,55 @@ export function About() {
 
           <Reveal index={2} className="slide-from-right mt-7">
             <div className="tactile squircle [--r:22px] overflow-hidden">
-              {/* Now: role + stage track */}
-              <div className="flex items-center gap-4 px-5 py-4">
+              {/* Now: current role, with a status pill */}
+              <div className="flex items-center gap-4 px-5 pb-4 pt-5">
                 <span className="flex shrink-0 -space-x-2">
-                  <OrgLogo org="etec" size={36} />
-                  <OrgLogo org="kru" size={36} className="ring-2 ring-surface-2" />
+                  <OrgLogo org="etec" size={40} />
+                  <OrgLogo org="kru" size={40} className="ring-2 ring-surface-2" />
                 </span>
-                <div className="min-w-0">
-                  <p className="flex items-center gap-2 text-[12px] text-fg-subtle">
-                    <span aria-hidden="true" className="relative flex h-2 w-2">
-                      <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
-                      <span className="relative h-2 w-2 rounded-full bg-gold" />
-                    </span>
-                    Right now
+                <div className="min-w-0 flex-1">
+                  <p className="text-[17px] font-semibold leading-tight tracking-[-0.015em] text-fg">
+                    Backend Developer Intern
                   </p>
-                  <p className="text-[16px] font-semibold tracking-[-0.015em] text-fg">
-                    Backend Developer Intern{" "}
-                    <span className="font-normal text-fg-muted">· ETEC &amp; KruITSolution</span>
-                  </p>
+                  <p className="mt-0.5 text-[13px] text-fg-muted">ETEC &amp; KruITSolution</p>
                 </div>
-              </div>
-              <ol className="grid grid-cols-2 border-t border-line" aria-label="Internship track">
-                <li className="px-5 py-3">
-                  <span aria-hidden="true" className="block h-1 rounded-full bg-fg/70" />
-                  <p className="mt-2 flex justify-between text-[12.5px]">
-                    <span className="font-medium text-fg">Frontend · done</span>
-                    <span className="font-mono text-[11px] tabular-nums text-fg-subtle">Jul – Oct 2026</span>
-                  </p>
-                </li>
-                <li className="border-l border-line px-5 py-3">
-                  <span aria-hidden="true" className="block h-1 overflow-hidden rounded-full bg-line-strong">
-                    <span className="about-track-fill block h-full w-[62%] rounded-full bg-gold" />
+                <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-1 text-[12px] font-medium text-fg">
+                  <span aria-hidden="true" className="relative flex h-2 w-2">
+                    <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.4s] motion-safe:[animation-iteration-count:3]" />
+                    <span className="relative h-2 w-2 rounded-full bg-gold" />
                   </span>
-                  <p className="mt-2 flex justify-between text-[12.5px]">
-                    <span className="font-medium text-fg">Backend · now</span>
-                    <span className="font-mono text-[11px] tabular-nums text-fg-subtle">Oct 2026 –</span>
+                  Right now
+                </span>
+              </div>
+
+              {/* Internship track: newest stage first, one clear row each */}
+              <ol aria-label="Internship track" className="border-t border-line px-5 py-3">
+                <li className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3 py-1.5">
+                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full ring-1 ring-gold">
+                    <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+                  </span>
+                  <p className="text-[13.5px] text-fg">
+                    <span className="font-medium">Backend</span>
+                    <span className="text-fg-muted"> · in progress</span>
                   </p>
+                  <p className="font-mono text-[11.5px] tabular-nums text-fg-subtle">Oct 2026 – Present</p>
+                </li>
+                <li className="grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3 py-1.5">
+                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-fg/80 text-bg">
+                    <Check strokeWidth={3} className="h-2.5 w-2.5" />
+                  </span>
+                  <p className="text-[13.5px] text-fg">
+                    <span className="font-medium">Frontend</span>
+                    <span className="text-fg-muted"> · completed</span>
+                  </p>
+                  <p className="font-mono text-[11.5px] tabular-nums text-fg-subtle">Jul – Oct 2026</p>
                 </li>
               </ol>
+
               {/* How I work, as one quiet row */}
               <ul
                 aria-label="How I work"
-                className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line bg-surface-1/60 px-5 py-3"
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line bg-surface-1/60 px-5 py-3"
               >
                 {PRINCIPLES.map(({ icon: Icon, term }) => (
                   <li key={term} className="flex items-center gap-1.5 text-[13px] text-fg-muted">
