@@ -4,6 +4,39 @@
 @source "../src";
 @custom-variant dark (&:is(.dark *));
 
+/* Metric-matched stand-in for Geist while the web font downloads (font-display: swap).
+   Arial resized to Geist's measured text width per weight, with Geist's line metrics
+   (ascent 1.01em, descent 0.30em), so text does not reflow and push the hero around when
+   Geist arrives. Arial has no 500 weight, so 500 gets its own wider regular face.
+   Once Geist has loaded these faces are never used. */
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial"), local("ArialMT");
+  font-weight: 100 449;
+  size-adjust: 101.9%;
+  ascent-override: 99.1%;
+  descent-override: 29.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial"), local("ArialMT");
+  font-weight: 450 549;
+  size-adjust: 104.2%;
+  ascent-override: 96.9%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial Bold"), local("Arial-BoldMT");
+  font-weight: 550 900;
+  size-adjust: 99.6%;
+  ascent-override: 101.4%;
+  descent-override: 30.1%;
+  line-gap-override: 0%;
+}
+
 @theme inline {
   --radius: 12px;
   --radius-sm: 6px;
@@ -49,9 +82,9 @@
   --color-ring: var(--focus);
   --color-ring-offset-background: var(--bg);
 
-  --font-sans: Geist, "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
-  --font-display: Geist, "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
-  --font-body: Geist, "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Geist, "Geist Fallback", "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-display: Geist, "Geist Fallback", "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-body: Geist, "Geist Fallback", "Kantumruy Pro", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
   --font-khmer: "Kantumruy Pro", Geist, sans-serif;
   /* Card name only (owner request): Plus Jakarta Sans. */
@@ -255,6 +288,44 @@
     box-shadow:
       inset 0 1px 0 var(--specular),
       var(--elev-3);
+  }
+
+  /* Portrait card realistic depth and ambient occlusion shadow */
+  .card-portrait-shadow {
+    box-shadow:
+      0 0 0 1px rgba(12, 21, 39, 0.08),
+      0 4px 10px -2px rgba(12, 21, 39, 0.1),
+      0 16px 32px -8px rgba(12, 21, 39, 0.2),
+      0 36px 64px -16px rgba(12, 21, 39, 0.28);
+    transition: box-shadow 350ms var(--ease-out), transform 350ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card-portrait-shadow:hover {
+      box-shadow:
+        0 0 0 1px rgba(12, 21, 39, 0.12),
+        0 8px 16px -2px rgba(12, 21, 39, 0.12),
+        0 24px 48px -8px rgba(12, 21, 39, 0.25),
+        0 48px 84px -16px rgba(12, 21, 39, 0.35);
+    }
+  }
+
+  .dark .card-portrait-shadow {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 4px 14px rgba(0, 0, 0, 0.6),
+      0 20px 42px -8px rgba(0, 0, 0, 0.75),
+      0 40px 84px -16px rgba(0, 0, 0, 0.9);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dark .card-portrait-shadow:hover {
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 8px 18px rgba(0, 0, 0, 0.65),
+        0 28px 56px -8px rgba(0, 0, 0, 0.8),
+        0 52px 98px -16px rgba(0, 0, 0, 0.95);
+    }
   }
 
   /* Pointer lift for cards that are links: rises 2px onto the next elevation. */
@@ -1350,6 +1421,54 @@
 @keyframes bot-shadow-breathe {
   0%, 100% { transform: scale(1); opacity: 0.35; }
   50% { transform: scale(0.8); opacity: 0.18; }
+}
+
+/* Jarvis chat: streaming caret (soft blink, fades out when the reply ends) and the
+   entrance used by new bubbles, chips and the contact card. Transform/opacity only. */
+@keyframes jarvis-caret-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.78); }
+}
+/* Each newly revealed word fades up from transparent (Gemini / ChatGPT streaming feel). */
+@keyframes jarvis-word-in {
+  from { opacity: 0; filter: blur(2px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.jarvis-word {
+  animation: jarvis-word-in 600ms var(--ease-out) both;
+}
+@keyframes jarvis-rise {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.jarvis-caret {
+  animation: jarvis-caret-blink 1s var(--ease-in-out) infinite;
+}
+.jarvis-caret-wrap {
+  display: inline-block;
+  transition: opacity 220ms var(--ease-out);
+}
+.jarvis-caret-out {
+  opacity: 0;
+}
+.jarvis-rise {
+  animation: jarvis-rise 220ms var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .jarvis-caret {
+    animation: none;
+    opacity: 0.7;
+  }
+  .jarvis-word {
+    animation: none;
+  }
+  .jarvis-rise {
+    animation: jarvis-fade 150ms ease both;
+  }
+}
+@keyframes jarvis-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes bot-orbital-spin {

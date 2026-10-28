@@ -82,10 +82,20 @@ function scrollToHash(e: MouseEvent<HTMLAnchorElement>, hash: string) {
 }
 
 export function Hero() {
-  const time = useLocalTime(PROFILE.timezone);
+  const time = useLocalTime(PROFILE.timezone, { seconds: true });
   const { dark } = useTheme();
   const [goldTarget, setGoldTarget] = useState<"danish" | "sary">("danish");
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+
+  // The two name words trade the gold every 3s. Keyed on goldTarget, so a click restarts the
+  // 3s count instead of being overridden a moment later.
+  useEffect(() => {
+    const t = window.setTimeout(
+      () => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish")),
+      3000,
+    );
+    return () => window.clearTimeout(t);
+  }, [goldTarget]);
 
   useEffect(() => {
     const handleOpen = () => setIsProfileModalOpen(true);
@@ -107,11 +117,11 @@ export function Hero() {
       />
 
       <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:pt-0 lg:pb-20">
-        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-20 lg:pb-8 lg:pt-[88px] xl:gap-24 min-[90rem]:grid-cols-[minmax(0,1fr)_460px] min-[90rem]:gap-12">
+        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-14 lg:pb-8 lg:pt-[88px] xl:grid-cols-[minmax(0,1fr)_360px] xl:gap-20 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-24">
           {/* Left column */}
           <div className="min-w-0">
-            {/* Status + Phnom Penh time (split-flap telemetry) */}
-            <div className="enter flex items-center gap-3" style={step(0)}>
+            {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
+            <div className="enter mb-5 flex items-center gap-3" style={step(0)}>
               <img
                 src={ASSETS.profile.photo}
                 alt=""
@@ -119,48 +129,48 @@ export function Hero() {
                 height={40}
                 className="h-10 w-10 shrink-0 rounded-full object-cover object-[50%_45%] ring-1 ring-[var(--edge)] lg:hidden"
               />
-              <div className="inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1.5 glass-pill rounded-[16px] sm:rounded-full min-h-8 py-1.5 sm:py-1 pl-3 pr-3.5 text-[13px] leading-none select-none">
-                <span className="inline-flex items-center gap-2.5">
-                  {/* Pulses three times on load, then rests: present, not nagging. */}
-                  <span aria-hidden="true" className="relative flex h-2 w-2 shrink-0">
+              <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 glass-pill rounded-[14px] sm:rounded-full min-h-7 py-1 px-3 text-[11.5px] sm:text-[12px] leading-none select-none">
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden="true" className="relative flex h-1.5 w-1.5 shrink-0">
                     <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s] motion-safe:[animation-iteration-count:3]" />
-                    <span className="relative h-2 w-2 rounded-full bg-gold" />
+                    <span className="relative h-1.5 w-1.5 rounded-full bg-gold" />
                   </span>
-                  <span className="font-medium text-fg">Open to Web Developer roles</span>
+                  <span className="font-medium text-fg">Available for Full-time Work</span>
                 </span>
-                <span aria-hidden="true" className="hidden h-3.5 w-px bg-line-strong sm:block" />
+                <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
+                <span className="font-medium text-fg-muted">{PROFILE.location.split(",")[0]}</span>
+                <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
                 <span className="inline-flex items-center gap-1.5 text-fg-muted">
-                  <span>{PROFILE.location.split(",")[0]}</span>
                   <SplitFlapText
-                    text={time ?? "--:--"}
-                    padTo={5}
+                    text={time ?? "--:--:--"}
+                    padTo={8}
                     charset="0123456789"
                     intro={false}
                     loop={false}
                     tileStyle="minimal"
                     tileColor="transparent"
                     textColor="var(--fg)"
-                    fontSize={13}
+                    fontSize={11.5}
                     gap={0}
                     tileRadius={0}
-                    flipsPerChar={4}
-                    flipDuration={0.07}
-                    stagger={0.03}
+                    flipsPerChar={1}
+                    flipDuration={0.06}
+                    stagger={0}
                     glare={0}
                     depth={0}
-                    className="hero-clock skeuo-well rounded-[6px] px-1.5 py-0.5"
+                    className="hero-clock skeuo-well rounded-[5px] px-1 py-0.5"
                     style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
                   />
-                  <span className="font-mono text-[12px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
+                  <span className="font-mono text-[10.5px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
                 </span>
               </div>
             </div>
 
-            {/* Name: per-letter blur rise (CSS, pre-hydration). Click swaps the gold word. */}
+            {/* Big Name: commanding architectural scale with balanced letter-spacing */}
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="mt-6 text-[54px] sm:text-[76px] lg:text-[clamp(60px,9.6vh,92px)] font-semibold tracking-[-0.045em] leading-[0.95] select-none cursor-pointer group"
+              className="uppercase whitespace-nowrap text-[clamp(44px,14vw,52px)] sm:text-[70px] lg:text-[78px] font-semibold tracking-[-0.045em] leading-[0.96] select-none cursor-pointer group"
               onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
               title="Click to alternate highlight"
             >
@@ -168,7 +178,7 @@ export function Hero() {
                 <span key={word.key}>
                   {w > 0 ? " " : null}
                   <span
-                    className={`inline-block whitespace-nowrap transition-colors duration-150 ${
+                    className={`inline-block whitespace-nowrap transition-colors duration-700 ease-[var(--ease-in-out)] ${
                       goldTarget === word.key ? "text-gold" : "text-fg group-hover:text-fg/80"
                     }`}
                   >
@@ -177,7 +187,7 @@ export function Hero() {
                         key={letterIndex}
                         aria-hidden="true"
                         className="enter inline-block"
-                        style={step(1 + letterIndex++ * 0.45)}
+                        style={step(1 + letterIndex++ * 0.4)}
                       >
                         {ch}
                       </span>
@@ -187,39 +197,42 @@ export function Hero() {
               ))}
             </h1>
 
-            {/* Role is the second tier under the name; the pitch below carries "full-stack". */}
-            <p
-              className="enter mt-5 text-[22px] sm:text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg"
-              style={step(5.5)}
-            >
-              Junior Web Developer
-            </p>
-            <p className="enter mt-1.5 text-[15px] sm:text-[16px] tracking-[-0.01em] text-fg-muted" style={step(5.75)}>
-              4th-year Software Development student
-            </p>
-            {/* Pitch: the hook, then how he builds. Short on purpose so the core stack stays
-                above the fold. */}
-            <div className="enter mt-4 max-w-[46ch]" style={step(6)}>
-              <p className="text-[18px] sm:text-[20px] font-medium leading-[1.35] tracking-[-0.02em] text-fg text-balance">
-                Hands-on experience building{" "}
-                <span className="whitespace-nowrap">full-stack</span> web apps that actually work
-                in the <span className="whitespace-nowrap">real world</span>.
+            {/* Role & Academic degree subtitle */}
+            <div className="enter mt-4 sm:mt-5" style={step(2.5)}>
+              <p className="text-[22px] sm:text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">
+                Junior Fullstack Web Developer
               </p>
-              <p className="mt-2 text-[15px] sm:text-[16px] leading-[1.6] text-fg-muted text-pretty">
-                I build responsive React front ends on secure Laravel REST APIs and PostgreSQL, with
-                real sign-in through JWT, OTP and Google OAuth, and code that stays clean and
-                maintainable.
+              <div className="mt-2.5 sm:mt-3">
+                <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-3.5 py-1.5 text-[14px] sm:text-[15px] font-medium text-fg shadow-xs">
+                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
+                  4th-year Software Development student
+                </span>
+              </div>
+            </div>
+
+            {/* Pitch: fluid editorial typography with balanced optical ragging */}
+            <div
+              className="enter mt-5 max-w-[32em] lg:max-w-[38em]"
+              style={step(3.5)}
+            >
+              <p className="text-[18px] sm:text-[20px] font-medium leading-[1.4] tracking-[-0.02em] text-fg text-balance">
+                Hands-on experience building reliable{" "}
+                <span className="whitespace-nowrap font-semibold">full-stack</span> web apps that solve{" "}
+                <span className="whitespace-nowrap font-semibold">real-world</span> problems&nbsp;— from idea to
+                working software.
+              </p>
+              <p className="mt-2.5 text-[15px] sm:text-[16px] leading-[1.65] text-fg-muted text-balance">
+                “I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL
+                with real authentication.”
               </p>
             </div>
 
-            {/* CTAs as physical keys: one ink primary, one light secondary, GitHub as a
-                round key. */}
-            <div className="enter mt-7 flex flex-wrap items-center gap-2 sm:gap-3" style={step(7)}>
+            {/* CTAs as physical keys */}
+            <div className="enter mt-7 flex flex-wrap items-center gap-3" style={step(4.5)}>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className={`btn-apple skeuo-key-ink group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-6 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key-ink group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-6 select-none ${FOCUS}`}
               >
-                {/* Hover: the envelope tips up, as if being sent. */}
                 <Mail
                   aria-hidden="true"
                   strokeWidth={1.75}
@@ -231,7 +244,7 @@ export function Hero() {
               <a
                 href="#projects"
                 onClick={(e) => scrollToHash(e, "#projects")}
-                className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
               >
                 View projects
                 <ArrowRight
@@ -250,7 +263,6 @@ export function Hero() {
                   title="GitHub profile"
                   className={`btn-apple skeuo-key group inline-flex h-12 w-12 items-center justify-center rounded-full sm:h-11 sm:w-11 ${FOCUS}`}
                 >
-                  {/* Hover: a small playful tilt (the mark itself is a looping Lottie). */}
                   <span className="inline-flex transition-transform duration-300 ease-[var(--ease-out)] group-hover:-rotate-[8deg] group-hover:scale-110 motion-reduce:transition-none">
                     <AnimatedGithubIcon className="h-[18px] w-[18px] shrink-0" dark={dark} aria-hidden="true" />
                   </span>
@@ -259,11 +271,12 @@ export function Hero() {
             </div>
 
             {/* Core stack: React Bits LogoLoop of brand chips */}
-            <div className="mt-6 max-w-[580px]">
-              <p className="enter text-[13px] text-fg-subtle" style={step(9)}>
-                Core stack
-              </p>
-              <div className="enter mt-2.5" style={step(9.5)}>
+            <div className="enter mt-7 max-w-[560px]" style={step(5.5)}>
+              <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.12em] text-fg-subtle">
+                <span>Core stack</span>
+                <span aria-hidden="true" className="h-px w-10 bg-line-strong" />
+              </div>
+              <div className="mt-2.5">
                 <LogoLoop
                   logos={CORE_LOGOS}
                   renderItem={(item: { title: string }) => <StackChip tech={item.title} />}
@@ -285,7 +298,7 @@ export function Hero() {
 
           {/* Right column: portrait frame settles in once the name has landed. On desktop its top
               lines up with the status pill; on wide screens (1440px+) it moves toward the text. */}
-          <div className="enter-settle flex justify-center lg:self-start min-[90rem]:justify-start" style={step(6)}>
+          <div className="enter-settle flex justify-center lg:justify-end lg:self-center" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
           </div>
         </div>

@@ -78,7 +78,7 @@ export function Experience() {
                   <span className="text-fg-subtle"> · {entry.detail}</span>
                 </p>
 
-                <ul className="mt-5 grid max-w-[68ch] gap-2.5">
+                <ul className="mt-5 grid max-w-[45.084em] gap-2.5">
                   {entry.points.map((p) => (
                     <li key={p} className="flex gap-3 text-[15px] leading-[1.6] text-fg-muted">
                       <span

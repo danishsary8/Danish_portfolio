@@ -21,8 +21,9 @@ describe("Hero", () => {
   it("renders the name, role, and calls to action", () => {
     render(<Hero />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Sary Danish");
-    // Role line under the name, plus the portrait card's role capsule (owner request).
-    expect(screen.getAllByText(/Junior Web Developer/)).toHaveLength(2);
+    // Role line under the name (Junior Fullstack Web Developer), plus the portrait card's role capsule (Junior Web Developer).
+    expect(screen.getByText("Junior Fullstack Web Developer")).toBeInTheDocument();
+    expect(screen.getByText("Junior Web Developer")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Telegram: @sarydanish/ })).toHaveAttribute(
       "href",
       "https://t.me/sarydanish",

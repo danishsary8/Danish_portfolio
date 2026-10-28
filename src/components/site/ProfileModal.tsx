@@ -7,7 +7,7 @@ import { CV_HREF } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { ArrowUpRight, Check, Copy, FileText, Mail, Move, Phone } from "lucide-react";
-import { SiGithub, SiTelegram } from "react-icons/si";
+import { SiTelegram } from "react-icons/si";
 
 interface ProfileModalProps {
   open: boolean;
@@ -116,12 +116,10 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
       else window.clearTimeout(idle);
     };
     // Runs once on mount; ensureFaces only reads refs and stable setters.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (open) ensureFaces();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const copyEmail = async () => {
@@ -320,17 +318,6 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                 tile={
                   <Tile className="skeuo-gloss bg-[#26A5E4] text-white">
                     <SiTelegram className="h-[18px] w-[18px]" />
-                  </Tile>
-                }
-              />
-              <LinkRow
-                href={PROFILE.github}
-                external
-                label="GitHub"
-                value={`github.com/${PROFILE.githubHandle}`}
-                tile={
-                  <Tile className="icon-tile">
-                    <SiGithub className="h-4 w-4" />
                   </Tile>
                 }
               />

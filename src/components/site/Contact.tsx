@@ -154,7 +154,7 @@ export function Contact() {
       <Reveal>
         <h2
           id="contact-title"
-          className="max-w-[16ch] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[80px]"
+          className="max-w-[10.928em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[80px]"
         >
           <span className="sr-only">Let’s build something useful.</span>
           <span aria-hidden="true">
@@ -170,7 +170,7 @@ export function Contact() {
         </h2>
       </Reveal>
       <Reveal index={1}>
-        <p className="mt-6 max-w-[52ch] text-[16px] leading-[1.6] text-fg-muted">
+        <p className="mt-6 max-w-[34.476em] text-[16px] leading-[1.6] text-fg-muted">
           Hiring for a web team, or have a project in mind? Email reaches me fastest; Telegram works
           too.
         </p>

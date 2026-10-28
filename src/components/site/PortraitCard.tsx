@@ -84,7 +84,7 @@ export function PortraitCard({ onView }: { onView: () => void }) {
     <div
       onClick={onCardClick}
       title={flipped ? "Click to flip back" : "Click to flip"}
-      className="relative h-[460px] w-full max-w-[312px] cursor-pointer select-none perspective-[1400px]"
+      className="card-portrait-shadow relative h-[460px] w-full max-w-[312px] cursor-pointer select-none rounded-[28px] perspective-[1400px]"
     >
       <div
         className={`relative h-full w-full transform-3d transition-transform duration-[700ms] ease-[var(--ease-in-out)] motion-reduce:transition-none ${
@@ -127,7 +127,7 @@ const CARD_DATA = [
 
 function CardBack() {
   return (
-    <div className="card-stock frame-float relative flex h-full w-full flex-col overflow-hidden rounded-[28px] text-left text-white">
+    <div className="card-stock card-portrait-shadow relative flex h-full w-full flex-col overflow-hidden rounded-[28px] text-left text-white">
       {/* Magnetic stripe, edge to edge. */}
       <div aria-hidden="true" className="card-magstripe mt-5 h-11 w-full shrink-0" />
 
@@ -227,7 +227,7 @@ function CardFront({ onView }: { onView: () => void }) {
       rimGlint={true}
       transitionDuration={650}
       background={NAVY}
-      className="frame-float max-w-[312px]"
+      className="card-portrait-shadow max-w-[312px]"
     >
       <figure className="absolute inset-0 m-0 whitespace-normal text-left">
         <img

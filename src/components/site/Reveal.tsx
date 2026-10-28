@@ -60,7 +60,7 @@ export function SectionHeader({ id, title, lede }: { id: string; title: string; 
       </Reveal>
       {lede ? (
         <Reveal index={1} className="lg:justify-self-end">
-          <p className="max-w-[46ch] text-pretty text-[15.5px] leading-[1.6] text-fg-muted lg:pb-1.5">
+          <p className="max-w-[30.498em] text-pretty text-[15.5px] leading-[1.6] text-fg-muted lg:pb-1.5">
             {lede}
           </p>
         </Reveal>
