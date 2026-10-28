@@ -221,7 +221,11 @@ export const PillNav: React.FC<PillNavProps> = ({
   const [panelShown, setPanelShown] = useState(false);
 
   const controlled = activeHref !== undefined;
-  const activeIndex = controlled ? items.findIndex((item) => item.href === activeHref) : selected;
+  const activeIndex = controlled
+    ? activeHref
+      ? items.findIndex((item) => item.href === activeHref)
+      : -1
+    : selected;
   const joined = layout === "joined";
   const hasLogo = Boolean(logo);
   const fill = hoverEffect === "fill";

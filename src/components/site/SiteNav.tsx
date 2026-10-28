@@ -65,7 +65,6 @@ export function SiteNav() {
   const { dark, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const active = useActiveSection();
-  const isHero = !active || active === "home";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -106,23 +105,17 @@ export function SiteNav() {
           aria-label="Primary"
           className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
         >
-        {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow and hero underline. */}
+        {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow. */}
         <div className="flex items-center justify-start">
           <a
             href="#home"
             aria-label={`${PROFILE.name}, back to top`}
             title={PROFILE.name}
-            className="group relative inline-flex flex-col items-center py-1.5 select-none rounded-sm transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus"
+            className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
           >
             <span aria-hidden="true" className="nav-wordmark font-poster text-[17px] font-extrabold uppercase leading-none tracking-[0.14em] sm:text-[18px]">
               {PROFILE.shortName}
             </span>
-            <span
-              aria-hidden="true"
-              className={`absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full bg-gold shadow-[0_0_8px_var(--gold)] transition-all duration-300 ease-[var(--ease-out)] ${
-                isHero ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
-              }`}
-            />
           </a>
         </div>
 
@@ -130,7 +123,7 @@ export function SiteNav() {
         <div className="hidden md:flex justify-center">
           <PillNav
             items={navItems}
-            activeHref={active ? `#${active}` : undefined}
+            activeHref={active ? `#${active}` : ""}
             layout="joined"
             surface="glass"
             itemStyle="default"
