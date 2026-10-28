@@ -404,3 +404,28 @@ export async function drawBadgeBack(): Promise<string> {
 
   return canvas.toDataURL("image/png");
 }
+
+let cachedFacesPromise: Promise<{ front: string; back: string }> | null = null;
+let cachedFaces: { front: string; back: string } | null = null;
+
+export function preloadBadgeFaces(): Promise<{ front: string; back: string }> {
+  if (cachedFaces) return Promise.resolve(cachedFaces);
+  if (!cachedFacesPromise) {
+    cachedFacesPromise = Promise.all([drawBadgeFront(), drawBadgeBack()])
+      .then(([front, back]) => {
+        cachedFaces = { front, back };
+        return cachedFaces;
+      })
+      .catch((err) => {
+        cachedFacesPromise = null;
+        console.error("Failed to draw badge faces:", err);
+        throw err;
+      });
+  }
+  return cachedFacesPromise;
+}
+
+export function getCachedBadgeFaces(): { front: string; back: string } | null {
+  return cachedFaces;
+}
+

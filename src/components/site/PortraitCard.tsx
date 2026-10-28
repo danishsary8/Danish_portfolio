@@ -5,6 +5,7 @@ import { GlareHover } from "@/components/ui/GlareHover";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
 import { TELEGRAM_QR } from "@/assets/telegram-qr";
+import { preloadBadgeFaces } from "@/lib/badge-faces";
 
 const FOCUS_ON_PHOTO =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
@@ -83,6 +84,7 @@ export function PortraitCard({ onView }: { onView: () => void }) {
   return (
     <div
       onClick={onCardClick}
+      onPointerEnter={preloadBadgeFaces}
       title={flipped ? "Click to flip back" : "Click to flip"}
       className="card-portrait-shadow relative h-[460px] w-full max-w-[312px] cursor-pointer select-none rounded-[28px] perspective-[1400px]"
     >
@@ -305,6 +307,8 @@ function CardFront({ onView }: { onView: () => void }) {
             <button
               type="button"
               onClick={onView}
+              onPointerEnter={preloadBadgeFaces}
+              onFocus={preloadBadgeFaces}
               className={`card-glass-btn group inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full pl-4 pr-3.5 text-[14px] font-semibold tracking-[-0.01em] text-white ${FOCUS_ON_PHOTO}`}
             >
               View profile

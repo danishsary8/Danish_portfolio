@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Lanyard from "@/components/ui/Lanyard";
-import { drawBadgeBack, drawBadgeFront } from "@/lib/badge-faces";
+import { drawBadgeBack, drawBadgeFront, getCachedBadgeFaces, preloadBadgeFaces } from "@/lib/badge-faces";
 import { PROFILE } from "@/content/portfolio";
 import { CV_HREF } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
@@ -88,35 +88,25 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const { dark } = useTheme();
   const time = useLocalTime(PROFILE.timezone);
   const [copied, setCopied] = useState(false);
-  const [faces, setFaces] = useState<{ front: string; back: string } | null>(null);
+  const [faces, setFaces] = useState<{ front: string; back: string } | null>(() => getCachedBadgeFaces());
   const [lanyardVisible, setLanyardVisible] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  // Badge faces are drawn once, in the background as soon as the page is idle (or at the
-  // latest when the modal opens), so they are ready by the time someone clicks View profile.
-  // One shared draw: opening mid-draw reuses it. The lanyard mounts only when both faces are
-  // ready, so no placeholder flashes.
-  const facesDraw = useRef<Promise<void> | null>(null);
-  const ensureFaces = () => {
-    facesDraw.current ??= Promise.all([drawBadgeFront(), drawBadgeBack()])
-      .then(([front, back]) => setFaces({ front, back }))
-      .catch((err) => {
-        facesDraw.current = null;
-        console.error("Failed to draw the badge faces:", err);
-      });
-  };
-
+  // Badge faces are pre-drawn in the background as soon as the browser is idle
+  // (or when the user hovers over the portrait card), so they are already ready in memory.
   useEffect(() => {
+    const run = () => {
+      preloadBadgeFaces().then(setFaces).catch(() => {});
+    };
     const idle = window.requestIdleCallback
-      ? window.requestIdleCallback(ensureFaces, { timeout: 4000 })
-      : window.setTimeout(ensureFaces, 2500);
+      ? window.requestIdleCallback(run, { timeout: 2500 })
+      : window.setTimeout(run, 1000);
     return () => {
       if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
       else window.clearTimeout(idle);
     };
-    // Runs once on mount; ensureFaces only reads refs and stable setters.
   }, []);
 
   useEffect(() => {
@@ -124,12 +114,12 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
       setLanyardVisible(false);
       return;
     }
-    ensureFaces();
+    preloadBadgeFaces().then(setFaces).catch(() => {});
     // Allow the modal dialog popup animation to complete smoothly first at 60fps,
     // then mount the 3D Lanyard so the card drops down smoothly without initial lag.
     const t = window.setTimeout(() => {
       setLanyardVisible(true);
-    }, 450);
+    }, 320);
     return () => window.clearTimeout(t);
   }, [open]);
 
@@ -148,7 +138,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0">
+      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0 transform-gpu will-change-[transform,opacity]">
         <DialogDescription className="sr-only">
           Goal, personal details and contact options for {PROFILE.name}, with an interactive
           lanyard badge that shows the same card as the home page.
