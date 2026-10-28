@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { ArrowUpRight, Languages } from "lucide-react";
+import { Languages } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
 import { PROFILE } from "@/content/portfolio";
@@ -12,7 +12,7 @@ const STATEMENT =
 
 // CV professional summary, condensed (the Hero pitch and modal goal say different things).
 const SUMMARY =
-  "I’m a 4th-year Software Development student at Norton University who builds full-stack web apps with React, Laravel and PostgreSQL, from secure REST APIs with JWT, OTP verification and Google OAuth to responsive, easy-to-use interfaces. I keep every project clean, well-structured and easy to maintain, and I’m now looking for a Web Developer role on a team that ships real products.";
+  "I’m a 4th-year Software Development student at Norton University who builds full-stack web apps with React, Laravel, and PostgreSQL — from secure REST APIs (JWT, OTP, Google OAuth) to responsive interfaces with clean code built to scale and maintain. Motivated to turn ideas into complete, reliable software, I’m looking to join a development or engineering team as a Web Developer where I can build impactful products that help the company grow while continuing to level up myself. I’m flexible, adaptable, and always eager to learn and work with new tools and technologies in this field.";
 
 // Tools only around the orbit (owner: no photo, no school logos, no label).
 const TECH = ["React", "JavaScript", "Laravel", "PHP", "PostgreSQL", "Tailwind CSS", "Docker", "Git"] as const;
@@ -136,7 +136,10 @@ export function About() {
         {/* Right: statement, CV summary, then one status card */}
         <div>
           <Reveal className="slide-from-right">
-            <blockquote className="scroll-reveal m-0 text-balance text-[24px] font-medium leading-[1.28] tracking-[-0.025em] text-fg xl:text-[27px]">
+            <blockquote className="scroll-reveal relative m-0 text-balance text-[24px] font-medium leading-[1.28] tracking-[-0.025em] text-fg xl:text-[26px]">
+              <span aria-hidden="true" className="absolute -left-[0.5em] select-none text-fg-subtle">
+                “
+              </span>
               {words.map((w, i) => (
                 <span
                   key={i}
@@ -147,30 +150,18 @@ export function About() {
                   {i < words.length - 1 ? " " : ""}
                 </span>
               ))}
+              <span aria-hidden="true" className="select-none text-fg-subtle">”</span>
             </blockquote>
           </Reveal>
 
           <Reveal index={1} className="slide-from-right">
-            <p className="mt-5 max-w-[66ch] text-pretty text-[15px] leading-[1.65] text-fg-muted">{SUMMARY}</p>
-            <a
-              href={PROFILE.github}
-              target="_blank"
-              rel="noreferrer"
-              className="group mt-3 inline-flex items-center gap-1 text-[14px] font-medium text-fg underline decoration-line-strong underline-offset-4 transition-colors duration-150 hover:decoration-fg"
-            >
-              See the code on github.com/{PROFILE.githubHandle}
-              <ArrowUpRight
-                aria-hidden="true"
-                strokeWidth={2}
-                className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </a>
+            <p className="mt-4 max-w-[68ch] text-pretty text-[14.5px] leading-[1.6] text-fg-muted">{SUMMARY}</p>
           </Reveal>
 
-          <Reveal index={2} className="slide-from-right mt-6">
+          <Reveal index={2} className="slide-from-right mt-5">
             <div className="tactile squircle [--r:22px] overflow-hidden">
               {/* Now: current role, with a status pill */}
-              <div className="flex items-center gap-3.5 px-5 py-4">
+              <div className="flex items-center gap-3.5 px-5 py-3.5">
                 <span className="flex shrink-0 -space-x-2">
                   <OrgLogo org="etec" size={34} />
                   <OrgLogo org="kru" size={34} className="ring-2 ring-surface-2" />
@@ -189,22 +180,22 @@ export function About() {
 
               {/* Internship track: in order, one clear row each; the current stage has the live dot */}
               <ol aria-label="Internship track" className="relative border-t border-line px-5 py-3.5">
-                <span aria-hidden="true" className="absolute bottom-[34px] left-[27px] top-[30px] w-px bg-line-strong" />
-                <li className="relative grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3">
+                <span aria-hidden="true" className="absolute bottom-[26px] left-[27px] top-[26px] w-px bg-line-strong" />
+                <li className="relative grid grid-cols-[16px_auto_minmax(0,1fr)_auto] items-center gap-x-3">
                   <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-surface-2">
                     <span className="h-2 w-2 rounded-full bg-fg-subtle" />
                   </span>
                   <p className="text-[14px] font-medium text-fg">Frontend</p>
+                  <p className="truncate text-[13px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
                   <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Jul – Oct 2026</time>
-                  <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
                 </li>
-                <li className="relative mt-3 grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3">
+                <li className="relative mt-3 grid grid-cols-[16px_auto_minmax(0,1fr)_auto] items-center gap-x-3">
                   <span aria-hidden="true" className="relative grid h-4 w-4 place-items-center rounded-full bg-surface-2">
                     <span className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                   </span>
                   <p className="text-[14px] font-medium text-fg">Backend</p>
+                  <p className="truncate text-[13px] text-fg-muted">Building REST APIs alongside the team</p>
                   <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Oct 2026 – Present</time>
-                  <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Building REST APIs alongside the team</p>
                 </li>
               </ol>
 
