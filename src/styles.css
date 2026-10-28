@@ -1772,3 +1772,47 @@
     opacity: 0;
   }
 }
+
+/* About orbit: hovering a logo tile names it (fine pointers only; the orbit pauses meanwhile). */
+.orbit-tile-name {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translate(-50%, -4px);
+  white-space: nowrap;
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .orbit-tile:hover .orbit-tile-name {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  .orbit-tile {
+    transition: transform 150ms var(--ease-out);
+  }
+  .orbit-tile:hover {
+    transform: translateY(-2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-tile-name,
+  .orbit-tile {
+    transition: opacity 150ms ease;
+  }
+  .orbit-tile:hover {
+    transform: none;
+  }
+}
+.orbit-images__item:hover {
+  z-index: 4 !important;
+}
