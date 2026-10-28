@@ -7,6 +7,36 @@ Personal portfolio of **Sary Danish** (goes by Danish), a Junior Web Developer i
 
 @AGENTS.md
 
+## 🚀 Handoff & Recent Work Status (Read First)
+
+The codebase has completed recent deep polish on the **Hero** and **Profile Modal**. The user is continuing work with **Claude Code** or **Kiro** on the **About** section and subsequent sections.
+
+### What is Completed & Approved:
+1. **Hero (`Hero.tsx`, `PortraitCard.tsx`)**:
+   - Status badge: `"Available for Full-time Work"` with pinging gold dot.
+   - Split-flap Phnom Penh clock with whole-pixel tiles and engraved well.
+   - Skeuomorphic hero keys: `.btn-apple.skeuo-key-ink` ("Email me"), `.btn-apple.skeuo-key` ("View projects", GitHub icon key).
+   - Core stack LogoLoop marquee (React, JavaScript, Laravel, PHP, PostgreSQL, Tailwind CSS, Docker).
+   - Apple-style 3D flip card (`PortraitCard.tsx`): Front has frosted glass capsule and glare hover; Back has magnetic stripe, authentic signature (`ASSETS.profile.signature`), Telegram QR, and holographic foil.
+2. **Profile Modal (`ProfileModal.tsx`, `badge-faces.ts`, `Lanyard.tsx`)**:
+   - Status pill matches Hero: `"Available for Full-time Work"`.
+   - **Lag fix implemented**: Radix modal dialog opens smoothly first; after `450ms`, `<Lanyard>` mounts with `intro="drop"`, dropping the 3D lanyard card in without UI stutter.
+   - High-fidelity lanyard with satin finish, clear acrylic holder, high-res canvas faces, and drag-and-flip physics.
+3. **Navigation (`SiteNav.tsx`)**:
+   - Solid "DANISH" wordmark with letterpress shadow.
+4. **Chatbot / Jarvis State**:
+   - Jarvis assistant (`JarvisChat.jsx`, `ChatbotWidget.tsx`) is clean, tested, and passing all tests. Experimental mascot/pet additions were cleanly removed.
+
+### 🎯 Next Target: About Section (`src/components/site/About.tsx`)
+When Claude Code or Kiro takes over to edit or build the About section:
+- **Target File:** `src/components/site/About.tsx`.
+- **Content Authority:** `src/content/portfolio.ts` (`PROFILE`), `PRODUCT.md`, and `public/sary-danish-cv.pdf`.
+- **Workflow & Design Rules:**
+  - Adhere to `AGENTS.md` design laws: linear/editorial tactile surfaces, `.squircle`, `.tactile`, `--elev-1..3`, `--sheen`, hairline borders (`border-line`).
+  - Do not invent claims, metrics, or technologies not in Danish's CV.
+  - Maintain the asymmetric layout and responsive balance.
+  - Ensure all 39 tests (`npm test -- --run`) and TypeScript (`npx tsc --noEmit`) remain green.
+
 ## Commands
 
 ```bash
