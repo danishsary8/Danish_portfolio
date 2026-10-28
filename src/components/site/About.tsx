@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react";
-import { Check, Code2, GitBranch, Languages, LayoutGrid, ShieldCheck } from "lucide-react";
+import { Check, GitBranch, Languages, LayoutGrid, ShieldCheck } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
-import { SkillIcon, themedSkillColor } from "./SkillIcon";
+import { PROFILE } from "@/content/portfolio";
+import { ASSETS } from "@/lib/assets";
 import { Reveal } from "./Reveal";
 
 // The owner's statement (exact wording): words sharpen on scroll.
@@ -22,13 +23,35 @@ const PRINCIPLES = [
 // Tools only around the orbit (owner: no photo, no school logos, no label).
 const TECH = ["React", "JavaScript", "Laravel", "PHP", "PostgreSQL", "Tailwind CSS", "Docker", "Git"] as const;
 
+// Official full-colour logos (Devicon, MIT), same pinned source as the Hero stack.
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
+const DEVICON_SLUG: Record<(typeof TECH)[number], string> = {
+  React: "react",
+  JavaScript: "javascript",
+  Laravel: "laravel",
+  PHP: "php",
+  PostgreSQL: "postgresql",
+  "Tailwind CSS": "tailwindcss",
+  Docker: "docker",
+  Git: "git",
+};
+
 const ORBIT_ITEMS = TECH.map((tech) => (
   <span
     key={tech}
     title={tech}
     className="tactile squircle [--r:18px] grid h-full w-full place-items-center bg-surface-2"
   >
-    <SkillIcon name={tech} className="h-7 w-7" style={{ color: themedSkillColor(tech) }} />
+    <img
+      src={`${DEVICON}/${DEVICON_SLUG[tech]}/${DEVICON_SLUG[tech]}-original.svg`}
+      alt={tech}
+      width={30}
+      height={30}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      className="h-[30px] w-[30px] object-contain"
+    />
   </span>
 ));
 
@@ -37,8 +60,16 @@ function OrbitCenter() {
     <div className="relative grid h-[104px] w-[104px] place-items-center">
       <span aria-hidden="true" className="about-core-ring absolute inset-0 rounded-full border border-line-strong" />
       <span aria-hidden="true" className="about-core-ring absolute inset-0 rounded-full border border-line-strong [animation-delay:1.6s]" />
-      <span className="icon-tile squircle [--r:22px] relative grid h-[72px] w-[72px] place-items-center">
-        <Code2 aria-hidden="true" strokeWidth={1.75} className="h-8 w-8" />
+      <span className="tactile frame-float relative block h-[72px] w-[72px] overflow-hidden rounded-full p-[3px]">
+        <img
+          src={ASSETS.profile.photo}
+          alt={`Portrait of ${PROFILE.name}`}
+          width={680}
+          height={850}
+          decoding="async"
+          loading="lazy"
+          className="h-full w-full origin-[50%_42%] scale-[1.22] rounded-full object-cover object-[50%_76%]"
+        />
       </span>
     </div>
   );
