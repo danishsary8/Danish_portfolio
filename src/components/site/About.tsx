@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Check, Code2, GitBranch, LayoutGrid, ShieldCheck } from "lucide-react";
+import { Check, Code2, GitBranch, Languages, LayoutGrid, ShieldCheck } from "lucide-react";
 import { OrbitImages } from "@/components/ui/OrbitImages";
 import { OrgLogo } from "./OrgLogo";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
@@ -104,7 +104,31 @@ export function About() {
             <p className="mt-5 max-w-[60ch] text-pretty text-[15px] leading-[1.65] text-fg-muted">{SUMMARY}</p>
           </Reveal>
 
-          <Reveal index={2} className="slide-from-right mt-7">
+          {/* Quick facts: languages | availability (hairline strip, no buttons) */}
+          <Reveal index={2} className="slide-from-right">
+            <dl className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-line py-3 text-[13.5px]">
+              <div className="flex items-center gap-2">
+                <dt className="sr-only">Languages</dt>
+                <Languages aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
+                <dd className="text-fg">
+                  <span lang="km" className="font-medium">ខ្មែរ</span> Khmer
+                  <span className="text-fg-muted"> · fluent</span>
+                </dd>
+                <dd className="text-fg">
+                  <span className="ml-2 font-medium">English</span>
+                  <span className="text-fg-muted"> · good working proficiency</span>
+                </dd>
+              </div>
+              <span aria-hidden="true" className="hidden h-4 w-px bg-line-strong sm:block" />
+              <div className="flex items-center gap-2">
+                <dt className="sr-only">Availability</dt>
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
+                <dd className="font-medium text-fg">Open to full-time roles</dd>
+              </div>
+            </dl>
+          </Reveal>
+
+          <Reveal index={3} className="slide-from-right mt-5">
             <div className="tactile squircle [--r:22px] overflow-hidden">
               {/* Now: current role, with a status pill */}
               <div className="flex items-center gap-4 px-5 pb-4 pt-5">
