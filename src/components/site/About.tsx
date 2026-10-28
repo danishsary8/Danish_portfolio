@@ -12,7 +12,7 @@ const STATEMENT =
 
 // CV professional summary, condensed (the Hero pitch and modal goal say different things).
 const SUMMARY =
-  "4th-year Software Development student at Norton University. I build real web apps with React, Laravel and PostgreSQL: an online bookstore, a habit planner and a bilingual clinical expert system, secured with JWT, OTP verification and Google OAuth. Now looking for a Web Developer role on a team that ships real products.";
+  "I’m a 4th-year Software Development student at Norton University building full-stack web apps with React, Laravel and PostgreSQL: an online bookstore, a habit planner and an award-winning bilingual clinical expert system. I secure them with JWT, OTP verification and Google OAuth, and keep every project clean, well-structured and easy to maintain. Now I’m looking for a Web Developer role on a team that ships real products.";
 
 const PRINCIPLES = [
   { icon: LayoutGrid, term: "Production dashboards" },
@@ -154,7 +154,7 @@ export function About() {
           </Reveal>
 
           <Reveal index={1} className="slide-from-right">
-            <p className="mt-5 max-w-[60ch] text-pretty text-[15px] leading-[1.65] text-fg-muted">{SUMMARY}</p>
+            <p className="mt-5 max-w-[66ch] text-pretty text-[15px] leading-[1.65] text-fg-muted">{SUMMARY}</p>
           </Reveal>
 
           <Reveal index={2} className="slide-from-right mt-6">
@@ -185,7 +185,7 @@ export function About() {
                     <span className="h-2 w-2 rounded-full bg-fg-subtle" />
                   </span>
                   <p className="text-[14px] font-medium text-fg">Frontend</p>
-                  <time className="rounded-md border border-line bg-surface-1 px-2 py-0.5 font-mono text-[12px] font-medium tabular-nums text-fg">Jul – Oct 2026</time>
+                  <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Jul – Oct 2026</time>
                   <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
                 </li>
                 <li className="relative mt-4 grid grid-cols-[16px_minmax(0,1fr)_auto] items-center gap-x-3">
@@ -193,7 +193,7 @@ export function About() {
                     <span className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                   </span>
                   <p className="text-[14px] font-medium text-fg">Backend</p>
-                  <time className="rounded-md border border-line bg-surface-1 px-2 py-0.5 font-mono text-[12px] font-medium tabular-nums text-fg">Oct 2026 – Present</time>
+                  <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Oct 2026 – Present</time>
                   <p className="col-start-2 mt-0.5 text-[12.5px] text-fg-muted">Building REST APIs alongside the team</p>
                 </li>
               </ol>
