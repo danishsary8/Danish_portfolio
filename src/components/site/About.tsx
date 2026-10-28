@@ -12,7 +12,7 @@ const STATEMENT =
 
 // CV professional summary, condensed (the Hero pitch and modal goal say different things).
 const SUMMARY =
-  "I’m a 4th-year Software Development student at Norton University who builds full-stack web apps with React, Laravel, and PostgreSQL — from secure REST APIs (JWT, OTP, Google OAuth) to responsive interfaces with clean code built to scale and maintain. Motivated to turn ideas into complete, reliable software, I’m looking to join a development or engineering team as a Web Developer where I can build impactful products that help the company grow while continuing to level up myself. I’m flexible, adaptable, and always eager to learn and work with new tools and technologies in this field.";
+  "I’m a 4th-year Software Development student at Norton University who builds full-stack web apps with React, Laravel, and PostgreSQL — from secure REST APIs (JWT, OTP, Google OAuth) to responsive interfaces with clean code, designed to scale and easy to maintain. Motivated to turn ideas into complete, reliable software, I’m looking to join a development or engineering team as a Web Developer where I can build impactful products that help the company grow while continuing to level up myself. I’m flexible, adaptable, and always eager to learn and work with new tools and technologies in this field.";
 
 // Tools only around the orbit (owner: no photo, no school logos, no label).
 const TECH = ["React", "JavaScript", "Laravel", "PHP", "PostgreSQL", "Tailwind CSS", "Docker", "Git"] as const;
