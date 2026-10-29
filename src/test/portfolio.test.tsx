@@ -100,7 +100,7 @@ describe("Projects", () => {
 describe("Experience and education", () => {
   it("shows the internship and the award", () => {
     render(<Experience />);
-    expect(screen.getByText("Web Developer Trainee Intern")).toBeInTheDocument();
+    expect(screen.getByText("Web Developer Internship")).toBeInTheDocument();
     expect(screen.getByText(/ETEC & KruITSolution/)).toBeInTheDocument();
     expect(screen.getByText(/Building REST APIs alongside/)).toBeInTheDocument();
     expect(screen.getByText("AI Expert System and Innovation 2026")).toBeInTheDocument();

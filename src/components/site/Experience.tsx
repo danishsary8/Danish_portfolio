@@ -17,7 +17,7 @@ const MILESTONES = [
   { at: 100, date: "Now", label: "Building REST APIs", live: true },
 ] as const;
 
-const WORKED_WITH = ["React", "REST APIs", "Laravel", "Git & GitHub", "Pull requests"];
+const WORKED_WITH = ["React", "Laravel", "REST APIs", "Git & GitHub", "Pull requests", "Teamwork"];
 
 function Timeline() {
   return (
@@ -50,19 +50,6 @@ function Timeline() {
   );
 }
 
-function Chips({ label, items }: { label: string; items: readonly string[] }) {
-  return (
-    <div className="mt-auto flex w-full flex-wrap items-center gap-2 border-t border-line pt-5">
-      <span className="mr-1 text-[13px] text-fg-subtle">{label}</span>
-      {items.map((w) => (
-        <span key={w} className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted">
-          {w}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /**
  * Experience as two full-width case cards under the 2026 timeline. Each card pairs the story
  * (what, how, with whom) with an evidence panel: the real certificate, clickable to view.
@@ -88,7 +75,7 @@ export function Experience() {
         {/* Internship: header, then the two stages side by side */}
         <Reveal as="li" className="slide-from-left">
           <article className="exp-card tactile squircle [--r:28px] overflow-hidden bg-surface-2">
-            <header className="flex flex-wrap items-start gap-x-6 gap-y-4 p-8 pb-7">
+            <header className="flex flex-wrap items-start gap-x-6 gap-y-4 px-8 pb-6 pt-7">
               <div className="flex shrink-0 items-center">
                 <OrgLogo org="etec" size={52} />
                 <OrgLogo org="kru" size={52} className="-ml-2.5 ring-[3px] ring-surface-2" />
@@ -98,7 +85,14 @@ export function Experience() {
                 <p className="mt-1 text-[14px] text-fg-muted">
                   <span className="font-medium text-fg">{INTERN.org}</span> · {INTERN.detail}
                 </p>
-                <p className="mt-4 max-w-[64ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">{INTERN.summary}</p>
+                <p className="mt-3 max-w-[66ch] text-pretty text-[15.5px] leading-[1.6] text-fg-muted">{INTERN.summary}</p>
+                <div className="mt-4 flex flex-wrap gap-1.5" aria-label="Skills used">
+                  {WORKED_WITH.map((w) => (
+                    <span key={w} className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted">
+                      {w}
+                    </span>
+                  ))}
+                </div>
               </div>
               <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
                 <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
@@ -106,9 +100,9 @@ export function Experience() {
               </span>
             </header>
 
-            <div className="grid gap-4 px-8 lg:grid-cols-2">
+            <div className="grid gap-4 px-8 pb-8 lg:grid-cols-2">
               {/* Frontend: done, with its certificate */}
-              <section aria-label="Frontend stage" className="flex flex-col rounded-[20px] border border-line bg-surface-1 p-6">
+              <section aria-label="Frontend stage" className="flex flex-col rounded-[20px] border border-line bg-surface-1 px-6 py-5">
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
                     <span aria-hidden="true" className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg">
@@ -122,7 +116,7 @@ export function Experience() {
                   </span>
                 </div>
                 <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026</p>
-                <ul className="mb-5 mt-4 grid gap-2.5">
+                <ul className="mb-4 mt-3 grid gap-2">
                   {INTERN.frontend.map((p) => (
                     <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
                       <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-fg-subtle" />
@@ -130,12 +124,12 @@ export function Experience() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex items-center gap-4 border-t border-line pt-5">
+                <div className="mt-auto flex items-center gap-4 border-t border-line pt-4">
                   <CertificateThumb
                     src={certInternship}
                     width={1600}
                     height={1119}
-                    size={128}
+                    size={92}
                     tilt={-3}
                     title="Certificate of Completion: Web Frontend Development"
                     caption="KRU IT Solution with ETEC Center · Granted October 15, 2026"
@@ -150,7 +144,7 @@ export function Experience() {
               {/* Backend: in progress */}
               <section
                 aria-label="Backend stage"
-                className="flex flex-col rounded-[20px] border border-[color-mix(in_oklab,#34C759_35%,transparent)] bg-[color-mix(in_oklab,#34C759_6%,var(--surface-2))] p-6"
+                className="flex flex-col rounded-[20px] border border-[color-mix(in_oklab,#34C759_35%,transparent)] bg-[color-mix(in_oklab,#34C759_6%,var(--surface-2))] px-6 py-5"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
@@ -165,7 +159,7 @@ export function Experience() {
                   </span>
                 </div>
                 <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">Oct 2026 – now</p>
-                <ul className="mb-5 mt-4 grid gap-2.5">
+                <ul className="mb-4 mt-3 grid gap-2">
                   {INTERN.backend.map((p) => (
                     <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
                       <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#34C759]" />
@@ -173,16 +167,13 @@ export function Experience() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex items-center gap-3 border-t border-line pt-5 text-[13px] text-fg-muted">
+                <div className="mt-auto flex items-center gap-3 border-t border-line pt-4 text-[13px] text-fg-muted">
                   <MessagesSquare aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
-                  Working with the backend team on the same product
+                  Frontend experience helps me design APIs that are easy to use
                 </div>
               </section>
             </div>
 
-            <div className="flex px-8 pb-7 pt-6">
-              <Chips label="Worked with" items={WORKED_WITH} />
-            </div>
           </article>
         </Reveal>
 
@@ -232,7 +223,7 @@ export function Experience() {
 
               <div className="mt-8 flex flex-1 flex-col">
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
-                  <span className="text-[13px] text-fg-subtle">Team project · 4 members</span>
+                  <span className="text-[13px] text-fg-subtle">Team of 4 · built and entered together</span>
                   <a
                     href="#projects"
                     className="group inline-flex items-center gap-1.5 text-[14px] font-medium text-fg underline decoration-line-strong underline-offset-4 hover:decoration-fg"

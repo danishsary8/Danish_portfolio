@@ -148,12 +148,12 @@ export type Skill = (typeof SKILL_GROUPS)[number]["skills"][number];
 
 export const EXPERIENCE = [
   {
-    title: "Web Developer Trainee Intern",
+    title: "Web Developer Internship",
     org: "ETEC & KruITSolution",
     period: "Jul 2026 – Present",
     detail: "Phnom Penh, Cambodia",
     summary:
-      "An internship on a real product team. I started on the frontend, earned its certificate, and now build REST APIs with the backend team.",
+      "Hands-on training with a development team at ETEC and KruITSolution. I learned and shipped the frontend first, earned its certificate, and now build REST APIs on the backend.",
     frontend: [
       "Built UI dashboards and connected them to live REST APIs.",
       "Shipped through Git and GitHub with feature branches, clear commits and pull requests.",
@@ -169,10 +169,10 @@ export const EXPERIENCE = [
     period: "Sep 2026",
     detail: "Norton University · Department of Computer Studies",
     summary:
-      "Our team entered the university's AI competition with the Diabetes Expert System and took first place.",
+      "My team of four built the Diabetes Expert System and entered it in Norton University's AI competition, where it won first place.",
     points: [
-      "A bilingual (Khmer/English) assistant for early diabetes risk screening.",
-      "Rule-based and explainable: every risk result shows the rules behind it, with a care plan.",
+      "Purpose: help people check their risk of diabetes early, in Khmer or English.",
+      "Explainable by design: every result shows the rules behind it and comes with a care plan.",
       "Built with React, Flask and PostgreSQL, with secure sign-in and role-based access.",
     ],
   },
