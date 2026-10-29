@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { SKILL_GROUPS } from "@/content/portfolio";
 import { Reveal, SectionHeader } from "./Reveal";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
@@ -14,45 +14,57 @@ const SOFT_SKILLS = [
   "Fast learner",
 ];
 
-// Two-letter "element" symbols for the periodic-table layout (visual shorthand only).
-const SYMBOL: Record<string, string> = {
-  JavaScript: "Js",
-  PHP: "Ph",
-  Python: "Py",
-  Java: "Jv",
-  HTML5: "Ht",
-  CSS3: "Cs",
-  React: "Re",
-  Laravel: "Lv",
-  Flask: "Fl",
-  "Tailwind CSS": "Tw",
-  Bootstrap: "Bs",
-  "Framer Motion": "Fm",
-  Flutter: "Fu",
-  PostgreSQL: "Pg",
-  Supabase: "Sb",
-  Oracle: "Or",
-  Git: "Gt",
-  GitHub: "Gh",
-  "REST APIs": "Ra",
-  JWT: "Jw",
-  Docker: "Dk",
-  Postman: "Pm",
-  Cloudinary: "Cl",
-  "VS Code": "Vs",
-};
+// The everyday stack, top (what people touch) to bottom (where data lives).
+const CORE = [
+  { tool: "React", layer: "Interface" },
+  { tool: "Laravel", layer: "API" },
+  { tool: "PostgreSQL", layer: "Data" },
+] as const;
 
-type Picked = { skill: string; group: string };
+const group = (title: string) => SKILL_GROUPS.find((g) => g.title === title)!;
+
+/** One bento cell: tactile card that lifts on hover. */
+function Cell({ className = "", i, children }: { className?: string | undefined; i: number; children: ReactNode }) {
+  return (
+    <div
+      className={`skills-cell tactile squircle [--r:22px] relative overflow-hidden bg-surface-2 p-5 ${className}`}
+      style={{ "--i": i } as CSSProperties}
+    >
+      {children}
+    </div>
+  );
+}
+
+function GroupCell({ title, i, className }: { title: string; i: number; className?: string | undefined }) {
+  const g = group(title);
+  return (
+    <Cell i={i} className={className}>
+      <div className="flex items-baseline justify-between">
+        <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
+        <span className="font-mono text-[12px] tabular-nums text-fg-subtle">{g.skills.length}</span>
+      </div>
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {g.skills.map((skill) => (
+          <li
+            key={skill}
+            className="skills-pill inline-flex h-8 items-center gap-2 rounded-[8px] border border-line bg-surface-1 pl-2 pr-2.5 text-[13px] text-fg"
+            style={{ "--brand": themedSkillColor(skill) } as CSSProperties}
+          >
+            <SkillIcon name={skill} className="h-4 w-4" style={{ color: themedSkillColor(skill) }} />
+            {skill}
+          </li>
+        ))}
+      </ul>
+    </Cell>
+  );
+}
 
 /**
- * "The elements of my stack": every CV tool as a periodic-table element, the four groups as
- * blocks of different heights. Pointing at an element shows it large in the key card. The key
- * card repeats the name through CSS (`attr()`), so the readable list stays the single source.
+ * Bento showcase (owner's pick): a tall "core stack" card beside cards for each CV group and
+ * the soft skills. The core card repeats three tool names through CSS (`data-label`), so each
+ * skill still appears once as text.
  */
 export function Skills() {
-  const [picked, setPicked] = useState<Picked>({ skill: "React", group: "Frameworks & UI" });
-  let n = 0;
-
   return (
     <section
       id="skills"
@@ -62,87 +74,55 @@ export function Skills() {
       <SectionHeader
         id="skills-title"
         title="Skills"
-        lede="The elements of my stack, grouped by where they sit."
+        lede="Everything on my CV, with the stack I reach for first up front."
       />
 
-      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-10">
-        <div>
-          {/* The table: four blocks side by side, two columns each */}
-          <Reveal className="slide-from-left">
-            <div className="flex items-start gap-6">
-              {SKILL_GROUPS.map((g) => (
-                <div key={g.title} className="min-w-0">
-                  <div className="mb-3 flex items-baseline justify-between gap-2 border-b border-line-strong pb-2">
-                    <h3 className="text-[14px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
-                    <span className="font-mono text-[11.5px] tabular-nums text-fg-subtle">{g.skills.length}</span>
-                  </div>
-                  <ul className="grid grid-cols-2 gap-2">
-                    {g.skills.map((skill) => {
-                      const i = n++;
-                      const on = picked.skill === skill;
-                      return (
-                        <li
-                          key={skill}
-                          onMouseEnter={() => setPicked({ skill, group: g.title })}
-                          data-on={on || undefined}
-                          className="skills-element tactile squircle [--r:12px] relative flex h-[82px] w-[98px] flex-col justify-between bg-surface-2 p-2.5"
-                          style={{ "--brand": themedSkillColor(skill), "--i": i } as CSSProperties}
-                        >
-                          <div className="flex items-start justify-between">
-                            <span aria-hidden="true" className="text-[26px] font-semibold leading-none tracking-[-0.03em] text-fg">
-                              {SYMBOL[skill] ?? skill.slice(0, 2)}
-                            </span>
-                            <SkillIcon name={skill} className="h-3.5 w-3.5" style={{ color: themedSkillColor(skill) }} />
-                          </div>
-                          <span className="truncate text-[11px] leading-tight text-fg-muted">{skill}</span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
-          {/* Below the table, like the separate row on a real periodic table */}
-          <Reveal index={1} className="slide-from-left mt-6 flex items-center gap-4 border-t border-line pt-4">
-            <h3 className="shrink-0 text-[14px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
-            <ul className="flex flex-wrap gap-1.5">
-              {SOFT_SKILLS.map((s) => (
-                <li key={s} className="rounded-[7px] border border-line-strong px-2 py-0.5 text-[12px] text-fg-muted">
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-
-        {/* Key card: the element under the pointer, large */}
-        <Reveal index={1} className="slide-from-right">
-          <div
-            aria-hidden="true"
-            className="skills-key tactile squircle [--r:20px] relative overflow-hidden bg-surface-2 p-6"
-            style={{ "--brand": themedSkillColor(picked.skill) } as CSSProperties}
-          >
-            <div className="flex items-start justify-between">
-              <span className="text-[12px] text-fg-subtle">{picked.group}</span>
-              <SkillIcon
-                name={picked.skill}
-                className="h-7 w-7"
-                style={{ color: themedSkillColor(picked.skill) }}
-              />
-            </div>
-            <p key={picked.skill} className="skills-key-symbol mt-6 text-[100px] font-semibold leading-[0.85] tracking-[-0.05em] text-fg">
-              {SYMBOL[picked.skill]}
-            </p>
-            <p className="skills-key-name mt-5 text-[20px] font-medium tracking-[-0.02em] text-fg" data-label={picked.skill} />
-            <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1 bg-[var(--brand)] transition-colors duration-300" />
-          </div>
-          <p className="mt-4 text-[13px] leading-[1.55] text-fg-muted">
-            Point at any element to look it up. Brand colours show the real tool.
+      <Reveal className="skills-bento grid grid-cols-12 gap-3">
+        {/* Core stack: tall card, the three layers stacked with a connecting rail */}
+        <Cell i={0} className="col-span-12 flex flex-col lg:col-span-5 lg:row-span-2">
+          <div aria-hidden="true" className="skills-core-glow pointer-events-none absolute inset-0" />
+          <p className="relative text-[15px] font-medium tracking-[-0.01em] text-fg">Core stack</p>
+          <p className="relative mt-1 text-[13px] text-fg-muted">
+            A React interface on a secure Laravel API, backed by PostgreSQL.
           </p>
-        </Reveal>
-      </div>
+          <div aria-hidden="true" className="relative mt-auto pt-6">
+            <span className="absolute bottom-8 left-[27px] top-14 w-px bg-line-strong" />
+            {CORE.map(({ tool, layer }, k) => (
+              <div key={tool} className={`relative flex items-center gap-4 ${k ? "mt-4" : ""}`}>
+                <span
+                  className="skills-core-tile grid h-14 w-14 shrink-0 place-items-center rounded-[16px] border border-line bg-surface-1"
+                  style={{ "--brand": themedSkillColor(tool) } as CSSProperties}
+                >
+                  <SkillIcon name={tool} className="h-7 w-7" style={{ color: themedSkillColor(tool) }} />
+                </span>
+                <div>
+                  <p className="skills-core-name text-[20px] font-semibold tracking-[-0.02em] text-fg" data-label={tool} />
+                  <p className="text-[12.5px] text-fg-subtle">{layer}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Cell>
+
+        <GroupCell title="Languages" i={1} className="col-span-12 lg:col-span-4" />
+        <GroupCell title="Databases" i={2} className="col-span-12 lg:col-span-3" />
+        <GroupCell title="Frameworks & UI" i={3} className="col-span-12 lg:col-span-7" />
+        <GroupCell title="Tools & APIs" i={4} className="col-span-12 lg:col-span-7" />
+
+        <Cell i={5} className="col-span-12 lg:col-span-5">
+          <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {SOFT_SKILLS.map((s) => (
+              <li
+                key={s}
+                className="inline-flex h-7 items-center rounded-full border border-line-strong px-2.5 text-[12.5px] text-fg-muted"
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        </Cell>
+      </Reveal>
     </section>
   );
 }
