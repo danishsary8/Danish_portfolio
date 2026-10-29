@@ -2020,24 +2020,18 @@
 }
 
 
-/* Education: colour-highlighted timeline bands (grow from their start on reveal). */
-.edu-band {
-  background: color-mix(in oklab, var(--c) 12%, var(--surface-2));
-  border-color: color-mix(in oklab, var(--c) 38%, transparent);
-  box-shadow: inset 3px 0 0 var(--c);
-}
-.js [data-reveal] .edu-band {
+/* Education: thin colour tracks, drawn from their start on reveal. */
+.edu-track-line {
+  background: var(--c);
   transform-origin: left center;
-  transform: scaleX(0.04);
-  opacity: 0;
-  transition:
-    transform 800ms var(--ease-out),
-    opacity 300ms var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 110ms + 120ms);
 }
-.js [data-reveal][data-visible] .edu-band {
+.js [data-reveal] .edu-track-line {
+  transform: scaleX(0);
+  transition: transform 900ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 120ms + 150ms);
+}
+.js [data-reveal][data-visible] .edu-track-line {
   transform: none;
-  opacity: 1;
 }
 
 /* Education cards: school-coloured top edge, soft elevation, lift + tinted border on hover. */
@@ -2050,15 +2044,6 @@
     transform 200ms var(--ease-out),
     box-shadow 200ms var(--ease-out),
     border-color 200ms var(--ease-out);
-}
-.edu-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 24px auto;
-  height: 3px;
-  border-radius: 0 0 3px 3px;
-  background: var(--c);
-  opacity: 0.85;
 }
 .edu-pill {
   border: 1px solid color-mix(in oklab, var(--c) 35%, var(--line-strong));
@@ -2079,9 +2064,9 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] .edu-band {
+  .js [data-reveal] .edu-track-line {
     transform: none;
-    transition: opacity 300ms;
+    transition: none;
   }
   .edu-card:hover {
     transform: none;

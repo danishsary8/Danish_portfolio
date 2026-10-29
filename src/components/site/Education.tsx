@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { BadgeCheck, BookOpen, Clock3, GraduationCap, Languages } from "lucide-react";
+import { BadgeCheck, BookOpen, GraduationCap, Languages } from "lucide-react";
 import { CERTIFICATES, EDUCATION } from "@/content/portfolio";
 import { OrgLogo } from "./OrgLogo";
 import { CertificateThumb } from "./CertificateThumb";
@@ -21,60 +21,58 @@ const YEARS = [2024, 2025, 2026];
 const pct = (m: number) => `${(m / SPAN) * 100}%`;
 
 const LANES = [
-  [{ name: "Norton University · Software Development", when: "Jan 2024 – Present", from: 0, to: NOW, color: NORTON, live: true }],
-  [{ name: "ACE · General English", when: "Jan 2024 – Dec 2026", from: 0, to: 36, color: ACE }],
+  [{ name: "Norton University", sub: "Software Development", when: "Jan 2024 – Present", from: 0, to: NOW, color: NORTON, live: true }],
+  [{ name: "ACE", sub: "General English", when: "2024 – 2026", from: 0, to: 36, color: ACE }],
   [
-    { name: "ETEC · Frontend", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC },
-    { name: "ETEC · Backend", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: ETEC },
+    { name: "ETEC", sub: "Frontend", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC },
+    { name: "ETEC", sub: "Backend", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: ETEC },
   ],
 ] as const;
 
-/** Year ruler with one colour-highlighted band per school or course. */
+/** Year ruler with one thin colour track per school or course, labelled directly above it. */
 function StudyTimeline() {
   return (
-    <div aria-hidden="true" className="edu-timeline relative mb-8">
-      {/* Year ruler */}
-      <div className="relative h-6">
-        {YEARS.map((y) => (
-          <span key={y} className="absolute top-0 font-mono text-[12.5px] tabular-nums text-fg" style={{ left: pct((y - 2024) * 12) }}>
-            {y}
+    <div aria-hidden="true" className="mb-10">
+      <div className="relative ml-1 mr-1">
+        {/* Year ruler */}
+        <div className="relative h-7 border-b border-line">
+          {YEARS.map((y) => (
+            <span key={y} className="absolute top-0 font-mono text-[12.5px] tabular-nums text-fg-muted" style={{ left: pct((y - 2024) * 12) }}>
+              {y}
+            </span>
+          ))}
+          <span className="absolute top-0 -translate-x-1/2 font-mono text-[12px] font-medium text-[#248a3d] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
+            Now
           </span>
+        </div>
+        {YEARS.slice(1).map((y) => (
+          <span key={y} className="absolute bottom-0 top-7 w-px bg-line" style={{ left: pct((y - 2024) * 12) }} />
         ))}
-        <span className="absolute top-0 -translate-x-1/2 font-mono text-[12px] font-medium text-[#2f9e4f] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
-          Now
-        </span>
-      </div>
-      <div className="relative">
-        {YEARS.map((y) => (
-          <span key={y} className="absolute inset-y-0 w-px bg-line" style={{ left: pct((y - 2024) * 12) }} />
-        ))}
-        <span className="absolute inset-y-0 w-px border-l border-dashed border-[#34C759]" style={{ left: pct(NOW) }} />
-        <div className="relative grid gap-2.5 py-2">
+        <span className="absolute bottom-0 top-7 w-px bg-[#34C759]/50" style={{ left: pct(NOW) }} />
+
+        <div className="relative grid gap-6 pb-1 pt-5">
           {LANES.map((lane, li) => (
-            <div key={li} className="relative h-11">
+            <div key={li} className="relative h-[46px]">
               {lane.map((b, bi) => (
                 <div
-                  key={b.name}
-                  className="edu-band absolute inset-y-0 flex min-w-0 flex-col justify-center overflow-hidden rounded-[12px] border px-3.5"
-                  style={
-                    {
-                      left: pct(b.from),
-                      width: pct(b.to - b.from),
-                      "--c": b.color,
-                      "--i": li * 2 + bi,
-                    } as CSSProperties
-                  }
+                  key={b.sub}
+                  className="edu-track absolute inset-y-0"
+                  style={{ left: pct(b.from), width: pct(b.to - b.from), "--c": b.color, "--i": li * 2 + bi } as CSSProperties}
                 >
-                  <span className="flex items-center gap-1.5 truncate text-[13px] font-medium text-fg">
-                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: b.color }} />
-                    <span className="truncate">{b.name}</span>
-                  </span>
-                  <span className="truncate font-mono text-[11.5px] tabular-nums text-fg-muted">{b.when}</span>
+                  <p className="whitespace-nowrap text-[13.5px] leading-tight">
+                    <span className="font-semibold text-fg">{b.name}</span>
+                    <span className="text-fg-muted"> · {b.sub}</span>
+                  </p>
+                  <p className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">{b.when}</p>
+                  <span className="edu-track-line absolute inset-x-0 bottom-0 h-[5px] rounded-full" />
+                  <span className="absolute bottom-[-3.5px] left-0 h-3 w-3 rounded-full border-2 bg-surface-2" style={{ borderColor: b.color }} />
                   {"live" in b ? (
-                    <span className="absolute right-2.5 top-1/2 -translate-y-1/2">
-                      <span className="about-live-dot relative block h-2.5 w-2.5 rounded-full" style={{ background: NOW_GREEN }} />
+                    <span className="absolute bottom-[-3.5px] right-0 translate-x-1/2">
+                      <span className="about-live-dot relative block h-3 w-3 rounded-full" style={{ background: NOW_GREEN }} />
                     </span>
-                  ) : null}
+                  ) : (
+                    <span className="absolute bottom-[-3.5px] right-0 h-3 w-3 rounded-full" style={{ background: b.color }} />
+                  )}
                 </div>
               ))}
             </div>
@@ -150,7 +148,7 @@ export function Education() {
               <div className="flex shrink-0 flex-col items-end">
                 <span className="edu-pill inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
                 <p className="mt-1.5 inline-flex items-center gap-1 text-[12.5px] text-fg-subtle">
-                  <Clock3 aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5" />
+                  <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5 text-[#34C759]" />
                   {ENGLISH.detail}
                 </p>
               </div>

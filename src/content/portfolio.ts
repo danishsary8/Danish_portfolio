@@ -189,8 +189,8 @@ export const EDUCATION = [
   {
     title: "General English Program",
     org: "Australian Centre for Education (ACE)",
-    period: "Jan 2024 – Dec 2026",
-    detail: "Final term",
+    period: "2024 – 2026",
+    detail: "Completes 2026",
   },
 ] as const;
 
