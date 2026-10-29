@@ -151,13 +151,16 @@ export const EXPERIENCE = [
     title: "Web Developer Trainee Intern",
     org: "ETEC & KruITSolution",
     period: "Jul 2026 – Present",
-    detail: "Weekend internship · Phnom Penh",
+    detail: "Phnom Penh, Cambodia",
     summary:
-      "A weekend internship on a real product team. I started on the frontend, earned its certificate, and now build REST APIs with the backend team.",
-    points: [
-      "Build UI dashboards for a team tour booking platform and connect them to live REST APIs.",
-      "Work in Git and GitHub with feature branches, clear commits and reviewed pull requests.",
-      "Agree API requirements with backend teammates and share ideas in team discussions.",
+      "An internship on a real product team. I started on the frontend, earned its certificate, and now build REST APIs with the backend team.",
+    frontend: [
+      "Built UI dashboards and connected them to live REST APIs.",
+      "Shipped through Git and GitHub with feature branches, clear commits and pull requests.",
+    ],
+    backend: [
+      "Building REST APIs alongside the backend team.",
+      "Agreeing API requirements with teammates and sharing ideas in team discussions.",
     ],
   },
   {
