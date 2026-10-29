@@ -9,7 +9,7 @@ import { Reveal, SectionHeader } from "./Reveal";
 
 const [INTERN, AWARD] = EXPERIENCE;
 
-// One icon per internship bullet, in the same order as the content.
+// One icon per internship point, in the same order as the content.
 const POINT_ICONS = [LayoutDashboard, GitPullRequest, MessagesSquare];
 
 // 2026 at a glance: where each milestone sits along the year (0–100% of the strip).
@@ -20,11 +20,11 @@ const MILESTONES = [
   { at: 100, date: "Now", label: "Building REST APIs", live: true },
 ] as const;
 
-const WORKED_WITH = ["REST APIs", "UI dashboards", "Git & GitHub", "Pull requests"];
+const WORKED_WITH = ["React", "REST APIs", "Laravel", "Git & GitHub", "Pull requests"];
 
 function Timeline() {
   return (
-    <div aria-hidden="true" className="exp-timeline relative mx-2 mb-7 mt-1 h-[54px] [@media(max-height:760px)]:mb-4">
+    <div aria-hidden="true" className="exp-timeline relative mx-2 mb-10 mt-1 h-[54px]">
       <span className="absolute inset-x-0 top-[7px] h-px bg-line-strong" />
       <span className="exp-timeline-fill absolute inset-x-0 top-[7px] h-px bg-fg" />
       {MILESTONES.map((m, i) => (
@@ -53,146 +53,184 @@ function Timeline() {
   );
 }
 
+function Chips({ label, items }: { label: string; items: readonly string[] }) {
+  return (
+    <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-line pt-5">
+      <span className="mr-1 text-[13px] text-fg-subtle">{label}</span>
+      {items.map((w) => (
+        <span key={w} className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted">
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 /**
- * Experience as two showcase cards under a 2026 timeline strip: the internship (two stages,
- * what the work touched) and the AI competition win (team project, gold accents only here).
+ * Experience as two full-width case cards under the 2026 timeline. Each card pairs the story
+ * (what, how, with whom) with an evidence panel: the real certificate, clickable to view.
  */
 export function Experience() {
   return (
     <section
       id="experience"
       aria-labelledby="experience-title"
-      className="mx-auto flex w-full max-w-[1180px] flex-col justify-center px-5 py-24 sm:px-6 lg:min-h-[calc(100dvh-88px)] lg:py-6 [&>div:first-child]:lg:mb-8 [@media(max-height:760px)]:[&>div:first-child]:lg:mb-5"
+      className="mx-auto w-full max-w-[1180px] px-5 py-24 sm:px-6 lg:py-28"
     >
       <SectionHeader
         id="experience-title"
         title="Experience"
-        lede="A team internship on a real booking platform, and a first-place AI project."
+        lede="Where my skills met real work in 2026: a product team internship and a first-place AI project."
       />
 
       <Reveal>
         <Timeline />
       </Reveal>
 
-      <ol className="grid items-stretch gap-4 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-        {/* Internship */}
+      <ol className="grid gap-6">
+        {/* Internship: story left, evidence right */}
         <Reveal as="li" className="slide-from-left">
-          <article className="exp-card tactile squircle [--r:24px] flex h-full flex-col bg-surface-2 p-6 [@media(max-height:760px)]:p-5">
-            <div className="flex items-start gap-4">
-              <div className="flex shrink-0 items-center">
-                <OrgLogo org="etec" size={46} />
-                <OrgLogo org="kru" size={46} className="-ml-2.5 ring-[3px] ring-surface-2" />
+          <article className="exp-card tactile squircle [--r:28px] grid overflow-hidden bg-surface-2 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <div className="flex flex-col p-8">
+              <div className="flex items-center gap-4">
+                <div className="flex shrink-0 items-center">
+                  <OrgLogo org="etec" size={48} />
+                  <OrgLogo org="kru" size={48} className="-ml-2.5 ring-[3px] ring-surface-2" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-medium text-fg">{INTERN.org}</p>
+                  <p className="text-[13px] text-fg-subtle">{INTERN.detail}</p>
+                </div>
+                <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                  <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                  {INTERN.period}
+                </span>
               </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-[21px] font-semibold leading-tight tracking-[-0.025em] text-fg">{INTERN.title}</h3>
-                <p className="mt-0.5 text-[14px] text-fg-muted">
-                  <span className="text-fg">{INTERN.org}</span> · {INTERN.detail}
-                </p>
+
+              <h3 className="mt-7 text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-fg">{INTERN.title}</h3>
+              <p className="mt-3 max-w-[60ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">{INTERN.summary}</p>
+
+              <ul className="mt-6 grid gap-3.5">
+                {INTERN.points.map((p, i) => {
+                  const Icon = POINT_ICONS[i] ?? LayoutDashboard;
+                  return (
+                    <li key={p} className="flex gap-3.5 text-[15px] leading-[1.55] text-fg">
+                      <span aria-hidden="true" className="icon-tile-light squircle [--r:10px] grid h-9 w-9 shrink-0 place-items-center text-fg">
+                        <Icon strokeWidth={1.75} className="h-[18px] w-[18px]" />
+                      </span>
+                      <span className="pt-1.5">{p}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="mt-8 flex flex-1 flex-col">
+                <Chips label="Worked with" items={WORKED_WITH} />
               </div>
-              <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
-                {INTERN.period}
-              </span>
             </div>
 
-            {/* Two stages */}
-            <div className="mt-5 grid grid-cols-2 gap-2.5 [@media(max-height:760px)]:mt-4">
-              <div className="flex items-center justify-between gap-3 rounded-[14px] border border-line bg-surface-1 py-2.5 pl-4 pr-3">
-                <div className="min-w-0">
-                  <p className="flex items-center gap-1.5 text-[13.5px] font-medium text-fg">
-                    Frontend
-                    <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-[#34C759]" />
-                  </p>
-                  <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026 · certified</p>
-                </div>
+            {/* Evidence: the two stages, then the frontend certificate */}
+            <aside className="flex flex-col gap-6 border-t border-line bg-surface-1 p-8 lg:border-l lg:border-t-0">
+              <div>
+                <p className="text-[13px] font-medium text-fg-subtle">Internship track</p>
+                <ol className="relative mt-4 grid gap-5">
+                  <span aria-hidden="true" className="absolute bottom-3 left-[7px] top-3 w-px bg-line-strong" />
+                  <li className="relative flex gap-3.5">
+                    <span aria-hidden="true" className="mt-1 grid h-[15px] w-[15px] shrink-0 place-items-center rounded-full border-2 border-fg bg-surface-1" />
+                    <div>
+                      <p className="flex items-center gap-1.5 text-[15px] font-medium text-fg">
+                        Frontend
+                        <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-[#34C759]" />
+                      </p>
+                      <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026 · certified</p>
+                    </div>
+                  </li>
+                  <li className="relative flex gap-3.5">
+                    <span aria-hidden="true" className="mt-1 grid h-[15px] w-[15px] shrink-0 place-items-center rounded-full bg-surface-1">
+                      <span className="about-live-dot relative h-[11px] w-[11px] rounded-full bg-[#34C759]" />
+                    </span>
+                    <div>
+                      <p className="text-[15px] font-medium text-fg">Backend</p>
+                      <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Oct 2026 – now</p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+
+              <figure className="mt-auto">
                 <CertificateThumb
                   src={certInternship}
                   width={1600}
                   height={1119}
-                  size={64}
-                  tilt={-4}
+                  size={272}
+                  tilt={-2}
                   title="Certificate of Completion: Web Frontend Development"
                   caption="KRU IT Solution with ETEC Center · Granted October 15, 2026"
                 />
-              </div>
-              <div className="rounded-[14px] border border-[color-mix(in_oklab,#34C759_40%,transparent)] bg-[color-mix(in_oklab,#34C759_7%,var(--surface-2))] px-4 py-3">
-                <p className="text-[13.5px] font-medium text-fg">Backend</p>
-                <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Oct 2026 – now</p>
-              </div>
-            </div>
-
-            <ul className="mt-5 grid gap-3 [@media(max-height:760px)]:mt-4 [@media(max-height:760px)]:gap-2">
-              {INTERN.points.map((p, i) => {
-                const Icon = POINT_ICONS[i] ?? LayoutDashboard;
-                return (
-                  <li key={p} className="flex gap-3 text-[14.5px] leading-[1.55] text-fg-muted [@media(max-height:760px)]:text-[13.5px] [@media(max-height:760px)]:leading-[1.45]">
-                    <span aria-hidden="true" className="icon-tile-light squircle [--r:9px] grid h-8 w-8 shrink-0 place-items-center text-fg">
-                      <Icon strokeWidth={1.75} className="h-4 w-4" />
-                    </span>
-                    <span className="pt-1">{p}</span>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="mt-auto flex flex-wrap items-center gap-2 border-t border-line pt-4 [@media(max-height:760px)]:pt-3">
-              <span className="mr-1 text-[13px] text-fg-subtle">Worked with</span>
-              {WORKED_WITH.map((w) => (
-                <span key={w} className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted">
-                  {w}
-                </span>
-              ))}
-            </div>
+                <figcaption className="mt-3 text-[12.5px] text-fg-subtle">
+                  Frontend certificate · Oct 15, 2026 · click to view
+                </figcaption>
+              </figure>
+            </aside>
           </article>
         </Reveal>
 
-        {/* Competition */}
+        {/* Competition: evidence left, story right */}
         <Reveal as="li" index={1} className="slide-from-right">
-          <article className="exp-card exp-award tactile squircle [--r:24px] relative flex h-full flex-col overflow-hidden bg-surface-2 p-6 [@media(max-height:760px)]:p-5">
+          <article className="exp-card exp-award tactile squircle [--r:28px] relative grid overflow-hidden bg-surface-2 lg:grid-cols-[300px_minmax(0,1fr)]">
             <div aria-hidden="true" className="exp-award-wash pointer-events-none absolute inset-0" />
-            <div className="relative flex items-center gap-3">
-              <span className="icon-tile-gold squircle [--r:14px] grid h-12 w-12 place-items-center">
-                <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
-              </span>
-              <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                {AWARD.period}
-              </span>
-            </div>
-            <CertificateThumb
-              src={certAward}
-              width={1200}
-              height={1911}
-              size={68}
-              tilt={5}
-              className="!absolute right-6 top-4"
-              title="Certificate of Achievement: 1st Place"
-              caption="AI Expert System and Innovation 2026 · Norton University, Department of Computer Studies · September 26, 2026"
-            />
+            <aside className="relative order-2 flex flex-col items-center justify-center gap-3 border-t border-line bg-surface-1 p-8 lg:order-none lg:border-r lg:border-t-0">
+              <CertificateThumb
+                src={certAward}
+                width={1200}
+                height={1911}
+                size={176}
+                tilt={3}
+                title="Certificate of Achievement: 1st Place"
+                caption="AI Expert System and Innovation 2026 · Norton University, Department of Computer Studies · September 26, 2026"
+              />
+              <p className="text-center text-[12.5px] text-fg-subtle">1st place certificate · click to view</p>
+            </aside>
 
-            <p className="relative mt-5 [@media(max-height:760px)]:mt-3 text-[40px] [@media(max-height:760px)]:text-[34px] font-semibold leading-none tracking-[-0.04em] text-gold-ink dark:text-gold">
-              1st Place
-            </p>
-            <h3 className="relative mt-2 text-[19px] font-semibold leading-tight tracking-[-0.02em] text-fg">{AWARD.title}</h3>
-            <p className="relative mt-1 text-[13.5px] text-fg-muted">{AWARD.detail}</p>
+            <div className="relative flex flex-col p-8">
+              <div className="flex items-center gap-3">
+                <span className="icon-tile-gold squircle [--r:14px] grid h-12 w-12 place-items-center">
+                  <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[14px] font-medium text-fg">Norton University</p>
+                  <p className="text-[13px] text-fg-subtle">Department of Computer Studies</p>
+                </div>
+                <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                  {AWARD.period}
+                </span>
+              </div>
 
-            <ul className="relative mt-4 grid gap-2">
-              {AWARD.points.map((p) => (
-                <li key={p} className="flex gap-2.5 text-[14px] leading-[1.55] text-fg-muted [@media(max-height:760px)]:text-[13.5px] [@media(max-height:760px)]:leading-[1.45]">
-                  <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                  {p}
-                </li>
-              ))}
-            </ul>
+              <p className="mt-7 text-[44px] font-semibold leading-none tracking-[-0.04em] text-gold-ink dark:text-gold">1st Place</p>
+              <h3 className="mt-2 text-[24px] font-semibold leading-tight tracking-[-0.025em] text-fg">{AWARD.title}</h3>
+              <p className="mt-3 max-w-[60ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">{AWARD.summary}</p>
 
-            <div className="relative mt-auto flex items-center justify-between gap-3 border-t border-line pt-4 [@media(max-height:760px)]:pt-3">
-              <span className="text-[13px] text-fg-subtle">Team project · 4 members</span>
-              <a
-                href="#projects"
-                className="group inline-flex items-center gap-1.5 text-[13.5px] font-medium text-fg underline decoration-line-strong underline-offset-4 hover:decoration-fg"
-              >
-                See the project
-                <ArrowRight aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5" />
-              </a>
+              <ul className="mt-5 grid gap-2.5">
+                {AWARD.points.map((p) => (
+                  <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
+                    <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 flex flex-1 flex-col">
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
+                  <span className="text-[13px] text-fg-subtle">Team project · 4 members</span>
+                  <a
+                    href="#projects"
+                    className="group inline-flex items-center gap-1.5 text-[14px] font-medium text-fg underline decoration-line-strong underline-offset-4 hover:decoration-fg"
+                  >
+                    See the project
+                    <ArrowRight aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5" />
+                  </a>
+                </div>
+              </div>
             </div>
           </article>
         </Reveal>

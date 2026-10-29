@@ -151,11 +151,13 @@ export const EXPERIENCE = [
     title: "Web Developer Trainee Intern",
     org: "ETEC & KruITSolution",
     period: "Jul 2026 – Present",
-    detail: "Weekend internship",
+    detail: "Weekend internship · Phnom Penh",
+    summary:
+      "A weekend internship on a real product team. I started on the frontend, earned its certificate, and now build REST APIs with the backend team.",
     points: [
-      "Web developer on a team tour booking platform, building UI dashboards and fetching and integrating REST APIs.",
-      "Collaborated through Git and GitHub using feature branches, commits, and pull requests.",
-      "Coordinated API requirements with backend teammates and shared ideas in team discussions.",
+      "Build UI dashboards for a team tour booking platform and connect them to live REST APIs.",
+      "Work in Git and GitHub with feature branches, clear commits and reviewed pull requests.",
+      "Agree API requirements with backend teammates and share ideas in team discussions.",
     ],
   },
   {
@@ -163,10 +165,12 @@ export const EXPERIENCE = [
     org: "1st Place · Team of 4",
     period: "Sep 2026",
     detail: "Norton University · Department of Computer Studies",
+    summary:
+      "Our team entered the university's AI competition with the Diabetes Expert System and took first place.",
     points: [
-      "Built the Diabetes Expert System as a team: a bilingual (Khmer/English), rule-based assistant for early diabetes risk screening.",
-      "My part: Google sign-in, UI improvements and testing.",
-      "Presented it at the university's AI competition and took first place.",
+      "A bilingual (Khmer/English) assistant for early diabetes risk screening.",
+      "Rule-based and explainable: every risk result shows the rules behind it, with a care plan.",
+      "Built with React, Flask and PostgreSQL, with secure sign-in and role-based access.",
     ],
   },
 ] as const;
