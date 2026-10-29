@@ -22,7 +22,7 @@ const pct = (m: number) => `${(m / SPAN) * 100}%`;
 
 const LANES = [
   [{ name: "Norton University", sub: "Software Development", when: "Jan 2024 – Present", from: 0, to: NOW, color: NORTON, live: true }],
-  [{ name: "ACE", sub: "General English", when: "2024 – 2026", from: 0, to: 36, color: ACE }],
+  [{ name: "ACE", sub: "General English", when: "2024 – Present", from: 0, to: NOW, color: ACE, live: true }],
   [
     { name: "ETEC", sub: "Frontend", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC },
     { name: "ETEC", sub: "Backend", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: ETEC },
@@ -32,8 +32,9 @@ const LANES = [
 /** Year ruler with one thin colour track per school or course, labelled directly above it. */
 function StudyTimeline() {
   return (
-    <div aria-hidden="true" className="mb-10">
-      <div className="relative ml-1 mr-1">
+    <div aria-hidden="true" className="edu-card squircle [--r:24px] px-8 pb-7 pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
+      <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">Timeline</p>
+      <div className="relative">
         {/* Year ruler */}
         <div className="relative h-7 border-b border-line">
           {YEARS.map((y) => (
@@ -50,9 +51,9 @@ function StudyTimeline() {
         ))}
         <span className="absolute bottom-0 top-7 w-px bg-[#34C759]/50" style={{ left: pct(NOW) }} />
 
-        <div className="relative grid gap-6 pb-1 pt-5">
+        <div className="relative grid gap-5 pb-2 pt-5">
           {LANES.map((lane, li) => (
-            <div key={li} className="relative h-[46px]">
+            <div key={li} className="relative h-[44px]">
               {lane.map((b, bi) => (
                 <div
                   key={b.sub}
@@ -64,7 +65,7 @@ function StudyTimeline() {
                     <span className="text-fg-muted"> · {b.sub}</span>
                   </p>
                   <p className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">{b.when}</p>
-                  <span className="edu-track-line absolute inset-x-0 bottom-0 h-[5px] rounded-full" />
+                  <span className="edu-track-line absolute inset-x-0 bottom-[1px] h-[4px] rounded-full" />
                   <span className="absolute bottom-[-3.5px] left-0 h-3 w-3 rounded-full border-2 bg-surface-2" style={{ borderColor: b.color }} />
                   {"live" in b ? (
                     <span className="absolute bottom-[-3.5px] right-0 translate-x-1/2">
@@ -96,13 +97,9 @@ export function Education() {
         lede="A software degree in progress, three years of English, and two hands-on ETEC courses."
       />
 
-      <Reveal>
-        <StudyTimeline />
-      </Reveal>
-
       <div className="grid gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
         {/* Education first */}
-        <div className="grid content-start gap-5">
+        <div className="grid grid-rows-[auto_1fr] gap-5">
           <Reveal className="slide-from-left">
             <article className="edu-card squircle [--r:24px] p-7" style={{ "--c": NORTON } as CSSProperties}>
               <div className="flex items-start gap-4">
@@ -135,8 +132,8 @@ export function Education() {
             </article>
           </Reveal>
 
-          <Reveal index={1} className="slide-from-left">
-            <article className="edu-card squircle [--r:24px] flex items-center gap-4 px-7 py-6" style={{ "--c": ACE } as CSSProperties}>
+          <Reveal index={1} className="slide-from-left h-full">
+            <article className="edu-card squircle [--r:24px] flex h-full items-center gap-4 px-7 py-6" style={{ "--c": ACE } as CSSProperties}>
               <OrgLogo org="ace" size={48} />
               <div className="min-w-0 flex-1">
                 <h3 className="text-[18px] font-semibold tracking-[-0.02em] text-fg">{ENGLISH.title}</h3>
@@ -167,7 +164,7 @@ export function Education() {
               </div>
             </div>
 
-            <ol className="mt-5 grid gap-2.5">
+            <ol className="mb-2.5 mt-5 grid gap-2.5">
               {CERTIFICATES.map((c) => (
                 <li key={c.title} className="edu-course rounded-[14px] border border-line bg-surface-1 px-4 py-3">
                   <div className="flex items-baseline justify-between gap-3">
@@ -179,12 +176,12 @@ export function Education() {
               ))}
             </ol>
 
-            <div className="mt-auto flex items-center gap-5 pt-5">
+            <div className="edu-course mt-auto flex items-center gap-5 rounded-[14px] border border-line bg-surface-1 px-4 py-3">
               <CertificateThumb
                 src={certFrontend}
                 width={1100}
                 height={1597}
-                size={76}
+                size={56}
                 tilt={-3}
                 title="Certificate of Completion: Frontend Development"
                 caption="ETEC Center · HTML, CSS, Bootstrap, JavaScript, ReactJS & project courses · Granted August 15, 2025"
@@ -200,6 +197,10 @@ export function Education() {
           </article>
         </Reveal>
       </div>
+
+      <Reveal className="mt-5">
+        <StudyTimeline />
+      </Reveal>
     </section>
   );
 }
