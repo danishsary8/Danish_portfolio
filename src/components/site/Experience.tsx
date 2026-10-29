@@ -64,7 +64,7 @@ export function Experience() {
       <SectionHeader
         id="experience-title"
         title="Experience"
-        lede="Where my skills met real work in 2026: a product team internship and a first-place AI project."
+        lede="Where my skills met real work in 2026: a product team internship and a first-place competition project."
       />
 
       <Reveal>
@@ -200,7 +200,7 @@ export function Experience() {
                   <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[14px] font-medium text-fg">Norton University</p>
+                  <p className="text-[14px] font-medium text-fg">Innovation Competition</p>
                   <p className="text-[13px] text-fg-subtle">Department of Computer Studies</p>
                 </div>
                 <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
