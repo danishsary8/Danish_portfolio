@@ -63,7 +63,7 @@ Product truth lives in `PRODUCT.md` (from the CV `public/sary-danish-cv.pdf`).
 
 **Theme flash fix:** server-rendered markup must not depend on `useTheme()` (its server snapshot is dark, so light visitors saw dark visuals until hydration). Theme-specific visuals resolve in CSS from the `dark` class the head script sets: `PortfolioBackground` layers use `dark:` classes; the nav passes CSS variables (`--nav-tint`, `--nav-pill-ink`, `--sl-c-*`, `--gold`; PillNav `theme="auto"` reads the `--pnx-*` palette) and renders both Sun and Moon icons; brand marks with a light shade use `--brand-*` vars (`themedSkillColor(name)`). Profile modal goal quote is regular weight (owner request).
 
-**Shared:** `SECTION` + `SectionHeader` in `Reveal.tsx` (title left, lede right). Content fixed to CV: no TypeScript/SQLite claims, Loomora has no "streaks", award organiser not stated.
+**Shared:** `SECTION` + `SectionHeader` in `Reveal.tsx` (title left, lede right). **Replaying reveals (owner request, slideshow feel):** `<Reveal>` no longer reveals once: a second IntersectionObserver removes `data-visible` when the block is completely below the viewport, so every scroll down to it replays its transition (slides, drawn rails, dealt tiles…); blocks above the viewport stay shown, so scrolling up never shows hidden content. Content fixed to CV: no TypeScript/SQLite claims, Loomora has no "streaks", award organiser not stated.
 
 **Decisions:** role title "Junior Web Developer" (full-stack shown in pitch); availability "Open to Web Developer roles"; audience = local hiring teams in Phnom Penh; no TypeScript claim (not on CV).
 

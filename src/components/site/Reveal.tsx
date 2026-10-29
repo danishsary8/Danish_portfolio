@@ -8,8 +8,11 @@ type RevealProps = {
 };
 
 /**
- * Fades content in once it scrolls into view. Without JS (or before hydration in a
- * no-JS context) nothing is hidden: the hidden state only applies under `html.js`.
+ * Fades content in when it scrolls into view, and replays every time you scroll down to it
+ * again (slideshow feel): once the block has left the screen downward it resets, so the next
+ * pass plays the transition again. Blocks above the viewport stay shown, so scrolling up never
+ * reveals half-hidden content. Without JS nothing is hidden: the hidden state only applies
+ * under `html.js`.
  */
 export function Reveal({ children, as: Tag = "div", index = 0, className }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
@@ -21,17 +24,24 @@ export function Reveal({ children, as: Tag = "div", index = 0, className }: Reve
       el.dataset["visible"] = "";
       return;
     }
-    const io = new IntersectionObserver(
+    const show = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          el.dataset["visible"] = "";
-          io.disconnect();
-        }
+        if (entry?.isIntersecting) el.dataset["visible"] = "";
       },
       { rootMargin: "0px 0px -80px 0px" },
     );
-    io.observe(el);
-    return () => io.disconnect();
+    // Reset only once the block is completely below the screen, so the reset is never seen.
+    const reset = new IntersectionObserver(([entry]) => {
+      if (entry && !entry.isIntersecting && entry.boundingClientRect.top > 0) {
+        delete el.dataset["visible"];
+      }
+    });
+    show.observe(el);
+    reset.observe(el);
+    return () => {
+      show.disconnect();
+      reset.disconnect();
+    };
   }, []);
 
   return (
