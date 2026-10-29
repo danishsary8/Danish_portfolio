@@ -189,8 +189,8 @@ export const EDUCATION = [
   {
     title: "General English Program",
     org: "Australian Centre for Education (ACE)",
-    period: "2023 – 2026",
-    detail: "Completed",
+    period: "Jan 2024 – Dec 2026",
+    detail: "Final term",
   },
 ] as const;
 
@@ -206,13 +206,13 @@ export const CERTIFICATES: Certificate[] = [
   {
     title: "Frontend Development",
     issuer: "ETEC Center",
-    date: "Jan – Jul 2025",
+    date: "Jan – Aug 2025",
     topics: "HTML, CSS, Bootstrap, JavaScript, React.js and a project course",
   },
   {
     title: "Backend Development",
     issuer: "ETEC Center",
-    date: "Nov 2025 – Mar 2026",
+    date: "Oct 2025 – Mar 2026",
     topics: "PHP and Laravel",
   },
 ];
