@@ -95,7 +95,7 @@ const group = (title: string) => SKILL_GROUPS.find((g) => g.title === title)!;
 function Cell({ className = "", i, children }: { className?: string | undefined; i: number; children: ReactNode }) {
   return (
     <div
-      className={`skills-cell tactile squircle [--r:22px] relative overflow-hidden bg-surface-2 p-5 ${className}`}
+      className={`skills-cell tactile squircle [--r:22px] relative overflow-hidden bg-surface-2 px-4 py-3.5 ${className}`}
       style={{ "--i": i } as CSSProperties}
     >
       {children}
@@ -108,11 +108,11 @@ function GroupCell({ title, i, className }: { title: string; i: number; classNam
   return (
     <Cell i={i} className={className}>
       <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
-      <ul className="mt-4 flex flex-wrap gap-2">
+      <ul className="mt-2.5 flex flex-wrap gap-1.5">
         {g.skills.map((skill) => (
           <li
             key={skill}
-            className="skills-pill inline-flex h-8 items-center gap-2 rounded-[8px] border border-line bg-surface-1 pl-2 pr-2.5 text-[13px] text-fg"
+            className="skills-pill inline-flex h-7 items-center gap-1.5 rounded-[7px] border border-line bg-surface-1 pl-1.5 pr-2 text-[12.5px] text-fg"
             style={{ "--brand": themedSkillColor(skill) } as CSSProperties}
           >
             <Logo name={skill} size={16} />
@@ -134,15 +134,15 @@ export function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-title"
-      className="mx-auto flex w-full max-w-[1180px] flex-col justify-center px-5 py-24 sm:px-6 lg:min-h-[calc(100dvh-88px)] lg:py-6 [&>div:first-child]:lg:mb-8"
+      className="mx-auto flex w-full max-w-[1180px] flex-col justify-center px-5 py-24 sm:px-6 lg:min-h-[calc(100dvh-88px)] lg:py-6 [&>div:first-child]:lg:mb-6"
     >
       <SectionHeader
         id="skills-title"
         title="Skills"
-        lede="Grouped by where I use them, with the stack I reach for first up front."
+        lede="Grouped by where I use them, with my core stack first."
       />
 
-      <Reveal className="skills-bento grid grid-cols-12 gap-3">
+      <Reveal className="skills-bento grid grid-cols-12 gap-2.5">
         {/* Core stack: tall card, the three layers stacked with a connecting rail */}
         <Cell i={0} className="col-span-12 flex flex-col lg:col-span-5 lg:row-span-2">
           <div aria-hidden="true" className="skills-core-glow pointer-events-none absolute inset-0" />
@@ -150,18 +150,18 @@ export function Skills() {
           <p className="relative mt-1 text-[13px] text-fg-muted">
             A React interface on a secure Laravel API, backed by PostgreSQL.
           </p>
-          <div aria-hidden="true" className="relative mt-auto pt-6">
-            <span className="absolute bottom-8 left-[27px] top-14 w-px bg-line-strong" />
+          <div aria-hidden="true" className="relative mt-auto pt-4">
+            <span className="absolute bottom-7 left-[22px] top-11 w-px bg-line-strong" />
             {CORE.map(({ tool, layer }, k) => (
-              <div key={tool} className={`relative flex items-center gap-4 ${k ? "mt-4" : ""}`}>
+              <div key={tool} className={`relative flex items-center gap-3.5 ${k ? "mt-3" : ""}`}>
                 <span
-                  className="skills-core-tile grid h-14 w-14 shrink-0 place-items-center rounded-[16px] border border-line bg-surface-1"
+                  className="skills-core-tile grid h-11 w-11 shrink-0 place-items-center rounded-[13px] border border-line bg-surface-1"
                   style={{ "--brand": themedSkillColor(tool) } as CSSProperties}
                 >
-                  <Logo name={tool} size={28} />
+                  <Logo name={tool} size={24} />
                 </span>
                 <div>
-                  <p className="skills-core-name text-[20px] font-semibold tracking-[-0.02em] text-fg" data-label={tool} />
+                  <p className="skills-core-name text-[18px] font-semibold leading-tight tracking-[-0.02em] text-fg" data-label={tool} />
                   <p className="text-[12.5px] text-fg-subtle">{layer}</p>
                 </div>
               </div>
@@ -172,15 +172,15 @@ export function Skills() {
         <GroupCell title="Front-End" i={1} className="col-span-12 lg:col-span-7" />
         <GroupCell title="Back-End" i={2} className="col-span-12 lg:col-span-4" />
         <GroupCell title="Databases" i={3} className="col-span-12 lg:col-span-3" />
-        <GroupCell title="Tools & DevOps" i={4} className="col-span-12 lg:col-span-5" />
+        <GroupCell title="Tools & DevOps" i={4} className="col-span-12 lg:col-span-4" />
         <GroupCell title="Other" i={5} className="col-span-12 lg:col-span-3" />
-        <Cell i={6} className="col-span-12 lg:col-span-4">
+        <Cell i={6} className="col-span-12 lg:col-span-5">
           <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
-          <ul className="mt-4 flex flex-wrap gap-2">
+          <ul className="mt-2.5 flex flex-wrap gap-1.5">
             {SOFT_SKILLS.map((s) => (
               <li
                 key={s}
-                className="inline-flex h-7 items-center rounded-full border border-line-strong px-2.5 text-[12.5px] text-fg-muted"
+                className="inline-flex h-7 items-center rounded-full border border-line-strong px-2.5 text-[12px] text-fg-muted"
               >
                 {s}
               </li>
