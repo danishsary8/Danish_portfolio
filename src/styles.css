@@ -1869,3 +1869,40 @@
     transform: none;
   }
 }
+
+/* Skills bento density follows the screen height so the whole section fits one look after a
+   nav click: compact on short laptops, roomier logos and pills on taller screens. */
+.skills-bento {
+  --cell-px: 16px;
+  --cell-py: 14px;
+  --pill-h: 28px;
+  --pill-fs: 12.5px;
+  --logo: 16px;
+  --core-tile: 44px;
+  --core-logo: 24px;
+  --core-name: 18px;
+}
+@media (min-height: 760px) {
+  .skills-bento {
+    --cell-px: 18px;
+    --cell-py: 15px;
+    --pill-h: 32px;
+    --pill-fs: 13.5px;
+    --logo: 18px;
+    --core-tile: 50px;
+    --core-logo: 28px;
+    --core-name: 19px;
+  }
+}
+@media (min-height: 840px) {
+  .skills-bento {
+    --cell-px: 20px;
+    --cell-py: 17px;
+    --pill-h: 36px;
+    --pill-fs: 14px;
+    --logo: 20px;
+    --core-tile: 56px;
+    --core-logo: 32px;
+    --core-name: 20px;
+  }
+}
