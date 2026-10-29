@@ -139,7 +139,7 @@ export const SKILL_GROUPS = [
     skills: ["Git", "GitHub", "Docker", "Postman", "Cloudinary", "VS Code"],
   },
   {
-    title: "Other",
+    title: "Also used",
     skills: ["Python", "Java", "Flutter", "Flask"],
   },
 ] as const;
@@ -153,7 +153,7 @@ export const EXPERIENCE = [
     period: "Jul 2026 – Present",
     detail: "Phnom Penh, Cambodia",
     summary:
-      "Hands-on training with a development team at ETEC and KruITSolution. I learned and shipped the frontend first, earned its certificate, and now build REST APIs on the backend.",
+      "Hands-on training with a development team at ETEC and KruITSolution. I learned and shipped the frontend first, earned its certificate, and have now moved into a backend role, building REST APIs with the team.",
     frontend: [
       "Built UI dashboards and connected them to live REST APIs.",
       "Shipped through Git and GitHub with feature branches, clear commits and pull requests.",

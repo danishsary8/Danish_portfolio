@@ -89,6 +89,14 @@ function Logo({ name, size }: { name: string; size: string }) {
   );
 }
 
+// Where each "Also used" skill came from (owner: learned at uni or used in a project).
+const SOURCE: Record<string, string> = {
+  Python: "Uni",
+  Java: "Uni",
+  Flutter: "Driving app",
+  Flask: "Expert system",
+};
+
 const group = (title: string) => SKILL_GROUPS.find((g) => g.title === title)!;
 
 /** One bento cell: tactile card that lifts on hover. */
@@ -103,11 +111,12 @@ function Cell({ className = "", i, children }: { className?: string | undefined;
   );
 }
 
-function GroupCell({ title, i, className }: { title: string; i: number; className?: string | undefined }) {
+function GroupCell({ title, i, className, note }: { title: string; i: number; className?: string | undefined; note?: string }) {
   const g = group(title);
   return (
     <Cell i={i} className={className}>
       <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
+      {note ? <p className="-mb-1 mt-0.5 text-[12.5px] text-fg-subtle">{note}</p> : null}
       <ul className="mt-3 flex flex-wrap gap-2">
         {g.skills.map((skill) => (
           <li
@@ -117,6 +126,9 @@ function GroupCell({ title, i, className }: { title: string; i: number; classNam
           >
             <Logo name={skill} size="var(--logo)" />
             {skill}
+            {SOURCE[skill] ? (
+              <span className="-mr-1 ml-0.5 border-l border-line pl-2 text-[11.5px] text-fg-subtle">{SOURCE[skill]}</span>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -173,7 +185,7 @@ export function Skills() {
         <GroupCell title="Back-End" i={2} className="col-span-12 lg:col-span-4" />
         <GroupCell title="Databases" i={3} className="col-span-12 lg:col-span-3" />
         <GroupCell title="Tools & DevOps" i={4} className="col-span-12 lg:col-span-4" />
-        <GroupCell title="Other" i={5} className="col-span-12 lg:col-span-3" />
+        <GroupCell title="Also used" i={5} className="col-span-12 lg:col-span-3" note="Learned at uni, used in projects." />
         <Cell i={6} className="col-span-12 lg:col-span-5">
           <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
           {/* div list (not ul/li): the Skills test counts one svg per tech skill li */}
