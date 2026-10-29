@@ -12,6 +12,7 @@ const [DEGREE, ENGLISH] = EDUCATION;
 const NORTON = "#B4233C";
 const ACE = "#2563EB";
 const ETEC = "#7C3AED";
+const BACKEND = "#EA580C";
 const NOW_GREEN = "#34C759";
 
 // Timeline: months from Jan 2024 (0) to Jan 2027 (36). "Now" is late Oct 2026.
@@ -30,8 +31,8 @@ const LANES = [
   [{ name: "Norton University", sub: "Software Development", when: "Jan 2024 – Present", from: 0, to: NOW, color: NORTON, live: true }],
   [{ name: "ACE", sub: "General English", when: "2024 – Present", from: 0, to: NOW, color: ACE, live: true }],
   [
-    { name: "ETEC", sub: "Frontend", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC },
-    { name: "ETEC", sub: "Backend", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: ETEC },
+    { name: "ETEC", sub: "Frontend course", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC, course: true },
+    { name: "ETEC", sub: "Backend course", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: BACKEND, course: true },
   ],
 ] as const;
 
@@ -39,7 +40,7 @@ const LANES = [
 function StudyTimeline() {
   return (
     <div aria-hidden="true" className="edu-card squircle [--r:24px] px-8 pb-7 pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
-      <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">Timeline</p>
+      <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">My learning journey</p>
       <div className="relative">
         {/* Ruler: years, then quarter months, with a tick for every month */}
         <div className="relative h-11 border-b border-line">
@@ -82,7 +83,11 @@ function StudyTimeline() {
                 >
                   <p className="whitespace-nowrap text-[13.5px] leading-tight">
                     <span className="font-semibold text-fg">{b.name}</span>
-                    <span className="text-fg-muted"> · {b.sub}</span>
+                    {"course" in b ? (
+                      <span className="font-semibold" style={{ color: b.color }}> · {b.sub}</span>
+                    ) : (
+                      <span className="text-fg-muted"> · {b.sub}</span>
+                    )}
                   </p>
                   <p className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">{b.when}</p>
                   <span className="edu-track-line absolute inset-x-0 bottom-[1px] h-[4px] rounded-full" />
