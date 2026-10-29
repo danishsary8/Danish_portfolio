@@ -1941,3 +1941,49 @@
     transform: none;
   }
 }
+
+/* Experience: the 2026 strip draws left to right on reveal and its milestones pop in after the
+   line reaches them; the award card carries one faint gold wash; cards lift on hover.
+   Reduced motion: everything shown at once. */
+.exp-timeline-fill {
+  transform-origin: left center;
+}
+.js [data-reveal]:not([data-visible]) .exp-timeline-fill {
+  transform: scaleX(0);
+}
+.js [data-reveal] .exp-timeline-fill {
+  transition: transform 1200ms var(--ease-out) 150ms;
+}
+.js [data-reveal][data-visible] .exp-milestone {
+  animation: exp-pop 500ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 300ms + 150ms);
+}
+@keyframes exp-pop {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+.exp-award-wash {
+  background: radial-gradient(90% 60% at 100% 0%, color-mix(in oklab, var(--gold) 14%, transparent), transparent 70%);
+}
+.exp-card {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .exp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--elev-2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal]:not([data-visible]) .exp-timeline-fill {
+    transform: none;
+  }
+  .js [data-reveal][data-visible] .exp-milestone {
+    animation: none;
+  }
+  .exp-card:hover {
+    transform: none;
+  }
+}

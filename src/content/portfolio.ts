@@ -160,10 +160,14 @@ export const EXPERIENCE = [
   },
   {
     title: "AI Expert System and Innovation 2026",
-    org: "Award Winner (Team)",
+    org: "1st Place · Team of 4",
     period: "Sep 2026",
-    detail: "Presented the Diabetes Expert System",
-    points: ["Won with a bilingual, AI-based screening tool for early diabetes risk."],
+    detail: "Norton University · Department of Computer Studies",
+    points: [
+      "Built the Diabetes Expert System as a team: a bilingual (Khmer/English), rule-based assistant for early diabetes risk screening.",
+      "My part: Google sign-in, UI improvements and testing.",
+      "Presented it at the university's AI competition and took first place.",
+    ],
   },
 ] as const;
 
