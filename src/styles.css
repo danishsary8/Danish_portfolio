@@ -1817,51 +1817,35 @@
   z-index: 4 !important;
 }
 
-/* Skills wall: tiles tilt toward the pointer (React Bits TiltedCard idea, CSS vars set in JS),
-   tiles outside the chosen group quiet down but stay readable, and on reveal the wall deals
-   its tiles in a quick diagonal wave. Reduced motion: no tilt, no wave, dimming only. */
-.skills-tile {
-  --rx: 0deg;
-  --ry: 0deg;
-  transform: perspective(600px) rotateX(var(--rx)) rotateY(var(--ry));
-  transition:
-    transform 160ms var(--ease-out),
-    opacity 200ms var(--ease-out),
-    filter 200ms var(--ease-out),
-    border-color 150ms var(--ease-out),
-    background-color 150ms var(--ease-out);
+/* Skills index (minimal): when a group becomes active its tools rise in one after another
+   (blur + 8px, 40ms stagger); icons sit in ink and take their brand colour on hover.
+   Reduced motion: plain swap. */
+.skills-panel:not([hidden]) .skills-entry {
+  animation: skills-rise 420ms var(--ease-out) backwards;
+  animation-delay: calc(var(--j) * 40ms);
 }
-.skills-tile[data-dim] {
-  opacity: 0.32;
-  filter: grayscale(1);
-}
-@media (hover: hover) and (pointer: fine) {
-  .skills-tile:hover {
-    background-color: color-mix(in oklab, var(--brand) 9%, var(--surface-2));
-    transform: perspective(600px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-3px) scale(1.04);
-  }
-}
-.js [data-reveal]:not([data-visible]) .skills-tile {
-  opacity: 0;
-  transform: perspective(600px) translateY(10px) scale(0.94);
-}
-.js [data-reveal][data-visible] .skills-tile {
-  animation: skills-deal 520ms var(--ease-out) backwards;
-  animation-delay: calc(var(--i) * 22ms + 150ms);
-}
-@keyframes skills-deal {
+@keyframes skills-rise {
   from {
     opacity: 0;
-    transform: perspective(600px) translateY(10px) scale(0.94);
+    transform: translateY(8px);
+    filter: blur(3px);
+  }
+}
+.skills-glyph {
+  color: var(--fg);
+  transition: color 150ms var(--ease-out), transform 180ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .skills-entry:hover .skills-glyph {
+    color: var(--brand);
+    transform: scale(1.15);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .skills-tile,
-  .skills-tile:hover,
-  .js [data-reveal]:not([data-visible]) .skills-tile {
-    transform: none;
-  }
-  .js [data-reveal][data-visible] .skills-tile {
+  .skills-panel:not([hidden]) .skills-entry {
     animation: none;
+  }
+  .skills-entry:hover .skills-glyph {
+    transform: none;
   }
 }

@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type PointerEvent } from "react";
+import { useState, type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { SKILL_GROUPS } from "@/content/portfolio";
 import { SPRING_UI } from "@/lib/motion";
@@ -16,33 +16,20 @@ const SOFT_SKILLS = [
   "Fast learner",
 ];
 
-// Every tool once, in group order, tagged with its group so selection can light it up.
-const TILES = SKILL_GROUPS.flatMap((g) => g.skills.map((skill) => ({ skill, group: g.title })));
-
-/** React Bits TiltedCard idea: the tile turns a few degrees toward the pointer (fine pointers). */
-function tilt(e: PointerEvent<HTMLLIElement>) {
-  if (e.pointerType !== "mouse") return;
-  const el = e.currentTarget;
-  const r = el.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width - 0.5;
-  const y = (e.clientY - r.top) / r.height - 0.5;
-  el.style.setProperty("--rx", `${(-y * 14).toFixed(2)}deg`);
-  el.style.setProperty("--ry", `${(x * 14).toFixed(2)}deg`);
-}
-function untilt(e: PointerEvent<HTMLLIElement>) {
-  e.currentTarget.style.setProperty("--rx", "0deg");
-  e.currentTarget.style.setProperty("--ry", "0deg");
-}
-
+/**
+ * Swiss / minimal "typographic index": the four groups set large on the left like a contents
+ * page; pointing at one (or clicking, or focusing) swaps the right column to that group's tools,
+ * which rise in one after another. Every group's list stays in the DOM (inactive ones `hidden`),
+ * so content is complete without JavaScript and for assistive tech.
+ */
 export function Skills() {
-  // null = everything lit; a group title = only that group lit, the rest stay visible but quiet.
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState(0);
 
   return (
     <section
       id="skills"
       aria-labelledby="skills-title"
-      className="mx-auto flex w-full max-w-[1180px] flex-col justify-center px-5 py-24 sm:px-6 lg:min-h-[calc(100dvh-88px)] lg:py-6 [&>div:first-child]:lg:mb-10"
+      className="mx-auto flex w-full max-w-[1180px] flex-col justify-center px-5 py-24 sm:px-6 lg:min-h-[calc(100dvh-88px)] lg:py-6 [&>div:first-child]:lg:mb-14"
     >
       <SectionHeader
         id="skills-title"
@@ -50,93 +37,87 @@ export function Skills() {
         lede="Everything on my CV, grouped by where it sits in the stack."
       />
 
-      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
-        {/* Left: category rail. Choosing one highlights its tools in the wall. */}
-        <div>
-          <Reveal className="slide-from-left">
-            <div className="space-y-1">
-              {SKILL_GROUPS.map((g) => {
-                const on = active === g.title;
-                return (
-                  <div key={g.title} className="relative">
-                    {on ? (
-                      <motion.span
-                        layoutId="skills-rail"
-                        transition={SPRING_UI}
-                        aria-hidden="true"
-                        className="tactile squircle [--r:14px] absolute inset-0 bg-surface-2"
-                      />
-                    ) : null}
-                    <div className="relative flex items-center justify-between gap-4 px-4 py-3.5">
-                      <h3
-                        className={`text-[17px] font-medium tracking-[-0.015em] transition-colors duration-150 ${on ? "text-fg" : "text-fg-muted"}`}
-                      >
-                        {g.title}
-                      </h3>
-                      <span className="font-mono text-[12.5px] tabular-nums text-fg-subtle">
-                        {String(g.skills.length).padStart(2, " ")}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      aria-pressed={on}
-                      aria-label={`Highlight ${g.title}`}
-                      onClick={() => setActive(on ? null : g.title)}
-                      onMouseEnter={() => setActive(g.title)}
-                      className="absolute inset-0 rounded-[14px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+      <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,6fr)] lg:gap-20">
+        {/* Index */}
+        <Reveal className="slide-from-left">
+          <div role="tablist" aria-label="Skill groups" aria-orientation="vertical" className="relative">
+            {SKILL_GROUPS.map((g, i) => {
+              const on = i === active;
+              return (
+                <div key={g.title} className="relative py-1.5">
+                  {on ? (
+                    <motion.span
+                      layoutId="skills-index-bar"
+                      transition={SPRING_UI}
+                      aria-hidden="true"
+                      className="absolute -left-6 top-1/2 h-[2px] w-4 -translate-y-1/2 rounded-full bg-fg"
                     />
+                  ) : null}
+                  <div className="flex items-start gap-3">
+                    <h3
+                      className={`text-[44px] font-semibold leading-[1.08] tracking-[-0.035em] transition-colors duration-200 ${on ? "text-fg" : "text-fg-subtle/45"}`}
+                    >
+                      {g.title}
+                    </h3>
+                    <span className="mt-2 font-mono text-[13px] tabular-nums text-fg-subtle">
+                      {g.skills.length}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-            <button
-              type="button"
-              onClick={() => setActive(null)}
-              className={`mt-3 px-4 text-[13px] text-fg-subtle underline decoration-line-strong underline-offset-4 transition-opacity duration-150 hover:text-fg ${active ? "opacity-100" : "pointer-events-none opacity-0"}`}
-              tabIndex={active ? 0 : -1}
-            >
-              Show everything
-            </button>
-          </Reveal>
+                  <button
+                    type="button"
+                    role="tab"
+                    id={`skills-tab-${i}`}
+                    aria-selected={on}
+                    aria-controls={`skills-panel-${i}`}
+                    aria-label={g.title}
+                    onClick={() => setActive(i)}
+                    onMouseEnter={() => setActive(i)}
+                    onFocus={() => setActive(i)}
+                    className="absolute inset-0 rounded-[6px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fg"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </Reveal>
 
-          <Reveal index={1} className="slide-from-left mt-8 border-t border-line pt-6">
-            <h3 className="px-4 text-[15px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
-            <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-2 px-4">
-              {SOFT_SKILLS.map((s) => (
-                <li
-                  key={s}
-                  className="inline-flex h-8 items-center rounded-full border border-line-strong px-3 text-[13px] text-fg-muted"
-                >
+        {/* Active group's tools */}
+        <Reveal index={1} className="slide-from-right">
+          <div className="min-h-[268px] border-t border-fg pt-5">
+            {SKILL_GROUPS.map((g, i) => (
+              <ul
+                key={g.title}
+                role="tabpanel"
+                id={`skills-panel-${i}`}
+                aria-labelledby={`skills-tab-${i}`}
+                hidden={i !== active}
+                className="skills-panel grid grid-cols-2 gap-x-10"
+              >
+                {g.skills.map((skill, j) => (
+                  <li
+                    key={skill}
+                    className="skills-entry flex h-[52px] items-center gap-3.5 border-b border-line text-[19px] tracking-[-0.015em] text-fg"
+                    style={{ "--j": j, "--brand": themedSkillColor(skill) } as CSSProperties}
+                  >
+                    <SkillIcon name={skill} className="skills-glyph h-5 w-5" />
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+
+          <div className="mt-10">
+            <h3 className="text-[13px] font-medium text-fg-subtle">Beyond the code</h3>
+            <ul className="mt-2 flex flex-wrap gap-x-1 text-[15px] text-fg-muted">
+              {SOFT_SKILLS.map((s, i) => (
+                <li key={s}>
                   {s}
+                  {i < SOFT_SKILLS.length - 1 ? <span aria-hidden="true">,&nbsp;</span> : null}
                 </li>
               ))}
             </ul>
-          </Reveal>
-        </div>
-
-        {/* Right: the wall. Every tool stays visible; the chosen group lights up. */}
-        <Reveal index={1} className="slide-from-right" >
-          <ul
-            onMouseLeave={() => setActive(null)}
-            className="skills-wall grid grid-cols-4 gap-3 sm:grid-cols-6"
-          >
-            {TILES.map(({ skill, group }, i) => {
-              const dim = active !== null && active !== group;
-              return (
-                <li
-                  key={skill}
-                  onPointerMove={tilt}
-                  onPointerLeave={untilt}
-                  data-dim={dim || undefined}
-                  className="skills-tile tactile squircle [--r:16px] flex aspect-square flex-col items-center justify-center gap-2.5 bg-surface-2 px-1 text-center text-[12.5px] leading-tight text-fg"
-                  style={{ "--brand": themedSkillColor(skill), "--i": i } as CSSProperties}
-                >
-                  <SkillIcon name={skill} className="h-7 w-7" style={{ color: themedSkillColor(skill) }} />
-                  {skill}
-                </li>
-              );
-            })}
-          </ul>
+          </div>
         </Reveal>
       </div>
     </section>
