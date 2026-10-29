@@ -9,72 +9,41 @@ import { Reveal, SECTION, SectionHeader } from "./Reveal";
 const [DEGREE, ENGLISH] = EDUCATION;
 
 
-// Study chart: months from Jan 2023 (0) to Jan 2027 (48). "Now" is late Oct 2026.
-const SPAN = 48;
-const NOW = 45.9;
-const YEARS = [2023, 2024, 2025, 2026];
-const BARS = [
-  { label: "Norton University", sub: "Software Development", when: "Jan 2024 – now", from: 12, to: NOW, kind: "degree", live: true },
-  { label: "ACE", sub: "General English", when: "2023 – 2026", from: 0, to: 42, kind: "degree" },
-  { label: "ETEC", sub: "Frontend course", when: "Jan – Jul 2025", from: 24, to: 31, kind: "course" },
-  { label: "ETEC", sub: "Backend course", when: "Nov 2025 – Mar 2026", from: 34, to: 39, kind: "course" },
+// Study path at a glance, in the same strip style as Experience. Each school has its own colour.
+const MILESTONES = [
+  { at: 0, date: "2023", label: "ACE · English begins", color: "#2563EB" },
+  { at: 26, date: "Jan 2024", label: "Norton University · Degree begins", color: "#B4233C" },
+  { at: 52, date: "Jan 2025", label: "ETEC · Frontend course", color: "#7C3AED" },
+  { at: 74, date: "Nov 2025", label: "ETEC · Backend course", color: "#7C3AED" },
+  { at: 100, date: "Now", label: "Fourth year at Norton", color: "#34C759", live: true },
 ] as const;
 
-const pct = (m: number) => `${(m / SPAN) * 100}%`;
-
-function StudyChart() {
+function StudyTimeline() {
   return (
-    <div aria-hidden="true" className="tactile squircle [--r:24px] bg-surface-2 px-7 pb-6 pt-6">
-      <div className="grid grid-cols-[220px_minmax(0,1fr)] gap-x-6">
-        {/* Year axis */}
-        <span />
-        <div className="relative h-6">
-          {YEARS.map((y) => (
-            <span key={y} className="absolute top-0 font-mono text-[12px] tabular-nums text-fg-subtle" style={{ left: pct((y - 2023) * 12) }}>
-              {y}
-            </span>
-          ))}
+    <div aria-hidden="true" className="exp-timeline relative mx-2 mb-10 mt-1 h-[54px]">
+      <span className="absolute inset-x-0 top-[7px] h-px bg-line-strong" />
+      <span className="exp-timeline-fill absolute inset-x-0 top-[7px] h-px bg-fg" />
+      {MILESTONES.map((m, i) => (
+        <div
+          key={m.date}
+          className="exp-milestone absolute top-0 flex flex-col"
+          style={
+            {
+              left: `${m.at}%`,
+              "--i": i,
+              transform: m.at === 100 ? "translateX(-100%)" : m.at === 0 ? "none" : "translateX(-50%)",
+              alignItems: m.at === 100 ? "flex-end" : m.at === 0 ? "flex-start" : "center",
+            } as CSSProperties
+          }
+        >
+          <span
+            className={`relative block h-[15px] w-[15px] rounded-full shadow-[0_0_0_4px_var(--bg)] ${"live" in m ? "about-live-dot" : ""}`}
+            style={{ background: m.color }}
+          />
+          <span className="mt-2 font-mono text-[12px] tabular-nums text-fg">{m.date}</span>
+          <span className="whitespace-nowrap text-[12px] text-fg-subtle">{m.label}</span>
         </div>
-
-        {BARS.map((b, i) => (
-          <div key={b.sub} className="contents">
-            <div className="flex flex-col justify-center border-t border-line py-3">
-              <span className="text-[14px] font-medium leading-tight text-fg">{b.label}</span>
-              <span className="text-[12.5px] text-fg-subtle">{b.sub}</span>
-              <span className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">{b.when}</span>
-            </div>
-            <div className="relative border-t border-line">
-              {/* Year gridlines */}
-              {YEARS.slice(1).map((y) => (
-                <span key={y} className="absolute inset-y-0 w-px bg-line" style={{ left: pct((y - 2023) * 12) }} />
-              ))}
-              <span
-                className={`edu-bar absolute top-1/2 h-3 rounded-full ${
-                  b.kind === "degree" ? "bg-fg" : "bg-fg-subtle/60"
-                }`}
-                style={{ left: pct(b.from), width: pct(b.to - b.from), "--i": i } as CSSProperties}
-              />
-              {"live" in b ? (
-                <span className="absolute top-1/2 grid h-3 w-3 -translate-x-1/2 -translate-y-1/2 place-items-center" style={{ left: pct(b.to) }}>
-                  <span className="about-live-dot relative h-3 w-3 rounded-full bg-[#34C759] shadow-[0_0_0_3px_var(--surface-2)]" />
-                </span>
-              ) : null}
-            </div>
-          </div>
-        ))}
-
-        {/* Now marker */}
-        <span />
-        <div className="relative h-5">
-          <span className="absolute top-1 -translate-x-1/2 font-mono text-[11.5px] text-[#2f9e4f] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
-            Now
-          </span>
-        </div>
-      </div>
-      <div className="mt-2 flex gap-5 border-t border-line pt-4 text-[12.5px] text-fg-subtle">
-        <span className="inline-flex items-center gap-2"><span className="h-2 w-5 rounded-full bg-fg" />Degree &amp; language</span>
-        <span className="inline-flex items-center gap-2"><span className="h-2 w-5 rounded-full bg-fg-subtle/60" />Short courses</span>
-      </div>
+      ))}
     </div>
   );
 }
@@ -93,10 +62,10 @@ export function Education() {
       />
 
       <Reveal>
-        <StudyChart />
+        <StudyTimeline />
       </Reveal>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
         {/* Education first */}
         <div className="grid gap-4">
           <Reveal className="slide-from-left">
