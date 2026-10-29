@@ -122,8 +122,8 @@ function ContactForm() {
   return (
     <form noValidate onSubmit={onSubmit} className="contact-card squircle [--r:26px] flex h-full flex-col gap-5 p-7">
       <div>
-        <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Or leave a quick note</p>
-        <p className="mt-1 text-[13.5px] text-fg-subtle">Two fields, one click. It lands straight in my inbox.</p>
+        <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Send me a message</p>
+        <p className="mt-1 text-[13.5px] text-fg-subtle">Write it here and your email app opens with it ready to send to me.</p>
       </div>
       <div className="grid gap-2">
         <Label htmlFor="contact-name">Name</Label>
@@ -189,10 +189,10 @@ export function Contact() {
               id="contact-title"
               className="max-w-[12em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[76px]"
             >
-              <span className="sr-only">Let’s make your next hire an easy one.</span>
+              <span className="sr-only">Let’s talk. My inbox is always open.</span>
               <span aria-hidden="true">
                 <VariableProximity
-                  label="Let’s make your next hire an easy one."
+                  label="Let’s talk. My inbox is always open."
                   fromFontVariationSettings="'wght' 560"
                   toFontVariationSettings="'wght' 860"
                   containerRef={sectionRef}
@@ -204,8 +204,8 @@ export function Contact() {
           </Reveal>
           <Reveal index={1}>
             <p className="mt-6 max-w-[34em] text-pretty text-[17px] leading-[1.6] text-fg-muted">
-              React on the front, Laravel behind it, and I finish what I start. If your team in Phnom Penh
-              needs a web developer, my inbox is open.
+              A question about my work, an idea you want to build, or just a quick hello: pick whichever
+              way suits you below and I’ll reply as soon as I can.
             </p>
           </Reveal>
         </div>
