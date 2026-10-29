@@ -209,7 +209,7 @@ export function Experience() {
               </div>
 
               <h3 className="mt-7 text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-fg">
-                Built it as a team, won <span className="text-gold-ink dark:text-gold">1st place</span>
+                Joined a project competition, won <span className="text-gold-ink dark:text-gold">1st place</span>
               </h3>
               <p className="mt-2 text-[15px] text-fg-muted">
                 <span className="text-fg-subtle">Competition · </span>

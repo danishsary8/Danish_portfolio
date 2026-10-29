@@ -171,9 +171,9 @@ export const EXPERIENCE = [
     summary:
       "My team of four built the Diabetes Expert System and entered it in the competition, where it won first place.",
     points: [
-      "Purpose: a clinical assistant that helps people see their possible risk of diabetes early, in Khmer or English.",
-      "Like a health watch, it flags warning signs and suggests a care plan, but never replaces a doctor.",
-      "Explainable by design: every result shows the rules behind it.",
+      "A bilingual (Khmer/English) clinical assistant that screens for early signs of diabetes.",
+      "Like a health check-up: users enter their health details, see their possible risk level and get a personal care plan.",
+      "Every result is explained by the rules behind it, so users understand and trust the outcome.",
       "Built with React, Flask and PostgreSQL, with secure sign-in and role-based access.",
     ],
   },
