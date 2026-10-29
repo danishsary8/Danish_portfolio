@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { SKILL_GROUPS } from "@/content/portfolio";
 import { Reveal, SectionHeader } from "./Reveal";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
@@ -20,6 +20,73 @@ const CORE = [
   { tool: "Laravel", layer: "API" },
   { tool: "PostgreSQL", layer: "Data" },
 ] as const;
+
+// Official full-colour logos (Devicon, MIT), same pinned source as the Hero and About.
+// Tools without a Devicon mark (REST APIs, JWT, Cloudinary) keep the brand-coloured icon.
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
+const LOGO: Record<string, string> = {
+  JavaScript: "javascript/javascript-original",
+  PHP: "php/php-original",
+  Python: "python/python-original",
+  Java: "java/java-original",
+  HTML5: "html5/html5-original",
+  CSS3: "css3/css3-original",
+  React: "react/react-original",
+  Laravel: "laravel/laravel-original",
+  Flask: "flask/flask-original",
+  "Tailwind CSS": "tailwindcss/tailwindcss-original",
+  Bootstrap: "bootstrap/bootstrap-original",
+  "Framer Motion": "framermotion/framermotion-original",
+  Flutter: "flutter/flutter-original",
+  PostgreSQL: "postgresql/postgresql-original",
+  Supabase: "supabase/supabase-original",
+  Oracle: "oracle/oracle-original",
+  Git: "git/git-original",
+  GitHub: "github/github-original",
+  Docker: "docker/docker-original",
+  Postman: "postman/postman-original",
+  "VS Code": "vscode/vscode-original",
+};
+// Black marks that need flipping to stay visible on the dark theme.
+const INVERT_IN_DARK = new Set(["Flask", "GitHub"]);
+
+/** Real logo when Devicon has one; the brand-coloured icon otherwise or if the image fails. */
+function Logo({ name, size }: { name: string; size: number }) {
+  const [failed, setFailed] = useState(false);
+  const img = useRef<HTMLImageElement>(null);
+  const path = LOGO[name];
+  // An image that failed before hydration never fires onError for React; check it once mounted.
+  useEffect(() => {
+    const el = img.current;
+    if (el && el.complete && el.naturalWidth === 0) setFailed(true);
+  }, []);
+  const icon = (
+    <SkillIcon
+      name={name}
+      className={path && !failed ? "hidden" : "shrink-0"}
+      style={{ color: themedSkillColor(name), width: size, height: size }}
+    />
+  );
+  return (
+    <>
+      {path && !failed ? (
+        <img
+          ref={img}
+          src={`${DEVICON}/${path}.svg`}
+          alt=""
+          width={size}
+          height={size}
+          decoding="async"
+          draggable={false}
+          onError={() => setFailed(true)}
+          className={`shrink-0 object-contain ${INVERT_IN_DARK.has(name) ? "dark:invert" : ""}`}
+          style={{ width: size, height: size }}
+        />
+      ) : null}
+      {icon}
+    </>
+  );
+}
 
 const group = (title: string) => SKILL_GROUPS.find((g) => g.title === title)!;
 
@@ -50,7 +117,7 @@ function GroupCell({ title, i, className }: { title: string; i: number; classNam
             className="skills-pill inline-flex h-8 items-center gap-2 rounded-[8px] border border-line bg-surface-1 pl-2 pr-2.5 text-[13px] text-fg"
             style={{ "--brand": themedSkillColor(skill) } as CSSProperties}
           >
-            <SkillIcon name={skill} className="h-4 w-4" style={{ color: themedSkillColor(skill) }} />
+            <Logo name={skill} size={16} />
             {skill}
           </li>
         ))}
@@ -93,7 +160,7 @@ export function Skills() {
                   className="skills-core-tile grid h-14 w-14 shrink-0 place-items-center rounded-[16px] border border-line bg-surface-1"
                   style={{ "--brand": themedSkillColor(tool) } as CSSProperties}
                 >
-                  <SkillIcon name={tool} className="h-7 w-7" style={{ color: themedSkillColor(tool) }} />
+                  <Logo name={tool} size={28} />
                 </span>
                 <div>
                   <p className="skills-core-name text-[20px] font-semibold tracking-[-0.02em] text-fg" data-label={tool} />
@@ -110,7 +177,7 @@ export function Skills() {
         <GroupCell title="Tools & APIs" i={4} className="col-span-12 lg:col-span-7" />
 
         <Cell i={5} className="col-span-12 lg:col-span-5">
-          <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
+          <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
           <ul className="mt-4 flex flex-wrap gap-2">
             {SOFT_SKILLS.map((s) => (
               <li
