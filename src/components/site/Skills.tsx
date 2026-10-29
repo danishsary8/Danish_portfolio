@@ -1,4 +1,7 @@
+import { useState, type CSSProperties, type PointerEvent } from "react";
+import { motion } from "framer-motion";
 import { SKILL_GROUPS } from "@/content/portfolio";
+import { SPRING_UI } from "@/lib/motion";
 import { Reveal, SectionHeader } from "./Reveal";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
 
@@ -13,54 +16,28 @@ const SOFT_SKILLS = [
   "Fast learner",
 ];
 
-// How the everyday stack fits together, top (what users touch) to bottom (where data lives).
-const LAYERS = [
-  { name: "Interface", note: "What people touch", tools: ["React", "Tailwind CSS", "JavaScript"] },
-  { name: "API", note: "Rules and security", tools: ["Laravel", "REST APIs", "JWT"] },
-  { name: "Data", note: "Where it’s kept", tools: ["PostgreSQL", "Supabase"] },
-] as const;
+// Every tool once, in group order, tagged with its group so selection can light it up.
+const TILES = SKILL_GROUPS.flatMap((g) => g.skills.map((skill) => ({ skill, group: g.title })));
 
-/** Three slabs stacked like a real architecture: each lifts toward you on hover. */
-function StackDiagram() {
-  return (
-    <figure className="m-0">
-      <div role="list" aria-label="My everyday stack" className="skills-stack relative space-y-3">
-        {LAYERS.map((layer, i) => (
-          <div
-            role="listitem"
-            key={layer.name}
-            className="skills-slab tactile squircle [--r:18px] relative flex items-center gap-4 bg-surface-2 px-5 py-3.5"
-            style={{ "--i": i } as React.CSSProperties}
-          >
-            <div className="w-[124px] shrink-0">
-              <p className="text-[15px] font-semibold tracking-[-0.015em] text-fg">{layer.name}</p>
-              <p className="mt-0.5 text-[12px] text-fg-subtle">{layer.note}</p>
-            </div>
-            <span aria-hidden="true" className="h-8 w-px bg-line" />
-            <div className="min-w-0">
-              <div aria-hidden="true" className="flex gap-1.5">
-                {layer.tools.map((t) => (
-                  <span
-                    key={t}
-                    className="grid h-8 w-8 place-items-center rounded-[8px] border border-line bg-surface-1"
-                  >
-                    <SkillIcon name={t} className="h-4 w-4" style={{ color: themedSkillColor(t) }} />
-                  </span>
-                ))}
-              </div>
-              <p className="mt-1.5 text-[13px] text-fg-muted">{layer.tools.join(" · ")}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <figcaption className="mt-4 text-[13px] leading-[1.55] text-fg-muted">
-        The stack I reach for first: a React interface on a secure Laravel API, backed by PostgreSQL.
-      </figcaption>
-    </figure>
-  );
+/** React Bits TiltedCard idea: the tile turns a few degrees toward the pointer (fine pointers). */
+function tilt(e: PointerEvent<HTMLLIElement>) {
+  if (e.pointerType !== "mouse") return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  el.style.setProperty("--rx", `${(-y * 14).toFixed(2)}deg`);
+  el.style.setProperty("--ry", `${(x * 14).toFixed(2)}deg`);
+}
+function untilt(e: PointerEvent<HTMLLIElement>) {
+  e.currentTarget.style.setProperty("--rx", "0deg");
+  e.currentTarget.style.setProperty("--ry", "0deg");
 }
 
 export function Skills() {
+  // null = everything lit; a group title = only that group lit, the rest stay visible but quiet.
+  const [active, setActive] = useState<string | null>(null);
+
   return (
     <section
       id="skills"
@@ -73,15 +50,58 @@ export function Skills() {
         lede="Everything on my CV, grouped by where it sits in the stack."
       />
 
-      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-        {/* Left: how the everyday stack fits together, then the people skills */}
+      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
+        {/* Left: category rail. Choosing one highlights its tools in the wall. */}
         <div>
           <Reveal className="slide-from-left">
-            <StackDiagram />
+            <div className="space-y-1">
+              {SKILL_GROUPS.map((g) => {
+                const on = active === g.title;
+                return (
+                  <div key={g.title} className="relative">
+                    {on ? (
+                      <motion.span
+                        layoutId="skills-rail"
+                        transition={SPRING_UI}
+                        aria-hidden="true"
+                        className="tactile squircle [--r:14px] absolute inset-0 bg-surface-2"
+                      />
+                    ) : null}
+                    <div className="relative flex items-center justify-between gap-4 px-4 py-3.5">
+                      <h3
+                        className={`text-[17px] font-medium tracking-[-0.015em] transition-colors duration-150 ${on ? "text-fg" : "text-fg-muted"}`}
+                      >
+                        {g.title}
+                      </h3>
+                      <span className="font-mono text-[12.5px] tabular-nums text-fg-subtle">
+                        {String(g.skills.length).padStart(2, " ")}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      aria-pressed={on}
+                      aria-label={`Highlight ${g.title}`}
+                      onClick={() => setActive(on ? null : g.title)}
+                      onMouseEnter={() => setActive(g.title)}
+                      className="absolute inset-0 rounded-[14px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={() => setActive(null)}
+              className={`mt-3 px-4 text-[13px] text-fg-subtle underline decoration-line-strong underline-offset-4 transition-opacity duration-150 hover:text-fg ${active ? "opacity-100" : "pointer-events-none opacity-0"}`}
+              tabIndex={active ? 0 : -1}
+            >
+              Show everything
+            </button>
           </Reveal>
-          <Reveal index={1} className="slide-from-left mt-8">
-            <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
-            <ul className="mt-3 flex flex-wrap gap-2">
+
+          <Reveal index={1} className="slide-from-left mt-8 border-t border-line pt-6">
+            <h3 className="px-4 text-[15px] font-medium tracking-[-0.01em] text-fg">Beyond the code</h3>
+            <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-2 px-4">
               {SOFT_SKILLS.map((s) => (
                 <li
                   key={s}
@@ -94,32 +114,29 @@ export function Skills() {
           </Reveal>
         </div>
 
-        {/* Right: the full toolbox as a hairline ledger; chips magnify like a dock on hover */}
-        <Reveal index={1} className="slide-from-right">
-          <div className="tactile squircle [--r:20px] divide-y divide-line overflow-hidden bg-surface-2">
-            {SKILL_GROUPS.map((group) => (
-              <div key={group.title} className="grid gap-3 px-6 py-4 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-6">
-                <div className="flex items-baseline gap-2 sm:block">
-                  <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{group.title}</h3>
-                  <p className="font-mono text-[12px] tabular-nums text-fg-subtle sm:mt-1">
-                    {group.skills.length} tools
-                  </p>
-                </div>
-                <ul className="skills-dock flex flex-wrap gap-2">
-                  {group.skills.map((skill) => (
-                    <li
-                      key={skill}
-                      className="inline-flex h-8 items-center gap-2 rounded-[8px] border border-line bg-surface-1 pl-2 pr-3 text-[13.5px] text-fg"
-                      style={{ "--brand": themedSkillColor(skill) } as React.CSSProperties}
-                    >
-                      <SkillIcon name={skill} className="h-[18px] w-[18px]" style={{ color: themedSkillColor(skill) }} />
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+        {/* Right: the wall. Every tool stays visible; the chosen group lights up. */}
+        <Reveal index={1} className="slide-from-right" >
+          <ul
+            onMouseLeave={() => setActive(null)}
+            className="skills-wall grid grid-cols-4 gap-3 sm:grid-cols-6"
+          >
+            {TILES.map(({ skill, group }, i) => {
+              const dim = active !== null && active !== group;
+              return (
+                <li
+                  key={skill}
+                  onPointerMove={tilt}
+                  onPointerLeave={untilt}
+                  data-dim={dim || undefined}
+                  className="skills-tile tactile squircle [--r:16px] flex aspect-square flex-col items-center justify-center gap-2.5 bg-surface-2 px-1 text-center text-[12.5px] leading-tight text-fg"
+                  style={{ "--brand": themedSkillColor(skill), "--i": i } as CSSProperties}
+                >
+                  <SkillIcon name={skill} className="h-7 w-7" style={{ color: themedSkillColor(skill) }} />
+                  {skill}
+                </li>
+              );
+            })}
+          </ul>
         </Reveal>
       </div>
     </section>
