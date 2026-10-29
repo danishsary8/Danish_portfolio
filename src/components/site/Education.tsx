@@ -18,6 +18,12 @@ const NOW_GREEN = "#34C759";
 const SPAN = 36;
 const NOW = 33.9;
 const YEARS = [2024, 2025, 2026];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// Every month gets a tick; Apr, Jul and Oct get a small label (skipped where "Now" sits).
+const MONTH_TICKS = Array.from({ length: SPAN }, (_, m) => ({
+  m,
+  label: m % 3 === 0 && m % 12 !== 0 && Math.abs(m - NOW) > 1.5 ? MONTHS[m % 12] : "",
+}));
 const pct = (m: number) => `${(m / SPAN) * 100}%`;
 
 const LANES = [
@@ -35,21 +41,35 @@ function StudyTimeline() {
     <div aria-hidden="true" className="edu-card squircle [--r:24px] px-8 pb-7 pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
       <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">Timeline</p>
       <div className="relative">
-        {/* Year ruler */}
-        <div className="relative h-7 border-b border-line">
+        {/* Ruler: years, then quarter months, with a tick for every month */}
+        <div className="relative h-11 border-b border-line">
           {YEARS.map((y) => (
-            <span key={y} className="absolute top-0 font-mono text-[12.5px] tabular-nums text-fg-muted" style={{ left: pct((y - 2024) * 12) }}>
+            <span key={y} className="absolute top-0 font-mono text-[12.5px] font-medium tabular-nums text-fg" style={{ left: pct((y - 2024) * 12) }}>
               {y}
             </span>
           ))}
-          <span className="absolute top-0 -translate-x-1/2 font-mono text-[12px] font-medium text-[#248a3d] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
+          {MONTH_TICKS.map(({ m, label }) =>
+            label ? (
+              <span key={m} className="absolute top-[19px] -translate-x-1/2 font-mono text-[10.5px] text-fg-subtle" style={{ left: pct(m) }}>
+                {label}
+              </span>
+            ) : null,
+          )}
+          {MONTH_TICKS.map(({ m, label }) => (
+            <span
+              key={`t${m}`}
+              className={`absolute bottom-0 w-px ${m % 12 === 0 ? "h-3 bg-line-strong" : label ? "h-2 bg-line-strong" : "h-1 bg-line"}`}
+              style={{ left: pct(m) }}
+            />
+          ))}
+          <span className="absolute top-0 -translate-x-1/2 rounded-full bg-[#34C759]/12 px-1.5 font-mono text-[11.5px] font-medium text-[#248a3d] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
             Now
           </span>
         </div>
         {YEARS.slice(1).map((y) => (
-          <span key={y} className="absolute bottom-0 top-7 w-px bg-line" style={{ left: pct((y - 2024) * 12) }} />
+          <span key={y} className="absolute bottom-0 top-11 w-px bg-line" style={{ left: pct((y - 2024) * 12) }} />
         ))}
-        <span className="absolute bottom-0 top-7 w-px bg-[#34C759]/50" style={{ left: pct(NOW) }} />
+        <span className="absolute bottom-0 top-11 w-px bg-[#34C759]/50" style={{ left: pct(NOW) }} />
 
         <div className="relative grid gap-5 pb-2 pt-5">
           {LANES.map((lane, li) => (
@@ -144,10 +164,7 @@ export function Education() {
               </div>
               <div className="flex shrink-0 flex-col items-end">
                 <span className="edu-pill inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
-                <p className="mt-1.5 inline-flex items-center gap-1 text-[12.5px] text-fg-subtle">
-                  <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5 text-[#34C759]" />
-                  {ENGLISH.detail}
-                </p>
+
               </div>
             </article>
           </Reveal>
