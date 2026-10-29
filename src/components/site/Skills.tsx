@@ -106,10 +106,7 @@ function GroupCell({ title, i, className }: { title: string; i: number; classNam
   const g = group(title);
   return (
     <Cell i={i} className={className}>
-      <div className="flex items-baseline justify-between">
-        <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
-        <span className="font-mono text-[12px] tabular-nums text-fg-subtle">{g.skills.length}</span>
-      </div>
+      <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">{g.title}</h3>
       <ul className="mt-4 flex flex-wrap gap-2">
         {g.skills.map((skill) => (
           <li
