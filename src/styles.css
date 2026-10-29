@@ -1817,35 +1817,52 @@
   z-index: 4 !important;
 }
 
-/* Skills index (minimal): when a group becomes active its tools rise in one after another
-   (blur + 8px, 40ms stagger); icons sit in ink and take their brand colour on hover.
-   Reduced motion: plain swap. */
-.skills-panel:not([hidden]) .skills-entry {
-  animation: skills-rise 420ms var(--ease-out) backwards;
-  animation-delay: calc(var(--j) * 40ms);
+/* Skills periodic table: elements deal in block by block on reveal; the hovered (picked)
+   element lifts and takes a thin brand-colour rim; the key card's symbol swaps with a short
+   rise. The key card's name is drawn from data-label so the list keeps the only text copy.
+   Reduced motion: no lift, deal or rise. */
+.skills-element {
+  transition:
+    transform 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    background-color 180ms var(--ease-out);
 }
-@keyframes skills-rise {
+.skills-element[data-on] {
+  background-color: color-mix(in oklab, var(--brand) 7%, var(--surface-2));
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in oklab, var(--brand) 55%, transparent),
+    var(--elev-2);
+  transform: translateY(-3px);
+}
+.js [data-reveal][data-visible] .skills-element {
+  animation: skills-deal 480ms var(--ease-out) backwards;
+  animation-delay: calc(var(--i) * 24ms + 120ms);
+}
+@keyframes skills-deal {
   from {
     opacity: 0;
-    transform: translateY(8px);
-    filter: blur(3px);
+    transform: translateY(10px) scale(0.92);
   }
 }
-.skills-glyph {
-  color: var(--fg);
-  transition: color 150ms var(--ease-out), transform 180ms var(--ease-out);
+.skills-key-name::after {
+  content: attr(data-label);
 }
-@media (hover: hover) and (pointer: fine) {
-  .skills-entry:hover .skills-glyph {
-    color: var(--brand);
-    transform: scale(1.15);
+.skills-key-symbol {
+  animation: skills-key-in 380ms var(--ease-out);
+}
+@keyframes skills-key-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .skills-panel:not([hidden]) .skills-entry {
-    animation: none;
-  }
-  .skills-entry:hover .skills-glyph {
+  .skills-element[data-on] {
     transform: none;
+  }
+  .js [data-reveal][data-visible] .skills-element,
+  .skills-key-symbol {
+    animation: none;
   }
 }
