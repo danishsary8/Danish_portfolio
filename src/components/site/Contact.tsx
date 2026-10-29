@@ -1,6 +1,6 @@
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Mail, MapPin } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Mail, MapPin, Phone, Send } from "lucide-react";
 import { SiGithub, SiTelegram } from "react-icons/si";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,27 +49,45 @@ function CopyEmail() {
   );
 }
 
-/** One row of the grouped contact list: icon tile, label, value. */
-function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
+/** One reach-me channel: brand tile, label, value link, optional trailing control. Lifts on hover. */
+function Channel({
+  icon,
+  tint,
+  label,
+  note,
+  children,
+  trailing,
+}: {
+  icon: ReactNode;
+  tint: string;
+  label: string;
+  note: string;
+  children: ReactNode;
+  trailing?: ReactNode;
+}) {
   return (
-    <li className="flex min-h-[72px] items-center gap-4 bg-surface-2 bg-[image:var(--sheen)] px-5 py-3">
-      <span
-        aria-hidden="true"
-        className="icon-tile-light squircle [--r:9px] grid h-9 w-9 shrink-0 place-items-center text-fg-muted"
-      >
+    <li className="contact-channel squircle [--r:18px] flex items-center gap-4 px-5 py-4" style={{ "--c": tint } as CSSProperties}>
+      <span aria-hidden="true" className="contact-channel-tile squircle [--r:12px] grid h-11 w-11 shrink-0 place-items-center text-white">
         {icon}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[12.5px] text-fg-subtle">{label}</span>
+        <span className="flex items-baseline gap-2 text-[12.5px] text-fg-subtle">
+          {label}
+          <span className="hidden text-fg-subtle/80 sm:inline">· {note}</span>
+        </span>
         {children}
       </span>
+      {trailing}
     </li>
   );
 }
 
+const REASONS = ["A full-time role", "An internship", "A project", "Just saying hi"] as const;
+
 function ContactForm() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [reason, setReason] = useState<(typeof REASONS)[number]>(REASONS[0]);
   const [submitted, setSubmitted] = useState(false);
   const nameError = submitted && !name.trim() ? "Add your name so I know who's writing." : "";
   const messageError = submitted && !message.trim() ? "Write a short message first." : "";
@@ -78,25 +96,44 @@ function ContactForm() {
     e.preventDefault();
     setSubmitted(true);
     if (!name.trim() || !message.trim()) return;
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name.trim()}`);
+    const subject = encodeURIComponent(`${reason} · from ${name.trim()}`);
     const body = encodeURIComponent(`${message.trim()}\n\n— ${name.trim()}`);
     window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
   };
 
   return (
-    <form noValidate onSubmit={onSubmit} className="tactile squircle [--r:20px] grid gap-5 p-6 sm:p-7">
+    <form noValidate onSubmit={onSubmit} className="contact-card squircle [--r:24px] grid h-full gap-5 p-7">
       <div>
-        <p className="text-[17px] font-semibold tracking-[-0.015em] text-fg">Send a message</p>
-        <p className="mt-1 text-[13.5px] text-fg-subtle">
-          Opens your email app with this message ready to send.
-        </p>
+        <p className="text-[19px] font-semibold tracking-[-0.02em] text-fg">Write me a note</p>
+        <p className="mt-1 text-[13.5px] text-fg-subtle">It opens in your email app, ready to send. No sign-up, no spam.</p>
       </div>
+
+      <fieldset className="grid gap-2">
+        <legend className="mb-2 text-[14px] font-medium text-fg">What’s it about?</legend>
+        <div className="flex flex-wrap gap-2">
+          {REASONS.map((r) => (
+            <button
+              key={r}
+              type="button"
+              aria-pressed={reason === r}
+              onClick={() => setReason(r)}
+              className={`contact-reason inline-flex h-9 items-center rounded-full border px-3.5 text-[13.5px] ${FOCUS} ${
+                reason === r ? "border-fg bg-fg text-bg" : "border-line-strong bg-surface-1 text-fg-muted hover:text-fg"
+              }`}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
       <div className="grid gap-2">
         <Label htmlFor="contact-name">Name</Label>
         <Input
           id="contact-name"
           name="name"
           autoComplete="name"
+          placeholder="Your name or company"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="field h-11 border-transparent px-3.5 text-[16px] sm:text-[15px]"
@@ -114,12 +151,13 @@ function ContactForm() {
         <textarea
           id="contact-message"
           name="message"
-          rows={5}
+          rows={4}
+          placeholder="Tell me about the role, the team or the idea…"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           aria-invalid={messageError ? true : undefined}
           aria-describedby={messageError ? "contact-message-error" : undefined}
-          className="field min-h-[140px] w-full resize-y px-3.5 py-3 text-[16px] leading-[1.55] text-fg placeholder:text-fg-subtle sm:text-[15px]"
+          className="field min-h-[120px] w-full resize-y px-3.5 py-3 text-[16px] leading-[1.55] text-fg placeholder:text-fg-subtle sm:text-[15px]"
         />
         {messageError ? (
           <p id="contact-message-error" className="text-[13px] text-destructive">
@@ -127,13 +165,16 @@ function ContactForm() {
           </p>
         ) : null}
       </div>
-      <button
-        type="submit"
-        className={`btn-apple btn-apple-primary inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-[14.5px] font-medium sm:w-fit ${FOCUS}`}
-      >
-        <Mail className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-        Write email
-      </button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button
+          type="submit"
+          className={`btn-apple btn-apple-primary group inline-flex h-12 items-center justify-center gap-2 rounded-full px-7 text-[15px] font-medium ${FOCUS}`}
+        >
+          <Send className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-0.5" strokeWidth={1.75} aria-hidden="true" />
+          Write email
+        </button>
+        <span className="text-[12.5px] text-fg-subtle">Sends to {PROFILE.email}</span>
+      </div>
     </form>
   );
 }
@@ -143,85 +184,100 @@ export function Contact() {
   const hasCv = CV_HREF !== "#" && CV_HREF !== "";
   const sectionRef = useRef<HTMLElement>(null);
 
-  const linkRow =
-    "group flex min-w-0 items-center gap-3 text-[15px] text-fg transition-colors duration-150";
+  const value =
+    "group/link inline-flex min-w-0 max-w-full items-center gap-1.5 text-[15.5px] font-medium text-fg";
   const arrow =
-    "h-4 w-4 shrink-0 text-fg-subtle transition-[transform,color] duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-px group-hover:text-fg";
+    "h-4 w-4 shrink-0 text-fg-subtle transition-[transform,color] duration-150 ease-[var(--ease-out)] group-hover/link:-translate-y-px group-hover/link:translate-x-px group-hover/link:text-fg";
 
   return (
     <section ref={sectionRef} id="contact" aria-labelledby="contact-title" className={SECTION}>
-      {/* Closing statement: weight follows the pointer (React Bits VariableProximity) */}
-      <Reveal>
-        <h2
-          id="contact-title"
-          className="max-w-[10.928em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[80px]"
-        >
-          <span className="sr-only">Let’s build something useful.</span>
-          <span aria-hidden="true">
-            <VariableProximity
-              label="Let’s build something useful."
-              fromFontVariationSettings="'wght' 560"
-              toFontVariationSettings="'wght' 860"
-              containerRef={sectionRef}
-              radius={140}
-              falloff="gaussian"
-            />
-          </span>
-        </h2>
-      </Reveal>
-      <Reveal index={1}>
-        <p className="mt-6 max-w-[34.476em] text-[16px] leading-[1.6] text-fg-muted">
-          Hiring for a web team, or have a project in mind? Email reaches me fastest; Telegram works
-          too.
-        </p>
-      </Reveal>
+      {/* Invitation: status, headline (weight follows the pointer), lede, local time */}
+      <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1fr)_auto]">
+        <div>
+          <Reveal>
+            <p className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface-2 px-3 py-1 text-[13px] font-medium text-fg">
+              <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+              Open to full-time Web Developer roles
+            </p>
+          </Reveal>
+          <Reveal index={1}>
+            <h2
+              id="contact-title"
+              className="mt-5 max-w-[11em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[76px]"
+            >
+              <span className="sr-only">Hiring a web developer? Let’s talk.</span>
+              <span aria-hidden="true">
+                <VariableProximity
+                  label="Hiring a web developer? Let’s talk."
+                  fromFontVariationSettings="'wght' 560"
+                  toFontVariationSettings="'wght' 860"
+                  containerRef={sectionRef}
+                  radius={140}
+                  falloff="gaussian"
+                />
+              </span>
+            </h2>
+          </Reveal>
+          <Reveal index={2}>
+            <p className="mt-6 max-w-[36em] text-pretty text-[17px] leading-[1.6] text-fg-muted">
+              I’m ready to join a team in Phnom Penh and ship real work from day one. A role, an
+              internship, or an idea you want built: send it over and I’ll get back to you.
+            </p>
+          </Reveal>
+        </div>
+        <Reveal index={3} className="slide-from-right">
+          <div className="contact-card squircle [--r:22px] w-[260px] p-5">
+            <p className="flex items-center gap-1.5 text-[12.5px] text-fg-subtle">
+              <MapPin aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
+              Phnom Penh, Cambodia
+            </p>
+            <p className="mt-2 font-mono text-[34px] font-medium leading-none tabular-nums tracking-[-0.02em] text-fg">
+              {time ?? "--:--"}
+            </p>
+            <p className="mt-2 text-[12.5px] text-fg-subtle">Local time · {PROFILE.timezoneLabel} (UTC+7)</p>
+          </div>
+        </Reveal>
+      </div>
 
-      <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-        <Reveal index={2}>
-          <ul className="tactile squircle [--r:20px] grid gap-px overflow-hidden bg-[var(--edge)]">
-            <Row icon={<Mail className="h-4 w-4" strokeWidth={1.5} />} label="Email">
-              <span className="flex items-center gap-3">
-                <a
-                  href={`mailto:${PROFILE.email}`}
-                  className="min-w-0 truncate text-[15px] text-fg underline decoration-transparent underline-offset-4 transition-[text-decoration-color] duration-150 hover:decoration-fg-subtle"
-                >
+      <div className="mt-12 grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        <Reveal index={4} className="slide-from-left">
+          <div className="contact-card squircle [--r:24px] h-full p-3">
+            <p className="px-4 pb-2 pt-3 text-[13px] font-medium text-fg-subtle">Fastest ways to reach me</p>
+            <ul className="grid gap-1.5">
+              <Channel icon={<Mail className="h-5 w-5" strokeWidth={1.75} />} tint="#EA4335" label="Email" note="best for job offers" trailing={<CopyEmail />}>
+                <a href={`mailto:${PROFILE.email}`} className={`${value} truncate underline decoration-transparent underline-offset-4 transition-[text-decoration-color] duration-150 hover:decoration-fg-subtle`}>
                   {PROFILE.email}
                 </a>
-                <span className="ml-auto">
-                  <CopyEmail />
-                </span>
-              </span>
-            </Row>
-            <Row icon={<SiGithub className="h-4 w-4" />} label="GitHub">
-              <a href={PROFILE.github} target="_blank" rel="noreferrer" className={linkRow}>
-                <span className="truncate">github.com/{PROFILE.githubHandle}</span>
-                <ArrowUpRight aria-hidden="true" strokeWidth={1.5} className={arrow} />
-              </a>
-            </Row>
-            <Row icon={<SiTelegram className="h-4 w-4 text-[#229ED9]" />} label="Telegram">
-              <a href={PROFILE.telegram} target="_blank" rel="noreferrer" className={linkRow}>
-                <span className="truncate">{PROFILE.telegramHandle}</span>
-                <ArrowUpRight aria-hidden="true" strokeWidth={1.5} className={arrow} />
-              </a>
-            </Row>
-            <Row icon={<MapPin className="h-4 w-4" strokeWidth={1.5} />} label="Based in">
-              <span className="block text-[15px] text-fg">
-                Phnom Penh, Cambodia ·{" "}
-                <span className="font-mono text-[13.5px] tabular-nums">{time ?? "--:--"}</span>{" "}
-                <span className="text-fg-subtle">{PROFILE.timezoneLabel}</span>
-              </span>
-            </Row>
-            {hasCv ? (
-              <Row icon={<FileText className="h-4 w-4" strokeWidth={1.5} />} label="Résumé">
-                <a {...getCvLinkProps()} className={linkRow}>
-                  <span>Download CV</span>
-                  <ArrowUpRight aria-hidden="true" strokeWidth={1.5} className={arrow} />
+              </Channel>
+              <Channel icon={<SiTelegram className="h-5 w-5" />} tint="#229ED9" label="Telegram" note="quick questions">
+                <a href={PROFILE.telegram} target="_blank" rel="noreferrer" className={value}>
+                  <span className="truncate">{PROFILE.telegramHandle}</span>
+                  <ArrowUpRight aria-hidden="true" strokeWidth={1.75} className={arrow} />
                 </a>
-              </Row>
-            ) : null}
-          </ul>
+              </Channel>
+              <Channel icon={<Phone className="h-5 w-5" strokeWidth={1.75} />} tint="#34C759" label="Phone" note="call or text">
+                <a href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`} className={value}>
+                  <span className="truncate">{PROFILE.phone}</span>
+                </a>
+              </Channel>
+              <Channel icon={<SiGithub className="h-5 w-5" />} tint="#24292F" label="GitHub" note="see the code">
+                <a href={PROFILE.github} target="_blank" rel="noreferrer" className={value}>
+                  <span className="truncate">github.com/{PROFILE.githubHandle}</span>
+                  <ArrowUpRight aria-hidden="true" strokeWidth={1.75} className={arrow} />
+                </a>
+              </Channel>
+              {hasCv ? (
+                <Channel icon={<FileText className="h-5 w-5" strokeWidth={1.75} />} tint="#6B6B75" label="Résumé" note="one-page PDF">
+                  <a {...getCvLinkProps()} className={value}>
+                    <span>Download CV</span>
+                    <ArrowUpRight aria-hidden="true" strokeWidth={1.75} className={arrow} />
+                  </a>
+                </Channel>
+              ) : null}
+            </ul>
+          </div>
         </Reveal>
-        <Reveal index={3}>
+        <Reveal index={5} className="slide-from-right">
           <ContactForm />
         </Reveal>
       </div>
