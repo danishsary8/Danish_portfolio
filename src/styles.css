@@ -2079,10 +2079,17 @@
   border: 1px solid var(--line-strong);
   box-shadow: var(--elev-1);
 }
-.contact-channel {
+.contact-tile {
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in oklab, var(--c) 12%, transparent), transparent 60%),
+    var(--surface-2);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--elev-1);
+  min-height: 168px;
   transition:
-    background-color 150ms var(--ease-out),
-    transform 200ms var(--ease-out);
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    border-color 200ms var(--ease-out);
 }
 .contact-channel-tile {
   background:
@@ -2099,13 +2106,14 @@
     border-color 150ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .contact-channel:hover {
-    background: color-mix(in oklab, var(--c) 7%, var(--surface-1));
-    transform: translateX(2px);
+  .contact-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--elev-2);
+    border-color: color-mix(in oklab, var(--c) 45%, var(--line-strong));
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .contact-channel:hover {
+  .contact-tile:hover {
     transform: none;
   }
 }
