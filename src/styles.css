@@ -1906,3 +1906,38 @@
     --core-name: 20px;
   }
 }
+
+/* Soft-skill pills (owner: colourful, not boring): each pill carries its own hue as a soft tint,
+   a tinted border, a coloured icon disc and a light shadow; hover lifts it and deepens the tint. */
+.soft-pill {
+  background: color-mix(in oklab, var(--hue) 8%, var(--surface-2));
+  border: 1px solid color-mix(in oklab, var(--hue) 32%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in oklab, var(--hue) 18%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 0.35);
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
+}
+.dark .soft-pill {
+  background: color-mix(in oklab, var(--hue) 14%, var(--surface-2));
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+.soft-pill-dot {
+  color: #fff;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--hue) 82%, #fff), var(--hue));
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--hue) 45%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .soft-pill:hover {
+    transform: translateY(-2px);
+    background: color-mix(in oklab, var(--hue) 14%, var(--surface-2));
+    box-shadow: 0 6px 14px -6px color-mix(in oklab, var(--hue) 55%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soft-pill:hover {
+    transform: none;
+  }
+}

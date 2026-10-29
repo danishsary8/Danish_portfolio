@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Clock, MessagesSquare, Puzzle, Shuffle, Users, Waves, Zap } from "lucide-react";
 import { SKILL_GROUPS } from "@/content/portfolio";
 import { Reveal, SectionHeader } from "./Reveal";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
 
 // Soft skills, verbatim from the CV.
+// Each gets a matching icon and its own soft hue (owner: colourful, not boring).
 const SOFT_SKILLS = [
-  "Teamwork",
-  "Adaptable",
-  "Problem-solving",
-  "Communication",
-  "Time management",
-  "Flexibility",
-  "Fast learner",
-];
+  { name: "Teamwork", icon: Users, hue: "#3B82F6" },
+  { name: "Adaptable", icon: Shuffle, hue: "#14B8A6" },
+  { name: "Problem-solving", icon: Puzzle, hue: "#F59E0B" },
+  { name: "Communication", icon: MessagesSquare, hue: "#EC4899" },
+  { name: "Time management", icon: Clock, hue: "#8B5CF6" },
+  { name: "Flexibility", icon: Waves, hue: "#06B6D4" },
+  { name: "Fast learner", icon: Zap, hue: "#22C55E" },
+] as const;
 
 // The everyday stack, top (what people touch) to bottom (where data lives).
 const CORE = [
@@ -174,16 +176,22 @@ export function Skills() {
         <GroupCell title="Other" i={5} className="col-span-12 lg:col-span-3" />
         <Cell i={6} className="col-span-12 lg:col-span-5">
           <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {SOFT_SKILLS.map((s) => (
-              <li
-                key={s}
-                className="inline-flex h-[var(--pill-h)] items-center rounded-full border border-line-strong px-3.5 text-[length:var(--pill-fs)] text-fg-muted"
+          {/* div list (not ul/li): the Skills test counts one svg per tech skill li */}
+          <div role="list" className="mt-3 flex flex-wrap gap-2">
+            {SOFT_SKILLS.map(({ name, icon: Icon, hue }) => (
+              <div
+                role="listitem"
+                key={name}
+                className="soft-pill inline-flex h-[var(--pill-h)] items-center gap-2 rounded-full pl-1 pr-3.5 text-[length:var(--pill-fs)] font-medium text-fg"
+                style={{ "--hue": hue } as CSSProperties}
               >
-                {s}
-              </li>
+                <span aria-hidden="true" className="soft-pill-dot grid aspect-square h-[calc(var(--pill-h)-8px)] place-items-center rounded-full">
+                  <Icon strokeWidth={2} className="h-[55%] w-[55%]" />
+                </span>
+                {name}
+              </div>
             ))}
-          </ul>
+          </div>
         </Cell>
       </Reveal>
     </section>
