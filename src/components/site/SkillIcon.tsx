@@ -53,6 +53,7 @@ const ICONS: Record<string, AnyIcon> = {
   Supabase: SiSupabase,
   SQLite: SiSqlite,
   Oracle: Database,
+  SQL: Database,
   Git: SiGit,
   GitHub: SiGithub,
   "REST APIs": TbApi,

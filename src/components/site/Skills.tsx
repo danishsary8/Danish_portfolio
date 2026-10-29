@@ -22,10 +22,11 @@ const CORE = [
 ] as const;
 
 // Official full-colour logos (Devicon, MIT), same pinned source as the Hero and About.
-// Tools without a Devicon mark (REST APIs, JWT, Cloudinary) keep the brand-coloured icon.
+// Tools without a Devicon mark (REST APIs, SQL, Cloudinary) keep the brand-coloured icon.
 const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
 const LOGO: Record<string, string> = {
   JavaScript: "javascript/javascript-original",
+  TypeScript: "typescript/typescript-original",
   PHP: "php/php-original",
   Python: "python/python-original",
   Java: "java/java-original",
@@ -138,7 +139,7 @@ export function Skills() {
       <SectionHeader
         id="skills-title"
         title="Skills"
-        lede="Everything on my CV, with the stack I reach for first up front."
+        lede="Grouped by where I use them, with the stack I reach for first up front."
       />
 
       <Reveal className="skills-bento grid grid-cols-12 gap-3">
@@ -168,12 +169,12 @@ export function Skills() {
           </div>
         </Cell>
 
-        <GroupCell title="Languages" i={1} className="col-span-12 lg:col-span-4" />
-        <GroupCell title="Databases" i={2} className="col-span-12 lg:col-span-3" />
-        <GroupCell title="Frameworks & UI" i={3} className="col-span-12 lg:col-span-7" />
-        <GroupCell title="Tools & APIs" i={4} className="col-span-12 lg:col-span-7" />
-
-        <Cell i={5} className="col-span-12 lg:col-span-5">
+        <GroupCell title="Front-End" i={1} className="col-span-12 lg:col-span-7" />
+        <GroupCell title="Back-End" i={2} className="col-span-12 lg:col-span-4" />
+        <GroupCell title="Databases" i={3} className="col-span-12 lg:col-span-3" />
+        <GroupCell title="Tools & DevOps" i={4} className="col-span-12 lg:col-span-5" />
+        <GroupCell title="Other" i={5} className="col-span-12 lg:col-span-3" />
+        <Cell i={6} className="col-span-12 lg:col-span-4">
           <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
           <ul className="mt-4 flex flex-wrap gap-2">
             {SOFT_SKILLS.map((s) => (

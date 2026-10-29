@@ -123,20 +123,24 @@ export const PROJECTS: Project[] = [
 
 export const SKILL_GROUPS = [
   {
-    title: "Languages",
-    skills: ["JavaScript", "PHP", "Python", "Java", "HTML5", "CSS3"],
+    title: "Front-End",
+    skills: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Tailwind CSS", "Bootstrap"],
   },
   {
-    title: "Frameworks & UI",
-    skills: ["React", "Laravel", "Flask", "Tailwind CSS", "Bootstrap", "Framer Motion", "Flutter"],
+    title: "Back-End",
+    skills: ["PHP", "Laravel", "REST APIs", "SQL"],
   },
   {
     title: "Databases",
     skills: ["PostgreSQL", "Supabase", "Oracle"],
   },
   {
-    title: "Tools & APIs",
-    skills: ["Git", "GitHub", "REST APIs", "JWT", "Docker", "Postman", "Cloudinary", "VS Code"],
+    title: "Tools & DevOps",
+    skills: ["Git", "GitHub", "Docker", "Postman", "Cloudinary", "VS Code"],
+  },
+  {
+    title: "Other",
+    skills: ["Python", "Java", "Flutter", "Flask"],
   },
 ] as const;
 
