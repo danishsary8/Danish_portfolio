@@ -1987,3 +1987,34 @@
     transform: none;
   }
 }
+
+/* Certificate thumbnails: a real certificate as a small tilted sheet of paper with a soft
+   contact shadow; hover straightens and lifts it and shows a zoom hint. */
+.cert-thumb {
+  transform: rotate(var(--tilt));
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 6px 16px -6px rgb(0 0 0 / 0.28);
+  outline: 1px solid var(--line);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+}
+.cert-thumb-zoom {
+  opacity: 0;
+  transition: opacity 160ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .cert-thumb:hover {
+    transform: rotate(0deg) translateY(-3px) scale(1.06);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.12),
+      0 14px 28px -10px rgb(0 0 0 / 0.38);
+  }
+  .cert-thumb:hover .cert-thumb-zoom {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cert-thumb:hover {
+    transform: rotate(var(--tilt));
+  }
+}

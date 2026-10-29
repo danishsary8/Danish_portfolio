@@ -2,6 +2,9 @@ import type { CSSProperties } from "react";
 import { ArrowRight, BadgeCheck, GitPullRequest, LayoutDashboard, MessagesSquare, Trophy } from "lucide-react";
 import { EXPERIENCE } from "@/content/portfolio";
 import { OrgLogo } from "./OrgLogo";
+import { CertificateThumb } from "./CertificateThumb";
+import certInternship from "@/assets/certificates/internship-kru.webp";
+import certAward from "@/assets/certificates/ai-competition-norton.webp";
 import { Reveal, SectionHeader } from "./Reveal";
 
 const [INTERN, AWARD] = EXPERIENCE;
@@ -94,12 +97,23 @@ export function Experience() {
 
             {/* Two stages */}
             <div className="mt-5 grid grid-cols-2 gap-2.5 [@media(max-height:760px)]:mt-4">
-              <div className="rounded-[14px] border border-line bg-surface-1 px-4 py-3">
-                <p className="flex items-center gap-1.5 text-[13.5px] font-medium text-fg">
-                  Frontend
-                  <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-[#34C759]" />
-                </p>
-                <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026 · certified</p>
+              <div className="flex items-center justify-between gap-3 rounded-[14px] border border-line bg-surface-1 py-2.5 pl-4 pr-3">
+                <div className="min-w-0">
+                  <p className="flex items-center gap-1.5 text-[13.5px] font-medium text-fg">
+                    Frontend
+                    <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-[#34C759]" />
+                  </p>
+                  <p className="font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026 · certified</p>
+                </div>
+                <CertificateThumb
+                  src={certInternship}
+                  width={1600}
+                  height={1119}
+                  size={64}
+                  tilt={-4}
+                  title="Certificate of Completion: Web Frontend Development"
+                  caption="KRU IT Solution with ETEC Center · Granted October 15, 2026"
+                />
               </div>
               <div className="rounded-[14px] border border-[color-mix(in_oklab,#34C759_40%,transparent)] bg-[color-mix(in_oklab,#34C759_7%,var(--surface-2))] px-4 py-3">
                 <p className="text-[13.5px] font-medium text-fg">Backend</p>
@@ -136,7 +150,7 @@ export function Experience() {
         <Reveal as="li" index={1} className="slide-from-right">
           <article className="exp-card exp-award tactile squircle [--r:24px] relative flex h-full flex-col overflow-hidden bg-surface-2 p-6 [@media(max-height:760px)]:p-5">
             <div aria-hidden="true" className="exp-award-wash pointer-events-none absolute inset-0" />
-            <div className="relative flex items-start justify-between gap-3">
+            <div className="relative flex items-center gap-3">
               <span className="icon-tile-gold squircle [--r:14px] grid h-12 w-12 place-items-center">
                 <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
               </span>
@@ -144,6 +158,16 @@ export function Experience() {
                 {AWARD.period}
               </span>
             </div>
+            <CertificateThumb
+              src={certAward}
+              width={1200}
+              height={1911}
+              size={68}
+              tilt={5}
+              className="!absolute right-6 top-4"
+              title="Certificate of Achievement: 1st Place"
+              caption="AI Expert System and Innovation 2026 · Norton University, Department of Computer Studies · September 26, 2026"
+            />
 
             <p className="relative mt-5 [@media(max-height:760px)]:mt-3 text-[40px] [@media(max-height:760px)]:text-[34px] font-semibold leading-none tracking-[-0.04em] text-gold-ink dark:text-gold">
               1st Place
