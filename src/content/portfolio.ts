@@ -169,10 +169,11 @@ export const EXPERIENCE = [
     period: "Sep 2026",
     detail: "Norton University · Department of Computer Studies",
     summary:
-      "My team of four built the Diabetes Expert System and entered it in Norton University's AI competition, where it won first place.",
+      "My team of four built the Diabetes Expert System and entered it in the competition, where it won first place.",
     points: [
-      "Purpose: help people check their risk of diabetes early, in Khmer or English.",
-      "Explainable by design: every result shows the rules behind it and comes with a care plan.",
+      "Purpose: a clinical assistant that helps people see their possible risk of diabetes early, in Khmer or English.",
+      "Like a health watch, it flags warning signs and suggests a care plan, but never replaces a doctor.",
+      "Explainable by design: every result shows the rules behind it.",
       "Built with React, Flask and PostgreSQL, with secure sign-in and role-based access.",
     ],
   },

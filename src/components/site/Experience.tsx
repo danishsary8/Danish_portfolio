@@ -208,8 +208,13 @@ export function Experience() {
                 </span>
               </div>
 
-              <p className="mt-7 text-[44px] font-semibold leading-none tracking-[-0.04em] text-gold-ink dark:text-gold">1st Place</p>
-              <h3 className="mt-2 text-[24px] font-semibold leading-tight tracking-[-0.025em] text-fg">{AWARD.title}</h3>
+              <h3 className="mt-7 text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-fg">
+                Built it as a team, won <span className="text-gold-ink dark:text-gold">1st place</span>
+              </h3>
+              <p className="mt-2 text-[15px] text-fg-muted">
+                <span className="text-fg-subtle">Competition · </span>
+                <span className="font-medium text-fg">{AWARD.title}</span>
+              </p>
               <p className="mt-3 max-w-[60ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">{AWARD.summary}</p>
 
               <ul className="mt-5 grid gap-2.5">
@@ -223,7 +228,7 @@ export function Experience() {
 
               <div className="mt-8 flex flex-1 flex-col">
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
-                  <span className="text-[13px] text-fg-subtle">Team of 4 · built and entered together</span>
+                  <span className="text-[13px] text-fg-subtle">Team project · 4 members</span>
                   <a
                     href="#projects"
                     className="group inline-flex items-center gap-1.5 text-[14px] font-medium text-fg underline decoration-line-strong underline-offset-4 hover:decoration-fg"
