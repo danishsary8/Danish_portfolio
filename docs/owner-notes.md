@@ -24,3 +24,12 @@ Not yet on the site. Use only when Danish asks. Certificate images were shared i
 - The award can now say **1st Place** and the organiser (Norton University, Department of Computer Studies);
   AGENTS.md previously said "award organiser not stated".
 - Frontend internship stage is certified as completed (Oct 15, 2026).
+
+## To do later (remind Danish)
+- **Contact form → Web3Forms key (not done yet, owner will deploy later).** The form code is ready
+  (`src/components/site/Contact.tsx`). Until the key is set it falls back to opening the email app.
+  Steps: get a free key at https://web3forms.com with danishsary4@gmail.com → Vercel project
+  `danish-portfolio` → Settings → Environment Variables → `VITE_WEB3FORMS_KEY` = key (Production,
+  Preview, Development) → Redeploy → send one test message and check Gmail.
+- Update the CV PDF to match the site: TypeScript and SQL in skills, ACE 2024 – 2026,
+  ETEC Frontend Jan – Aug 2025, Backend Oct 2025 – Mar 2026, Facebook link.

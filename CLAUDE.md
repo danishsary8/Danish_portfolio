@@ -37,6 +37,10 @@ When Claude Code or Kiro takes over to edit or build the About section:
   - Maintain the asymmetric layout and responsive balance.
   - Ensure all 39 tests (`npm test -- --run`) and TypeScript (`npx tsc --noEmit`) remain green.
 
+## ⏰ Pending owner tasks (remind Danish at the start of a session)
+- Contact form: add the Web3Forms key (`VITE_WEB3FORMS_KEY` in Vercel) and redeploy. Steps in `docs/owner-notes.md` → "To do later".
+- Update the CV PDF to match the site (see the same note).
+
 ## Commands
 
 ```bash
