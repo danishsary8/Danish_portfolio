@@ -2018,3 +2018,20 @@
     transform: rotate(var(--tilt));
   }
 }
+
+/* Education study chart: bars grow from their start on reveal. */
+.js [data-reveal] .edu-bar {
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(0);
+  transition: transform 800ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 120ms + 150ms);
+}
+.js [data-reveal][data-visible] .edu-bar {
+  transform: translateY(-50%) scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] .edu-bar {
+    transform: translateY(-50%);
+    transition: none;
+  }
+}

@@ -183,13 +183,13 @@ export const EDUCATION = [
   {
     title: "Bachelor of Software Development",
     org: "Norton University",
-    period: "2024 – Present",
+    period: "Jan 2024 – Present",
     detail: "Fourth year",
   },
   {
     title: "General English Program",
     org: "Australian Centre for Education (ACE)",
-    period: "2024 – 2026",
+    period: "2023 – 2026",
     detail: "Completed",
   },
 ] as const;
@@ -198,25 +198,22 @@ export type Certificate = {
   title: string;
   issuer: string;
   date: string;
-  /** Path under /public or a CDN URL. Leave undefined until the scan is added. */
-  image?: string;
+  topics: string;
 };
 
+// ETEC courses (owner: education first, courses after, no awards here).
 export const CERTIFICATES: Certificate[] = [
   {
-    title: "AI Expert System and Innovation 2026 — Award Winner (Team)",
-    issuer: "Team award · Diabetes Expert System",
-    date: "Sep 2026",
+    title: "Frontend Development",
+    issuer: "ETEC Center",
+    date: "Jan – Jul 2025",
+    topics: "HTML, CSS, Bootstrap, JavaScript, React.js and a project course",
   },
   {
-    title: "Backend Development: PHP, Laravel",
-    issuer: "ETEC",
+    title: "Backend Development",
+    issuer: "ETEC Center",
     date: "Nov 2025 – Mar 2026",
-  },
-  {
-    title: "Frontend Development: HTML, CSS, JavaScript, React.js",
-    issuer: "ETEC",
-    date: "Jan 2025 – Jul 2025",
+    topics: "PHP and Laravel",
   },
 ];
 
