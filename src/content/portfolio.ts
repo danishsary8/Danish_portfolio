@@ -17,6 +17,8 @@ export const PROFILE = {
   github: "https://github.com/danishsary8",
   githubHandle: "danishsary8",
   telegram: "https://t.me/sarydanish",
+  facebook: "https://www.facebook.com/danish.sary.5",
+  facebookHandle: "danish.sary.5",
   telegramHandle: "@sarydanish",
   pitch:
     "I build secure REST APIs and clean, responsive React interfaces — and ship them to real users.",

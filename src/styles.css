@@ -2117,3 +2117,30 @@
     transform: none;
   }
 }
+
+/* Contact list rows: whole row is the link; tint, nudge and action pill on hover. */
+.contact-row {
+  border-radius: 16px;
+  transition: background-color 150ms var(--ease-out);
+}
+.contact-row-action {
+  transition:
+    color 150ms var(--ease-out),
+    border-color 150ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .contact-row:hover {
+    background: color-mix(in oklab, var(--c) 8%, transparent);
+  }
+  .contact-row:hover .contact-row-action {
+    color: var(--fg);
+    border-color: color-mix(in oklab, var(--c) 55%, var(--line-strong));
+    transform: translateX(-2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-row:hover .contact-row-action {
+    transform: none;
+  }
+}
