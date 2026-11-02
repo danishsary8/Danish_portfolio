@@ -105,21 +105,27 @@ function ProjectShot({ project }: { project: Project }) {
   );
 }
 
-function ProjectVisual({ project }: { project: Project }) {
+function ProjectVisual({ project, onOpen }: { project: Project; onOpen?: (p: Project) => void }) {
   return (
-    <GlareHover
-      glareColor="#ffffff"
-      glareOpacity={0.18}
-      variant="sheen"
-      borderRadius="18px"
-      transitionDuration={900}
-      width="100%"
-      className="block w-full max-w-full"
+    <div
+      onClick={onOpen ? () => onOpen(project) : undefined}
+      className={onOpen ? "cursor-pointer group/shot" : undefined}
+      title={onOpen ? `View ${project.title} details` : undefined}
     >
-      <BrowserFrame url={project.liveUrl}>
-        <ProjectShot project={project} />
-      </BrowserFrame>
-    </GlareHover>
+      <GlareHover
+        glareColor="#ffffff"
+        glareOpacity={0.18}
+        variant="sheen"
+        borderRadius="18px"
+        transitionDuration={900}
+        width="100%"
+        className="block w-full max-w-full"
+      >
+        <BrowserFrame url={project.liveUrl}>
+          <ProjectShot project={project} />
+        </BrowserFrame>
+      </GlareHover>
+    </div>
   );
 }
 
@@ -227,7 +233,7 @@ function DeckCard({
       >
         <Reveal className="grid items-center gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12">
           <div className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
-            <ProjectVisual project={project} />
+            <ProjectVisual project={project} onOpen={onOpen} />
           </div>
           <div className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>
             <ProjectTitle project={project} size="lg" />
