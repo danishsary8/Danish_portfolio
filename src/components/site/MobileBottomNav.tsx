@@ -45,7 +45,7 @@ export function MobileBottomNav({ activeSection }: MobileBottomNavProps) {
               aria-label={item.label}
               title={item.label}
               aria-current={isActive ? "page" : undefined}
-              className={`relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 select-none active:scale-90 ${
+              className={`relative flex h-10 w-10 min-h-[44px] min-w-[44px] sm:h-11 sm:w-11 items-center justify-center rounded-full transition-all duration-200 select-none active:scale-90 ${
                 isActive
                   ? "bg-surface-3 text-fg shadow-2xs font-semibold ring-1 ring-line-strong/30"
                   : "text-fg-subtle hover:text-fg hover:bg-surface-2/60"

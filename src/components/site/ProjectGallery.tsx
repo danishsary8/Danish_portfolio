@@ -26,6 +26,7 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [failed, setFailed] = useState<Record<number, boolean>>({});
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const hasMultiple = images.length > 1;
 
@@ -33,6 +34,13 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
   useEffect(() => {
     setCurrentIndex(0);
   }, [project.id]);
+
+  useEffect(() => {
+    const el = imgRef.current;
+    if (el && el.complete && el.currentSrc && el.naturalWidth === 0) {
+      setFailed((prev) => ({ ...prev, [currentIndex]: true }));
+    }
+  }, [currentIndex, images]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -110,6 +118,7 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
           <div className="relative h-full w-full">
             <img
               key={currentIndex}
+              ref={imgRef}
               src={images[currentIndex]}
               alt={project.imageAlt ?? `${project.title} screenshot ${currentIndex + 1}`}
               className="h-full w-full object-cover object-top transition-all duration-500 ease-[var(--ease-out)] animate-in fade-in zoom-in-95"
@@ -198,7 +207,7 @@ export function ProjectGallery({ project }: ProjectGalleryProps) {
               onClick={() => setCurrentIndex(idx)}
               className={`relative aspect-[16/10] h-12 shrink-0 overflow-hidden rounded-md border transition-all ${
                 idx === currentIndex
-                  ? "border-gold ring-1 ring-gold opacity-100 scale-102"
+                  ? "border-gold ring-1 ring-gold opacity-100 scale-[1.03]"
                   : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
