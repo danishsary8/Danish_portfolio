@@ -103,46 +103,128 @@ function Row({
   );
 }
 
+// Web3Forms access key (public by design; it only lets the form send to the owner's inbox).
+// Set VITE_WEB3FORMS_KEY in Vercel. Without it the form falls back to opening the email app.
+const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_KEY"] as string | undefined;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+type Status = "idle" | "sending" | "sent" | "error";
+
 function ContactForm() {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
   const nameError = submitted && !name.trim() ? "Add your name so I know who's writing." : "";
+  const emailError =
+    submitted && !EMAIL_RE.test(email.trim()) ? "Add an email so I can reply to you." : "";
   const messageError = submitted && !message.trim() ? "Write a short message first." : "";
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    if (!name.trim() || !message.trim()) return;
-    const subject = encodeURIComponent(`Hello from ${name.trim()}`);
-    const body = encodeURIComponent(`${message.trim()}\n\n— ${name.trim()}`);
-    window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
+    if (!name.trim() || !EMAIL_RE.test(email.trim()) || !message.trim()) return;
+
+    if (!WEB3FORMS_KEY) {
+      const subject = encodeURIComponent(`Hello from ${name.trim()}`);
+      const body = encodeURIComponent(`${message.trim()}\n\n— ${name.trim()} (${email.trim()})`);
+      window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Portfolio message from ${name.trim()}`,
+          from_name: "Portfolio contact form",
+          name: name.trim(),
+          email: email.trim(),
+          message: message.trim(),
+        }),
+      });
+      const data = (await res.json()) as { success?: boolean };
+      if (!res.ok || !data.success) throw new Error("send failed");
+      setStatus("sent");
+      setName("");
+      setEmail("");
+      setMessage("");
+      setSubmitted(false);
+    } catch {
+      setStatus("error");
+    }
   };
 
+  if (status === "sent") {
+    return (
+      <div className="contact-card squircle [--r:26px] flex h-full flex-col items-center justify-center gap-4 p-7 text-center" role="status">
+        <span aria-hidden="true" className="grid h-14 w-14 place-items-center rounded-full bg-[#34C759] text-white">
+          <Check className="h-7 w-7" strokeWidth={2.25} />
+        </span>
+        <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Message sent. Thank you!</p>
+        <p className="max-w-[26em] text-[14px] text-fg-muted">It’s in my inbox now. I’ll reply to the email you gave me.</p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className={`btn-apple btn-apple-secondary mt-2 inline-flex h-11 items-center rounded-full px-5 text-[14px] font-medium ${FOCUS}`}
+        >
+          Send another
+        </button>
+      </div>
+    );
+  }
+
+  const field = "field h-11 border-transparent px-3.5 text-[16px] sm:text-[15px]";
   return (
-    <form noValidate onSubmit={onSubmit} className="contact-card squircle [--r:26px] flex h-full flex-col gap-5 p-7">
+    <form noValidate onSubmit={onSubmit} className="contact-card squircle [--r:26px] flex h-full flex-col gap-4 p-7">
       <div>
         <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Send me a message</p>
-        <p className="mt-1 text-[13.5px] text-fg-subtle">Write it here and your email app opens with it ready to send to me.</p>
+        <p className="mt-1 text-[13.5px] text-fg-subtle">It comes straight to my inbox, and I’ll reply by email.</p>
       </div>
-      <div className="grid gap-2">
-        <Label htmlFor="contact-name">Name</Label>
-        <Input
-          id="contact-name"
-          name="name"
-          autoComplete="name"
-          placeholder="Who’s saying hello?"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="field h-11 border-transparent px-3.5 text-[16px] sm:text-[15px]"
-          aria-invalid={nameError ? true : undefined}
-          aria-describedby={nameError ? "contact-name-error" : undefined}
-        />
-        {nameError ? (
-          <p id="contact-name-error" className="text-[13px] text-destructive">
-            {nameError}
-          </p>
-        ) : null}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-2">
+          <Label htmlFor="contact-name">Name</Label>
+          <Input
+            id="contact-name"
+            name="name"
+            autoComplete="name"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={field}
+            aria-invalid={nameError ? true : undefined}
+            aria-describedby={nameError ? "contact-name-error" : undefined}
+          />
+          {nameError ? (
+            <p id="contact-name-error" className="text-[13px] text-destructive">
+              {nameError}
+            </p>
+          ) : null}
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="contact-email">Email</Label>
+          <Input
+            id="contact-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={field}
+            aria-invalid={emailError ? true : undefined}
+            aria-describedby={emailError ? "contact-email-error" : undefined}
+          />
+          {emailError ? (
+            <p id="contact-email-error" className="text-[13px] text-destructive">
+              {emailError}
+            </p>
+          ) : null}
+        </div>
       </div>
       <div className="flex flex-1 flex-col gap-2">
         <Label htmlFor="contact-message">Message</Label>
@@ -150,7 +232,7 @@ function ContactForm() {
           id="contact-message"
           name="message"
           rows={5}
-          placeholder="The role, the team, the timeline…"
+          placeholder="What would you like to talk about?"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           aria-invalid={messageError ? true : undefined}
@@ -163,11 +245,17 @@ function ContactForm() {
           </p>
         ) : null}
       </div>
+      {status === "error" ? (
+        <p role="alert" className="text-[13px] text-destructive">
+          Something went wrong and the message didn’t send. Please try again, or email me directly.
+        </p>
+      ) : null}
       <button
         type="submit"
-        className={`btn-apple btn-apple-primary group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-[15px] font-medium ${FOCUS}`}
+        disabled={status === "sending"}
+        className={`btn-apple btn-apple-primary group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-[15px] font-medium disabled:opacity-70 ${FOCUS}`}
       >
-        Write email
+        {status === "sending" ? "Sending…" : "Send message"}
         <Send className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-0.5" strokeWidth={1.75} aria-hidden="true" />
       </button>
     </form>
@@ -189,10 +277,10 @@ export function Contact() {
               id="contact-title"
               className="max-w-[12em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[76px]"
             >
-              <span className="sr-only">Let’s talk. My inbox is always open.</span>
+              <span className="sr-only">My inbox is always open.</span>
               <span aria-hidden="true">
                 <VariableProximity
-                  label="Let’s talk. My inbox is always open."
+                  label="My inbox is always open."
                   fromFontVariationSettings="'wght' 560"
                   toFontVariationSettings="'wght' 860"
                   containerRef={sectionRef}
@@ -201,12 +289,6 @@ export function Contact() {
                 />
               </span>
             </h2>
-          </Reveal>
-          <Reveal index={1}>
-            <p className="mt-6 max-w-[34em] text-pretty text-[17px] leading-[1.6] text-fg-muted">
-              A question about my work, an idea you want to build, or just a quick hello: pick whichever
-              way suits you below and I’ll reply as soon as I can.
-            </p>
           </Reveal>
         </div>
         <Reveal index={2} className="slide-from-right">

@@ -136,11 +136,12 @@ describe("Contact", () => {
     );
   });
 
-  it("asks for a name and message before opening the email app", () => {
+  it("asks for a name, email and message before sending", () => {
     render(<Contact />);
-    fireEvent.click(screen.getByRole("button", { name: "Write email" }));
+    fireEvent.click(screen.getByRole("button", { name: "Send message" }));
     expect(screen.getByText(/Add your name/)).toBeInTheDocument();
     expect(screen.getByText(/Write a short message/)).toBeInTheDocument();
+    expect(screen.getByText(/Add an email/)).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveAttribute("aria-invalid", "true");
   });
 
