@@ -5,6 +5,7 @@ import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useTheme } from "@/lib/use-theme";
 import { PillNav } from "@/components/ui/PillNav";
 import { SlingButton } from "@/components/ui/SlingButton";
+import { MobileBottomNav } from "./MobileBottomNav";
 import { GradualBlur } from "@/components/ui/GradualBlur";
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
@@ -189,6 +190,7 @@ export function SiteNav() {
         </div>
       </nav>
     </header>
+    <MobileBottomNav activeSection={active} />
   </>
 );
 }

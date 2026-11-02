@@ -11,6 +11,7 @@ import { GlareHover } from "@/components/ui/GlareHover";
 import { PROJECTS, type Project } from "@/content/portfolio";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 import { SkillIcon, hasSkillIcon, themedSkillColor } from "./SkillIcon";
+import { ProjectGallery } from "./ProjectGallery";
 
 // Deck order: flagship first, award second, then the two lighter apps.
 const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
@@ -257,35 +258,57 @@ function ProjectDetails({ project }: { project: Project }) {
   return (
     <>
       <DialogHeader className="pr-10">
-        <DialogTitle className="text-[24px] tracking-[-0.03em]">{project.title}</DialogTitle>
-        <DialogDescription>
+        <DialogTitle className="text-[22px] sm:text-[25px] font-semibold tracking-[-0.03em] text-fg">
+          {project.title}
+        </DialogTitle>
+        <DialogDescription className="text-[13px] text-fg-subtle">
           {project.kind} · {project.hosting}
         </DialogDescription>
       </DialogHeader>
-      <BrowserFrame url={project.liveUrl}>
-        <ProjectShot project={project} />
-      </BrowserFrame>
+
+      {/* Expensive Slideshow Gallery */}
+      <ProjectGallery project={project} />
+
       {project.award ? (
-        <p className="inline-flex w-fit items-center gap-2 text-[13.5px] font-medium text-gold-ink dark:text-gold">
-          <Award className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-          {project.award}
-        </p>
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[13px] font-medium text-gold-ink dark:text-gold">
+          <Award className="h-4 w-4 shrink-0" strokeWidth={1.5} aria-hidden="true" />
+          <span>{project.award}</span>
+        </div>
       ) : null}
-      <p className="text-[15px] leading-[1.6] text-fg-muted">{project.summary}</p>
-      <ul className="grid gap-2">
-        {project.highlights.map((h) => (
-          <li key={h} className="flex gap-2.5 text-[14px] leading-[1.5] text-fg">
-            <Check
-              className="mt-[3px] h-4 w-4 shrink-0 text-gold-ink dark:text-gold"
-              strokeWidth={1.75}
-              aria-hidden="true"
-            />
-            {h}
-          </li>
-        ))}
-      </ul>
-      <StackChips stack={project.stack} />
-      <div className="flex flex-wrap gap-2 pt-1">
+
+      <div className="rounded-xl border border-[var(--edge)] bg-surface-1/60 p-4">
+        <h4 className="text-[11.5px] font-semibold uppercase tracking-wider text-fg-subtle">
+          Overview
+        </h4>
+        <p className="mt-1.5 text-[14.5px] leading-[1.6] text-fg-muted">{project.summary}</p>
+      </div>
+
+      <div className="rounded-xl border border-[var(--edge)] bg-surface-1/60 p-4">
+        <h4 className="text-[11.5px] font-semibold uppercase tracking-wider text-fg-subtle mb-2.5">
+          Key Highlights & Architecture
+        </h4>
+        <ul className="grid gap-2">
+          {project.highlights.map((h) => (
+            <li key={h} className="flex gap-2.5 text-[13.5px] leading-[1.5] text-fg">
+              <Check
+                className="mt-[3px] h-4 w-4 shrink-0 text-gold-ink dark:text-gold"
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 className="text-[11.5px] font-semibold uppercase tracking-wider text-fg-subtle mb-2">
+          Technologies
+        </h4>
+        <StackChips stack={project.stack} />
+      </div>
+
+      <div className="flex flex-wrap gap-2.5 pt-2 border-t border-[var(--edge)]">
         <a
           href={project.liveUrl}
           target="_blank"
@@ -361,7 +384,7 @@ export function Projects() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
-          className="squircle [--r:24px] max-w-2xl gap-5 border-[var(--edge)] bg-surface-2 p-7"
+          className="squircle [--r:24px] max-w-2xl max-h-[90dvh] overflow-y-auto gap-5 border-[var(--edge)] bg-surface-2 p-5 sm:p-7"
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             triggerRef.current?.focus();

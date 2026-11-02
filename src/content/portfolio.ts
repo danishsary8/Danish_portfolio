@@ -45,6 +45,7 @@ export type Project = {
   liveUrl: string;
   githubUrl: string;
   apiDocsUrl?: string;
+  images?: string[];
   image?: string;
   imageAlt?: string;
   award?: string;
