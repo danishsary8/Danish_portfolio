@@ -141,21 +141,23 @@ export function SiteNav() {
 
         {/* Right: Download CV & SlingButton Theme Toggle */}
         <div className="flex items-center justify-end gap-2.5 sm:gap-3">
-          {/* Download CV Pill Button */}
+          {/* Download CV Pill Button - Desktop Only */}
           {CV_HREF ? (
-            <a
-              href={CV_HREF}
-              {...getCvLinkProps()}
-              className="ios-glass-pill ios-glass-pill-interactive cursor-target group hidden md:inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
-              aria-label="Download CV"
-            >
-              <FileText
-                className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-gold"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
-              <span>Download CV</span>
-            </a>
+            <div className="hidden md:block">
+              <a
+                href={CV_HREF}
+                {...getCvLinkProps()}
+                className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
+                aria-label="Download CV"
+              >
+                <FileText
+                  className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-gold"
+                  strokeWidth={1.75}
+                  aria-hidden="true"
+                />
+                <span>Download CV</span>
+              </a>
+            </div>
           ) : null}
 
           {/* ReactBits SlingButton Theme Toggle */}

@@ -18,9 +18,9 @@ export function MobileBottomNav({ activeSection }: MobileBottomNavProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Show bottom capsule after scrolling down slightly from the very top of hero
+    // Show bottom capsule after scrolling past the hero fold so it doesn't obstruct the creator card
     const onScroll = () => {
-      setVisible(window.scrollY > 80);
+      setVisible(window.scrollY > 300);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

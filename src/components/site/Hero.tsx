@@ -117,20 +117,20 @@ export function Hero() {
         className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-16 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-20">
+      <div className="mx-auto w-full max-w-[1180px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
+        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-16 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-20">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
-            <div className="enter mb-4 sm:mb-5 flex items-center gap-3" style={step(0)}>
+            <div className="enter mb-3.5 sm:mb-5 flex items-center gap-2.5 sm:gap-3" style={step(0)}>
               <img
                 src={ASSETS.profile.photo}
                 alt=""
                 width={40}
                 height={40}
-                className="h-10 w-10 shrink-0 rounded-full object-cover object-[50%_45%] ring-1 ring-[var(--edge)] lg:hidden"
+                className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover object-[50%_45%] ring-1 ring-[var(--edge)] lg:hidden"
               />
-              <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 glass-pill rounded-[14px] sm:rounded-full min-h-7 py-1 px-3 text-[11.5px] sm:text-[12px] leading-none select-none">
+              <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 glass-pill rounded-[14px] sm:rounded-full min-h-7 py-1 px-3 text-[11px] sm:text-[12px] leading-none select-none">
                 <span className="inline-flex items-center gap-2">
                   <span aria-hidden="true" className="relative flex h-1.5 w-1.5 shrink-0">
                     <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s] motion-safe:[animation-iteration-count:3]" />
@@ -171,7 +171,7 @@ export function Hero() {
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="uppercase whitespace-nowrap text-[clamp(38px,11vw,52px)] sm:text-[70px] lg:text-[74px] font-semibold tracking-[-0.045em] leading-[0.96] select-none cursor-pointer group"
+              className="uppercase whitespace-nowrap text-[clamp(32px,8.8vw,48px)] sm:text-[70px] lg:text-[74px] font-semibold tracking-[-0.04em] leading-[1.02] select-none cursor-pointer group"
               onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
               title="Click to alternate highlight"
             >
@@ -199,12 +199,12 @@ export function Hero() {
             </h1>
 
             {/* Role & Academic degree subtitle */}
-            <div className="enter mt-4 sm:mt-5" style={step(2.5)}>
-              <p className="text-[22px] sm:text-[26px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">
+            <div className="enter mt-3.5 sm:mt-5" style={step(2.5)}>
+              <p className="text-[19px] sm:text-[26px] font-semibold leading-[1.2] tracking-[-0.025em] text-fg">
                 Junior Fullstack Web Developer
               </p>
-              <div className="mt-2.5 sm:mt-3">
-                <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-3.5 py-1.5 text-[14px] sm:text-[15px] font-medium text-fg shadow-xs">
+              <div className="mt-2 sm:mt-3">
+                <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3 py-1 sm:px-3.5 sm:py-1.5 text-[13px] sm:text-[15px] font-medium text-fg shadow-xs">
                   <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
                   4th-year Software Development student
                 </span>
@@ -213,26 +213,26 @@ export function Hero() {
 
             {/* Pitch: fluid editorial typography with balanced optical ragging */}
             <div
-              className="enter mt-5 max-w-[32em] lg:max-w-[38em]"
+              className="enter mt-4 sm:mt-5 max-w-[32em] lg:max-w-[38em]"
               style={step(3.5)}
             >
-              <p className="text-[18px] sm:text-[20px] font-medium leading-[1.4] tracking-[-0.02em] text-fg text-balance">
+              <p className="text-[16px] sm:text-[20px] font-medium leading-[1.45] tracking-[-0.015em] text-fg text-balance">
                 Hands-on experience building reliable{" "}
                 <span className="whitespace-nowrap font-semibold">full-stack</span> web apps that solve{" "}
                 <span className="whitespace-nowrap font-semibold">real-world</span> problems&nbsp;— from idea to
                 working software.
               </p>
-              <p className="mt-2.5 text-[15px] sm:text-[16px] leading-[1.65] text-fg-muted text-balance">
+              <p className="mt-2 sm:mt-2.5 text-[13.5px] sm:text-[16px] leading-[1.6] text-fg-muted text-balance">
                 “I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL
                 with real authentication.”
               </p>
             </div>
 
             {/* CTAs as physical keys */}
-            <div className="enter mt-7 flex flex-wrap items-center gap-3" style={step(4.5)}>
+            <div className="enter mt-6 sm:mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3" style={step(4.5)}>
               <a
                 href={`mailto:${PROFILE.email}`}
-                className={`btn-apple skeuo-key-ink group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-6 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key-ink group inline-flex h-11 sm:h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 sm:px-6 text-[13px] sm:text-[14px] font-medium tracking-[-0.01em] select-none ${FOCUS}`}
               >
                 <Mail
                   aria-hidden="true"
@@ -245,7 +245,7 @@ export function Hero() {
               <a
                 href="#projects"
                 onClick={(e) => scrollToHash(e, "#projects")}
-                className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                className={`btn-apple skeuo-key group inline-flex h-11 sm:h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 sm:px-5 text-[13px] sm:text-[14px] font-medium tracking-[-0.01em] select-none ${FOCUS}`}
               >
                 View projects
                 <ArrowRight
@@ -259,7 +259,7 @@ export function Hero() {
                 <a
                   href={CV_HREF}
                   {...getCvLinkProps()}
-                  className={`btn-apple skeuo-key group inline-flex md:hidden h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                  className={`btn-apple skeuo-key group inline-flex md:hidden h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 text-[13px] font-medium tracking-[-0.01em] select-none ${FOCUS}`}
                   aria-label="Download CV"
                 >
                   <FileText
@@ -278,11 +278,12 @@ export function Hero() {
                   rel="noopener noreferrer"
                   aria-label="GitHub profile"
                   title="GitHub profile"
-                  className={`btn-apple skeuo-key group inline-flex h-12 w-12 items-center justify-center rounded-full sm:h-11 sm:w-11 ${FOCUS}`}
+                  className={`btn-apple skeuo-key group inline-flex h-11 items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium sm:h-11 sm:w-11 sm:px-0 ${FOCUS}`}
                 >
                   <span className="inline-flex transition-transform duration-300 ease-[var(--ease-out)] group-hover:-rotate-[8deg] group-hover:scale-110 motion-reduce:transition-none">
                     <AnimatedGithubIcon className="h-[18px] w-[18px] shrink-0" dark={dark} aria-hidden="true" />
                   </span>
+                  <span className="sm:hidden font-medium">GitHub</span>
                 </a>
               ) : null}
             </div>
