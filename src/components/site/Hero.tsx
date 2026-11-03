@@ -162,7 +162,7 @@ export function Hero() {
                     className="hero-clock skeuo-well rounded-[5px] px-1 py-0.5"
                     style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
                   />
-                  <span className="font-mono text-[10.5px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
+                  <span className="font-mono text-[11.5px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
                 </span>
               </div>
             </div>

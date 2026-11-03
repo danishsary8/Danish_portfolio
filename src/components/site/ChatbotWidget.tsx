@@ -128,7 +128,7 @@ export function ChatbotWidget() {
                 className="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center"
               >
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50 [animation-duration:2.5s]" />
-                <span className="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-500 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-surface-2">
+                <span className="relative inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-700 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-surface-2">
                   1
                 </span>
               </span>

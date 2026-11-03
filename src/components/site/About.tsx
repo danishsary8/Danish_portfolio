@@ -116,7 +116,7 @@ export function About() {
             </dl>
           </Reveal>
           <Reveal index={2} className="slide-from-left flex w-full justify-center overflow-hidden sm:overflow-visible">
-            <div className="scale-[0.82] sm:scale-100 origin-center transition-transform">
+            <div className="scale-[0.74] sm:scale-100 origin-center transition-transform">
             <OrbitImages
               images={ORBIT_ITEMS}
               shape="ellipse"
