@@ -43,7 +43,7 @@ function Timeline() {
             }`}
           />
           <span className="mt-2 font-mono text-[12px] tabular-nums text-fg">{m.date}</span>
-          <span className="whitespace-nowrap text-[12px] text-fg-subtle">{m.label}</span>
+          <span className="hidden sm:inline whitespace-nowrap text-[12px] text-fg-subtle">{m.label}</span>
         </div>
       ))}
     </div>
@@ -75,12 +75,18 @@ export function Experience() {
         {/* Internship: header, then the two stages side by side */}
         <Reveal as="li" className="slide-from-left">
           <article className="exp-card tactile squircle [--r:28px] overflow-hidden bg-surface-2">
-            <header className="flex flex-wrap items-start gap-x-6 gap-y-4 px-8 pb-6 pt-7">
-              <div className="flex shrink-0 items-center">
+            <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6 px-5 sm:px-8 pb-6 pt-6 sm:pt-7">
+              <div className="flex w-full items-center justify-between sm:w-auto">
+                <div className="flex shrink-0 items-center">
                 <OrgLogo org="etec" size={52} />
                 <OrgLogo org="kru" size={52} className="-ml-2.5 ring-[3px] ring-surface-2" />
+                </div>
+                <span className="inline-flex sm:hidden shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                  <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                  {INTERN.period}
+                </span>
               </div>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 w-full">
                 <h3 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-fg">{INTERN.title}</h3>
                 <p className="mt-1 text-[14px] text-fg-muted">
                   <span className="font-medium text-fg">{INTERN.org}</span> · {INTERN.detail}
@@ -94,15 +100,15 @@ export function Experience() {
                   ))}
                 </div>
               </div>
-              <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+              <span className="hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
                 <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                 {INTERN.period}
               </span>
             </header>
 
-            <div className="grid gap-4 px-8 pb-8 lg:grid-cols-2">
+            <div className="grid gap-4 px-5 sm:px-8 pb-6 sm:pb-8 lg:grid-cols-2">
               {/* Frontend: done, with its certificate */}
-              <section aria-label="Frontend stage" className="flex flex-col rounded-[20px] border border-line bg-surface-1 px-6 py-5">
+              <section aria-label="Frontend stage" className="flex flex-col rounded-[20px] border border-line bg-surface-1 px-5 py-4 sm:px-6 sm:py-5">
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
                     <span aria-hidden="true" className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg">
@@ -144,7 +150,7 @@ export function Experience() {
               {/* Backend: in progress */}
               <section
                 aria-label="Backend stage"
-                className="flex flex-col rounded-[20px] border border-[color-mix(in_oklab,#34C759_35%,transparent)] bg-[color-mix(in_oklab,#34C759_6%,var(--surface-2))] px-6 py-5"
+                className="flex flex-col rounded-[20px] border border-[color-mix(in_oklab,#34C759_35%,transparent)] bg-[color-mix(in_oklab,#34C759_6%,var(--surface-2))] px-5 py-4 sm:px-6 sm:py-5"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
@@ -181,7 +187,7 @@ export function Experience() {
         <Reveal as="li" index={1} className="slide-from-right">
           <article className="exp-card exp-award tactile squircle [--r:28px] relative grid overflow-hidden bg-surface-2 lg:grid-cols-[300px_minmax(0,1fr)]">
             <div aria-hidden="true" className="exp-award-wash pointer-events-none absolute inset-0" />
-            <aside className="relative order-2 flex flex-col items-center justify-center gap-3 border-t border-line bg-surface-1 p-8 lg:order-none lg:border-r lg:border-t-0">
+            <aside className="relative order-2 flex flex-col items-center justify-center gap-3 border-t border-line bg-surface-1 p-5 sm:p-8 lg:order-none lg:border-r lg:border-t-0">
               <CertificateThumb
                 src={certAward}
                 width={1200}
@@ -194,12 +200,12 @@ export function Experience() {
               <p className="text-center text-[12.5px] text-fg-subtle">1st place certificate · click to view</p>
             </aside>
 
-            <div className="relative flex flex-col p-8">
-              <div className="flex items-center gap-3">
+            <div className="relative flex flex-col p-5 sm:p-8">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <span className="icon-tile-gold squircle [--r:14px] grid h-12 w-12 place-items-center">
                   <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 w-full">
                   <p className="text-[14px] font-medium text-fg">Innovation Competition</p>
                   <p className="text-[13px] text-fg-subtle">Department of Computer Studies</p>
                 </div>
@@ -208,7 +214,7 @@ export function Experience() {
                 </span>
               </div>
 
-              <h3 className="mt-7 text-[34px] font-semibold leading-[1.08] tracking-[-0.035em] text-fg">
+              <h3 className="mt-5 sm:mt-7 text-[26px] sm:text-[34px] font-semibold leading-[1.12] sm:leading-[1.08] tracking-[-0.035em] text-fg">
                 Joined a project competition, won <span className="text-gold-ink dark:text-gold">1st place</span>
               </h3>
               <p className="mt-2 text-[15px] text-fg-muted">

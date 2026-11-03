@@ -39,9 +39,10 @@ const LANES = [
 /** Year ruler with one thin colour track per school or course, labelled directly above it. */
 function StudyTimeline() {
   return (
-    <div aria-hidden="true" className="edu-card squircle [--r:24px] px-8 pb-7 pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
+    <div aria-hidden="true" className="edu-card squircle [--r:24px] px-5 sm:px-8 pb-6 sm:pb-7 pt-5 sm:pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
       <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">My learning journey</p>
-      <div className="relative">
+      <div className="overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 sm:mx-0 sm:px-0">
+        <div className="relative min-w-[560px] sm:min-w-0">
         {/* Ruler: years, then quarter months, with a tick for every month */}
         <div className="relative h-11 border-b border-line">
           {YEARS.map((y) => (
@@ -104,6 +105,7 @@ function StudyTimeline() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

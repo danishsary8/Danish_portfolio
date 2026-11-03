@@ -50,7 +50,7 @@ export function FloatingChatbot() {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50">
+    <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50">
       {/* Quick Assistant Popup Card */}
       {isOpen && (
         <div
