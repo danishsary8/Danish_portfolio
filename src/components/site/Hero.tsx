@@ -1,7 +1,8 @@
 import { useEffect, useState, type CSSProperties, type MouseEvent } from "react";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, FileText, Mail } from "lucide-react";
 import { AnimatedGithubIcon } from "@/components/ui/AnimatedGithubIcon";
 import { PROFILE } from "@/content/portfolio";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
@@ -253,6 +254,22 @@ export function Hero() {
                   className="h-4 w-4 transition-transform duration-300 ease-[var(--ease-out)] group-hover:translate-x-1 motion-reduce:transition-none"
                 />
               </a>
+
+              {CV_HREF ? (
+                <a
+                  href={CV_HREF}
+                  {...getCvLinkProps()}
+                  className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                  aria-label="Download CV"
+                >
+                  <FileText
+                    aria-hidden="true"
+                    strokeWidth={1.75}
+                    className="h-4 w-4 text-gold transition-transform duration-300 ease-[var(--ease-out)] group-hover:-translate-y-px motion-reduce:transition-none"
+                  />
+                  Download CV
+                </a>
+              ) : null}
 
               {PROFILE.github ? (
                 <a

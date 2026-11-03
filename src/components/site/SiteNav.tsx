@@ -104,7 +104,7 @@ export function SiteNav() {
       >
         <nav
           aria-label="Primary"
-          className="mx-auto grid max-w-[1240px] grid-cols-[1fr_auto_1fr] items-center pointer-events-auto"
+          className="mx-auto flex md:grid max-w-[1240px] md:grid-cols-[1fr_auto_1fr] items-center justify-between pointer-events-auto"
         >
         {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow. */}
         <div className="flex items-center justify-start">
@@ -146,7 +146,7 @@ export function SiteNav() {
             <a
               href={CV_HREF}
               {...getCvLinkProps()}
-              className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
+              className="ios-glass-pill ios-glass-pill-interactive cursor-target group hidden md:inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
               aria-label="Download CV"
             >
               <FileText
@@ -154,8 +154,7 @@ export function SiteNav() {
                 strokeWidth={1.75}
                 aria-hidden="true"
               />
-              <span className="hidden sm:inline">Download CV</span>
-              <span className="sm:hidden">CV</span>
+              <span>Download CV</span>
             </a>
           ) : null}
 
