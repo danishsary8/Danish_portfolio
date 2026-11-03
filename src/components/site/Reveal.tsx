@@ -28,14 +28,15 @@ export function Reveal({ children, as: Tag = "div", index = 0, className }: Reve
       ([entry]) => {
         if (entry?.isIntersecting) el.dataset["visible"] = "";
       },
-      { rootMargin: "0px 0px -80px 0px" },
+      { rootMargin: "-30px 0px -50px 0px" },
     );
-    // Reset only once the block is completely below the screen, so the reset is never seen.
+    // Reset once the block has left the viewport in either direction (scrolling down or scrolling up),
+    // so returning to it from either direction always triggers the entrance transition.
     const reset = new IntersectionObserver(([entry]) => {
-      if (entry && !entry.isIntersecting && entry.boundingClientRect.top > 0) {
+      if (entry && !entry.isIntersecting) {
         delete el.dataset["visible"];
       }
-    });
+    }, { rootMargin: "20px 0px 20px 0px" });
     show.observe(el);
     reset.observe(el);
     return () => {
