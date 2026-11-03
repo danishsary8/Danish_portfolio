@@ -259,7 +259,7 @@ export function Hero() {
                 <a
                   href={CV_HREF}
                   {...getCvLinkProps()}
-                  className={`btn-apple skeuo-key group inline-flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
+                  className={`btn-apple skeuo-key group inline-flex md:hidden h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[14px] font-medium tracking-[-0.01em] sm:h-11 sm:px-5 select-none ${FOCUS}`}
                   aria-label="Download CV"
                 >
                   <FileText
