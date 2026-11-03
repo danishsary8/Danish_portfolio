@@ -146,7 +146,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
         <div className="flex h-full w-full flex-col lg:h-[min(780px,calc(100dvh-2rem))] lg:flex-row">
           {/* Badge stage: a softly lit surface the badge hangs over. */}
-          <div className="relative flex h-[440px] w-full shrink-0 select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:h-full lg:w-[40%] lg:border-b-0 lg:border-r">
+          <div className="relative flex h-[340px] sm:h-[400px] lg:h-full w-full shrink-0 select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:w-[40%] lg:border-b-0 lg:border-r">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_28%,var(--glow),transparent_72%)]"
@@ -194,7 +194,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
           </div>
 
           {/* Panel: only what the badge and the page do not already say. */}
-          <div className="flex min-h-0 w-full flex-col overflow-y-auto p-7 sm:p-9 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6">
+          <div className="flex min-h-0 w-full flex-col overflow-y-auto p-5 sm:p-7 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6">
             <div className="flex flex-wrap items-center gap-2.5 pr-10">
               <span className="glass-pill inline-flex h-8 items-center gap-2 rounded-full pl-3 pr-3.5 text-[13px] font-medium text-fg">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
