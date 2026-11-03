@@ -136,14 +136,29 @@ export function OrbitImages({
       style={{ height: stageH, "--orbit-item": `${itemSize}px` } as CSSProperties}
     >
       {showPath ? (
-        <svg className="orbit-images__path" aria-hidden="true" overflow="visible">
+        <svg
+          className="orbit-images__path"
+          aria-hidden="true"
+          viewBox="-400 -250 800 500"
+          overflow="visible"
+        >
+          {/* Subtle guide track underneath */}
           <ellipse
-            cx="50%"
-            cy="50%"
+            cx="0"
+            cy="0"
             rx={rx}
             ry={ry}
             transform={`rotate(${rotation})`}
-            style={{ transformOrigin: "50% 50%", transformBox: "fill-box" }}
+            className="orbit-images__track-underlay"
+          />
+          {/* Primary clearly visible orbit ellipse line */}
+          <ellipse
+            cx="0"
+            cy="0"
+            rx={rx}
+            ry={ry}
+            transform={`rotate(${rotation})`}
+            className="orbit-images__ellipse"
           />
         </svg>
       ) : null}
