@@ -201,15 +201,17 @@ export function Experience() {
             </aside>
 
             <div className="relative flex flex-col p-5 sm:p-8">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="icon-tile-gold squircle [--r:14px] grid h-12 w-12 place-items-center">
-                  <Trophy aria-hidden="true" strokeWidth={1.75} className="h-6 w-6" />
-                </span>
-                <div className="min-w-0 flex-1 w-full">
-                  <p className="text-[14px] font-medium text-fg">Innovation Competition</p>
-                  <p className="text-[13px] text-fg-subtle">Department of Computer Studies</p>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <span className="icon-tile-gold squircle [--r:14px] grid h-11 w-11 sm:h-12 sm:w-12 shrink-0 place-items-center">
+                    <Trophy aria-hidden="true" strokeWidth={1.75} className="h-5 w-5 sm:h-6 sm:w-6" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13.5px] sm:text-[14px] font-medium text-fg truncate">Innovation Competition</p>
+                    <p className="text-[12px] sm:text-[13px] text-fg-subtle truncate">Department of Computer Studies</p>
+                  </div>
                 </div>
-                <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg shrink-0">
                   {AWARD.period}
                 </span>
               </div>

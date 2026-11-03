@@ -171,7 +171,7 @@ export function Hero() {
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="uppercase whitespace-nowrap text-[clamp(44px,14vw,52px)] sm:text-[70px] lg:text-[78px] font-semibold tracking-[-0.045em] leading-[0.96] select-none cursor-pointer group"
+              className="uppercase whitespace-nowrap text-[clamp(38px,11vw,52px)] sm:text-[70px] lg:text-[74px] font-semibold tracking-[-0.045em] leading-[0.96] select-none cursor-pointer group"
               onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
               title="Click to alternate highlight"
             >

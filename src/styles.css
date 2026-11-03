@@ -1882,7 +1882,7 @@
   --core-logo: 24px;
   --core-name: 18px;
 }
-@media (min-height: 760px) {
+@media (min-height: 760px) and (min-width: 640px) {
   .skills-bento {
     --cell-px: 18px;
     --cell-py: 15px;
@@ -1894,7 +1894,7 @@
     --core-name: 19px;
   }
 }
-@media (min-height: 840px) {
+@media (min-height: 840px) and (min-width: 640px) {
   .skills-bento {
     --cell-px: 20px;
     --cell-py: 17px;

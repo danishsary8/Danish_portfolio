@@ -5,7 +5,7 @@ import { SiFacebook, SiGithub, SiTelegram } from "react-icons/si";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { VariableProximity } from "@/components/ui/VariableProximity";
-import { PROFILE } from "@/content/portfolio";
+import { NAV_LINKS, PROFILE } from "@/content/portfolio";
 import { CV_HREF } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { Reveal, SECTION } from "./Reveal";
@@ -337,33 +337,148 @@ export function Contact() {
 }
 
 export function SiteFooter() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 pt-10 pb-28 sm:py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-[15px] font-semibold tracking-[-0.015em] text-fg">{PROFILE.name}</p>
-          <p className="mt-1 text-[13.5px] text-fg-subtle">
-            Web developer &amp; student · © {new Date().getFullYear()}
-          </p>
+    <footer className="relative border-t border-line bg-surface-1/60 overflow-hidden">
+      {/* Subtle ambient lighting at the base */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 h-[260px] w-full max-w-[900px] bg-[radial-gradient(ellipse_at_bottom,color-mix(in_oklab,var(--gold)_12%,transparent)_0%,transparent_70%)] opacity-70"
+      />
+
+      <div className="mx-auto max-w-[1180px] px-5 sm:px-6 pt-14 pb-32 sm:pb-14">
+        {/* Top grid: Brand identity + navigation & connect links */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 lg:gap-12">
+          {/* Brand & Mission column */}
+          <div className="md:col-span-6 flex flex-col items-start">
+            <a
+              href="#home"
+              aria-label={`${PROFILE.name}, back to top`}
+              className="inline-flex items-center gap-2 select-none group"
+            >
+              <span className="nav-wordmark font-poster text-[22px] font-extrabold uppercase leading-none tracking-[0.14em] text-fg transition-opacity group-hover:opacity-80">
+                {PROFILE.shortName}
+              </span>
+            </a>
+
+            <p className="mt-3.5 max-w-[42ch] text-[14.5px] leading-[1.6] text-fg-muted">
+              Junior Fullstack Web Developer and 4th-year Software Development student at Norton University.
+              Building reliable web applications with clean code, secure Laravel REST APIs, and PostgreSQL.
+            </p>
+
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface-2/80 px-3 py-1.5 text-[12.5px] font-medium text-fg shadow-2xs">
+              <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+              <span>Available for Full-time Roles</span>
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="md:col-span-3">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+              Navigation
+            </p>
+            <ul className="mt-4 space-y-2.5 text-[14px]">
+              {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className="text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Connect & Socials */}
+          <div className="md:col-span-3">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-fg-subtle">
+              Connect
+            </p>
+            <ul className="mt-4 space-y-2.5 text-[14px]">
+              <li>
+                <a
+                  href={`mailto:${PROFILE.email}`}
+                  className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                >
+                  <Mail className="h-4 w-4 text-fg-subtle" />
+                  <span>Email me</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={PROFILE.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                >
+                  <SiTelegram className="h-4 w-4 text-fg-subtle" />
+                  <span>Telegram</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={PROFILE.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                >
+                  <SiGithub className="h-4 w-4 text-fg-subtle" />
+                  <span>GitHub</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`}
+                  className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                >
+                  <Phone className="h-4 w-4 text-fg-subtle" />
+                  <span>{PROFILE.phone}</span>
+                </a>
+              </li>
+              {CV_HREF ? (
+                <li>
+                  <a
+                    href={CV_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                  >
+                    <FileText className="h-4 w-4 text-fg-subtle" />
+                    <span>Download CV (PDF)</span>
+                  </a>
+                </li>
+              ) : null}
+            </ul>
+          </div>
         </div>
-        <div className="-mx-3 flex items-center text-[13.5px] text-fg-subtle">
-          <Link
-            to="/design-system"
-            className="inline-flex min-h-11 items-center rounded-control px-3 transition-colors duration-150 hover:text-fg"
-          >
-            Design system
-          </Link>
-          <a
-            href="#home"
-            className="group inline-flex min-h-11 items-center gap-1.5 rounded-control px-3 transition-colors duration-150 hover:text-fg"
-          >
-            Back to top
-            <ArrowUp
-              className="h-3.5 w-3.5 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px"
-              strokeWidth={1.5}
-              aria-hidden="true"
-            />
-          </a>
+
+        {/* Bottom dividing colophon bar */}
+        <div className="mt-12 border-t border-line pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-[13px] text-fg-subtle">
+          <p>© {currentYear} {PROFILE.name}. Built with craft in Phnom Penh, Cambodia.</p>
+
+          <div className="flex items-center gap-4">
+            <Link
+              to="/design-system"
+              className="transition-colors hover:text-fg"
+            >
+              Design system
+            </Link>
+            <span aria-hidden="true" className="h-3 w-px bg-line-strong" />
+            <a
+              href="#home"
+              className="group inline-flex items-center gap-1.5 transition-colors hover:text-fg"
+            >
+              <span>Back to top</span>
+              <ArrowUp
+                className="h-3.5 w-3.5 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-0.5"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

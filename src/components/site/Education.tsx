@@ -128,19 +128,25 @@ export function Education() {
         {/* Education first */}
         <div className="grid grid-rows-[auto_1fr] gap-5">
           <Reveal className="slide-from-left">
-            <article className="edu-card squircle [--r:24px] p-7" style={{ "--c": NORTON } as CSSProperties}>
-              <div className="flex items-start gap-4">
-                <OrgLogo org="norton" size={56} />
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">{DEGREE.title}</h3>
-                  <p className="mt-1 text-[14.5px] text-fg-muted">{DEGREE.org} · Phnom Penh</p>
+            <article className="edu-card squircle [--r:24px] p-5 sm:p-7" style={{ "--c": NORTON } as CSSProperties}>
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                <div className="flex items-center justify-between w-full sm:w-auto gap-3">
+                  <OrgLogo org="norton" size={52} className="shrink-0" />
+                  <span className="edu-pill sm:hidden inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                    <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                    {DEGREE.period}
+                  </span>
                 </div>
-                <span className="edu-pill inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-[22px] sm:text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">{DEGREE.title}</h3>
+                  <p className="mt-1 text-[14px] sm:text-[14.5px] text-fg-muted">{DEGREE.org} · Phnom Penh</p>
+                </div>
+                <span className="edu-pill hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
                   <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
                   {DEGREE.period}
                 </span>
               </div>
-              <dl className="mt-6 grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-px overflow-hidden rounded-[14px] border border-line bg-[var(--line)] text-[13.5px]">
+              <dl className="mt-5 sm:mt-6 grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-px overflow-hidden rounded-[14px] border border-line bg-[var(--line)] text-[13.5px]">
                 <div className="bg-surface-1 px-4 py-3">
                   <dt className="flex items-center gap-1.5 text-fg-subtle">
                     <GraduationCap aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
@@ -160,19 +166,19 @@ export function Education() {
           </Reveal>
 
           <Reveal index={1} className="slide-from-left h-full">
-            <article className="edu-card squircle [--r:24px] flex h-full items-center gap-4 px-7 py-6" style={{ "--c": ACE } as CSSProperties}>
-              <OrgLogo org="ace" size={48} />
+            <article className="edu-card squircle [--r:24px] flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-5 sm:px-7 sm:py-6 h-full" style={{ "--c": ACE } as CSSProperties}>
+              <div className="flex items-center justify-between w-full sm:w-auto gap-3">
+                <OrgLogo org="ace" size={44} className="shrink-0" />
+                <span className="edu-pill sm:hidden inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
+              </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-[18px] font-semibold tracking-[-0.02em] text-fg">{ENGLISH.title}</h3>
-                <p className="mt-0.5 flex items-center gap-1.5 text-[13.5px] text-fg-muted">
+                <h3 className="text-[17px] sm:text-[18px] font-semibold tracking-[-0.02em] text-fg">{ENGLISH.title}</h3>
+                <p className="mt-0.5 flex items-center gap-1.5 text-[13px] sm:text-[13.5px] text-fg-muted">
                   <Languages aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
                   {ENGLISH.org}
                 </p>
               </div>
-              <div className="flex shrink-0 flex-col items-end">
-                <span className="edu-pill inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
-
-              </div>
+              <span className="edu-pill hidden sm:inline-block shrink-0 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
             </article>
           </Reveal>
         </div>

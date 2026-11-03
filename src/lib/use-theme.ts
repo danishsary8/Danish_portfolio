@@ -9,8 +9,8 @@ function subscribe(onChange: () => void) {
 }
 
 const getSnapshot = () => document.documentElement.classList.contains("dark");
-// Dark is the default theme, so server HTML renders dark-state props.
-const getServerSnapshot = () => true;
+// Light is the default theme, so server HTML renders light-state props.
+const getServerSnapshot = () => false;
 
 export function useTheme() {
   const dark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
