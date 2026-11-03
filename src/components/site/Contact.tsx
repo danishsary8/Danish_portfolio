@@ -275,7 +275,7 @@ export function Contact() {
           <Reveal>
             <h2
               id="contact-title"
-              className="max-w-[12em] text-[44px] font-semibold leading-[1] tracking-[-0.045em] text-fg sm:text-[60px] lg:text-[76px]"
+              className="max-w-full sm:max-w-[12em] text-[32px] min-[390px]:text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.08] sm:leading-[1] tracking-[-0.035em] sm:tracking-[-0.045em] text-fg"
             >
               <span className="sr-only">My inbox is always open.</span>
               <span aria-hidden="true">
@@ -292,7 +292,7 @@ export function Contact() {
           </Reveal>
         </div>
         <Reveal index={2} className="slide-from-right">
-          <div className="contact-card squircle [--r:22px] w-[264px] p-5">
+          <div className="contact-card squircle [--r:22px] w-full max-w-[280px] sm:w-[264px] p-5">
             <p className="inline-flex items-center gap-2 text-[13px] font-medium text-fg">
               <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
               Available for full-time work
@@ -339,7 +339,7 @@ export function Contact() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 px-5 pt-10 pb-28 sm:py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-[15px] font-semibold tracking-[-0.015em] text-fg">{PROFILE.name}</p>
           <p className="mt-1 text-[13.5px] text-fg-subtle">

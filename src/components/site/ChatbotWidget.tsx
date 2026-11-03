@@ -62,7 +62,7 @@ export function ChatbotWidget() {
         : "idle";
 
   return (
-    <div className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end pointer-events-none select-none">
+    <div className="fixed bottom-20 right-3.5 sm:bottom-5 sm:right-5 z-50 flex flex-col items-end pointer-events-none select-none">
       {/* Jarvis chat window (client only; stays mounted so a pending reply survives closing) */}
       {isMounted && (
         <JarvisChat

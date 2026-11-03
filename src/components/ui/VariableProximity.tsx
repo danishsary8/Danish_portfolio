@@ -423,7 +423,7 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
       style={{
         display: "inline",
         ...(fontSize !== undefined ? { fontSize: typeof fontSize === "number" ? `${fontSize}px` : fontSize } : {}),
-        ...(lineStarts !== null ? { whiteSpace: "nowrap" } : {}),
+        // whiteSpace kept normal so words wrap naturally on mobile viewports
         ...style,
       }}
       {...restProps}
