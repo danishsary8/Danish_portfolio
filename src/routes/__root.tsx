@@ -106,6 +106,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "en_US" },
+      { property: "og:image", content: "/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Sary Danish — Junior Web Developer Portfolio" },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
@@ -116,6 +120,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Portfolio of Sary Danish, fourth-year Software Development student at Norton University in Phnom Penh, Cambodia. Building real web applications with React, Laravel, and PostgreSQL.",
       },
+      { name: "twitter:image", content: "/og-image.jpg" },
+      { name: "twitter:image:alt", content: "Sary Danish — Junior Web Developer Portfolio" },
       { name: "theme-color", content: "#FBFBFA", media: "(prefers-color-scheme: light)" },
       { name: "theme-color", content: "#0A0A0B", media: "(prefers-color-scheme: dark)" },
     ],
