@@ -117,12 +117,12 @@ export function Hero() {
         className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:pt-0 lg:pb-20">
-        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-14 lg:pb-8 lg:pt-[88px] xl:grid-cols-[minmax(0,1fr)_360px] xl:gap-20 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-24">
+      <div className="mx-auto w-full max-w-[1180px] px-5 pt-[92px] pb-16 sm:px-6 lg:py-0">
+        <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-16 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-20">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
-            <div className="enter mb-5 flex items-center gap-3" style={step(0)}>
+            <div className="enter mb-4 sm:mb-5 flex items-center gap-3" style={step(0)}>
               <img
                 src={ASSETS.profile.photo}
                 alt=""
@@ -315,7 +315,7 @@ export function Hero() {
 
           {/* Right column: portrait frame settles in once the name has landed. On desktop its top
               lines up with the status pill; on wide screens (1440px+) it moves toward the text. */}
-          <div className="enter-settle flex justify-center lg:justify-end lg:self-center" style={step(2)}>
+          <div className="enter-settle flex justify-center lg:justify-end lg:self-start" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
           </div>
         </div>
