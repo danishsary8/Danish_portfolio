@@ -45,6 +45,8 @@
   width: var(--orbit-item);
   height: var(--orbit-item);
   will-change: transform, opacity;
+  cursor: pointer;
+  touch-action: pan-y;
 }
 .orbit-images__item > img {
   display: block;

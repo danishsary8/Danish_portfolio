@@ -89,19 +89,35 @@ export function OrbitImages({
     let last = performance.now();
     let phase = 0;
     let visible = true;
-    let hovered = false;
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    const enter = () => (hovered = true);
-    const leave = () => (hovered = false);
-    if (pauseOnHover && fine) {
-      root.addEventListener("pointerenter", enter);
-      root.addEventListener("pointerleave", leave);
+    let isHovered = false;
+    let isHeld = false;
+    const isPaused = () => isHovered || isHeld;
+
+    const onEnter = () => {
+      isHovered = true;
+    };
+    const onLeave = () => {
+      isHovered = false;
+    };
+    const onDown = () => {
+      isHeld = true;
+    };
+    const onUp = () => {
+      isHeld = false;
+    };
+
+    if (pauseOnHover) {
+      root.addEventListener("pointerenter", onEnter);
+      root.addEventListener("pointerleave", onLeave);
+      root.addEventListener("pointerdown", onDown);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onUp);
     }
 
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (!hovered) phase = (phase + (dt / duration) * TAU) % TAU;
+      if (!isPaused()) phase = (phase + (dt / duration) * TAU) % TAU;
       itemRefs.current.forEach((el, i) => {
         if (!el) return;
         const p = place(phase + (i / n) * TAU, rx, ry, tilt, depth);
@@ -124,8 +140,13 @@ export function OrbitImages({
     return () => {
       cancelAnimationFrame(raf);
       io.disconnect();
-      root.removeEventListener("pointerenter", enter);
-      root.removeEventListener("pointerleave", leave);
+      if (pauseOnHover) {
+        root.removeEventListener("pointerenter", onEnter);
+        root.removeEventListener("pointerleave", onLeave);
+        root.removeEventListener("pointerdown", onDown);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", onUp);
+      }
     };
   }, [n, rx, ry, tilt, depth, duration, pauseOnHover]);
 
