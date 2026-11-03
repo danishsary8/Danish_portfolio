@@ -183,7 +183,27 @@ export function About() {
               {/* Internship track: in order, one clear row each; the current stage has the live dot */}
               <ol aria-label="Internship track" className="relative border-t border-line px-5 py-3.5">
                 <span aria-hidden="true" className="absolute bottom-[26px] left-[27px] top-[26px] w-px bg-line-strong hidden sm:block" />
-                <li className="relative flex flex-col gap-1 sm:grid sm:grid-cols-[16px_auto_minmax(0,1fr)_auto] sm:items-center sm:gap-x-3">
+
+                {/* Desktop & Laptop layout (sm+): pristine 4-column grid with zero overlap */}
+                <li className="relative hidden sm:grid grid-cols-[16px_auto_minmax(0,1fr)_auto] items-center gap-x-3">
+                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-surface-2">
+                    <span className="h-2 w-2 rounded-full bg-fg-subtle" />
+                  </span>
+                  <p className="text-[14px] font-medium text-fg">Frontend</p>
+                  <p className="truncate text-[13px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
+                  <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Jul – Oct 2026</time>
+                </li>
+                <li className="relative mt-3 hidden sm:grid grid-cols-[16px_auto_minmax(0,1fr)_auto] items-center gap-x-3">
+                  <span aria-hidden="true" className="relative grid h-4 w-4 place-items-center rounded-full bg-surface-2">
+                    <span className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                  </span>
+                  <p className="text-[14px] font-medium text-fg">Backend</p>
+                  <p className="truncate text-[13px] text-fg-muted">Building REST APIs alongside the team</p>
+                  <time className="font-mono text-[12.5px] tabular-nums text-fg-muted">Oct 2026 – Present</time>
+                </li>
+
+                {/* Mobile layout (< sm): clean vertical stacked cards */}
+                <li className="relative flex flex-col gap-1 sm:hidden">
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center gap-2">
                       <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-surface-2">
@@ -191,11 +211,11 @@ export function About() {
                       </span>
                       <p className="text-[14px] font-medium text-fg">Frontend</p>
                     </span>
-                    <time className="font-mono text-[12px] sm:text-[12.5px] tabular-nums text-fg-muted">Jul – Oct 2026</time>
+                    <time className="font-mono text-[12px] tabular-nums text-fg-muted">Jul – Oct 2026</time>
                   </div>
-                  <p className="pl-6 text-[13px] text-fg-muted sm:pl-0 sm:truncate">Shipped UI dashboards wired to live REST APIs</p>
+                  <p className="pl-6 text-[13px] text-fg-muted">Shipped UI dashboards wired to live REST APIs</p>
                 </li>
-                <li className="relative mt-3.5 sm:mt-3 flex flex-col gap-1 sm:grid sm:grid-cols-[16px_auto_minmax(0,1fr)_auto] sm:items-center sm:gap-x-3">
+                <li className="relative mt-3 flex flex-col gap-1 sm:hidden">
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center gap-2">
                       <span aria-hidden="true" className="relative grid h-4 w-4 place-items-center rounded-full bg-surface-2">
@@ -203,9 +223,9 @@ export function About() {
                       </span>
                       <p className="text-[14px] font-medium text-fg">Backend</p>
                     </span>
-                    <time className="font-mono text-[12px] sm:text-[12.5px] tabular-nums text-fg-muted">Oct 2026 – Present</time>
+                    <time className="font-mono text-[12px] tabular-nums text-fg-muted">Oct 2026 – Present</time>
                   </div>
-                  <p className="pl-6 text-[13px] text-fg-muted sm:pl-0 sm:truncate">Building REST APIs alongside the team</p>
+                  <p className="pl-6 text-[13px] text-fg-muted">Building REST APIs alongside the team</p>
                 </li>
               </ol>
 
