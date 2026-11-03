@@ -1,6 +1,6 @@
 import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Mail, MapPin, Phone, Send } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
 import { SiFacebook, SiGithub, SiTelegram } from "react-icons/si";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -319,6 +319,7 @@ export function Contact() {
             <ul className="divide-y divide-[var(--line)] p-1.5">
               <Row icon={<Mail className="h-5 w-5" strokeWidth={1.75} />} tint="#EA4335" label="Email" note="best for job offers" href={`mailto:${PROFILE.email}`} value={PROFILE.email} action="Write" trailing={<CopyEmail />} />
               <Row icon={<SiTelegram className="h-5 w-5" />} tint="#229ED9" label="Telegram" note="fastest reply" href={PROFILE.telegram} external value={PROFILE.telegramHandle} action="Chat" />
+              <Row icon={<Linkedin className="h-5 w-5" strokeWidth={1.75} />} tint="#0A66C2" label="LinkedIn" note="connect & network" href={PROFILE.linkedin} external value={PROFILE.linkedinHandle} linkLabel={`LinkedIn: ${PROFILE.linkedinHandle}`} action="Connect" />
               <Row icon={<Phone className="h-5 w-5" strokeWidth={1.75} />} tint="#34C759" label="Phone" note="call or text" href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`} value={PROFILE.phone} action="Call" />
               <Row icon={<SiFacebook className="h-5 w-5" />} tint="#1877F2" label="Facebook" note="say hi" href={PROFILE.facebook} external value={PROFILE.facebookHandle} linkLabel={`Facebook: ${PROFILE.facebookHandle}`} action="Message" />
               <Row icon={<SiGithub className="h-5 w-5" />} tint="#24292F" label="GitHub" note="read my code" href={PROFILE.github} external value={PROFILE.githubHandle} linkLabel={`github.com/${PROFILE.githubHandle}`} action="Visit" />
@@ -405,6 +406,17 @@ export function SiteFooter() {
                 >
                   <Mail className="h-4 w-4 text-fg-subtle" />
                   <span>Email me</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={PROFILE.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-fg-muted transition-colors hover:text-fg hover:underline underline-offset-4"
+                >
+                  <Linkedin className="h-4 w-4 text-fg-subtle" />
+                  <span>LinkedIn</span>
                 </a>
               </li>
               <li>

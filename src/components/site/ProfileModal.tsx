@@ -6,7 +6,7 @@ import { PROFILE } from "@/content/portfolio";
 import { CV_HREF } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
-import { ArrowUpRight, Check, Copy, FileText, Mail, Move, Phone } from "lucide-react";
+import { ArrowUpRight, Check, Copy, FileText, Linkedin, Mail, Move, Phone } from "lucide-react";
 import { SiTelegram } from "react-icons/si";
 
 interface ProfileModalProps {
@@ -323,6 +323,17 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                 tile={
                   <Tile className="skeuo-gloss bg-[#26A5E4] text-white">
                     <SiTelegram className="h-[18px] w-[18px]" />
+                  </Tile>
+                }
+              />
+              <LinkRow
+                href={PROFILE.linkedin}
+                external
+                label="LinkedIn"
+                value={`linkedin.com/in/${PROFILE.linkedinHandle}`}
+                tile={
+                  <Tile className="skeuo-gloss bg-[#0A66C2] text-white">
+                    <Linkedin className="h-4 w-4" />
                   </Tile>
                 }
               />

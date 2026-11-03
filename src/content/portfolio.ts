@@ -16,6 +16,8 @@ export const PROFILE = {
   phone: '087 680 999',
   github: "https://github.com/danishsary8",
   githubHandle: "danishsary8",
+  linkedin: "https://www.linkedin.com/in/sarydanish/",
+  linkedinHandle: "sarydanish",
   telegram: "https://t.me/sarydanish",
   facebook: "https://www.facebook.com/danish.sary.5",
   facebookHandle: "danish.sary.5",
