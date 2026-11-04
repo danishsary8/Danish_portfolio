@@ -293,10 +293,35 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: portrait frame settles in once the name has landed. On desktop it is
-              vertically centered alongside the left content for an optically balanced lockup. */}
-          <div className="enter-settle flex justify-center lg:justify-end lg:self-center" style={step(2)}>
+          {/* Right column: portrait card + editorial quote with handwritten signature.
+              On desktop it is vertically centered alongside the left content for an optically balanced lockup. */}
+          <div className="enter-settle flex flex-col items-center lg:items-end justify-center lg:self-center gap-3 w-full max-w-[280px] mx-auto lg:mx-0" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
+
+            {/* Editorial quote below card with handwritten signature */}
+            <div className="w-full rounded-[18px] border border-line bg-surface/80 backdrop-blur-md p-3.5 shadow-xs text-left transition-all duration-300 hover:border-gold/30">
+              <blockquote className="relative text-fg-muted font-normal text-[12px] sm:text-[12.5px] leading-[1.5] tracking-[-0.01em]">
+                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold select-none mr-1">“</span>
+                I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL with real authentication.
+                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold select-none ml-0.5">”</span>
+              </blockquote>
+              <div className="mt-2.5 flex items-center justify-between border-t border-line/50 pt-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-fg-subtle">
+                  Author
+                </span>
+                <div className="h-6 w-20 overflow-hidden">
+                  <img
+                    src={ASSETS.profile.signature}
+                    alt={`Signature of ${PROFILE.name}`}
+                    width={1024}
+                    height={683}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-contain mix-blend-multiply dark:invert dark:brightness-125 dark:mix-blend-screen"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
