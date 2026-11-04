@@ -114,65 +114,66 @@ export function Hero() {
     >
       <div
         aria-hidden="true"
-        className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
+        className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-100"
       />
 
       <div className="mx-auto w-full max-w-[1120px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_285px] xl:gap-12 min-[90rem]:grid-cols-[minmax(0,1fr)_290px] min-[90rem]:gap-14">
-          {/* Left column */}
-          <div className="min-w-0">
-            {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
-            <div className="enter mb-3 sm:mb-4.5 flex items-center gap-2.5 sm:gap-3" style={step(0)}>
-              <img
-                src={ASSETS.profile.photo}
-                alt=""
-                width={40}
-                height={40}
-                className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover object-[50%_45%] ring-1 ring-[var(--edge)] lg:hidden"
-              />
-              <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 glass-pill rounded-[14px] sm:rounded-full min-h-7 py-1 px-3 text-[11px] sm:text-[12px] leading-none select-none">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden="true" className="relative flex h-1.5 w-1.5 shrink-0">
-                    <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s] motion-safe:[animation-iteration-count:3]" />
-                    <span className="relative h-1.5 w-1.5 rounded-full bg-gold" />
-                  </span>
-                  <span className="font-medium text-fg">Available for Full-time Work</span>
+        <div className="flex flex-col justify-center lg:min-h-[100dvh] lg:py-12">
+          {/* Status + Phnom Penh time (split-flap telemetry) - placed above both columns for golden balance */}
+          <div className="enter mb-5 sm:mb-6.5 flex items-center gap-2.5 sm:gap-3" style={step(0)}>
+            <img
+              src={ASSETS.profile.photo}
+              alt=""
+              width={40}
+              height={40}
+              className="h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-full object-cover object-[50%_45%] ring-1 ring-[var(--edge)] lg:hidden"
+            />
+            <div className="inline-flex max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 glass-pill rounded-[14px] sm:rounded-full min-h-7 py-1 px-3 text-[11px] sm:text-[12px] leading-none select-none">
+              <span className="inline-flex items-center gap-2">
+                <span aria-hidden="true" className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className="absolute inset-0 rounded-full bg-gold opacity-60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s] motion-safe:[animation-iteration-count:3]" />
+                  <span className="relative h-1.5 w-1.5 rounded-full bg-gold" />
                 </span>
-                <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
-                <span className="font-medium text-fg-muted">{PROFILE.location.split(",")[0]}</span>
-                <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
-                <span className="inline-flex items-center gap-1.5 text-fg-muted">
-                  <SplitFlapText
-                    text={time ?? "--:--:--"}
-                    padTo={8}
-                    charset="0123456789"
-                    intro={false}
-                    loop={false}
-                    tileStyle="minimal"
-                    tileColor="transparent"
-                    textColor="var(--fg)"
-                    fontSize={11.5}
-                    gap={0}
-                    tileRadius={0}
-                    flipsPerChar={1}
-                    flipDuration={0.06}
-                    stagger={0}
-                    glare={0}
-                    depth={0}
-                    className="hero-clock skeuo-well rounded-[5px] px-1 py-0.5"
-                    style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
-                  />
-                  <span className="font-mono text-[11.5px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
-                </span>
-              </div>
+                <span className="font-medium text-fg">Available for Full-time Work</span>
+              </span>
+              <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
+              <span className="font-medium text-fg-muted">{PROFILE.location.split(",")[0]}</span>
+              <span aria-hidden="true" className="hidden h-3 w-px bg-line-strong sm:block" />
+              <span className="inline-flex items-center gap-1.5 text-fg-muted">
+                <SplitFlapText
+                  text={time ?? "--:--:--"}
+                  padTo={8}
+                  charset="0123456789"
+                  intro={false}
+                  loop={false}
+                  tileStyle="minimal"
+                  tileColor="transparent"
+                  textColor="var(--fg)"
+                  fontSize={11.5}
+                  gap={0}
+                  tileRadius={0}
+                  flipsPerChar={1}
+                  flipDuration={0.06}
+                  stagger={0}
+                  glare={0}
+                  depth={0}
+                  className="hero-clock skeuo-well rounded-[5px] px-1 py-0.5"
+                  style={{ fontFamily: "var(--font-sans)", fontWeight: 500, letterSpacing: 0 }}
+                />
+                <span className="font-mono text-[11.5px] text-fg-subtle">{PROFILE.timezoneLabel}</span>
+              </span>
             </div>
+          </div>
 
-            {/* Big Name: commanding architectural scale with gold split accent */}
-            <h1
-              id="hero-title"
-              aria-label="Sary Danish"
-              className="uppercase whitespace-nowrap text-[clamp(36px,8.6vw,52px)] sm:text-[62px] lg:text-[68px] xl:text-[74px] font-bold tracking-[-0.038em] leading-[1.04] select-none"
-            >
+          <div className="grid grid-cols-1 items-start gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_285px] xl:gap-12 min-[90rem]:grid-cols-[minmax(0,1fr)_290px] min-[90rem]:gap-14">
+            {/* Left column */}
+            <div className="min-w-0">
+              {/* Big Name: commanding architectural scale with gold split accent */}
+              <h1
+                id="hero-title"
+                aria-label="Sary Danish"
+                className="uppercase whitespace-nowrap text-[clamp(36px,8.6vw,52px)] sm:text-[62px] lg:text-[68px] xl:text-[74px] font-bold tracking-[-0.038em] leading-[1.04] select-none"
+              >
               <span className="enter inline-block text-gold" style={step(1)}>
                 Sary
               </span>{" "}
@@ -321,8 +322,8 @@ export function Hero() {
             </div>
           </div>
         </div>
-
       </div>
+    </div>
 
       <ProfileModal open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen} />
     </section>
