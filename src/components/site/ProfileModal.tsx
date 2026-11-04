@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import Lanyard from "@/components/ui/Lanyard";
 import { drawBadgeBack, drawBadgeFront, getCachedBadgeFaces, preloadBadgeFaces } from "@/lib/badge-faces";
 import { PROFILE } from "@/content/portfolio";
+import { ASSETS } from "@/lib/assets";
 import { CV_HREF } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
@@ -90,6 +91,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const [copied, setCopied] = useState(false);
   const [faces, setFaces] = useState<{ front: string; back: string } | null>(() => getCachedBadgeFaces());
   const [lanyardVisible, setLanyardVisible] = useState(false);
+  const [mobileTab, setMobileTab] = useState<"profile" | "badge">("profile");
   const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -114,6 +116,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
       setLanyardVisible(false);
       return;
     }
+    setMobileTab("profile");
     preloadBadgeFaces().then(setFaces).catch(() => {});
     // Allow the modal dialog popup animation to complete smoothly first at 60fps,
     // then mount the 3D Lanyard so the card drops down smoothly without initial lag.
@@ -138,15 +141,48 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0 transform-gpu will-change-[transform,opacity]">
+      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] h-[min(90dvh,820px)] lg:h-[min(780px,calc(100dvh-2rem))] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0 transform-gpu will-change-[transform,opacity]">
         <DialogDescription className="sr-only">
           Goal, personal details and contact options for {PROFILE.name}, with an interactive
           lanyard badge that shows the same card as the home page.
         </DialogDescription>
 
-        <div className="flex h-full w-full flex-col lg:h-[min(780px,calc(100dvh-2rem))] lg:flex-row">
-          {/* Badge stage: a softly lit surface the badge hangs over. */}
-          <div className="relative flex h-[340px] sm:h-[400px] lg:h-full w-full shrink-0 select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:w-[40%] lg:border-b-0 lg:border-r">
+        <div className="flex h-full w-full flex-col lg:flex-row overflow-hidden">
+          {/* Mobile segmented switcher (hidden on desktop): switch between overview & 3D badge */}
+          <div className="flex shrink-0 items-center justify-between border-b border-line bg-surface-1 px-4 py-2.5 pr-14 lg:hidden">
+            <div className="inline-flex rounded-full border border-line bg-surface-2 p-0.5 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setMobileTab("profile")}
+                className={`rounded-full px-3.5 py-1 text-[12px] font-semibold transition-all ${
+                  mobileTab === "profile"
+                    ? "bg-fg text-bg shadow-xs"
+                    : "text-fg-muted hover:text-fg"
+                }`}
+              >
+                Overview & Reach
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileTab("badge")}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-[12px] font-semibold transition-all ${
+                  mobileTab === "badge"
+                    ? "bg-fg text-bg shadow-xs"
+                    : "text-fg-muted hover:text-fg"
+                }`}
+              >
+                <span>3D Badge</span>
+                <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              </button>
+            </div>
+          </div>
+
+          {/* Badge stage: full stage on mobile when "badge" is selected; 40% column on desktop */}
+          <div
+            className={`relative select-none items-center justify-center overflow-hidden border-b border-line bg-surface-1 lg:w-[40%] lg:border-b-0 lg:border-r ${
+              mobileTab === "badge" ? "flex flex-1 h-full w-full" : "hidden lg:flex lg:h-full"
+            }`}
+          >
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_28%,var(--glow),transparent_72%)]"
@@ -182,44 +218,80 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             ) : null}
 
             <div
-              className={`pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center transition-opacity duration-300 ${
+              className={`pointer-events-none absolute inset-x-0 bottom-4 z-10 flex flex-col items-center gap-2 px-4 transition-opacity duration-300 ${
                 lanyardVisible ? "opacity-100" : "opacity-0"
               }`}
             >
-              <span className="glass-pill inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] text-fg-muted">
+              <span className="glass-pill inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] text-fg-muted shadow-xs">
                 <Move aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
                 Drag to swing · flick to flip
               </span>
+              <button
+                type="button"
+                onClick={() => setMobileTab("profile")}
+                className="pointer-events-auto btn-apple skeuo-key inline-flex lg:hidden h-8 items-center gap-1.5 rounded-full px-3.5 text-[11.5px] font-medium shadow-xs"
+              >
+                <span>Back to Overview & Contact</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </button>
             </div>
           </div>
 
           {/* Panel: only what the badge and the page do not already say. */}
-          <div className="flex min-h-0 w-full flex-col overflow-y-auto p-5 sm:p-7 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6">
-            <div className="flex flex-wrap items-center gap-2.5 pr-10">
-              <span className="glass-pill inline-flex h-8 items-center gap-2 rounded-full pl-3 pr-3.5 text-[13px] font-medium text-fg">
+          <div
+            className={`min-h-0 w-full flex-col overflow-y-auto p-4.5 sm:p-7 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6 ${
+              mobileTab === "profile" ? "flex flex-1 h-full" : "hidden lg:flex"
+            }`}
+          >
+            {/* Mobile quick badge teaser banner */}
+            <div className="lg:hidden mb-4 flex items-center justify-between rounded-[16px] border border-line bg-surface-1 p-3 shadow-2xs">
+              <div className="flex items-center gap-2.5">
+                <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-[7px] border border-line/60 bg-[#0c1527] shadow-xs">
+                  <img
+                    src={ASSETS.profile.photo}
+                    alt=""
+                    className="h-full w-full object-cover object-top opacity-90"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[12.5px] font-semibold text-fg">Interactive 3D Badge</p>
+                  <p className="text-[11px] text-fg-muted">Real-time swinging physics & flip</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setMobileTab("badge")}
+                className="btn-apple skeuo-key inline-flex h-8 items-center gap-1 rounded-full px-3 text-[11.5px] font-medium"
+              >
+                <span>Open 3D</span>
+                <ArrowUpRight className="h-3 w-3" />
+              </button>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 pr-0 lg:pr-10">
+              <span className="glass-pill inline-flex h-8 items-center gap-2 rounded-full pl-3 pr-3.5 text-[12.5px] sm:text-[13px] font-medium text-fg">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
                 Available for Full-time Work
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[12.5px] text-fg-subtle">
+              <span className="inline-flex items-center gap-1.5 text-[12px] sm:text-[12.5px] text-fg-subtle">
                 Local time
-                <span className="skeuo-well rounded-[6px] px-1.5 py-0.5 font-mono text-[12.5px] tabular-nums text-fg">
+                <span className="skeuo-well rounded-[6px] px-1.5 py-0.5 font-mono text-[12px] sm:text-[12.5px] tabular-nums text-fg">
                   {time ?? "--:--"}
                 </span>
                 {PROFILE.timezoneLabel}
               </span>
             </div>
 
-            <DialogTitle className="mt-4 text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
+            <DialogTitle className="mt-3.5 sm:mt-4 text-[28px] sm:text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
               {PROFILE.name}
             </DialogTitle>
-            <p className="mt-1.5 text-[15px] text-fg-muted">
+            <p className="mt-1 text-[14px] sm:text-[15px] text-fg-muted">
               Software Development student at Norton University
             </p>
 
             {/* Where he is heading: the one bio line no section repeats. */}
-            <figure className="mt-3.5 shrink-0">
-              {/* 13.5px keeps the owner's full goal sentence to three lines (owner request). */}
-              <blockquote className="text-pretty text-[13.5px] leading-[1.55] tracking-[-0.005em] text-fg">
+            <figure className="mt-3 sm:mt-3.5 shrink-0">
+              <blockquote className="text-pretty text-[13px] sm:text-[13.5px] leading-[1.55] tracking-[-0.005em] text-fg">
                 <span aria-hidden="true" className="mr-0.5 text-fg-subtle">
                   “
                 </span>
@@ -230,37 +302,36 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               </blockquote>
             </figure>
 
-            {/* Personal details as an ID data page: laminated security paper with the badge's
-                holographic seal. Nothing here appears anywhere else on the site. */}
-            <section aria-labelledby="profile-details" className="mt-5 shrink-0">
-              <h3 id="profile-details" className="text-[13px] font-medium text-fg-muted">
+            {/* Personal details as an ID data page */}
+            <section aria-labelledby="profile-details" className="mt-4 sm:mt-5 shrink-0">
+              <h3 id="profile-details" className="text-[12.5px] sm:text-[13px] font-medium text-fg-muted">
                 Details
               </h3>
-              <div className="id-datapage squircle [--r:16px] relative mt-2 px-5 py-3.5">
+              <div className="id-datapage squircle [--r:16px] relative mt-2 px-4 sm:px-5 py-3.5">
                 <span
                   aria-hidden="true"
-                  className="card-holo absolute bottom-4 right-4 grid h-8 w-8 place-items-center rounded-[8px]"
+                  className="card-holo absolute bottom-3.5 right-3.5 sm:bottom-4 sm:right-4 grid h-8 w-8 place-items-center rounded-[8px]"
                 >
                   <span className="font-poster text-[10.5px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
                     SD
                   </span>
                 </span>
-                <dl className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-6 gap-y-2.5">
+                <dl className="grid grid-cols-1 gap-y-2.5 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-6">
                   <div className="min-w-0">
-                    <dt className="text-[11.5px] text-fg-subtle">Address</dt>
-                    <dd className="mt-0.5 text-[14px] font-medium leading-snug tracking-[-0.01em] text-fg">
+                    <dt className="text-[11px] sm:text-[11.5px] text-fg-subtle">Address</dt>
+                    <dd className="mt-0.5 text-[13.5px] sm:text-[14px] font-medium leading-snug tracking-[-0.01em] text-fg">
                       {PROFILE.address}
                     </dd>
                   </div>
                   <div className="min-w-0">
-                    <dt className="text-[11.5px] text-fg-subtle">Date of birth</dt>
-                    <dd className="mt-0.5 font-mono text-[13.5px] tabular-nums text-fg">
+                    <dt className="text-[11px] sm:text-[11.5px] text-fg-subtle">Date of birth</dt>
+                    <dd className="mt-0.5 font-mono text-[13px] sm:text-[13.5px] tabular-nums text-fg">
                       {PROFILE.birthDate}
                     </dd>
                   </div>
-                  <div className="col-span-2 min-w-0 pr-10">
-                    <dt className="text-[11.5px] text-fg-subtle">Languages</dt>
-                    <dd className="mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[14px] leading-snug text-fg">
+                  <div className="col-span-1 sm:col-span-2 min-w-0 pr-8 sm:pr-10">
+                    <dt className="text-[11px] sm:text-[11.5px] text-fg-subtle">Languages</dt>
+                    <dd className="mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[13.5px] sm:text-[14px] leading-snug text-fg">
                       <span>
                         <span lang="km" className="font-khmer font-medium">
                           ខ្មែរ
@@ -278,8 +349,8 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             </section>
 
             {/* Contact console: one grouped list, every way to reach him. */}
-            <h3 className="mt-5 text-[13px] font-medium text-fg-muted">Reach me</h3>
-            <ul className="tactile squircle [--r:16px] mt-2 grid shrink-0 divide-y divide-[var(--line)] overflow-hidden">
+            <h3 className="mt-4 sm:mt-5 text-[12.5px] sm:text-[13px] font-medium text-fg-muted">Reach me</h3>
+            <ul className="tactile squircle [--r:16px] mt-2 grid shrink-0 divide-y divide-[var(--line)] overflow-hidden pb-1">
               <li className={`${ROW}`}>
                 <Tile className="icon-tile">
                   <Mail className="h-4 w-4" strokeWidth={1.75} />
