@@ -83,23 +83,25 @@ export function SiteNav() {
 
   return (
     <>
-      {/* Progressive Stepped Gradual Blur underneath the top nav bar */}
-      <GradualBlur
-        position="top"
-        target="page"
-        height="6.5rem"
-        strength={4.5}
-        layers={10}
-        curve="linear"
-        exponential
-        tint="var(--nav-tint)"
-        autoHide
-        zIndex={40}
-      />
+      {/* Progressive Stepped Gradual Blur underneath the top nav bar (Desktop only) */}
+      <div className="hidden md:block">
+        <GradualBlur
+          position="top"
+          target="page"
+          height="6.5rem"
+          strength={4.5}
+          layers={10}
+          curve="linear"
+          exponential
+          tint="var(--nav-tint)"
+          autoHide
+          zIndex={40}
+        />
+      </div>
 
       <header
-        className={`fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
-          scrolled ? "bg-bg/85 backdrop-blur-xl border-b border-line/40 shadow-xs" : "bg-transparent"
+        className={`absolute md:fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
+          scrolled ? "bg-transparent md:bg-bg/85 md:backdrop-blur-xl md:border-b md:border-line/40 md:shadow-xs" : "bg-transparent"
         }`}
       >
         <nav
