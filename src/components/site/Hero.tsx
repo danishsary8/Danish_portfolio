@@ -118,7 +118,7 @@ export function Hero() {
       />
 
       <div className="mx-auto w-full max-w-[1180px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-14 min-[90rem]:grid-cols-[minmax(0,1fr)_300px] min-[90rem]:gap-16">
+        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_295px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_305px] xl:gap-14 min-[90rem]:grid-cols-[minmax(0,1fr)_315px] min-[90rem]:gap-16">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
@@ -294,22 +294,19 @@ export function Hero() {
           </div>
 
           {/* Right column: portrait card + editorial quote with handwritten signature.
-              On desktop it is vertically centered alongside the left content for an optically balanced lockup. */}
-          <div className="enter-settle flex flex-col items-center lg:items-end justify-center lg:self-center gap-3 w-full max-w-[280px] mx-auto lg:mx-0" style={step(2)}>
+              Pure typography floating naturally, with no border container. */}
+          <div className="enter-settle flex flex-col items-center lg:items-end justify-center lg:self-center gap-3.5 w-full max-w-[295px] sm:max-w-[305px] mx-auto lg:mx-0" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
 
-            {/* Editorial quote below card with handwritten signature */}
-            <div className="w-full rounded-[18px] border border-line bg-surface/80 backdrop-blur-md p-3.5 shadow-xs text-left transition-all duration-300 hover:border-gold/30">
-              <blockquote className="relative text-fg-muted font-normal text-[12px] sm:text-[12.5px] leading-[1.5] tracking-[-0.01em]">
-                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold select-none mr-1">“</span>
+            {/* Editorial quote below card with handwritten signature - pure typography, no border container */}
+            <div className="w-full px-1.5 text-left">
+              <blockquote className="text-fg-muted text-[13px] sm:text-[13.5px] font-normal leading-[1.55] tracking-[-0.01em]">
+                <span aria-hidden="true" className="font-serif text-[22px] leading-none text-gold font-normal mr-1 select-none">“</span>
                 I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL with real authentication.
-                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold select-none ml-0.5">”</span>
+                <span aria-hidden="true" className="font-serif text-[22px] leading-none text-gold font-normal ml-0.5 select-none">”</span>
               </blockquote>
-              <div className="mt-2.5 flex items-center justify-between border-t border-line/50 pt-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-fg-subtle">
-                  Author
-                </span>
-                <div className="h-6 w-20 overflow-hidden">
+              <div className="mt-1 flex items-center justify-end pr-1">
+                <div className="h-7 w-24 shrink-0">
                   <img
                     src={ASSETS.profile.signature}
                     alt={`Signature of ${PROFILE.name}`}

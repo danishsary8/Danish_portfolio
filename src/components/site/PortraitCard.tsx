@@ -86,7 +86,7 @@ export function PortraitCard({ onView }: { onView: () => void }) {
       onClick={onCardClick}
       onPointerEnter={preloadBadgeFaces}
       title={flipped ? "Click to flip back" : "Click to flip"}
-      className="card-portrait-shadow relative h-[355px] w-full max-w-[280px] cursor-pointer select-none rounded-[24px] perspective-[1400px]"
+      className="card-portrait-shadow relative h-[410px] w-full max-w-[295px] sm:max-w-[305px] cursor-pointer select-none rounded-[24px] perspective-[1400px]"
     >
       <div
         className={`relative h-full w-full transform-3d transition-transform duration-[700ms] ease-[var(--ease-in-out)] motion-reduce:transition-none ${
@@ -131,11 +131,11 @@ function CardBack() {
   return (
     <div className="card-stock card-portrait-shadow relative flex h-full w-full flex-col overflow-hidden rounded-[24px] text-left text-white">
       {/* Magnetic stripe, edge to edge. */}
-      <div aria-hidden="true" className="card-magstripe mt-2.5 h-8 w-full shrink-0" />
+      <div aria-hidden="true" className="card-magstripe mt-3 h-8.5 w-full shrink-0" />
 
       {/* Signature panel: the owner's own signature, in ink on security paper. */}
-      <div className="px-4 pt-2">
-        <div className="card-sigpanel relative h-10 overflow-hidden rounded-[4px]">
+      <div className="px-4 pt-2.5">
+        <div className="card-sigpanel relative h-11 overflow-hidden rounded-[4px]">
           <img
             src={ASSETS.profile.signature}
             alt={`Signature of ${PROFILE.name}`}
@@ -144,20 +144,20 @@ function CardBack() {
             decoding="async"
             draggable={false}
             // Multiply drops the photo's white paper so only the ink sits on the panel.
-            className="absolute left-1/2 top-1/2 h-[95px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
+            className="absolute left-1/2 top-1/2 h-[105px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
           />
         </div>
-        <p className="mt-0.5 text-[9px] tracking-[0.02em] text-white/40">Authorized signature</p>
+        <p className="mt-1 text-[9.5px] tracking-[0.02em] text-white/40">Authorized signature</p>
       </div>
 
       {/* Card data on the left, Telegram QR on the right. */}
-      <div className="mt-1.5 flex items-start justify-between gap-3 px-4">
+      <div className="mt-2 flex items-start justify-between gap-3 px-4">
         <dl className="grid min-w-0 gap-y-1">
           {CARD_DATA.map(({ label, value, mono }) => (
             <div key={label} className="min-w-0">
-              <dt className="text-[9px] leading-none tracking-[0.02em] text-white/45">{label}</dt>
+              <dt className="text-[9.5px] leading-none tracking-[0.02em] text-white/45">{label}</dt>
               <dd
-                className={`skeuo-engrave mt-0.5 truncate text-[10.5px] leading-tight text-white/85 ${
+                className={`skeuo-engrave mt-0.5 truncate text-[11px] leading-tight text-white/85 ${
                   mono ? "font-mono tabular-nums tracking-[0.02em]" : "font-medium tracking-[-0.005em]"
                 }`}
               >
@@ -174,13 +174,13 @@ function CardBack() {
               viewBox={`-2 -2 ${TELEGRAM_QR.size + 4} ${TELEGRAM_QR.size + 4}`}
               role="img"
               aria-label={`QR code: Telegram ${PROFILE.telegramHandle}`}
-              className="block h-[64px] w-[64px]"
+              className="block h-[68px] w-[68px]"
               shapeRendering="crispEdges"
             >
               <path d={TELEGRAM_QR.path} fill="#162447" />
             </svg>
           </div>
-          <figcaption className="mt-0.5 inline-flex items-center gap-1 text-[9px] tracking-[0.02em] text-white/55">
+          <figcaption className="mt-1 inline-flex items-center gap-1 text-[9.5px] tracking-[0.02em] text-white/55">
             <SiTelegram aria-hidden="true" className="h-2.5 w-2.5 text-[#26A5E4]" />
             Scan for Telegram
           </figcaption>
@@ -188,22 +188,22 @@ function CardBack() {
       </div>
 
       {/* Fine print. */}
-      <p className="skeuo-engrave mt-1.5 px-4 text-[9.5px] leading-snug">
+      <p className="skeuo-engrave mt-2 px-4 text-[9.5px] leading-snug">
         The holder builds full-stack web apps with secure REST APIs, using React, Laravel and
         PostgreSQL. Designed by {PROFILE.shortName} in Cambodia.
       </p>
 
       {/* Bottom: award on the left, holographic foil on the right. */}
-      <div className="mt-auto flex items-end justify-between gap-2 px-4 pb-3">
-        <p className="inline-flex items-center gap-1.5 text-[10.5px] font-medium tracking-[0.01em] text-[#c9973a] [text-shadow:0_-1px_0_rgba(0,0,0,0.55)]">
+      <div className="mt-auto flex items-end justify-between gap-2 px-4 pb-3.5">
+        <p className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.01em] text-[#c9973a] [text-shadow:0_-1px_0_rgba(0,0,0,0.55)]">
           <Award aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5" />
           2026 Award Winner · Team
         </p>
         <div
           aria-hidden="true"
-          className="card-holo grid h-8.5 w-8.5 shrink-0 place-items-center rounded-[8px]"
+          className="card-holo grid h-9 w-9 shrink-0 place-items-center rounded-[8px]"
         >
-          <span className="font-poster text-[12px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
+          <span className="font-poster text-[12.5px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
             SD
           </span>
         </div>
@@ -216,7 +216,7 @@ function CardFront({ onView }: { onView: () => void }) {
   return (
     <GlareHover
       width="100%"
-      height="355px"
+      height="410px"
       borderRadius="24px"
       mode="hover"
       variant="streak"
@@ -229,7 +229,7 @@ function CardFront({ onView }: { onView: () => void }) {
       rimGlint={true}
       transitionDuration={650}
       background={NAVY}
-      className="card-portrait-shadow max-w-[280px]"
+      className="card-portrait-shadow max-w-[295px] sm:max-w-[305px]"
     >
       <figure className="absolute inset-0 m-0 whitespace-normal text-left">
         <img
@@ -239,7 +239,7 @@ function CardFront({ onView }: { onView: () => void }) {
           height={850}
           decoding="async"
           // Whole photo at card width, melting into the navy footer strip
-          className="absolute inset-x-0 top-0 h-[305px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
+          className="absolute inset-x-0 top-0 h-[352px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
         />
 
         {/* Headroom shade so the name reads on the backdrop. */}
