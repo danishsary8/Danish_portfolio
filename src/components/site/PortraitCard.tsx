@@ -86,7 +86,7 @@ export function PortraitCard({ onView }: { onView: () => void }) {
       onClick={onCardClick}
       onPointerEnter={preloadBadgeFaces}
       title={flipped ? "Click to flip back" : "Click to flip"}
-      className="card-portrait-shadow relative h-[460px] w-full max-w-[312px] cursor-pointer select-none rounded-[28px] perspective-[1400px]"
+      className="card-portrait-shadow relative h-[395px] w-full max-w-[280px] cursor-pointer select-none rounded-[24px] perspective-[1400px]"
     >
       <div
         className={`relative h-full w-full transform-3d transition-transform duration-[700ms] ease-[var(--ease-in-out)] motion-reduce:transition-none ${
@@ -129,13 +129,13 @@ const CARD_DATA = [
 
 function CardBack() {
   return (
-    <div className="card-stock card-portrait-shadow relative flex h-full w-full flex-col overflow-hidden rounded-[28px] text-left text-white">
+    <div className="card-stock card-portrait-shadow relative flex h-full w-full flex-col overflow-hidden rounded-[24px] text-left text-white">
       {/* Magnetic stripe, edge to edge. */}
-      <div aria-hidden="true" className="card-magstripe mt-5 h-11 w-full shrink-0" />
+      <div aria-hidden="true" className="card-magstripe mt-3.5 h-9 w-full shrink-0" />
 
       {/* Signature panel: the owner's own signature, in ink on security paper. */}
-      <div className="px-5 pt-4">
-        <div className="card-sigpanel relative h-14 overflow-hidden rounded-[4px]">
+      <div className="px-4 pt-2.5">
+        <div className="card-sigpanel relative h-11 overflow-hidden rounded-[4px]">
           <img
             src={ASSETS.profile.signature}
             alt={`Signature of ${PROFILE.name}`}
@@ -144,20 +144,20 @@ function CardBack() {
             decoding="async"
             draggable={false}
             // Multiply drops the photo's white paper so only the ink sits on the panel.
-            className="absolute left-1/2 top-1/2 h-[132px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
+            className="absolute left-1/2 top-1/2 h-[105px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
           />
         </div>
-        <p className="mt-1.5 text-[10px] tracking-[0.02em] text-white/40">Authorized signature</p>
+        <p className="mt-1 text-[9.5px] tracking-[0.02em] text-white/40">Authorized signature</p>
       </div>
 
       {/* Card data on the left, Telegram QR on the right. */}
-      <div className="mt-4 flex items-start justify-between gap-3.5 px-5">
-        <dl className="grid min-w-0 gap-y-1.5">
+      <div className="mt-2 flex items-start justify-between gap-3 px-4">
+        <dl className="grid min-w-0 gap-y-1">
           {CARD_DATA.map(({ label, value, mono }) => (
             <div key={label} className="min-w-0">
-              <dt className="text-[10px] leading-none tracking-[0.02em] text-white/45">{label}</dt>
+              <dt className="text-[9.5px] leading-none tracking-[0.02em] text-white/45">{label}</dt>
               <dd
-                className={`skeuo-engrave mt-1 truncate text-[12px] leading-tight text-white/85 ${
+                className={`skeuo-engrave mt-0.5 truncate text-[11px] leading-tight text-white/85 ${
                   mono ? "font-mono tabular-nums tracking-[0.02em]" : "font-medium tracking-[-0.005em]"
                 }`}
               >
@@ -168,19 +168,19 @@ function CardBack() {
         </dl>
 
         <figure className="m-0 flex shrink-0 flex-col items-center">
-          <div className="rounded-[10px] bg-[#f6f3ea] p-1 shadow-[inset_0_1px_2px_rgba(0,0,0,0.15),0_1px_0_rgba(255,255,255,0.06)]">
+          <div className="rounded-[8px] bg-[#f6f3ea] p-1 shadow-[inset_0_1px_2px_rgba(0,0,0,0.15),0_1px_0_rgba(255,255,255,0.06)]">
             {/* Quiet zone of 2 modules on each side via the viewBox. */}
             <svg
               viewBox={`-2 -2 ${TELEGRAM_QR.size + 4} ${TELEGRAM_QR.size + 4}`}
               role="img"
               aria-label={`QR code: Telegram ${PROFILE.telegramHandle}`}
-              className="block h-[86px] w-[86px]"
+              className="block h-[72px] w-[72px]"
               shapeRendering="crispEdges"
             >
               <path d={TELEGRAM_QR.path} fill="#162447" />
             </svg>
           </div>
-          <figcaption className="mt-1.5 inline-flex items-center gap-1 text-[10px] tracking-[0.02em] text-white/55">
+          <figcaption className="mt-1 inline-flex items-center gap-1 text-[9.5px] tracking-[0.02em] text-white/55">
             <SiTelegram aria-hidden="true" className="h-2.5 w-2.5 text-[#26A5E4]" />
             Scan for Telegram
           </figcaption>
@@ -188,22 +188,22 @@ function CardBack() {
       </div>
 
       {/* Fine print. */}
-      <p className="skeuo-engrave mt-3.5 px-5 text-[11px] leading-[1.55]">
+      <p className="skeuo-engrave mt-2 px-4 text-[10px] leading-snug">
         The holder builds full-stack web apps with secure REST APIs, using React, Laravel and
         PostgreSQL. Designed by {PROFILE.shortName} in Cambodia.
       </p>
 
       {/* Bottom: award on the left, holographic foil on the right. */}
-      <div className="mt-auto flex items-end justify-between gap-3 px-5 pb-5">
-        <p className="inline-flex items-center gap-1.5 text-[11.5px] font-medium tracking-[0.01em] text-[#c9973a] [text-shadow:0_-1px_0_rgba(0,0,0,0.55)]">
+      <div className="mt-auto flex items-end justify-between gap-2 px-4 pb-4">
+        <p className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.01em] text-[#c9973a] [text-shadow:0_-1px_0_rgba(0,0,0,0.55)]">
           <Award aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5" />
           2026 Award Winner · Team
         </p>
         <div
           aria-hidden="true"
-          className="card-holo grid h-11 w-11 shrink-0 place-items-center rounded-[9px]"
+          className="card-holo grid h-9 w-9 shrink-0 place-items-center rounded-[8px]"
         >
-          <span className="font-poster text-[14px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
+          <span className="font-poster text-[12.5px] font-extrabold tracking-[-0.04em] text-[#3b4270]/55">
             SD
           </span>
         </div>
@@ -216,8 +216,8 @@ function CardFront({ onView }: { onView: () => void }) {
   return (
     <GlareHover
       width="100%"
-      height="460px"
-      borderRadius="28px"
+      height="395px"
+      borderRadius="24px"
       mode="hover"
       variant="streak"
       glareColor="#ffffff"
@@ -229,7 +229,7 @@ function CardFront({ onView }: { onView: () => void }) {
       rimGlint={true}
       transitionDuration={650}
       background={NAVY}
-      className="card-portrait-shadow max-w-[312px]"
+      className="card-portrait-shadow max-w-[280px]"
     >
       <figure className="absolute inset-0 m-0 whitespace-normal text-left">
         <img
@@ -238,15 +238,14 @@ function CardFront({ onView }: { onView: () => void }) {
           width={680}
           height={850}
           decoding="async"
-          // Whole photo at card width (312 × 390), melting into the navy footer strip
-          // (sampled from the suit and backdrop) instead of a hard edge.
-          className="absolute inset-x-0 top-0 h-[398px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
+          // Whole photo at card width, melting into the navy footer strip
+          className="absolute inset-x-0 top-0 h-[340px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
         />
 
         {/* Headroom shade so the name reads on the backdrop. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/25 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/25 to-transparent"
         />
         {/* Hairline rim so the card edge stays crisp on the light theme. */}
         <div
@@ -255,25 +254,25 @@ function CardFront({ onView }: { onView: () => void }) {
         />
 
         <figcaption className="contents">
-          <div className="absolute inset-x-0 top-6 flex flex-col items-center px-5 text-center text-white">
-            <p className="text-balance [font-family:'Allura',cursive] text-[40px] font-normal leading-[1.1] tracking-[0.005em] [text-shadow:0_1px_2px_rgba(10,25,70,0.35),0_0_14px_rgba(10,25,70,0.25)]">
+          <div className="absolute inset-x-0 top-5 flex flex-col items-center px-4 text-center text-white">
+            <p className="text-balance [font-family:'Allura',cursive] text-[34px] font-normal leading-[1.1] tracking-[0.005em] [text-shadow:0_1px_2px_rgba(10,25,70,0.35),0_0_14px_rgba(10,25,70,0.25)]">
               {PROFILE.name}
             </p>
             <p
-              className={`${GLASS} mt-2 inline-flex items-center gap-1.5 rounded-full py-[3px] pl-2 pr-2.5 text-[12.5px] font-medium tracking-[-0.005em]`}
+              className={`${GLASS} mt-1.5 inline-flex items-center gap-1.5 rounded-full py-[2px] pl-2 pr-2.5 text-[11.5px] font-medium tracking-[-0.005em]`}
             >
               <span
                 role="img"
                 aria-label="Available for work"
                 title="Available for work"
-                className="h-[7px] w-[7px] shrink-0 rounded-full bg-gold shadow-[0_0_0_2px_rgba(0,0,0,0.25)]"
+                className="h-[6px] w-[6px] shrink-0 rounded-full bg-gold shadow-[0_0_0_2px_rgba(0,0,0,0.25)]"
               />
               {PROFILE.role}
             </p>
           </div>
 
           {/* Footer: one quiet row. Direct lines as text on the left, one capsule on the right. */}
-          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-5 pb-5 text-white">
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2.5 px-4 pb-4 text-white">
             <ul className="flex min-w-0 flex-col">
               {CONTACTS.map(({ label, value, href, Icon, external, brand }) => (
                 <li key={label}>
@@ -281,21 +280,21 @@ function CardFront({ onView }: { onView: () => void }) {
                     href={href}
                     {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     aria-label={`${label}: ${value}${external ? " (opens in a new tab)" : ""}`}
-                    className={`group inline-flex min-h-6 items-center gap-2 rounded-md text-[14px] font-medium tracking-[-0.01em] tabular-nums transition-colors duration-150 hover:text-white/75 ${FOCUS_ON_PHOTO}`}
+                    className={`group inline-flex min-h-5.5 items-center gap-1.5 rounded-md text-[12.5px] font-medium tracking-[-0.01em] tabular-nums transition-colors duration-150 hover:text-white/75 ${FOCUS_ON_PHOTO}`}
                   >
                     {brand === "telegram" ? (
                       // The Simple Icons mark cuts the plane out of the disc; a white dot behind it
                       // fills the cut-out so it reads as the real app icon on the navy.
-                      <span aria-hidden="true" className="relative grid h-4 w-4 shrink-0 place-items-center">
-                        <span className="absolute inset-[3px] rounded-full bg-white" />
-                        <Icon className="relative h-4 w-4 text-[#26A5E4]" />
+                      <span aria-hidden="true" className="relative grid h-3.5 w-3.5 shrink-0 place-items-center">
+                        <span className="absolute inset-[2.5px] rounded-full bg-white" />
+                        <Icon className="relative h-3.5 w-3.5 text-[#26A5E4]" />
                       </span>
                     ) : (
                       <span
                         aria-hidden="true"
-                        className="grid h-4 w-4 shrink-0 place-items-center skeuo-gloss rounded-full bg-[#34C759]"
+                        className="grid h-3.5 w-3.5 shrink-0 place-items-center skeuo-gloss rounded-full bg-[#34C759]"
                       >
-                        <Icon className="h-[9px] w-[9px] fill-white text-white" strokeWidth={1.5} />
+                        <Icon className="h-2 w-2 fill-white text-white" strokeWidth={1.5} />
                       </span>
                     )}
                     <span className="truncate">{value}</span>
@@ -309,13 +308,13 @@ function CardFront({ onView }: { onView: () => void }) {
               onClick={onView}
               onPointerEnter={preloadBadgeFaces}
               onFocus={preloadBadgeFaces}
-              className={`card-glass-btn group inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full pl-4 pr-3.5 text-[14px] font-semibold tracking-[-0.01em] text-white ${FOCUS_ON_PHOTO}`}
+              className={`card-glass-btn group inline-flex h-9 shrink-0 items-center gap-1 rounded-full pl-3.5 pr-3 text-[12.5px] font-semibold tracking-[-0.01em] text-white ${FOCUS_ON_PHOTO}`}
             >
               View profile
               <ArrowUpRight
                 aria-hidden="true"
                 strokeWidth={2.25}
-                className="h-4 w-4 opacity-80 transition-[transform,opacity] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-px group-hover:opacity-100 motion-reduce:transition-none"
+                className="h-3.5 w-3.5 opacity-80 transition-[transform,opacity] duration-200 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-px group-hover:opacity-100 motion-reduce:transition-none"
               />
             </button>
           </div>

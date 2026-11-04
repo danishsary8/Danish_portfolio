@@ -7,7 +7,6 @@ import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { SplitFlapText } from "@/components/ui/SplitFlapText";
-import TechText from "@/components/ui/TechText";
 import LogoLoop from "@/components/ui/LogoLoop";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
 import { ProfileModal } from "./ProfileModal";
@@ -119,11 +118,11 @@ export function Hero() {
       />
 
       <div className="mx-auto w-full max-w-[1180px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-16 min-[90rem]:grid-cols-[minmax(0,1fr)_360px] min-[90rem]:gap-20">
+        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_290px] xl:gap-14 min-[90rem]:grid-cols-[minmax(0,1fr)_300px] min-[90rem]:gap-16">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
-            <div className="enter mb-3.5 sm:mb-5 flex items-center gap-2.5 sm:gap-3" style={step(0)}>
+            <div className="enter mb-3 sm:mb-4.5 flex items-center gap-2.5 sm:gap-3" style={step(0)}>
               <img
                 src={ASSETS.profile.photo}
                 alt=""
@@ -168,50 +167,28 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Big Name: Interactive React Bits TechText vector wordmark */}
+            {/* Big Name: commanding architectural scale with gold split accent */}
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="relative block w-full max-w-[560px] select-none"
+              className="uppercase whitespace-nowrap text-[clamp(36px,8.6vw,52px)] sm:text-[62px] lg:text-[68px] xl:text-[74px] font-bold tracking-[-0.038em] leading-[1.04] select-none"
             >
-              {/* Accessible text for screen-readers, SEO, and tests */}
-              <span className="sr-only">Sary Danish</span>
-
-              {/* React Bits TechText vector animation canvas */}
-              <div
-                className="enter relative h-[52px] xs:h-[64px] sm:h-[80px] lg:h-[92px] w-full cursor-pointer"
-                style={step(1)}
-              >
-                <TechText
-                  text="SARY DANISH"
-                  fontFamily="var(--font-sans)"
-                  fontWeight={700}
-                  fontSize={140}
-                  letterSpacing={-0.04}
-                  color="var(--fg)"
-                  accentColor="var(--gold)"
-                  align="left"
-                  reveal="letter"
-                  dashLength={4}
-                  dashGap={2}
-                  specks={15}
-                  intro="none"
-                  introDuration={2}
-                  clickKick
-                  guides={false}
-                  draggable
-                />
-              </div>
+              <span className="enter inline-block text-gold" style={step(1)}>
+                Sary
+              </span>{" "}
+              <span className="enter inline-block text-fg" style={step(1.3)}>
+                Danish
+              </span>
             </h1>
 
             {/* Role & Academic degree subtitle */}
-            <div className="enter mt-3.5 sm:mt-5" style={step(2.5)}>
-              <p className="text-[19px] sm:text-[26px] font-semibold leading-[1.2] tracking-[-0.025em] text-fg">
+            <div className="enter mt-3 sm:mt-4" style={step(2)}>
+              <p className="text-[19px] sm:text-[24px] font-semibold leading-[1.2] tracking-[-0.025em] text-fg">
                 Junior Fullstack Web Developer
               </p>
-              <div className="mt-2 sm:mt-3">
-                <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3 py-1 sm:px-3.5 sm:py-1.5 text-[13px] sm:text-[15px] font-medium text-fg shadow-xs">
-                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-gold" />
+              <div className="mt-2 sm:mt-2.5">
+                <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3 py-1 sm:px-3.5 sm:py-1 text-[12.5px] sm:text-[14px] font-medium text-fg shadow-xs">
+                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-gold" />
                   4th-year Software Development student
                 </span>
               </div>
@@ -219,10 +196,10 @@ export function Hero() {
 
             {/* Pitch: fluid editorial typography with balanced optical ragging */}
             <div
-              className="enter mt-4 sm:mt-5 max-w-[32em] lg:max-w-[38em]"
-              style={step(3.5)}
+              className="enter mt-3.5 sm:mt-4.5 max-w-[32em] lg:max-w-[38em]"
+              style={step(3)}
             >
-              <p className="text-[16px] sm:text-[20px] font-medium leading-[1.45] tracking-[-0.015em] text-fg text-balance">
+              <p className="text-[16px] sm:text-[19px] font-medium leading-[1.45] tracking-[-0.015em] text-fg text-balance">
                 Hands-on experience building reliable{" "}
                 <span className="whitespace-nowrap font-semibold">full-stack</span> web apps that solve{" "}
                 <span className="whitespace-nowrap font-semibold">real-world</span> problems&nbsp;— from idea to
@@ -231,7 +208,7 @@ export function Hero() {
             </div>
 
             {/* CTAs as physical keys */}
-            <div className="enter mt-6 sm:mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3" style={step(4.5)}>
+            <div className="enter mt-5 sm:mt-6 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3" style={step(4)}>
               <a
                 href={`mailto:${PROFILE.email}`}
                 className={`btn-apple skeuo-key-ink group inline-flex h-11 sm:h-11 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 sm:px-6 text-[13px] sm:text-[14px] font-medium tracking-[-0.01em] select-none ${FOCUS}`}
