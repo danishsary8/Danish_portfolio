@@ -9,6 +9,7 @@ import photo from "@/assets/danish-photo.jpg";
 import { DANISH_PHOTO_DATA_URI } from "@/assets/danish-photo.base64";
 import chatbotIcon from "@/assets/chatbot.png";
 import signature from "@/assets/signature.png";
+import signatureTransparent from "@/assets/signature-transparent.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
 import drivingShot from "@/assets/project-driving.jpg.asset.json";
@@ -30,6 +31,8 @@ export const ASSETS = {
     alt: "Sary Danish — Junior Full-Stack Developer & Software Development Student",
     // Owner's handwritten signature (blue ink on white), used on the hero card back.
     signature,
+    // Cropped transparent vector-grade signature for floating badges and hero accents.
+    signatureTransparent,
   },
   projects: {
     bookly: {

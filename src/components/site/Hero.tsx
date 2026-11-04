@@ -117,8 +117,8 @@ export function Hero() {
         className="hero-glow absolute inset-x-0 top-0 -z-10 h-full pointer-events-none opacity-80"
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_295px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_305px] xl:gap-14 min-[90rem]:grid-cols-[minmax(0,1fr)_315px] min-[90rem]:gap-16">
+      <div className="mx-auto w-full max-w-[1120px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
+        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_330px] xl:gap-12 min-[90rem]:grid-cols-[minmax(0,1fr)_340px] min-[90rem]:gap-14">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
@@ -294,27 +294,27 @@ export function Hero() {
           </div>
 
           {/* Right column: portrait card + editorial quote with handwritten signature.
-              Pure typography floating naturally, with no border container. */}
-          <div className="enter-settle flex flex-col items-center lg:items-end justify-center lg:self-center gap-3.5 w-full max-w-[295px] sm:max-w-[305px] mx-auto lg:mx-0" style={step(2)}>
+              Pure floating typography, no border container, tight balance. */}
+          <div className="enter-settle flex flex-col items-center lg:items-end justify-center lg:self-center gap-4 w-full max-w-[310px] sm:max-w-[320px] mx-auto lg:mx-0" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
 
             {/* Editorial quote below card with handwritten signature - pure typography, no border container */}
-            <div className="w-full px-1.5 text-left">
-              <blockquote className="text-fg-muted text-[13px] sm:text-[13.5px] font-normal leading-[1.55] tracking-[-0.01em]">
+            <div className="w-full px-1 text-left">
+              <blockquote className="text-fg-muted text-[13px] sm:text-[13.5px] font-normal leading-[1.6] tracking-[-0.01em]">
                 <span aria-hidden="true" className="font-serif text-[22px] leading-none text-gold font-normal mr-1 select-none">“</span>
                 I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL with real authentication.
                 <span aria-hidden="true" className="font-serif text-[22px] leading-none text-gold font-normal ml-0.5 select-none">”</span>
               </blockquote>
-              <div className="mt-1 flex items-center justify-end pr-1">
-                <div className="h-7 w-24 shrink-0">
+              <div className="mt-2 flex items-center justify-end pr-1">
+                <div className="h-8.5 w-32 shrink-0">
                   <img
-                    src={ASSETS.profile.signature}
+                    src={ASSETS.profile.signatureTransparent}
                     alt={`Signature of ${PROFILE.name}`}
-                    width={1024}
-                    height={683}
+                    width={679}
+                    height={298}
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-contain mix-blend-multiply dark:invert dark:brightness-125 dark:mix-blend-screen"
+                    className="h-full w-full object-contain dark:invert dark:brightness-150"
                   />
                 </div>
               </div>
