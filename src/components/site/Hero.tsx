@@ -222,10 +222,6 @@ export function Hero() {
                 <span className="whitespace-nowrap font-semibold">real-world</span> problems&nbsp;— from idea to
                 working software.
               </p>
-              <p className="mt-2 sm:mt-2.5 text-[13.5px] sm:text-[16px] leading-[1.6] text-fg-muted text-balance">
-                “I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL
-                with real authentication.”
-              </p>
             </div>
 
             {/* CTAs as physical keys */}
@@ -314,9 +310,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column: portrait frame settles in once the name has landed. On desktop its top
-              lines up with the status pill; on wide screens (1440px+) it moves toward the text. */}
-          <div className="enter-settle flex justify-center lg:justify-end lg:self-start" style={step(2)}>
+          {/* Right column: portrait frame settles in once the name has landed. On desktop it is
+              vertically centered alongside the left content for an optically balanced lockup. */}
+          <div className="enter-settle flex justify-center lg:justify-end lg:self-center" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
           </div>
         </div>
