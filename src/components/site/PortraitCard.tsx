@@ -86,7 +86,7 @@ export function PortraitCard({ onView }: { onView: () => void }) {
       onClick={onCardClick}
       onPointerEnter={preloadBadgeFaces}
       title={flipped ? "Click to flip back" : "Click to flip"}
-      className="card-portrait-shadow relative h-[385px] w-full max-w-[295px] sm:max-w-[300px] cursor-pointer select-none rounded-[24px] perspective-[1400px]"
+      className="card-portrait-shadow relative h-[410px] w-full max-w-[276px] sm:max-w-[280px] cursor-pointer select-none rounded-[24px] perspective-[1400px]"
     >
       <div
         className={`relative h-full w-full transform-3d transition-transform duration-[700ms] ease-[var(--ease-in-out)] motion-reduce:transition-none ${
@@ -131,11 +131,11 @@ function CardBack() {
   return (
     <div className="card-stock card-portrait-shadow relative flex h-full w-full flex-col overflow-hidden rounded-[24px] text-left text-white">
       {/* Magnetic stripe, edge to edge. */}
-      <div aria-hidden="true" className="card-magstripe mt-3 h-8 w-full shrink-0" />
+      <div aria-hidden="true" className="card-magstripe mt-3 h-8.5 w-full shrink-0" />
 
       {/* Signature panel: the owner's own signature, in ink on security paper. */}
       <div className="px-4 pt-2">
-        <div className="card-sigpanel relative h-10.5 overflow-hidden rounded-[4px]">
+        <div className="card-sigpanel relative h-11 overflow-hidden rounded-[4px]">
           <img
             src={ASSETS.profile.signature}
             alt={`Signature of ${PROFILE.name}`}
@@ -144,7 +144,7 @@ function CardBack() {
             decoding="async"
             draggable={false}
             // Multiply drops the photo's white paper so only the ink sits on the panel.
-            className="absolute left-1/2 top-1/2 h-[100px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
+            className="absolute left-1/2 top-1/2 h-[105px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
           />
         </div>
         <p className="mt-0.5 text-[9px] tracking-[0.02em] text-white/40">Authorized signature</p>
@@ -216,7 +216,7 @@ function CardFront({ onView }: { onView: () => void }) {
   return (
     <GlareHover
       width="100%"
-      height="385px"
+      height="410px"
       borderRadius="24px"
       mode="hover"
       variant="streak"
@@ -229,7 +229,7 @@ function CardFront({ onView }: { onView: () => void }) {
       rimGlint={true}
       transitionDuration={650}
       background={NAVY}
-      className="card-portrait-shadow max-w-[295px] sm:max-w-[300px]"
+      className="card-portrait-shadow max-w-[276px] sm:max-w-[280px]"
     >
       <figure className="absolute inset-0 m-0 whitespace-normal text-left">
         <img
@@ -239,7 +239,7 @@ function CardFront({ onView }: { onView: () => void }) {
           height={850}
           decoding="async"
           // Whole photo at card width, melting into the navy footer strip
-          className="absolute inset-x-0 top-0 h-[332px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
+          className="absolute inset-x-0 top-0 h-[352px] w-full object-cover object-top [mask-image:linear-gradient(to_bottom,#000_82%,transparent_100%)]"
         />
 
         {/* Headroom shade so the name reads on the backdrop. */}

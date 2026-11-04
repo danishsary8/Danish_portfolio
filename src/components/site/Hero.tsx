@@ -118,7 +118,7 @@ export function Hero() {
       />
 
       <div className="mx-auto w-full max-w-[1120px] px-4 pt-[104px] pb-14 sm:px-6 sm:pt-[104px] sm:pb-16 lg:py-0">
-        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_295px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_300px] xl:gap-12 min-[90rem]:grid-cols-[minmax(0,1fr)_305px] min-[90rem]:gap-14">
+        <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:min-h-[100dvh] lg:content-center lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10 lg:pb-6 lg:pt-[76px] xl:grid-cols-[minmax(0,1fr)_285px] xl:gap-12 min-[90rem]:grid-cols-[minmax(0,1fr)_290px] min-[90rem]:gap-14">
           {/* Left column */}
           <div className="min-w-0">
             {/* Status + Phnom Penh time (split-flap telemetry) - placed cleanly above name */}
@@ -295,18 +295,18 @@ export function Hero() {
 
           {/* Right column: portrait card + editorial quote with handwritten signature.
               Aligned to the top (lg:self-start) so the card top precisely matches the status pill level. */}
-          <div className="enter-settle flex flex-col items-center lg:items-end justify-start lg:self-start gap-3 w-full max-w-[295px] sm:max-w-[300px] mx-auto lg:mx-0" style={step(2)}>
+          <div className="enter-settle flex flex-col items-center lg:items-end justify-start lg:self-start gap-3 w-full max-w-[276px] sm:max-w-[280px] mx-auto lg:mx-0" style={step(2)}>
             <PortraitCard onView={() => setIsProfileModalOpen(true)} />
 
             {/* Editorial quote below card with handwritten signature - pure typography, no border container */}
-            <div className="w-full px-1 text-left">
-              <blockquote className="text-fg-muted text-[12.5px] sm:text-[13px] font-normal leading-[1.5] tracking-[-0.01em]">
-                <span aria-hidden="true" className="font-serif text-[20px] leading-none text-gold font-normal mr-1 select-none">“</span>
+            <div className="w-full px-0.5 text-left">
+              <blockquote className="text-fg-muted text-[12px] sm:text-[12.5px] font-normal leading-[1.5] tracking-[-0.01em]">
+                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold font-normal mr-1 select-none">“</span>
                 I build responsive web apps using React on secure Laravel REST APIs and PostgreSQL with real authentication.
-                <span aria-hidden="true" className="font-serif text-[20px] leading-none text-gold font-normal ml-0.5 select-none">”</span>
+                <span aria-hidden="true" className="font-serif text-[18px] leading-none text-gold font-normal ml-0.5 select-none">”</span>
               </blockquote>
-              <div className="mt-1 flex items-center justify-end pr-1">
-                <div className="h-8 w-28 shrink-0">
+              <div className="mt-1 flex items-center justify-end pr-0.5">
+                <div className="h-7 w-26 shrink-0">
                   <img
                     src={ASSETS.profile.signatureTransparent}
                     alt={`Signature of ${PROFILE.name}`}
