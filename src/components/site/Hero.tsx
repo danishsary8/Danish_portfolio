@@ -7,6 +7,7 @@ import { ASSETS } from "@/lib/assets";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { SplitFlapText } from "@/components/ui/SplitFlapText";
+import TechText from "@/components/ui/TechText";
 import LogoLoop from "@/components/ui/LogoLoop";
 import { SkillIcon, themedSkillColor } from "./SkillIcon";
 import { ProfileModal } from "./ProfileModal";
@@ -167,35 +168,40 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Big Name: commanding architectural scale with balanced letter-spacing */}
+            {/* Big Name: Interactive React Bits TechText vector wordmark */}
             <h1
               id="hero-title"
               aria-label="Sary Danish"
-              className="uppercase whitespace-nowrap text-[clamp(32px,8.8vw,48px)] sm:text-[70px] lg:text-[74px] font-semibold tracking-[-0.04em] leading-[1.02] select-none cursor-pointer group"
-              onClick={() => setGoldTarget((prev) => (prev === "danish" ? "sary" : "danish"))}
-              title="Click to alternate highlight"
+              className="relative block w-full max-w-[560px] select-none"
             >
-              {NAME.map((word, w) => (
-                <span key={word.key}>
-                  {w > 0 ? " " : null}
-                  <span
-                    className={`inline-block whitespace-nowrap transition-colors duration-700 ease-[var(--ease-in-out)] ${
-                      goldTarget === word.key ? "text-gold" : "text-fg group-hover:text-fg/80"
-                    }`}
-                  >
-                    {word.text.split("").map((ch) => (
-                      <span
-                        key={letterIndex}
-                        aria-hidden="true"
-                        className="enter inline-block"
-                        style={step(1 + letterIndex++ * 0.4)}
-                      >
-                        {ch}
-                      </span>
-                    ))}
-                  </span>
-                </span>
-              ))}
+              {/* Accessible text for screen-readers, SEO, and tests */}
+              <span className="sr-only">Sary Danish</span>
+
+              {/* React Bits TechText vector animation canvas */}
+              <div
+                className="enter relative h-[52px] xs:h-[64px] sm:h-[80px] lg:h-[92px] w-full cursor-pointer"
+                style={step(1)}
+              >
+                <TechText
+                  text="SARY DANISH"
+                  fontFamily="var(--font-sans)"
+                  fontWeight={700}
+                  fontSize={140}
+                  letterSpacing={-0.04}
+                  color="var(--fg)"
+                  accentColor="var(--gold)"
+                  align="left"
+                  reveal="letter"
+                  dashLength={4}
+                  dashGap={2}
+                  specks={15}
+                  intro="none"
+                  introDuration={2}
+                  clickKick
+                  guides={false}
+                  draggable
+                />
+              </div>
             </h1>
 
             {/* Role & Academic degree subtitle */}
