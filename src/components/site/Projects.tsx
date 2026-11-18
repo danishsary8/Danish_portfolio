@@ -325,9 +325,14 @@ export function Projects() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
-          className={`squircle [--r:24px] max-h-[90dvh] overflow-y-auto overscroll-contain gap-5 border-[var(--edge)] bg-surface-2 p-5 sm:p-7 ${
+          className={`squircle [--r:24px] max-h-[90dvh] overflow-y-auto overscroll-contain gap-5 outline-none focus:outline-none border-[var(--edge)] bg-surface-2 p-5 sm:p-7 ${
             selected?.caseStudy ? "max-w-4xl lg:p-9" : "max-w-2xl"
           }`}
+          onOpenAutoFocus={(e) => {
+            // Start on the dialog itself, so the auto-playing carousel is not focused (focus pauses it).
+            e.preventDefault();
+            (e.currentTarget as HTMLElement | null)?.focus();
+          }}
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             triggerRef.current?.focus();

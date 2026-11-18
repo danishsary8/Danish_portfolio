@@ -1,5 +1,5 @@
 import { useState, type ComponentType, type CSSProperties, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   BookOpen,
@@ -32,6 +32,7 @@ import {
   SiTypescript,
   SiVercel,
 } from "react-icons/si";
+import Carousel from "@/components/ui/ReactBitsCarousel";
 import CountUp from "@/components/ui/CountUp";
 import { GlareHover } from "@/components/ui/GlareHover";
 import type { CaseStudy, Project } from "@/content/portfolio";
@@ -301,110 +302,123 @@ function Built({ cs }: { cs: CaseStudy }) {
   );
 }
 
-/* ---------------- 4. Features: tabs + one big screen ---------------- */
+/* ---------------- 4. Features: topic list + React Bits Carousel ---------------- */
 
-const FEATURE_ICONS: Icon[] = [QrCode, BookOpen, LayoutDashboard, Sparkles];
-const FEATURE_HUES = ["#10b981", "#6366f1", "#f59e0b", "#ec4899"];
+const SLIDE_HUES = ["#6366f1", "#0ea5e9", "#f59e0b", "#ec4899", "#10b981", "#8b5cf6", "#f43f5e"];
+
+/** One slide: a real screenshot, framed as a browser window or a phone. */
+function Slide({ f }: { f: CaseStudy["features"][number] }) {
+  return (
+    <div className="grid h-full w-full place-items-center bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[5%]">
+      {f.phone ? (
+        <img
+          src={f.image}
+          alt={f.alt}
+          draggable={false}
+          decoding="async"
+          className="h-full w-auto rounded-[16px] border-[3px] border-[#0b0f2e] object-cover object-top shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]"
+        />
+      ) : (
+        <div className="w-full overflow-hidden rounded-[10px] bg-white shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]">
+          <div className="flex h-5 items-center gap-1 border-b border-black/5 bg-[#f4f4f6] px-2">
+            {[0, 1, 2].map((k) => (
+              <span key={k} aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-black/15" />
+            ))}
+            <span className="mx-auto flex items-center gap-1 font-mono text-[8px] text-black/45">
+              <Lock aria-hidden="true" className="h-2 w-2" strokeWidth={2} />
+              bookly.site
+            </span>
+          </div>
+          <img
+            src={f.image}
+            alt={f.alt}
+            draggable={false}
+            decoding="async"
+            className="block w-full"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
 
 function Features({ cs }: { cs: CaseStudy }) {
   const [active, setActive] = useState(0);
   const reduce = useReducedMotion();
-  const f = cs.features[active] ?? cs.features[0]!;
   return (
     <Rise>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center">
-        <div role="tablist" aria-label="Bookly features" className="grid gap-1.5">
+      <div className="grid gap-5 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:items-center">
+        <ol className="hidden gap-1 lg:grid" aria-label="Screens in the slideshow">
           {cs.features.map((x, i) => {
             const on = i === active;
+            const hue = SLIDE_HUES[i % SLIDE_HUES.length]!;
             return (
-              <button
+              <li
                 key={x.title}
-                type="button"
-                role="tab"
-                aria-selected={on}
-                aria-controls="bookly-feature-panel"
-                id={`bookly-feature-${i}`}
-                onClick={() => setActive(i)}
-                onMouseEnter={() => setActive(i)}
-                className={`relative flex w-full items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-150 ${on ? "" : "hover:bg-surface-1/60"} ${FOCUS}`}
+                aria-current={on ? "true" : undefined}
+                className="relative flex items-center gap-2.5 rounded-xl px-3 py-2"
               >
                 {on ? (
                   <motion.span
-                    layoutId="bookly-feature-pill"
+                    layoutId="bookly-slide-pill"
                     aria-hidden="true"
-                    className="absolute inset-0 rounded-2xl border border-[var(--edge)] bg-surface-1 shadow-[var(--elev-1)]"
-                    transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
+                    className="absolute inset-0 rounded-xl border border-[var(--edge)] bg-surface-1 shadow-[var(--elev-1)]"
+                    transition={
+                      reduce ? { duration: 0 } : { type: "spring", duration: 0.35, bounce: 0.15 }
+                    }
                   />
                 ) : null}
-                <span className="relative">
-                  <Tile
-                    icon={FEATURE_ICONS[i] ?? Sparkles}
-                    hue={FEATURE_HUES[i] ?? HUE.features}
-                    size={34}
-                  />
+                <span
+                  aria-hidden="true"
+                  className="relative h-2 w-2 shrink-0 rounded-full transition-transform duration-200"
+                  style={{
+                    background: hue,
+                    transform: on ? "scale(1.35)" : "scale(1)",
+                    opacity: on ? 1 : 0.55,
+                  }}
+                />
+                <span
+                  className={`relative text-[14px] transition-colors duration-200 ${on ? "font-semibold text-fg" : "text-fg-muted"}`}
+                >
+                  {x.title}
                 </span>
-                <span className="relative min-w-0">
-                  <span className="block text-[14.5px] font-semibold text-fg">{x.title}</span>
-                  <span className="block text-[13px] leading-[1.45] text-fg-muted">{x.text}</span>
-                </span>
-              </button>
+              </li>
             );
           })}
-        </div>
+        </ol>
 
-        <div
-          id="bookly-feature-panel"
-          role="tabpanel"
-          aria-labelledby={`bookly-feature-${active}`}
-          className="relative aspect-[16/10] overflow-hidden rounded-[20px] border border-[var(--edge)]"
-          style={{
-            background: `radial-gradient(90% 90% at 30% 10%, color-mix(in oklab, ${FEATURE_HUES[active]} 30%, #16207a), #0b1147)`,
-            transition: "background 400ms var(--ease-out)",
-          }}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={f.title}
-              className="absolute inset-0 grid place-items-center p-[6%]"
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14, scale: 0.98 }}
-              animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.99 }}
-              transition={{ duration: 0.32, ease: EASE }}
-            >
-              {f.phone ? (
-                <img
-                  src={f.image}
-                  alt={f.alt}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-auto rounded-[14px] border-[3px] border-[#0b0f2e] object-cover object-top shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]"
-                />
-              ) : (
-                <div className="w-full overflow-hidden rounded-[10px] bg-white shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]">
-                  <div className="flex h-5 items-center gap-1 border-b border-black/5 bg-[#f4f4f6] px-2">
-                    {[0, 1, 2].map((k) => (
-                      <span
-                        key={k}
-                        aria-hidden="true"
-                        className="h-1.5 w-1.5 rounded-full bg-black/15"
-                      />
-                    ))}
-                    <span className="mx-auto flex items-center gap-1 font-mono text-[8px] text-black/45">
-                      <Lock aria-hidden="true" className="h-2 w-2" strokeWidth={2} />
-                      bookly.site
-                    </span>
-                  </div>
-                  <img
-                    src={f.image}
-                    alt={f.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="block w-full"
-                  />
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+        <p className="text-center text-[14px] font-semibold text-fg lg:hidden" aria-live="polite">
+          {cs.features[active]?.title}
+        </p>
+        <div className="min-w-0 overflow-hidden rounded-[20px]">
+          <Carousel
+            items={cs.features.map((f) => (
+              <Slide key={f.title} f={f} />
+            ))}
+            baseWidth="100%"
+            aspectRatio={16 / 10}
+            peek={0}
+            gap={12}
+            radius={20}
+            effect="slide"
+            indicator="bars"
+            arrows
+            autoplay={!reduce}
+            autoplayDelay={3200}
+            pauseOnHover
+            loop
+            draggable
+            theme="dark"
+            frame={false}
+            style={
+              {
+                "--carousel-tile-edge": "transparent",
+                "--carousel-tile-highlight": "transparent",
+                "--carousel-tile-shadow": "none",
+              } as CSSProperties
+            }
+            onChange={setActive}
+          />
         </div>
       </div>
     </Rise>

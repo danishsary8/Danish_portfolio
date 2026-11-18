@@ -13,12 +13,14 @@ import signatureTransparent from "@/assets/signature-transparent.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
 import drivingShot from "@/assets/project-driving.jpg.asset.json";
-// Real Bookly screenshots (from the Bookly repo, 1440×900 desktop and 390×844 phone, webp).
+// Real Bookly screenshots of the live site (1440×900 desktop, 390×844 phone), taken 19 Nov 2026.
 import booklyHome from "@/assets/projects/bookly/home.webp";
+import booklyCategory from "@/assets/projects/bookly/category.webp";
 import booklyBook from "@/assets/projects/bookly/book.webp";
-import booklyAdmin from "@/assets/projects/bookly/admin-dashboard.webp";
-import booklyKhqr from "@/assets/projects/bookly/khqr-pay.webp";
-import booklyPhoneHome from "@/assets/projects/bookly/phone-home-km.webp";
+import booklySimilar from "@/assets/projects/bookly/similar.webp";
+import booklySearch from "@/assets/projects/bookly/search.webp";
+import booklyPhoneHome from "@/assets/projects/bookly/phone-km.webp";
+import booklyPhoneBook from "@/assets/projects/bookly/phone-book-km.webp";
 
 export interface ProjectAsset {
   src: string;
@@ -43,10 +45,12 @@ export const ASSETS = {
   projects: {
     booklyShots: {
       home: booklyHome,
+      category: booklyCategory,
       book: booklyBook,
-      admin: booklyAdmin,
-      khqr: booklyKhqr,
+      similar: booklySimilar,
+      search: booklySearch,
       phoneHome: booklyPhoneHome,
+      phoneBook: booklyPhoneBook,
     },
     bookly: {
       src: booklyHome || booklyShot.url,

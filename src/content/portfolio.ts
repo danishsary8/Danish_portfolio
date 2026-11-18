@@ -67,7 +67,8 @@ export type CaseStudy = {
   solution: string;
   /** "How I built it": the real order the work happened in. */
   steps: { title: string; text: string }[];
-  features: { title: string; text: string; image: string; alt: string; phone?: boolean }[];
+  /** Screens shown in the auto-playing carousel, one topic each. */
+  features: { title: string; image: string; alt: string; phone?: boolean }[];
   stats: { value: number; suffix?: string; label: string }[];
   practices: string[];
   challenges: { title: string; fix: string; result: string }[];
@@ -121,30 +122,38 @@ export const PROJECTS: Project[] = [
         { title: "Ship + run", text: "Domain, email, backups" },
       ],
       features: [
+        { title: "Storefront", image: ASSETS.projects.booklyShots.home, alt: "Bookly home page" },
         {
-          title: "Pay the local way",
-          text: "Scan a KHQR code or pay cash. The order confirms itself.",
-          image: ASSETS.projects.booklyShots.khqr,
-          alt: "Bookly checkout showing a Bakong KHQR payment code",
+          title: "Browse by category",
+          image: ASSETS.projects.booklyShots.category,
+          alt: "Bookly comics and manga category page",
         },
         {
-          title: "Khmer and English",
-          text: "Every screen in both languages, made for phones first.",
+          title: "Book page",
+          image: ASSETS.projects.booklyShots.book,
+          alt: "Bookly book page for Dune",
+        },
+        {
+          title: "Similar books, by AI",
+          image: ASSETS.projects.booklyShots.similar,
+          alt: "Similar in theme recommendations under a book",
+        },
+        {
+          title: "Search by meaning",
+          image: ASSETS.projects.booklyShots.search,
+          alt: "Search results for books about building good habits",
+        },
+        {
+          title: "Khmer, on phones",
           image: ASSETS.projects.booklyShots.phoneHome,
           alt: "Bookly home page in Khmer on a phone",
           phone: true,
         },
         {
-          title: "Shop dashboard",
-          text: "Books, stock, orders, offers and sales reports in one place.",
-          image: ASSETS.projects.booklyShots.admin,
-          alt: "Bookly admin dashboard with sales charts",
-        },
-        {
-          title: "Smart picks",
-          text: "Search that forgives typos, and similar books picked by AI.",
-          image: ASSETS.projects.booklyShots.book,
-          alt: "A Bookly book page",
+          title: "Book page in Khmer",
+          image: ASSETS.projects.booklyShots.phoneBook,
+          alt: "A Bookly book page in Khmer on a phone",
+          phone: true,
         },
       ],
       stats: [
