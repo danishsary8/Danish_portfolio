@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { ArrowUpRight, Award, Check, FileText, Github, Lock } from "lucide-react";
+import { useRef, useState, type CSSProperties } from "react";
+import { ArrowUpRight, Award, Check, FileText, Github } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,8 @@ import { PROJECTS, type Project } from "@/content/portfolio";
 import { Reveal, SECTION, SectionHeader } from "./Reveal";
 import { SkillIcon, hasSkillIcon, themedSkillColor } from "./SkillIcon";
 import { ProjectGallery } from "./ProjectGallery";
+import { ProjectCover } from "./ProjectCover";
+import { BooklyCaseStudy } from "./BooklyCaseStudy";
 
 // Deck order: flagship first, award second, then the two lighter apps.
 const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
@@ -19,97 +21,11 @@ const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
 const FOCUS =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
 
-const host = (url: string) => {
-  try {
-    return new URL(url).host;
-  } catch {
-    return url;
-  }
-};
-
-/** Safari-style window chrome: the real live URL, so the frame states a fact. */
-function BrowserFrame({ url, children }: { url: string; children: ReactNode }) {
-  return (
-    <div className="tactile squircle [--r:18px] w-full overflow-hidden whitespace-normal">
-      <div className="flex h-10 items-center gap-3 border-b border-[var(--edge)] bg-surface-1 px-4 shadow-[inset_0_-1px_0_var(--specular)]">
-        <span aria-hidden="true" className="flex gap-1.5">
-          {[0, 1, 2].map((i) => (
-            <span key={i} className="h-2.5 w-2.5 rounded-full bg-[var(--line-strong)]" />
-          ))}
-        </span>
-        <span className="icon-tile-light mx-auto flex h-6 min-w-0 max-w-[70%] items-center gap-1.5 rounded-[7px] px-2.5 font-mono text-[11.5px] text-fg-subtle">
-          <Lock aria-hidden="true" strokeWidth={1.75} className="h-3 w-3 shrink-0" />
-          <span className="truncate">{host(url)}</span>
-        </span>
-        <span aria-hidden="true" className="w-[42px]" />
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function ProjectShot({ project }: { project: Project }) {
-  const [failed, setFailed] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-  // An image that errored before hydration never fires React's onError. Only an image that
-  // has actually finished (complete with a resolved currentSrc) and has no pixels counts.
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img && img.complete && img.currentSrc && img.naturalWidth === 0) setFailed(true);
-  }, []);
-
-  if (!project.image || failed) {
-    if (project.id !== "diabetes") {
-      return (
-        <div className="grid aspect-[16/10] place-items-center bg-surface-1">
-          <span className="text-[clamp(1.6rem,3.5vw,2.4rem)] font-semibold tracking-[-0.04em] text-fg-subtle">
-            {project.title}
-          </span>
-        </div>
-      );
-    }
-    // No screenshot: say what the product is, in both of its languages.
-    return (
-      <div className="relative grid aspect-[16/10] place-items-center overflow-hidden bg-surface-1">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_45%,var(--glow),transparent_70%)]"
-        />
-        <div className="relative text-center">
-          <p className="text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] text-fg">
-            EN <span className="text-fg-subtle">/</span>{" "}
-            <span lang="km" className="font-khmer">
-              ខ្មែរ
-            </span>
-          </p>
-          <p className="mt-4 text-[13.5px] text-fg-muted">Early diabetes screening</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="aspect-[16/10] overflow-hidden bg-surface-1">
-      <img
-        ref={imgRef}
-        src={project.image}
-        alt={project.imageAlt ?? `${project.title} screenshot`}
-        loading="lazy"
-        decoding="async"
-        width={1600}
-        height={1000}
-        onError={() => setFailed(true)}
-        className="h-full w-full object-cover object-top transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.02]"
-      />
-    </div>
-  );
-}
-
 function ProjectVisual({ project, onOpen }: { project: Project; onOpen?: (p: Project) => void }) {
   return (
     <div
       onClick={onOpen ? () => onOpen(project) : undefined}
-      className={onOpen ? "cursor-pointer group/shot" : undefined}
+      className={onOpen ? "group cursor-pointer" : undefined}
       title={onOpen ? `View ${project.title} details` : undefined}
     >
       <GlareHover
@@ -121,9 +37,9 @@ function ProjectVisual({ project, onOpen }: { project: Project; onOpen?: (p: Pro
         width="100%"
         className="block w-full max-w-full"
       >
-        <BrowserFrame url={project.liveUrl}>
-          <ProjectShot project={project} />
-        </BrowserFrame>
+        <div className="tactile squircle [--r:18px] w-full overflow-hidden">
+          <ProjectCover project={project} />
+        </div>
       </GlareHover>
     </div>
   );
@@ -260,6 +176,19 @@ function DeckCard({
 const dialogLink =
   "btn-apple inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13.5px] font-medium";
 
+function CaseHeader({ project }: { project: Project }) {
+  return (
+    <DialogHeader className="pr-10 text-left">
+      <DialogDescription className="text-[13px] text-fg-subtle">
+        Case study · {project.kind} · {project.hosting}
+      </DialogDescription>
+      <DialogTitle className="text-[30px] font-semibold leading-[1.05] tracking-[-0.04em] text-fg sm:text-[38px]">
+        {project.title}
+      </DialogTitle>
+    </DialogHeader>
+  );
+}
+
 function ProjectDetails({ project }: { project: Project }) {
   return (
     <>
@@ -375,7 +304,13 @@ export function Projects() {
 
       <ol
         aria-label="Projects"
-        style={{ timelineScope: ORDER.slice(0, -1).map((_, i) => `--deck-${i}`).join(", ") } as CSSProperties}
+        style={
+          {
+            timelineScope: ORDER.slice(0, -1)
+              .map((_, i) => `--deck-${i}`)
+              .join(", "),
+          } as CSSProperties
+        }
       >
         {ORDER.map((id, i) => (
           <DeckCard
@@ -390,13 +325,19 @@ export function Projects() {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
-          className="squircle [--r:24px] max-w-2xl max-h-[90dvh] overflow-y-auto gap-5 border-[var(--edge)] bg-surface-2 p-5 sm:p-7"
+          className={`squircle [--r:24px] max-h-[90dvh] overflow-y-auto overscroll-contain gap-5 border-[var(--edge)] bg-surface-2 p-5 sm:p-7 ${
+            selected?.caseStudy ? "max-w-4xl lg:p-9" : "max-w-2xl"
+          }`}
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             triggerRef.current?.focus();
           }}
         >
-          {selected ? <ProjectDetails project={selected} /> : null}
+          {selected?.caseStudy ? (
+            <BooklyCaseStudy project={selected} header={<CaseHeader project={selected} />} />
+          ) : selected ? (
+            <ProjectDetails project={selected} />
+          ) : null}
         </DialogContent>
       </Dialog>
     </section>

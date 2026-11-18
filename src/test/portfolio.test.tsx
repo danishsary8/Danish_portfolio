@@ -38,7 +38,10 @@ describe("Hero", () => {
       "href",
       "mailto:danishsary4@gmail.com",
     );
-    expect(screen.getByRole("link", { name: /View projects/ })).toHaveAttribute("href", "#projects");
+    expect(screen.getByRole("link", { name: /View projects/ })).toHaveAttribute(
+      "href",
+      "#projects",
+    );
     expect(screen.getByRole("link", { name: /GitHub/i })).toHaveAttribute(
       "href",
       "https://github.com/danishsary8",
@@ -79,12 +82,15 @@ describe("Projects", () => {
     expect(within(dialog).getByRole("heading", { name: "Bookly" })).toBeInTheDocument();
     expect(within(dialog).getByRole("link", { name: "Open the live Bookly site" })).toHaveAttribute(
       "href",
-      "https://bookly-frontend-five.vercel.app/",
+      "https://bookly.site/",
     );
     expect(within(dialog).getByRole("link", { name: "Bookly source on GitHub" })).toHaveAttribute(
       "href",
-      "https://github.com/danishsary8",
+      "https://github.com/danishsary8/bookly_frontend",
     );
+    expect(
+      within(dialog).getByRole("link", { name: "Bookly Backend API source on GitHub" }),
+    ).toHaveAttribute("href", "https://github.com/danishsary8/bookly_backend_v2");
     expect(within(dialog).getByRole("link", { name: "Bookly API documentation" })).toHaveAttribute(
       "href",
       "https://bookly-api-zasc.onrender.com/docs",

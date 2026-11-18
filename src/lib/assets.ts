@@ -13,6 +13,12 @@ import signatureTransparent from "@/assets/signature-transparent.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
 import drivingShot from "@/assets/project-driving.jpg.asset.json";
+// Real Bookly screenshots (from the Bookly repo, 1440×900 desktop and 390×844 phone, webp).
+import booklyHome from "@/assets/projects/bookly/home.webp";
+import booklyBook from "@/assets/projects/bookly/book.webp";
+import booklyAdmin from "@/assets/projects/bookly/admin-dashboard.webp";
+import booklyKhqr from "@/assets/projects/bookly/khqr-pay.webp";
+import booklyPhoneHome from "@/assets/projects/bookly/phone-home-km.webp";
 
 export interface ProjectAsset {
   src: string;
@@ -35,8 +41,15 @@ export const ASSETS = {
     signatureTransparent,
   },
   projects: {
+    booklyShots: {
+      home: booklyHome,
+      book: booklyBook,
+      admin: booklyAdmin,
+      khqr: booklyKhqr,
+      phoneHome: booklyPhoneHome,
+    },
     bookly: {
-      src: booklyShot.url,
+      src: booklyHome || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",
       aspectRatio: "16/10",
     },
