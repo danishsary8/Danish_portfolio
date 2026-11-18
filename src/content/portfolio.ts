@@ -67,9 +67,14 @@ export type CaseStudy = {
   solution: string;
   /** "How I built it": the real order the work happened in. */
   steps: { title: string; text: string }[];
-  /** Screens for the two auto-playing carousels (laptop and phone). */
-  features: { title: string; image: string; alt: string }[];
-  phoneScreens: { title: string; image: string; alt: string }[];
+  /** One screen shown on the laptop and the phone at the same time. */
+  screens: {
+    group: "Shop" | "Staff";
+    title: string;
+    text: string;
+    desktop: string;
+    phone: string;
+  }[];
   stats: { value: number; suffix?: string; label: string }[];
   practices: string[];
   challenges: { title: string; fix: string; result: string }[];
@@ -122,89 +127,90 @@ export const PROJECTS: Project[] = [
         { title: "Frontend", text: "React, built in phases" },
         { title: "Ship + run", text: "Domain, email, backups" },
       ],
-      features: [
-        { title: "Storefront", image: ASSETS.projects.booklyShots.home, alt: "Bookly home page" },
+      screens: [
         {
+          group: "Shop",
+          title: "Storefront",
+          text: "Home page with the books people love right now.",
+          desktop: ASSETS.projects.booklyShot("home"),
+          phone: ASSETS.projects.booklyShot("m-home"),
+        },
+        {
+          group: "Shop",
           title: "Browse by category",
-          image: ASSETS.projects.booklyShots.category,
-          alt: "Self-help and growth category page",
+          text: "Each category with its own sub-topics and filters.",
+          desktop: ASSETS.projects.booklyShot("category"),
+          phone: ASSETS.projects.booklyShot("m-category"),
         },
         {
+          group: "Shop",
           title: "Book page",
-          image: ASSETS.projects.booklyShots.book,
-          alt: "Bookly book page for Dune",
+          text: "Formats, price in USD or riel, stock and delivery info.",
+          desktop: ASSETS.projects.booklyShot("book"),
+          phone: ASSETS.projects.booklyShot("m-book"),
         },
         {
+          group: "Shop",
           title: "Similar books, by AI",
-          image: ASSETS.projects.booklyShots.similar,
-          alt: "Similar in theme recommendations under a book",
+          text: "Picks that match the book's theme, not just its genre.",
+          desktop: ASSETS.projects.booklyShot("similar"),
+          phone: ASSETS.projects.booklyShot("m-similar"),
         },
         {
+          group: "Shop",
           title: "Search by meaning",
-          image: ASSETS.projects.booklyShots.search,
-          alt: "Search results for books about building good habits",
+          text: "Describe what you want, and it finds books about that.",
+          desktop: ASSETS.projects.booklyShot("search"),
+          phone: ASSETS.projects.booklyShot("m-search"),
         },
         {
+          group: "Shop",
           title: "Checkout",
-          image: ASSETS.projects.booklyShots.payment,
-          alt: "Checkout with cash on delivery or Bakong KHQR",
+          text: "Cash on delivery or Bakong KHQR, with the total up front.",
+          desktop: ASSETS.projects.booklyShot("payment"),
+          phone: ASSETS.projects.booklyShot("m-payment"),
         },
         {
+          group: "Shop",
           title: "Pay with KHQR",
-          image: ASSETS.projects.booklyShots.khqr,
-          alt: "Bakong KHQR payment page with a QR code",
+          text: "Scan with any Cambodian bank app. The order confirms itself.",
+          desktop: ASSETS.projects.booklyShot("khqr"),
+          phone: ASSETS.projects.booklyShot("m-khqr"),
         },
         {
+          group: "Shop",
           title: "Your account",
-          image: ASSETS.projects.booklyShots.profile,
-          alt: "Customer account overview",
-        },
-      ],
-      phoneScreens: [
-        {
-          title: "Home",
-          image: ASSETS.projects.booklyShots.phoneHome,
-          alt: "Bookly home page on a phone",
+          text: "Orders, ebooks, wishlist and security in one place.",
+          desktop: ASSETS.projects.booklyShot("profile"),
+          phone: ASSETS.projects.booklyShot("m-profile"),
         },
         {
-          title: "Khmer",
-          image: ASSETS.projects.booklyShots.phoneHomeKm,
-          alt: "Bookly home page in Khmer on a phone",
+          group: "Staff",
+          title: "Dashboard",
+          text: "Sales, orders and new customers at a glance.",
+          desktop: ASSETS.projects.booklyShot("admin-dash"),
+          phone: ASSETS.projects.booklyShot("m-admin-dash"),
         },
         {
-          title: "Category",
-          image: ASSETS.projects.booklyShots.phoneCategory,
-          alt: "Category page on a phone",
+          group: "Staff",
+          title: "Orders",
+          text: "Every order with its payment and the next step to take.",
+          desktop: ASSETS.projects.booklyShot("admin-orders"),
+          phone: ASSETS.projects.booklyShot("m-admin-orders"),
         },
         {
-          title: "Book page",
-          image: ASSETS.projects.booklyShots.phoneBook,
-          alt: "Book page on a phone",
+          group: "Staff",
+          title: "Reports",
+          text: "Revenue, profit and best sellers, ready to print or export.",
+          desktop: ASSETS.projects.booklyShot("admin-reports"),
+          phone: ASSETS.projects.booklyShot("m-admin-reports"),
         },
         {
-          title: "Search",
-          image: ASSETS.projects.booklyShots.phoneSearch,
-          alt: "Search results on a phone",
-        },
-        {
-          title: "Similar books",
-          image: ASSETS.projects.booklyShots.phoneSimilar,
-          alt: "Similar books on a phone",
-        },
-        {
-          title: "Checkout",
-          image: ASSETS.projects.booklyShots.phonePayment,
-          alt: "Checkout payment options on a phone",
-        },
-        {
-          title: "Pay with KHQR",
-          image: ASSETS.projects.booklyShots.phoneKhqr,
-          alt: "KHQR payment on a phone",
-        },
-        {
-          title: "Account",
-          image: ASSETS.projects.booklyShots.phoneProfile,
-          alt: "Customer account on a phone",
+          group: "Staff",
+          title: "Books",
+          text: "Catalogue, formats and stock, with CSV import and export.",
+          desktop: ASSETS.projects.booklyShot("admin-books"),
+          phone: ASSETS.projects.booklyShot("m-admin-books"),
         },
       ],
       stats: [

@@ -44,23 +44,10 @@ export const ASSETS = {
   projects: {
     booklyShots: {
       home: bookly("home"),
-      category: bookly("category"),
-      book: bookly("book"),
-      similar: bookly("similar"),
-      search: bookly("search"),
-      payment: bookly("payment"),
-      khqr: bookly("khqr"),
-      profile: bookly("profile"),
       phoneHome: bookly("m-home"),
-      phoneHomeKm: bookly("m-home-km"),
-      phoneCategory: bookly("m-category"),
-      phoneBook: bookly("m-book"),
-      phoneSearch: bookly("m-search"),
-      phoneSimilar: bookly("m-similar"),
-      phonePayment: bookly("m-payment"),
-      phoneKhqr: bookly("m-khqr"),
-      phoneProfile: bookly("m-profile"),
     },
+    /** Raw lookup for the case-study screens: `booklyShot("book")`, `booklyShot("m-book")`. */
+    booklyShot: bookly,
     bookly: {
       src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",
