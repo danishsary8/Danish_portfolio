@@ -69,7 +69,7 @@ export type CaseStudy = {
   steps: { title: string; text: string }[];
   /** One screen shown on the laptop and the phone at the same time. */
   screens: {
-    group: "Shop" | "Staff";
+    group: "Customer" | "Staff" | "Admin";
     title: string;
     text: string;
     desktop: string;
@@ -129,56 +129,63 @@ export const PROJECTS: Project[] = [
       ],
       screens: [
         {
-          group: "Shop",
+          group: "Customer",
           title: "Storefront",
           text: "The home page opens with the books people love this week.",
           desktop: ASSETS.projects.booklyShot("home"),
           phone: ASSETS.projects.booklyShot("m-home"),
         },
         {
-          group: "Shop",
+          group: "Customer",
+          title: "Bookshelf",
+          text: "Pull a book off a real-looking shelf: best sellers, new arrivals, education.",
+          desktop: ASSETS.projects.booklyShot("shelf"),
+          phone: ASSETS.projects.booklyShot("m-shelf"),
+        },
+        {
+          group: "Customer",
           title: "Browse by category",
           text: "Every category has its own topics, so readers narrow down fast.",
           desktop: ASSETS.projects.booklyShot("category"),
           phone: ASSETS.projects.booklyShot("m-category"),
         },
         {
-          group: "Shop",
+          group: "Customer",
           title: "Best sellers",
           text: "Sort the whole catalogue by what sells, what's new or what's rated.",
           desktop: ASSETS.projects.booklyShot("best"),
           phone: ASSETS.projects.booklyShot("m-best"),
         },
         {
-          group: "Shop",
-          title: "Series",
-          text: "Read a series in order, or add every volume at once.",
-          desktop: ASSETS.projects.booklyShot("series"),
-          phone: ASSETS.projects.booklyShot("m-series"),
+          group: "Customer",
+          title: "Author page",
+          text: "Every book by one writer, with filters and prices in one place.",
+          desktop: ASSETS.projects.booklyShot("author"),
+          phone: ASSETS.projects.booklyShot("m-author"),
         },
         {
-          group: "Shop",
+          group: "Customer",
           title: "Book page",
           text: "Pick a format and see the price, stock and delivery before you buy.",
           desktop: ASSETS.projects.booklyShot("book"),
           phone: ASSETS.projects.booklyShot("m-book"),
         },
         {
-          group: "Shop",
+          group: "Customer",
           title: "Similar books, by AI",
           text: "Gemini matches books by theme, not just by genre.",
           desktop: ASSETS.projects.booklyShot("similar"),
           phone: ASSETS.projects.booklyShot("m-similar"),
         },
         {
-          group: "Shop",
+          group: "Customer",
           title: "Search by meaning",
           text: "Describe the book you want, and search finds the topic.",
           desktop: ASSETS.projects.booklyShot("search"),
           phone: ASSETS.projects.booklyShot("m-search"),
         },
         {
-          group: "Shop",
+          group: "Customer",
           title: "Pay with KHQR",
           text: "Scan with any Cambodian bank app. The order confirms itself.",
           desktop: ASSETS.projects.booklyShot("khqr"),
@@ -186,13 +193,27 @@ export const PROJECTS: Project[] = [
         },
         {
           group: "Staff",
+          title: "Today's tasks",
+          text: "Staff see what needs them today: orders to pack, returns, low stock.",
+          desktop: ASSETS.projects.booklyShot("staff-today"),
+          phone: ASSETS.projects.booklyShot("m-staff-today"),
+        },
+        {
+          group: "Staff",
+          title: "Stock",
+          text: "Low and sold-out books first, restocked in one click.",
+          desktop: ASSETS.projects.booklyShot("staff-stock"),
+          phone: ASSETS.projects.booklyShot("m-staff-stock"),
+        },
+        {
+          group: "Admin",
           title: "Dashboard",
-          text: "Sales, orders and new customers, live for the team.",
+          text: "Sales, orders and new customers at a glance.",
           desktop: ASSETS.projects.booklyShot("admin-dash"),
           phone: ASSETS.projects.booklyShot("m-admin-dash"),
         },
         {
-          group: "Staff",
+          group: "Admin",
           title: "Reports",
           text: "Revenue and profit by period, ready to print or export.",
           desktop: ASSETS.projects.booklyShot("admin-reports"),

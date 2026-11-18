@@ -331,7 +331,7 @@ function Browser({ children }: { children: ReactNode }) {
  */
 function IPhone({ children }: { children: ReactNode }) {
   return (
-    <div className="relative mx-auto w-full max-w-[236px]">
+    <div className="relative mx-auto w-full max-w-[224px]">
       <span
         aria-hidden="true"
         className="absolute -left-[3px] top-[18%] h-[5%] w-[3px] rounded-l bg-[#6b6862]"
@@ -385,6 +385,28 @@ function SlideImage({ src, alt, dir, k }: { src: string; alt: string; dir: numbe
   );
 }
 
+const GROUP = {
+  Customer: { label: "Customer", hue: "#6366f1" },
+  Staff: { label: "Staff", hue: "#0ea5e9" },
+  Admin: { label: "Admin", hue: "#f59e0b" },
+} as const;
+
+function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
+  const I = dir < 0 ? ChevronLeft : ChevronRight;
+  return (
+    <button
+      type="button"
+      aria-label={dir < 0 ? "Previous screen" : "Next screen"}
+      onClick={onClick}
+      className={`btn-apple btn-apple-secondary absolute top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full ${
+        dir < 0 ? "left-2 sm:-left-4" : "right-2 sm:-right-4"
+      } ${FOCUS}`}
+    >
+      <I aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
+    </button>
+  );
+}
+
 function Features({ cs }: { cs: CaseStudy }) {
   const reduce = useReducedMotion();
   const screens = cs.screens;
@@ -401,8 +423,7 @@ function Features({ cs }: { cs: CaseStudy }) {
   }, [index, paused, reduce]);
 
   const s: Screen = screens[index]!;
-  const groups = ["Shop", "Staff"] as const;
-  const firstOf = (g: Screen["group"]) => screens.findIndex((x) => x.group === g);
+  const g = GROUP[s.group];
 
   return (
     <Rise>
@@ -414,108 +435,82 @@ function Features({ cs }: { cs: CaseStudy }) {
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
-        className="grid gap-6 md:grid-cols-[minmax(0,1fr)_200px] md:items-end lg:grid-cols-[minmax(0,1fr)_236px]"
+        className="grid gap-6 md:grid-cols-[minmax(0,1fr)_190px] md:items-center lg:grid-cols-[minmax(0,1fr)_224px]"
       >
-        <div className="min-w-0">
-          {/* details + controls */}
-          <div className="mb-4 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4 sm:p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div className="min-w-0" aria-live={paused ? "polite" : "off"}>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="rounded-full px-2 py-0.5 text-[11.5px] font-medium"
-                    style={{
-                      color: s.group === "Shop" ? "#4f46e5" : "#b45309",
-                      background:
-                        s.group === "Shop"
-                          ? "color-mix(in oklab, #6366f1 14%, transparent)"
-                          : "color-mix(in oklab, #f59e0b 16%, transparent)",
-                    }}
-                  >
-                    {s.group === "Shop" ? "Shop" : "Staff & admin"}
-                  </span>
-                  <span className="font-mono text-[12px] tabular-nums text-fg-subtle">
-                    {index + 1} / {screens.length}
-                  </span>
-                </div>
-                <h5 className="mt-2 text-[17px] font-semibold tracking-[-0.02em] text-fg">
-                  {s.title}
-                </h5>
-                <p className="mt-1 text-[14px] leading-[1.5] text-fg-muted">{s.text}</p>
-              </div>
-              <div className="flex shrink-0 gap-2">
-                <button
-                  type="button"
-                  aria-label="Previous screen"
-                  onClick={() => go(index - 1, -1)}
-                  className={`btn-apple btn-apple-secondary grid h-10 w-10 place-items-center rounded-full ${FOCUS}`}
+        <div className="flex min-w-0 flex-col gap-4">
+          {/* details */}
+          <div
+            className="flex items-end justify-between gap-4 px-1"
+            aria-live={paused ? "polite" : "off"}
+          >
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[12px] font-medium"
+                  style={{
+                    color: g.hue,
+                    background: `color-mix(in oklab, ${g.hue} 14%, transparent)`,
+                  }}
                 >
-                  <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
-                </button>
-                <button
-                  type="button"
-                  aria-label="Next screen"
-                  onClick={() => go(index + 1, 1)}
-                  className={`btn-apple btn-apple-secondary grid h-10 w-10 place-items-center rounded-full ${FOCUS}`}
-                >
-                  <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={2} />
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex gap-1.5" role="group" aria-label="Jump to">
-                {groups.map((g) => (
-                  <button
-                    key={g}
-                    type="button"
-                    onClick={() => go(firstOf(g), firstOf(g) >= index ? 1 : -1)}
-                    aria-pressed={s.group === g}
-                    className={`h-8 rounded-full border px-3 text-[12.5px] transition-colors duration-150 ${FOCUS} ${
-                      s.group === g
-                        ? "border-transparent bg-fg text-[var(--bg)]"
-                        : "border-[var(--edge)] text-fg-muted hover:text-fg"
-                    }`}
-                  >
-                    {g === "Shop" ? "Shop" : "Staff & admin"}
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center gap-1" aria-hidden="true">
-                {screens.map((x, i) => (
                   <span
-                    key={x.title}
-                    className={`relative h-1.5 overflow-hidden rounded-full transition-all duration-300 ${
-                      i === index ? "w-6 bg-[var(--line-strong)]" : "w-1.5 bg-[var(--line-strong)]"
-                    }`}
-                  >
-                    {i === index && !reduce ? (
-                      <motion.span
-                        key={`${index}-${paused}`}
-                        className="absolute inset-y-0 left-0 bg-fg"
-                        initial={{ width: paused ? "100%" : "0%" }}
-                        animate={{ width: "100%" }}
-                        transition={{ duration: paused ? 0 : SLIDE_MS / 1000, ease: "linear" }}
-                      />
-                    ) : i === index ? (
-                      <span className="absolute inset-0 bg-fg" />
-                    ) : null}
-                  </span>
-                ))}
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: g.hue }}
+                  />
+                  {g.label} view
+                </span>
+                <span className="font-mono text-[12px] tabular-nums text-fg-subtle">
+                  {String(index + 1).padStart(2, "0")} / {screens.length}
+                </span>
               </div>
+              <h5 className="mt-2 text-[19px] font-semibold tracking-[-0.02em] text-fg">
+                {s.title}
+              </h5>
+              <p className="mt-0.5 text-[14px] leading-[1.5] text-fg-muted">{s.text}</p>
             </div>
           </div>
 
-          {/* laptop */}
-          <div className="rounded-[20px] bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4%]">
-            <Browser>
-              <SlideImage
-                src={s.desktop}
-                alt={`${s.title}, on a laptop`}
-                dir={dir}
-                k={`d-${index}`}
-              />
-            </Browser>
+          {/* laptop, with the arrows on its sides */}
+          <div className="relative">
+            <div className="rounded-[20px] bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4%]">
+              <Browser>
+                <SlideImage
+                  src={s.desktop}
+                  alt={`${s.title}, on a laptop`}
+                  dir={dir}
+                  k={`d-${index}`}
+                />
+              </Browser>
+            </div>
+            <Arrow dir={-1} onClick={() => go(index - 1, -1)} />
+            <Arrow dir={1} onClick={() => go(index + 1, 1)} />
+          </div>
+
+          {/* progress: one bar per screen, coloured by who sees it */}
+          <div className="flex items-center gap-1 px-1" aria-hidden="true">
+            {screens.map((x, i) => {
+              const hue = GROUP[x.group].hue;
+              return (
+                <span
+                  key={x.title}
+                  className="relative h-1 flex-1 overflow-hidden rounded-full"
+                  style={{ background: `color-mix(in oklab, ${hue} 22%, transparent)` }}
+                >
+                  {i < index || (i === index && reduce) ? (
+                    <span className="absolute inset-0" style={{ background: hue }} />
+                  ) : i === index ? (
+                    <motion.span
+                      key={`${index}-${paused}`}
+                      className="absolute inset-y-0 left-0"
+                      style={{ background: hue }}
+                      initial={{ width: paused ? "100%" : "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: paused ? 0 : SLIDE_MS / 1000, ease: "linear" }}
+                    />
+                  ) : null}
+                </span>
+              );
+            })}
           </div>
         </div>
 
