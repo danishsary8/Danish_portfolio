@@ -203,13 +203,18 @@ function Architecture({ cs }: { cs: CaseStudy }) {
   return (
     <Rise>
       <figure className="tactile squircle [--r:20px] bg-surface-1/60 p-4 sm:p-6">
-        <ol className="flex flex-col items-stretch gap-2 md:flex-row md:items-center">
+        <ol className="flex flex-col items-stretch gap-1.5 md:flex-row md:items-center md:gap-2">
           {flow.map((n, i) => (
-            <li key={n.name} className="flex flex-col items-center gap-2 md:flex-1 md:flex-row">
-              <div className="w-full rounded-xl border border-[var(--edge)] bg-surface-2 px-3 py-3 text-center shadow-[var(--elev-1)]">
-                <p className="text-[14px] font-semibold text-fg">{n.name}</p>
-                <p className="text-[12px] text-fg-muted">{n.role}</p>
-                <p className="mt-1.5 font-mono text-[11px] text-fg-subtle">{n.host}</p>
+            <li
+              key={n.name}
+              className="flex flex-col items-center gap-1.5 md:flex-1 md:flex-row md:gap-2"
+            >
+              <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-[var(--edge)] bg-surface-2 px-3.5 py-2.5 shadow-[var(--elev-1)] md:block md:px-3 md:py-3 md:text-center">
+                <div>
+                  <p className="text-[14px] font-semibold text-fg">{n.name}</p>
+                  <p className="text-[12px] text-fg-muted">{n.role}</p>
+                </div>
+                <p className="font-mono text-[11px] text-fg-subtle md:mt-1.5">{n.host}</p>
               </div>
               {i < flow.length - 1 ? (
                 <>
@@ -370,7 +375,7 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
         {header}
         <Rise>
           <div className="overflow-hidden rounded-[20px] border border-[var(--edge)]">
-            <ProjectCover project={project} hover={false} />
+            <ProjectCover project={project} hover={false} banner />
           </div>
         </Rise>
         <Rise delay={0.05}>

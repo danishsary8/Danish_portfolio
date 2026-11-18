@@ -180,7 +180,7 @@ function CaseHeader({ project }: { project: Project }) {
   return (
     <DialogHeader className="pr-10 text-left">
       <DialogDescription className="text-[13px] text-fg-subtle">
-        Case study · {project.kind} · {project.hosting}
+        Case study · {project.kind.split(" · ")[0]}
       </DialogDescription>
       <DialogTitle className="text-[30px] font-semibold leading-[1.05] tracking-[-0.04em] text-fg sm:text-[38px]">
         {project.title}

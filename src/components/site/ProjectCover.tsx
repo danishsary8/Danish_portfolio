@@ -206,7 +206,16 @@ function DrivingPreview() {
 
 /* ---------- the cover ---------- */
 
-export function ProjectCover({ project, hover = true }: { project: Project; hover?: boolean }) {
+export function ProjectCover({
+  project,
+  hover = true,
+  banner = false,
+}: {
+  project: Project;
+  hover?: boolean;
+  /** Wide strip without the name (the case study already shows the title above it). */
+  banner?: boolean;
+}) {
   const t = THEMES[project.id];
   const lift = hover
     ? "transition-transform duration-700 ease-[var(--ease-out)] motion-safe:group-hover:-translate-y-1.5"
@@ -217,7 +226,7 @@ export function ProjectCover({ project, hover = true }: { project: Project; hove
 
   return (
     <div
-      className={`@container relative aspect-[16/10] w-full overflow-hidden ${t.stage}`}
+      className={`@container relative w-full overflow-hidden ${banner ? "aspect-[16/10] sm:aspect-[2.4/1]" : "aspect-[16/10]"} ${t.stage}`}
       role="img"
       aria-label={`${project.title} cover: ${project.coverLine ?? project.kind}`}
     >
@@ -232,7 +241,10 @@ export function ProjectCover({ project, hover = true }: { project: Project; hove
       />
 
       {/* label */}
-      <div aria-hidden="true" className="absolute left-[6%] top-[9%] w-[50%]">
+      <div
+        aria-hidden="true"
+        className={`absolute left-[6%] top-[9%] w-[50%] ${banner ? "hidden" : ""}`}
+      >
         <p
           className={`flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] ${t.sub}`}
         >
@@ -251,7 +263,23 @@ export function ProjectCover({ project, hover = true }: { project: Project; hove
 
       {/* product */}
       <div aria-hidden="true" className="absolute inset-0">
-        {project.id === "bookly" ? (
+        {banner && project.id === "bookly" ? (
+          <>
+            <Window
+              url={project.liveUrl}
+              className="absolute top-[16%] left-[26%] w-[64%] sm:top-[14%] sm:left-[30%] sm:w-[54%]"
+            >
+              <Shot src={ASSETS.projects.booklyShots.home} alt="" className="block w-full" />
+            </Window>
+            <div className="absolute top-[30%] left-[8%] w-[22%] overflow-hidden rounded-[14px] border-[3px] border-[#0b0f2e] bg-[#0b0f2e] shadow-[0_24px_40px_-14px_rgba(0,0,0,0.65)] sm:top-[24%] sm:left-[15%] sm:w-[13%]">
+              <Shot
+                src={ASSETS.projects.booklyShots.phoneHome}
+                alt=""
+                className="block w-full rounded-[10px]"
+              />
+            </div>
+          </>
+        ) : project.id === "bookly" ? (
           <>
             <Window
               url={project.liveUrl}
