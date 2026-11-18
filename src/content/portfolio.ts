@@ -67,8 +67,9 @@ export type CaseStudy = {
   solution: string;
   /** "How I built it": the real order the work happened in. */
   steps: { title: string; text: string }[];
-  /** Screens shown in the auto-playing carousel, one topic each. */
-  features: { title: string; image: string; alt: string; phone?: boolean }[];
+  /** Screens for the two auto-playing carousels (laptop and phone). */
+  features: { title: string; image: string; alt: string }[];
+  phoneScreens: { title: string; image: string; alt: string }[];
   stats: { value: number; suffix?: string; label: string }[];
   practices: string[];
   challenges: { title: string; fix: string; result: string }[];
@@ -126,7 +127,7 @@ export const PROJECTS: Project[] = [
         {
           title: "Browse by category",
           image: ASSETS.projects.booklyShots.category,
-          alt: "Bookly comics and manga category page",
+          alt: "Self-help and growth category page",
         },
         {
           title: "Book page",
@@ -144,16 +145,66 @@ export const PROJECTS: Project[] = [
           alt: "Search results for books about building good habits",
         },
         {
-          title: "Khmer, on phones",
-          image: ASSETS.projects.booklyShots.phoneHome,
-          alt: "Bookly home page in Khmer on a phone",
-          phone: true,
+          title: "Checkout",
+          image: ASSETS.projects.booklyShots.payment,
+          alt: "Checkout with cash on delivery or Bakong KHQR",
         },
         {
-          title: "Book page in Khmer",
+          title: "Pay with KHQR",
+          image: ASSETS.projects.booklyShots.khqr,
+          alt: "Bakong KHQR payment page with a QR code",
+        },
+        {
+          title: "Your account",
+          image: ASSETS.projects.booklyShots.profile,
+          alt: "Customer account overview",
+        },
+      ],
+      phoneScreens: [
+        {
+          title: "Home",
+          image: ASSETS.projects.booklyShots.phoneHome,
+          alt: "Bookly home page on a phone",
+        },
+        {
+          title: "Khmer",
+          image: ASSETS.projects.booklyShots.phoneHomeKm,
+          alt: "Bookly home page in Khmer on a phone",
+        },
+        {
+          title: "Category",
+          image: ASSETS.projects.booklyShots.phoneCategory,
+          alt: "Category page on a phone",
+        },
+        {
+          title: "Book page",
           image: ASSETS.projects.booklyShots.phoneBook,
-          alt: "A Bookly book page in Khmer on a phone",
-          phone: true,
+          alt: "Book page on a phone",
+        },
+        {
+          title: "Search",
+          image: ASSETS.projects.booklyShots.phoneSearch,
+          alt: "Search results on a phone",
+        },
+        {
+          title: "Similar books",
+          image: ASSETS.projects.booklyShots.phoneSimilar,
+          alt: "Similar books on a phone",
+        },
+        {
+          title: "Checkout",
+          image: ASSETS.projects.booklyShots.phonePayment,
+          alt: "Checkout payment options on a phone",
+        },
+        {
+          title: "Pay with KHQR",
+          image: ASSETS.projects.booklyShots.phoneKhqr,
+          alt: "KHQR payment on a phone",
+        },
+        {
+          title: "Account",
+          image: ASSETS.projects.booklyShots.phoneProfile,
+          alt: "Customer account on a phone",
         },
       ],
       stats: [

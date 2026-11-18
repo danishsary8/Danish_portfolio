@@ -13,14 +13,13 @@ import signatureTransparent from "@/assets/signature-transparent.png";
 import booklyShot from "@/assets/project-bookly.jpg.asset.json";
 import loomoraShot from "@/assets/project-loomora.jpg.asset.json";
 import drivingShot from "@/assets/project-driving.jpg.asset.json";
-// Real Bookly screenshots of the live site (1440×900 desktop, 390×844 phone), taken 19 Nov 2026.
-import booklyHome from "@/assets/projects/bookly/home.webp";
-import booklyCategory from "@/assets/projects/bookly/category.webp";
-import booklyBook from "@/assets/projects/bookly/book.webp";
-import booklySimilar from "@/assets/projects/bookly/similar.webp";
-import booklySearch from "@/assets/projects/bookly/search.webp";
-import booklyPhoneHome from "@/assets/projects/bookly/phone-km.webp";
-import booklyPhoneBook from "@/assets/projects/bookly/phone-book-km.webp";
+// Real Bookly screenshots (current UI, 19 Nov 2026): desktop 1440×900, phone 430×932 (iPhone 15 Pro Max).
+// Checkout, KHQR and account screens come from a local copy of the API with demo data (no real customer).
+const bk = import.meta.glob("@/assets/projects/bookly/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const bookly = (name: string) => bk[`/src/assets/projects/bookly/${name}.webp`] ?? "";
 
 export interface ProjectAsset {
   src: string;
@@ -44,16 +43,26 @@ export const ASSETS = {
   },
   projects: {
     booklyShots: {
-      home: booklyHome,
-      category: booklyCategory,
-      book: booklyBook,
-      similar: booklySimilar,
-      search: booklySearch,
-      phoneHome: booklyPhoneHome,
-      phoneBook: booklyPhoneBook,
+      home: bookly("home"),
+      category: bookly("category"),
+      book: bookly("book"),
+      similar: bookly("similar"),
+      search: bookly("search"),
+      payment: bookly("payment"),
+      khqr: bookly("khqr"),
+      profile: bookly("profile"),
+      phoneHome: bookly("m-home"),
+      phoneHomeKm: bookly("m-home-km"),
+      phoneCategory: bookly("m-category"),
+      phoneBook: bookly("m-book"),
+      phoneSearch: bookly("m-search"),
+      phoneSimilar: bookly("m-similar"),
+      phonePayment: bookly("m-payment"),
+      phoneKhqr: bookly("m-khqr"),
+      phoneProfile: bookly("m-profile"),
     },
     bookly: {
-      src: booklyHome || booklyShot.url,
+      src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",
       aspectRatio: "16/10",
     },

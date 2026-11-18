@@ -302,124 +302,177 @@ function Built({ cs }: { cs: CaseStudy }) {
   );
 }
 
-/* ---------------- 4. Features: topic list + React Bits Carousel ---------------- */
+/* ---------------- 4. Features: laptop carousel + iPhone carousel ---------------- */
 
-const SLIDE_HUES = ["#6366f1", "#0ea5e9", "#f59e0b", "#ec4899", "#10b981", "#8b5cf6", "#f43f5e"];
+type Screen = CaseStudy["features"][number];
 
-/** One slide: a real screenshot, framed as a browser window or a phone. */
-function Slide({ f }: { f: CaseStudy["features"][number] }) {
+const CLEAN_TILES = {
+  "--carousel-tile-edge": "transparent",
+  "--carousel-tile-highlight": "transparent",
+  "--carousel-tile-shadow": "none",
+} as CSSProperties;
+
+/** A real desktop screenshot in a browser window. */
+function DesktopSlide({ s }: { s: Screen }) {
   return (
-    <div className="grid h-full w-full place-items-center bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[5%]">
-      {f.phone ? (
+    <div className="grid h-full w-full place-items-center bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4.5%]">
+      <div className="w-full overflow-hidden rounded-[10px] bg-white shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]">
+        <div className="flex h-5 items-center gap-1 border-b border-black/5 bg-[#f4f4f6] px-2">
+          {[0, 1, 2].map((k) => (
+            <span key={k} aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-black/15" />
+          ))}
+          <span className="mx-auto flex items-center gap-1 font-mono text-[8px] text-black/45">
+            <Lock aria-hidden="true" className="h-2 w-2" strokeWidth={2} />
+            bookly.site
+          </span>
+        </div>
         <img
-          src={f.image}
-          alt={f.alt}
+          src={s.image}
+          alt={s.alt}
           draggable={false}
           decoding="async"
-          className="h-full w-auto rounded-[16px] border-[3px] border-[#0b0f2e] object-cover object-top shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]"
+          className="block w-full"
         />
-      ) : (
-        <div className="w-full overflow-hidden rounded-[10px] bg-white shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]">
-          <div className="flex h-5 items-center gap-1 border-b border-black/5 bg-[#f4f4f6] px-2">
-            {[0, 1, 2].map((k) => (
-              <span key={k} aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-black/15" />
-            ))}
-            <span className="mx-auto flex items-center gap-1 font-mono text-[8px] text-black/45">
-              <Lock aria-hidden="true" className="h-2 w-2" strokeWidth={2} />
-              bookly.site
-            </span>
-          </div>
-          <img
-            src={f.image}
-            alt={f.alt}
-            draggable={false}
-            decoding="async"
-            className="block w-full"
+      </div>
+    </div>
+  );
+}
+
+/** The current slide's name, with a dot per slide. */
+function Caption({ items, active }: { items: Screen[]; active: number }) {
+  return (
+    <div className="mt-3 flex items-center justify-center gap-3">
+      <p className="min-w-0 truncate text-[13.5px] font-medium text-fg" aria-live="polite">
+        {items[active]?.title}
+      </p>
+      <span aria-hidden="true" className="flex shrink-0 gap-1">
+        {items.map((x, i) => (
+          <span
+            key={x.title}
+            className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? "w-4 bg-fg" : "w-1.5 bg-[var(--line-strong)]"}`}
           />
+        ))}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * iPhone 15 Pro Max shell (430×932 screen ratio): titanium band, thin black bezel, Dynamic Island,
+ * side buttons. The carousel runs inside the screen.
+ */
+function IPhone({ children }: { children: ReactNode }) {
+  return (
+    <div className="relative mx-auto w-full max-w-[260px]">
+      {/* side buttons */}
+      <span
+        aria-hidden="true"
+        className="absolute -left-[3px] top-[18%] h-[5%] w-[3px] rounded-l bg-[#6b6862]"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute -left-[3px] top-[26%] h-[9%] w-[3px] rounded-l bg-[#6b6862]"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute -left-[3px] top-[37%] h-[9%] w-[3px] rounded-l bg-[#6b6862]"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute -right-[3px] top-[30%] h-[13%] w-[3px] rounded-r bg-[#6b6862]"
+      />
+      <div className="rounded-[46px] bg-[linear-gradient(145deg,#8d8a83,#4a4843_40%,#7b7872_70%,#3d3b37)] p-[3px] shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)]">
+        <div className="rounded-[43px] bg-black p-[7px]">
+          <div className="relative overflow-hidden rounded-[36px] bg-black [aspect-ratio:430/932]">
+            {children}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-[1.6%] z-40 h-[3.4%] w-[32%] -translate-x-1/2 rounded-full bg-black"
+            />
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
 function Features({ cs }: { cs: CaseStudy }) {
-  const [active, setActive] = useState(0);
   const reduce = useReducedMotion();
+  const [desk, setDesk] = useState(0);
+  const [phone, setPhone] = useState(0);
   return (
     <Rise>
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:items-center">
-        <ol className="hidden gap-1 lg:grid" aria-label="Screens in the slideshow">
-          {cs.features.map((x, i) => {
-            const on = i === active;
-            const hue = SLIDE_HUES[i % SLIDE_HUES.length]!;
-            return (
-              <li
-                key={x.title}
-                aria-current={on ? "true" : undefined}
-                className="relative flex items-center gap-2.5 rounded-xl px-3 py-2"
-              >
-                {on ? (
-                  <motion.span
-                    layoutId="bookly-slide-pill"
-                    aria-hidden="true"
-                    className="absolute inset-0 rounded-xl border border-[var(--edge)] bg-surface-1 shadow-[var(--elev-1)]"
-                    transition={
-                      reduce ? { duration: 0 } : { type: "spring", duration: 0.35, bounce: 0.15 }
-                    }
-                  />
-                ) : null}
-                <span
-                  aria-hidden="true"
-                  className="relative h-2 w-2 shrink-0 rounded-full transition-transform duration-200"
-                  style={{
-                    background: hue,
-                    transform: on ? "scale(1.35)" : "scale(1)",
-                    opacity: on ? 1 : 0.55,
-                  }}
-                />
-                <span
-                  className={`relative text-[14px] transition-colors duration-200 ${on ? "font-semibold text-fg" : "text-fg-muted"}`}
-                >
-                  {x.title}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] lg:items-start lg:gap-6">
+        <figure className="min-w-0">
+          <div className="overflow-hidden rounded-[20px]">
+            <Carousel
+              items={cs.features.map((s) => (
+                <DesktopSlide key={s.title} s={s} />
+              ))}
+              baseWidth="100%"
+              aspectRatio={16 / 10.4}
+              peek={0}
+              gap={12}
+              radius={20}
+              effect="slide"
+              indicator="none"
+              arrows={false}
+              autoplay={!reduce}
+              autoplayDelay={3200}
+              pauseOnHover
+              loop
+              draggable
+              frame={false}
+              theme="dark"
+              style={CLEAN_TILES}
+              onChange={setDesk}
+            />
+          </div>
+          <figcaption>
+            <span className="sr-only">On a laptop: </span>
+            <Caption items={cs.features} active={desk} />
+          </figcaption>
+        </figure>
 
-        <p className="text-center text-[14px] font-semibold text-fg lg:hidden" aria-live="polite">
-          {cs.features[active]?.title}
-        </p>
-        <div className="min-w-0 overflow-hidden rounded-[20px]">
-          <Carousel
-            items={cs.features.map((f) => (
-              <Slide key={f.title} f={f} />
-            ))}
-            baseWidth="100%"
-            aspectRatio={16 / 10}
-            peek={0}
-            gap={12}
-            radius={20}
-            effect="slide"
-            indicator="bars"
-            arrows
-            autoplay={!reduce}
-            autoplayDelay={3200}
-            pauseOnHover
-            loop
-            draggable
-            theme="dark"
-            frame={false}
-            style={
-              {
-                "--carousel-tile-edge": "transparent",
-                "--carousel-tile-highlight": "transparent",
-                "--carousel-tile-shadow": "none",
-              } as CSSProperties
-            }
-            onChange={setActive}
-          />
-        </div>
+        <figure className="min-w-0">
+          <IPhone>
+            <div className="absolute inset-0">
+              <Carousel
+                items={cs.phoneScreens.map((s) => (
+                  <img
+                    key={s.title}
+                    src={s.image}
+                    alt={s.alt}
+                    draggable={false}
+                    decoding="async"
+                    className="block h-full w-full object-cover object-top"
+                  />
+                ))}
+                baseWidth="100%"
+                aspectRatio={430 / 932}
+                peek={0}
+                gap={0}
+                radius={0}
+                effect="slide"
+                indicator="none"
+                arrows={false}
+                autoplay={!reduce}
+                autoplayDelay={2600}
+                pauseOnHover
+                loop
+                draggable
+                frame={false}
+                theme="dark"
+                style={CLEAN_TILES}
+                onChange={setPhone}
+              />
+            </div>
+          </IPhone>
+          <figcaption>
+            <span className="sr-only">On a phone: </span>
+            <Caption items={cs.phoneScreens} active={phone} />
+          </figcaption>
+        </figure>
       </div>
     </Rise>
   );
