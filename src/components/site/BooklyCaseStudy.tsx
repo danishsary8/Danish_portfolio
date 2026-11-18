@@ -414,23 +414,11 @@ function Features({ cs }: { cs: CaseStudy }) {
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
         onBlurCapture={() => setPaused(false)}
-        className="grid gap-6 md:grid-cols-[minmax(0,1fr)_200px] lg:grid-cols-[minmax(0,1fr)_236px] md:items-start"
+        className="grid gap-6 md:grid-cols-[minmax(0,1fr)_200px] md:items-end lg:grid-cols-[minmax(0,1fr)_236px]"
       >
         <div className="min-w-0">
-          {/* laptop */}
-          <div className="rounded-[20px] bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4%]">
-            <Browser>
-              <SlideImage
-                src={s.desktop}
-                alt={`${s.title}, on a laptop`}
-                dir={dir}
-                k={`d-${index}`}
-              />
-            </Browser>
-          </div>
-
           {/* details + controls */}
-          <div className="mt-4 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4 sm:p-5">
+          <div className="mb-4 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4 sm:p-5">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0" aria-live={paused ? "polite" : "off"}>
                 <div className="flex items-center gap-2">
@@ -516,6 +504,18 @@ function Features({ cs }: { cs: CaseStudy }) {
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* laptop */}
+          <div className="rounded-[20px] bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4%]">
+            <Browser>
+              <SlideImage
+                src={s.desktop}
+                alt={`${s.title}, on a laptop`}
+                dir={dir}
+                k={`d-${index}`}
+              />
+            </Browser>
           </div>
         </div>
 
