@@ -78,7 +78,8 @@ export function OrbitImages({
   const ry = shape === "circle" ? radiusX : radiusY;
   const tilt = (rotation * Math.PI) / 180;
   const n = images.length;
-  const stageH = height ?? Math.ceil(2 * Math.max(ry, Math.abs(rx * Math.sin(tilt))) + itemSize * 1.6);
+  const stageH =
+    height ?? Math.ceil(2 * Math.max(ry, Math.abs(rx * Math.sin(tilt))) + itemSize * 1.6);
 
   useEffect(() => {
     const root = rootRef.current;

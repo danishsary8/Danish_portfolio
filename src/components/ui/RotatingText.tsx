@@ -86,9 +86,7 @@ const readableText = (color: string) => {
   const hex = value.match(/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i);
   if (hex) {
     const digits =
-      hex[1].length < 6
-        ? [...hex[1].slice(0, 3)].map((c) => c + c).join("")
-        : hex[1].slice(0, 6);
+      hex[1].length < 6 ? [...hex[1].slice(0, 3)].map((c) => c + c).join("") : hex[1].slice(0, 6);
     rgb = [0, 2, 4].map((i) => parseInt(digits.slice(i, i + 2), 16));
   } else {
     const fn = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+))?/i);
@@ -230,15 +228,12 @@ export const RotatingText = forwardRef<RotatingTextHandle, RotatingTextProps>((p
     return Math.abs((staggerFrom as any) - index) * staggerDuration;
   };
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (index === indexRef.current) return;
-      indexRef.current = index;
-      setCurrentTextIndex(index);
-      onNextRef.current?.(index);
-    },
-    [],
-  );
+  const goTo = useCallback((index: number) => {
+    if (index === indexRef.current) return;
+    indexRef.current = index;
+    setCurrentTextIndex(index);
+    onNextRef.current?.(index);
+  }, []);
 
   const next = useCallback(() => {
     const current = Math.min(indexRef.current, lastIndex);

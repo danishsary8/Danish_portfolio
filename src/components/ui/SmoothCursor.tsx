@@ -138,7 +138,7 @@ export function SmoothCursor({
       <div ref={ringRef} className="smooth-cursor__ring" />
       <div ref={dotRef} className="smooth-cursor__dot" />
     </div>,
-    document.body
+    document.body,
   );
 }
 

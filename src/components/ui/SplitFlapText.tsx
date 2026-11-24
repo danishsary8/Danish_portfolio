@@ -1,42 +1,44 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import './SplitFlapText.css';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import "./SplitFlapText.css";
 
-const DEFAULT_WORDS = ['LAUNCH READY', 'SYNC ONLINE', 'SIGNAL LIVE'];
+const DEFAULT_WORDS = ["LAUNCH READY", "SYNC ONLINE", "SIGNAL LIVE"];
 
 const CHARSETS = {
-  alpha: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-  alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-  numeric: '0123456789'
+  alpha: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  alphanumeric: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+  numeric: "0123456789",
 };
 
-const toCssUnit = value => (typeof value === 'number' ? `${value}px` : value);
+const toCssUnit = (value) => (typeof value === "number" ? `${value}px` : value);
 
-const resolveCharset = charset => {
+const resolveCharset = (charset) => {
   if (CHARSETS[charset]) return CHARSETS[charset];
-  return typeof charset === 'string' && charset.length > 0 ? charset : CHARSETS.alphanumeric;
+  return typeof charset === "string" && charset.length > 0 ? charset : CHARSETS.alphanumeric;
 };
 
-const normalizePhrase = (phrase, width, align = 'left') => {
-  const safe = String(phrase ?? '').slice(0, width);
-  if (align === 'right') return safe.padStart(width, ' ');
-  if (align === 'center') {
-    return safe.padStart(safe.length + Math.floor((width - safe.length) / 2), ' ').padEnd(width, ' ');
+const normalizePhrase = (phrase, width, align = "left") => {
+  const safe = String(phrase ?? "").slice(0, width);
+  if (align === "right") return safe.padStart(width, " ");
+  if (align === "center") {
+    return safe
+      .padStart(safe.length + Math.floor((width - safe.length) / 2), " ")
+      .padEnd(width, " ");
   }
-  return safe.padEnd(width, ' ');
+  return safe.padEnd(width, " ");
 };
 
-const createTiles = phrase =>
-  phrase.split('').map(char => ({
+const createTiles = (phrase) =>
+  phrase.split("").map((char) => ({
     current: char,
     next: char,
     flipping: false,
-    tick: 0
+    tick: 0,
   }));
 
-const sampleChar = charset => charset.charAt(Math.floor(Math.random() * charset.length)) || ' ';
+const sampleChar = (charset) => charset.charAt(Math.floor(Math.random() * charset.length)) || " ";
 
 const buildSequence = (target, flips, charset) => {
   const steps = [];
@@ -47,9 +49,9 @@ const buildSequence = (target, flips, charset) => {
   return steps;
 };
 
-const toGlyph = char => (char === ' ' ? ' ' : char);
+const toGlyph = (char) => (char === " " ? " " : char);
 
-const shuffleIndices = count => {
+const shuffleIndices = (count) => {
   const list = Array.from({ length: count }, (_, index) => index);
   for (let i = count - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -59,32 +61,33 @@ const shuffleIndices = count => {
 };
 
 const cascadeStep = (index, width, order, randomOrder) => {
-  if (order === 'right') return width - 1 - index;
-  if (order === 'center') return Math.floor(Math.abs(index - (width - 1) / 2));
-  if (order === 'random' && randomOrder) return randomOrder[index];
+  if (order === "right") return width - 1 - index;
+  if (order === "center") return Math.floor(Math.abs(index - (width - 1) / 2));
+  if (order === "random" && randomOrder) return randomOrder[index];
   return index;
 };
 
-const clampUnit = value => Math.min(1, Math.max(0, Number(value) || 0));
+const clampUnit = (value) => Math.min(1, Math.max(0, Number(value) || 0));
 
-const round = value => Number(value.toFixed(3));
+const round = (value) => Number(value.toFixed(3));
 
 const getReducedMotion = () =>
-  typeof window !== 'undefined' && Boolean(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches);
+  typeof window !== "undefined" &&
+  Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
 
 const usePrefersReducedMotion = () => {
   const [prefersReduced, setPrefersReduced] = useState(getReducedMotion);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
+    if (typeof window === "undefined" || !window.matchMedia) return;
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const handleChange = () => setPrefersReduced(mediaQuery.matches);
 
     handleChange();
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
 
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   return prefersReduced;
@@ -96,7 +99,7 @@ export interface SplitFlapTextProps extends React.HTMLAttributes<HTMLDivElement>
   flipDuration?: number;
   stagger?: number;
   cycleDelay?: number;
-  charset?: 'alpha' | 'alphanumeric' | 'numeric' | string;
+  charset?: "alpha" | "alphanumeric" | "numeric" | string;
   flipsPerChar?: number;
   tileColor?: string;
   textColor?: string;
@@ -105,38 +108,38 @@ export interface SplitFlapTextProps extends React.HTMLAttributes<HTMLDivElement>
   fontSize?: number | string;
   loop?: boolean;
   padTo?: number;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   intro?: boolean;
   glare?: number;
   depth?: number;
-  order?: 'left' | 'right' | 'center' | 'random';
-  tileStyle?: 'board' | 'minimal';
+  order?: "left" | "right" | "center" | "random";
+  tileStyle?: "board" | "minimal";
   className?: string;
   style?: React.CSSProperties;
 }
 
 export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
-  words = ['LAUNCH READY', 'SYNC ONLINE', 'SIGNAL LIVE'],
+  words = ["LAUNCH READY", "SYNC ONLINE", "SIGNAL LIVE"],
   text,
   flipDuration = 0.12,
   stagger = 0.06,
   cycleDelay = 2400,
-  charset = 'alphanumeric',
+  charset = "alphanumeric",
   flipsPerChar = 8,
-  tileColor = '#111827',
-  textColor = '#f8fafc',
+  tileColor = "#111827",
+  textColor = "#f8fafc",
   tileRadius = 8,
   gap = 6,
   fontSize = 52,
   loop = true,
   padTo = 12,
-  align = 'left',
+  align = "left",
   intro = true,
   glare = 0,
   depth = 0.5,
-  order = 'left',
-  tileStyle = 'board',
-  className = '',
+  order = "left",
+  tileStyle = "board",
+  className = "",
   style = {},
   ...props
 }) => {
@@ -148,8 +151,9 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
   const phrasesRef = useRef(null);
 
   const sourceWords = Array.isArray(words) && words.length > 0 ? words : DEFAULT_WORDS;
-  const phrasesKey = typeof text === 'string' ? text : sourceWords.map(word => String(word ?? '')).join('\u001f');
-  const phrases = useMemo(() => phrasesKey.split('\u001f'), [phrasesKey]);
+  const phrasesKey =
+    typeof text === "string" ? text : sourceWords.map((word) => String(word ?? "")).join("\u001f");
+  const phrases = useMemo(() => phrasesKey.split("\u001f"), [phrasesKey]);
 
   const width = useMemo(() => {
     const longest = phrases.reduce((max, phrase) => Math.max(max, phrase.length), 1);
@@ -157,8 +161,8 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
   }, [padTo, phrases]);
 
   const normalizedPhrases = useMemo(
-    () => phrases.map(phrase => normalizePhrase(phrase, width, align)),
-    [phrases, width, align]
+    () => phrases.map((phrase) => normalizePhrase(phrase, width, align)),
+    [phrases, width, align],
   );
 
   const timing = useMemo(
@@ -168,13 +172,15 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
       holdMs: Math.max(400, Number(cycleDelay) || 2400),
       flips: Math.max(0, Math.floor(Number(flipsPerChar) || 0)),
       glyphs: resolveCharset(charset),
-      order
+      order,
     }),
-    [flipDuration, stagger, cycleDelay, flipsPerChar, charset, order]
+    [flipDuration, stagger, cycleDelay, flipsPerChar, charset, order],
   );
   const timingRef = useRef(timing);
 
-  const [tiles, setTiles] = useState(() => createTiles(intro ? ' '.repeat(width) : normalizedPhrases[0]));
+  const [tiles, setTiles] = useState(() =>
+    createTiles(intro ? " ".repeat(width) : normalizedPhrases[0]),
+  );
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -190,10 +196,10 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
       rafRef.current = null;
     };
 
-    const animateTo = target => {
+    const animateTo = (target) => {
       const { flipMs, staggerMs, flips, glyphs, order: cascade } = timingRef.current;
       const from = normalizePhrase(shownRef.current ?? target, target.length);
-      const randomOrder = cascade === 'random' ? shuffleIndices(target.length) : null;
+      const randomOrder = cascade === "random" ? shuffleIndices(target.length) : null;
 
       stopFrame();
       shownRef.current = target;
@@ -210,7 +216,7 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
             sequence: buildSequence(target[index], flips, glyphs),
             start: cascadeStep(index, target.length, cascade, randomOrder) * staggerMs,
             step: -1,
-            done: false
+            done: false,
           });
         }
       }
@@ -223,17 +229,20 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
       fromRef.current = from;
       setTiles(createTiles(from));
 
-      const totalDuration = plans.reduce((max, plan) => Math.max(max, plan.start + plan.sequence.length * flipMs), 0);
+      const totalDuration = plans.reduce(
+        (max, plan) => Math.max(max, plan.start + plan.sequence.length * flipMs),
+        0,
+      );
       const startedAt = performance.now();
 
-      const tick = now => {
+      const tick = (now) => {
         if (cancelled) return;
 
         const elapsed = now - startedAt;
         const updates = [];
         let running = false;
 
-        plans.forEach(plan => {
+        plans.forEach((plan) => {
           const localElapsed = elapsed - plan.start;
 
           if (localElapsed < 0) {
@@ -252,7 +261,7 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
                 index: plan.index,
                 current: step === 0 ? plan.from : plan.sequence[step - 1],
                 next: plan.sequence[step],
-                done: false
+                done: false,
               });
             }
           } else if (!plan.done) {
@@ -261,15 +270,15 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
               index: plan.index,
               current: plan.target,
               next: plan.target,
-              done: true
+              done: true,
             });
           }
         });
 
         if (updates.length > 0) {
-          setTiles(previous => {
+          setTiles((previous) => {
             const nextTiles = [...previous];
-            updates.forEach(update => {
+            updates.forEach((update) => {
               const tile = nextTiles[update.index];
               if (!tile) return;
 
@@ -277,7 +286,7 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
                 current: update.current,
                 next: update.next,
                 flipping: !update.done,
-                tick: tile.tick + 1
+                tick: tile.tick + 1,
               };
             });
             return nextTiles;
@@ -296,13 +305,13 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
       return totalDuration;
     };
 
-    const show = index => {
+    const show = (index) => {
       indexRef.current = index;
       setActiveIndex(index);
       return animateTo(normalizedPhrases[index]);
     };
 
-    const scheduleNext = delay => {
+    const scheduleNext = (delay) => {
       timer = window.setTimeout(() => {
         if (cancelled) return;
 
@@ -323,7 +332,7 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
     phrasesRef.current = normalizedPhrases;
 
     if (shownRef.current === null) {
-      shownRef.current = intro ? ' '.repeat(width) : normalizedPhrases[0];
+      shownRef.current = intro ? " ".repeat(width) : normalizedPhrases[0];
     }
 
     if (!samePhrases || indexRef.current >= normalizedPhrases.length) {
@@ -353,40 +362,40 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
     };
   }, [normalizedPhrases, width, loop, intro, prefersReducedMotion]);
 
-  const label = String(phrases[activeIndex] ?? phrases[0] ?? '').trim();
-  const minimal = tileStyle === 'minimal';
+  const label = String(phrases[activeIndex] ?? phrases[0] ?? "").trim();
+  const minimal = tileStyle === "minimal";
   const level = clampUnit(depth);
   const flat = Math.min(1, level * 2);
   const deep = Math.max(0, level - 0.5) * 2;
   const sheen = minimal ? 0 : clampUnit(glare);
   const shaded = !minimal && deep > 0;
   const rootClass = [
-    'split-flap-text',
-    minimal && 'split-flap-text--minimal',
-    sheen > 0 && 'split-flap-text--glare',
-    className
+    "split-flap-text",
+    minimal && "split-flap-text--minimal",
+    sheen > 0 && "split-flap-text--glare",
+    className,
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
   const componentStyle = {
-    '--split-flap-tile-color': tileColor,
-    '--split-flap-text-color': textColor,
-    '--split-flap-radius': toCssUnit(tileRadius),
-    '--split-flap-gap': toCssUnit(gap),
-    '--split-flap-font-size': toCssUnit(fontSize),
-    '--split-flap-flip-duration': `${Math.max(0.04, Number(flipDuration) || 0.12)}s`,
-    '--split-flap-front-from': round(1 + 0.08 * flat),
-    '--split-flap-front-to': round(1 - 0.48 * flat - 0.3 * deep),
-    '--split-flap-back-from': round(1 - 0.42 * flat - 0.3 * deep),
-    '--split-flap-hinge': `calc(1px + ${round(deep * 0.05)}em)`,
-    '--split-flap-hinge-shade': round(0.25 + 0.39 * flat + 0.21 * deep),
-    '--split-flap-drop': round(0.28 * flat + 0.2 * deep),
-    '--split-flap-lift': round(0.4 + 0.6 * flat + 0.7 * deep),
-    '--split-flap-cast': round(deep * 0.62),
-    '--split-flap-edge': `${round(deep * 0.035)}em`,
-    '--split-flap-split': `${round(0.015 + level * 0.06)}em`,
-    '--split-flap-glare': round(sheen * 0.55),
-    ...style
+    "--split-flap-tile-color": tileColor,
+    "--split-flap-text-color": textColor,
+    "--split-flap-radius": toCssUnit(tileRadius),
+    "--split-flap-gap": toCssUnit(gap),
+    "--split-flap-font-size": toCssUnit(fontSize),
+    "--split-flap-flip-duration": `${Math.max(0.04, Number(flipDuration) || 0.12)}s`,
+    "--split-flap-front-from": round(1 + 0.08 * flat),
+    "--split-flap-front-to": round(1 - 0.48 * flat - 0.3 * deep),
+    "--split-flap-back-from": round(1 - 0.42 * flat - 0.3 * deep),
+    "--split-flap-hinge": `calc(1px + ${round(deep * 0.05)}em)`,
+    "--split-flap-hinge-shade": round(0.25 + 0.39 * flat + 0.21 * deep),
+    "--split-flap-drop": round(0.28 * flat + 0.2 * deep),
+    "--split-flap-lift": round(0.4 + 0.6 * flat + 0.7 * deep),
+    "--split-flap-cast": round(deep * 0.62),
+    "--split-flap-edge": `${round(deep * 0.035)}em`,
+    "--split-flap-split": `${round(0.015 + level * 0.06)}em`,
+    "--split-flap-glare": round(sheen * 0.55),
+    ...style,
   };
 
   return (
@@ -394,16 +403,21 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
       <span className="split-flap-text__sr">{label}</span>
       {tiles.map((tile, index) => (
         <span
-          className={`split-flap-text__tile${tile.flipping ? ' is-flipping' : ''}`}
+          className={`split-flap-text__tile${tile.flipping ? " is-flipping" : ""}`}
           aria-hidden="true"
           key={`${index}-${tiles.length}`}
         >
-          <span className="split-flap-text__half split-flap-text__half--top" key={minimal ? `top-${tile.tick}` : 'top'}>
-            <span className="split-flap-text__char">{toGlyph(tile.flipping ? tile.next : tile.current)}</span>
+          <span
+            className="split-flap-text__half split-flap-text__half--top"
+            key={minimal ? `top-${tile.tick}` : "top"}
+          >
+            <span className="split-flap-text__char">
+              {toGlyph(tile.flipping ? tile.next : tile.current)}
+            </span>
           </span>
           <span
             className="split-flap-text__half split-flap-text__half--bottom"
-            key={minimal ? `bottom-${tile.tick}` : 'bottom'}
+            key={minimal ? `bottom-${tile.tick}` : "bottom"}
           >
             <span className="split-flap-text__char">{toGlyph(tile.current)}</span>
           </span>
@@ -412,17 +426,26 @@ export const SplitFlapText: React.FC<SplitFlapTextProps> = ({
             <>
               {shaded && (
                 <>
-                  <span className="split-flap-text__shade split-flap-text__shade--top" key={`shade-top-${tile.tick}`} />
+                  <span
+                    className="split-flap-text__shade split-flap-text__shade--top"
+                    key={`shade-top-${tile.tick}`}
+                  />
                   <span
                     className="split-flap-text__shade split-flap-text__shade--bottom"
                     key={`shade-bottom-${tile.tick}`}
                   />
                 </>
               )}
-              <span className="split-flap-text__flap split-flap-text__flap--front" key={`front-${index}-${tile.tick}`}>
+              <span
+                className="split-flap-text__flap split-flap-text__flap--front"
+                key={`front-${index}-${tile.tick}`}
+              >
                 <span className="split-flap-text__char">{toGlyph(tile.current)}</span>
               </span>
-              <span className="split-flap-text__flap split-flap-text__flap--back" key={`back-${index}-${tile.tick}`}>
+              <span
+                className="split-flap-text__flap split-flap-text__flap--back"
+                key={`back-${index}-${tile.tick}`}
+              >
                 <span className="split-flap-text__char">{toGlyph(tile.next)}</span>
               </span>
             </>

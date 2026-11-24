@@ -1,7 +1,14 @@
 // @ts-nocheck
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ElementType } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ElementType,
+} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
@@ -44,7 +51,11 @@ const getEffect = (effect: string, em: number) => {
       };
     }
     case "pop":
-      return { from: { opacity: 0, scale: 0 }, to: { opacity: 1, scale: 1 }, ease: "back.out(1.6)" };
+      return {
+        from: { opacity: 0, scale: 0 },
+        to: { opacity: 1, scale: 1 },
+        ease: "back.out(1.6)",
+      };
     case "skew":
       return {
         from: { transformOrigin: "50% 100%", opacity: 0, x: -em * 0.4, skewX: -24 },
@@ -149,7 +160,8 @@ export const SplitText = ({
       };
 
       if (
-        (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) ||
+        (typeof window !== "undefined" &&
+          window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) ||
         (typeof process !== "undefined" && process.env.NODE_ENV === "test")
       ) {
         setReady(true);
@@ -168,7 +180,11 @@ export const SplitText = ({
             ? `-=${Math.abs(marginValue)}${marginUnit}`
             : `+=${marginValue}${marginUnit}`;
       const start = `top ${startPct}%${sign}`;
-      const unit = splitType.includes("chars") ? "chars" : splitType.includes("words") ? "words" : "lines";
+      const unit = splitType.includes("chars")
+        ? "chars"
+        : splitType.includes("words")
+          ? "words"
+          : "lines";
 
       const em = parseFloat(getComputedStyle(el).fontSize) || 16;
       const custom = from !== undefined || to !== undefined;
@@ -227,10 +243,17 @@ export const SplitText = ({
         tl.fromTo(
           pieces,
           { ...toVars, willChange: "transform, opacity" },
-          { ...fromVars, duration: exit, ease: "power2.in", stagger: order, immediateRender: false },
+          {
+            ...fromVars,
+            duration: exit,
+            ease: "power2.in",
+            stagger: order,
+            immediateRender: false,
+          },
           0,
         );
-        if (accent) tl.to(pieces, { color: accent, duration: exit, ease: "power1.in", stagger: order }, 0);
+        if (accent)
+          tl.to(pieces, { color: accent, duration: exit, ease: "power1.in", stagger: order }, 0);
         return tl;
       };
 
@@ -269,7 +292,8 @@ export const SplitText = ({
         raf = 0;
         const dt = Math.min(0.032, Math.max(0.001, (now - last) / 1000));
         last = now;
-        const spots = liveRef.current.hoverEffect === "lift" && pointer.inside && revealed ? centers : null;
+        const spots =
+          liveRef.current.hoverEffect === "lift" && pointer.inside && revealed ? centers : null;
         const radius = em * 1.15;
         let moving = false;
         for (let k = kicks.length - 1; k >= 0; k--) {
@@ -326,7 +350,11 @@ export const SplitText = ({
           const speed = em * 9;
           const velocity = (em * 0.16) / KICK;
           centers?.forEach((center, index) => {
-            kicks.push({ index, velocity, at: now + (Math.abs(center.x - pointer.x) / speed) * 1000 });
+            kicks.push({
+              index,
+              velocity,
+              at: now + (Math.abs(center.x - pointer.x) / speed) * 1000,
+            });
           });
         }
         wake();
@@ -360,7 +388,8 @@ export const SplitText = ({
           charsClass: "split-char",
           reduceWhiteSpace: false,
           onSplit: (self: any) => {
-            pieces = [self[unit], self.chars, self.words, self.lines].find((list) => list?.length) || [];
+            pieces =
+              [self[unit], self.chars, self.words, self.lines].find((list) => list?.length) || [];
             movers = mask && self.masks?.length === pieces.length ? self.masks : pieces;
             centers = null;
             springs.length = 0;
@@ -441,7 +470,8 @@ export const SplitText = ({
 
   const Tag = (tag || "p") as ElementType;
   const clip =
-    hoverEffect === "none" && (from !== undefined || to !== undefined || effect === "rise" || effect === "fade");
+    hoverEffect === "none" &&
+    (from !== undefined || to !== undefined || effect === "rise" || effect === "fade");
 
   return (
     <Tag

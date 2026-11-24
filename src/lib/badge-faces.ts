@@ -62,7 +62,14 @@ const newCanvas = () => {
   return { canvas, ctx };
 };
 
-const roundRect = (ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) => {
+const roundRect = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+) => {
   ctx.beginPath();
   ctx.roundRect(x, y, w, h, r);
 };
@@ -181,7 +188,17 @@ export async function drawBadgeFront(): Promise<string> {
   // Portrait: full width, top aligned, cropped to the hero card's 398px photo band.
   const photoH = 398 * S;
   const srcH = (photoH / FACE_W) * photo.naturalWidth;
-  ctx.drawImage(photo, 0, 0, photo.naturalWidth, Math.min(srcH, photo.naturalHeight), 0, 0, FACE_W, photoH);
+  ctx.drawImage(
+    photo,
+    0,
+    0,
+    photo.naturalWidth,
+    Math.min(srcH, photo.naturalHeight),
+    0,
+    0,
+    FACE_W,
+    photoH,
+  );
   const fade = ctx.createLinearGradient(0, photoH * 0.82, 0, photoH);
   fade.addColorStop(0, "rgba(12,21,39,0)");
   fade.addColorStop(1, NAVY);
@@ -314,12 +331,12 @@ export async function drawBadgeBack(): Promise<string> {
   weave(32, "rgba(64,92,150,0.13)");
   weave(-32, "rgba(176,130,45,0.11)");
   // The signature photo is blue ink on white; multiply drops the paper.
-  const sigH = 128 * S;
+  const sigH = 98 * S;
   const sigW = (signature.naturalWidth / signature.naturalHeight) * sigH;
   ctx.globalCompositeOperation = "multiply";
   ctx.translate(panelX + panelW / 2, panelY + panelH / 2);
   ctx.rotate((-2 * Math.PI) / 180);
-  ctx.drawImage(signature, -sigW / 2, -sigH * 0.52, sigW, sigH);
+  ctx.drawImage(signature, -sigW / 2, -sigH * 0.48, sigW, sigH);
   ctx.restore();
   // Inset edge so the panel reads as printed into the card.
   roundRect(ctx, panelX, panelY, panelW, panelH, 4 * S);
@@ -395,12 +412,18 @@ export async function drawBadgeBack(): Promise<string> {
   ctx.strokeStyle = "#c9973a";
   ctx.lineWidth = (2 * awardIcon) / 24;
   ctx.beginPath();
-  ctx.arc(PAD + (12 * awardIcon) / 24, awardBase - awardIcon + 1 * S + (8 * awardIcon) / 24, (6 * awardIcon) / 24, 0, Math.PI * 2);
+  ctx.arc(
+    PAD + (12 * awardIcon) / 24,
+    awardBase - awardIcon + 1 * S + (8 * awardIcon) / 24,
+    (6 * awardIcon) / 24,
+    0,
+    Math.PI * 2,
+  );
   ctx.stroke();
   ctx.restore();
   ctx.fillStyle = "#c9973a";
   ctx.font = `500 ${11.5 * S}px ${SANS}`;
-  ctx.fillText("2026 Award Winner · Team", PAD + awardIcon + 6 * S, awardBase - 2 * S);
+  ctx.fillText("1st Place · 2026 Award Winner", PAD + awardIcon + 6 * S, awardBase - 2 * S);
 
   return canvas.toDataURL("image/png");
 }
@@ -428,4 +451,3 @@ export function preloadBadgeFaces(): Promise<{ front: string; back: string }> {
 export function getCachedBadgeFaces(): { front: string; back: string } | null {
   return cachedFaces;
 }
-

@@ -1,10 +1,10 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import './LogoLoop.css';
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import "./LogoLoop.css";
 
-const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 const SMOOTH_TAU = 0.25;
 const GLIDE_TAU = 0.8;
@@ -16,22 +16,24 @@ const HALF_SQRT_PI = Math.sqrt(Math.PI) / 2;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const toCssLength = value => (typeof value === 'number' ? `${value}px` : (value ?? undefined));
+const toCssLength = (value) => (typeof value === "number" ? `${value}px` : (value ?? undefined));
 
-const erf = x => {
+const erf = (x) => {
   const a = Math.abs(x);
   const t = 1 / (1 + 0.3275911 * a);
   const y =
     1 -
-    ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-a * a);
+    ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) *
+      t *
+      Math.exp(-a * a);
   return x < 0 ? -y : y;
 };
 
-const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-const easeOut = t => 1 - Math.pow(1 - t, 3);
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
-const smootherstep = t => t * t * t * (t * (t * 6 - 15) + 10);
+const smootherstep = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
 const fadeMask = (size, vertical) => {
   const span = clamp(size, 0, 0.5) * 100;
@@ -41,9 +43,11 @@ const fadeMask = (size, vertical) => {
     stops.push(`rgba(0,0,0,${smootherstep(i / 12).toFixed(4)}) ${((span * i) / 12).toFixed(3)}%`);
   }
   for (let i = 12; i >= 0; i--) {
-    stops.push(`rgba(0,0,0,${smootherstep(i / 12).toFixed(4)}) ${(100 - (span * i) / 12).toFixed(3)}%`);
+    stops.push(
+      `rgba(0,0,0,${smootherstep(i / 12).toFixed(4)}) ${(100 - (span * i) / 12).toFixed(3)}%`,
+    );
   }
-  return `linear-gradient(${vertical ? 'to bottom' : 'to right'}, ${stops.join(', ')})`;
+  return `linear-gradient(${vertical ? "to bottom" : "to right"}, ${stops.join(", ")})`;
 };
 
 const rotationMatrix = (degX, degY) => {
@@ -73,7 +77,10 @@ const project = (m, depth, px, py) => {
 };
 
 const createEngine = (root, track, config, setLayout) => {
-  const query = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const query =
+    typeof window.matchMedia === "function"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
   const st = {
     offset: 0,
     velocity: 0,
@@ -105,7 +112,7 @@ const createEngine = (root, track, config, setLayout) => {
     scrollVel: 0,
     scrollY: window.scrollY,
     scrollT: 0,
-    visible: typeof IntersectionObserver === 'undefined',
+    visible: typeof IntersectionObserver === "undefined",
     introStart: -1,
     introDone: !config.current.intro,
     itemMode: false,
@@ -113,7 +120,7 @@ const createEngine = (root, track, config, setLayout) => {
     raf: 0,
     last: 0,
     reduced: !!query?.matches,
-    destroyed: false
+    destroyed: false,
   };
 
   const collect = () => {
@@ -129,12 +136,12 @@ const createEngine = (root, track, config, setLayout) => {
           center: 0,
           size: 0,
           cross: 0,
-          t: '',
-          o: '',
-          v: '',
-          z: '',
-          s: '',
-          p: ''
+          t: "",
+          o: "",
+          v: "",
+          z: "",
+          s: "",
+          p: "",
         });
       });
     });
@@ -144,13 +151,13 @@ const createEngine = (root, track, config, setLayout) => {
 
   const clearItems = () => {
     for (const it of st.items) {
-      it.el.style.transform = '';
-      it.el.style.opacity = '';
-      it.el.style.visibility = '';
-      it.el.style.zIndex = '';
-      if (it.content) it.content.style.transform = '';
-      if (it.tip) it.tip.style.transform = '';
-      it.t = it.o = it.v = it.z = it.s = it.p = '';
+      it.el.style.transform = "";
+      it.el.style.opacity = "";
+      it.el.style.visibility = "";
+      it.el.style.zIndex = "";
+      if (it.content) it.content.style.transform = "";
+      if (it.tip) it.tip.style.transform = "";
+      it.t = it.o = it.v = it.z = it.s = it.p = "";
     }
   };
 
@@ -184,15 +191,15 @@ const createEngine = (root, track, config, setLayout) => {
       tiltX: 0,
       tiltY: 0,
       m: [1, 0, 0, 0, 1, 0, 0, 0, 1],
-      persp: 0
+      persp: 0,
     };
     let pad = cfg.scaleOnHover ? hc * 0.1 : 0;
     const lens = (1 + geo.focus) * (1 + geo.magnify) - 1;
-    if (geo.mode === 'wave') {
+    if (geo.mode === "wave") {
       geo.amp = bend * (hc * 0.6 + L * 0.035);
       geo.k = (2 * Math.PI) / Math.max(1, L / 1.25);
       pad += Math.abs(geo.amp) + (lens * hc) / 2 + hc * 0.08;
-    } else if (geo.mode === 'arc' && Math.abs(bend) > 0.005) {
+    } else if (geo.mode === "arc" && Math.abs(bend) > 0.005) {
       const edge = Math.abs(bend) * (Math.PI / 4);
       const R = L / 2 / Math.sin(edge);
       const sag = R * (1 - Math.cos(edge));
@@ -204,7 +211,7 @@ const createEngine = (root, track, config, setLayout) => {
       geo.uMin = -reach;
       geo.uMax = reach;
       pad += sag / 2 + (w / 2) * Math.sin(edge) + (lens * hc) / 2;
-    } else if (geo.mode === 'orbit') {
+    } else if (geo.mode === "orbit") {
       const R = Math.max(40, L * 0.43 - w * 0.2);
       const k = Math.max(1, Math.round((2 * Math.PI * R) / P));
       const alpha = Math.sign(bend) * Math.atan2(Math.abs(bend) * Math.max(hc * 2, R * 0.36), R);
@@ -228,7 +235,8 @@ const createEngine = (root, track, config, setLayout) => {
     } else {
       pad += (lens * hc) / 2;
     }
-    if (cfg.labels === 'hover') pad += cfg.vertical ? st.tipMax : hc * 0.2 + Math.max(11, hc * 0.26) * 1.3;
+    if (cfg.labels === "hover")
+      pad += cfg.vertical ? st.tipMax : hc * 0.2 + Math.max(11, hc * 0.26) * 1.3;
     const tx = clamp(cfg.tiltX, -60, 60);
     const ty = clamp(cfg.tiltY, -60, 60);
     if (Math.abs(tx) > 0.01 || Math.abs(ty) > 0.01) {
@@ -238,8 +246,10 @@ const createEngine = (root, track, config, setLayout) => {
       geo.m = rotationMatrix(tx, ty);
       geo.persp = Math.max(L, 480) * 1.3;
       const edge = L / 2 + w;
-      const along = s => {
-        const p = cfg.vertical ? unproject(geo.m, geo.persp, 0, s) : unproject(geo.m, geo.persp, s, 0);
+      const along = (s) => {
+        const p = cfg.vertical
+          ? unproject(geo.m, geo.persp, 0, s)
+          : unproject(geo.m, geo.persp, s, 0);
         if (!p) return Math.sign(s) * L * 4;
         return clamp(cfg.vertical ? p[1] : p[0], -L * 4, L * 4);
       };
@@ -251,7 +261,9 @@ const createEngine = (root, track, config, setLayout) => {
       let reach = band;
       for (const u of [a, b, 0]) {
         for (const v of [-band, band]) {
-          const q = cfg.vertical ? project(geo.m, geo.persp, v, u) : project(geo.m, geo.persp, u, v);
+          const q = cfg.vertical
+            ? project(geo.m, geo.persp, v, u)
+            : project(geo.m, geo.persp, u, v);
           reach = Math.max(reach, Math.abs(cfg.vertical ? q[0] : q[1]));
         }
       }
@@ -262,9 +274,13 @@ const createEngine = (root, track, config, setLayout) => {
     const copies = Math.max(2, Math.ceil((geo.uMax + L / 2 + geo.lead) / P) + 2 + (extra ? 1 : 0));
     const primary = Math.min(copies - 1, Math.floor((geo.lead + L / 2) / P));
     st.geo = geo;
-    root.style.setProperty('--logoloop-pad', `${Math.ceil(pad)}px`);
-    root.style.perspective = geo.tilted ? `${geo.persp}px` : '';
-    track.style.transformOrigin = geo.tilted ? (cfg.vertical ? `50% ${L / 2}px` : `${L / 2}px 50%`) : '';
+    root.style.setProperty("--logoloop-pad", `${Math.ceil(pad)}px`);
+    root.style.perspective = geo.tilted ? `${geo.persp}px` : "";
+    track.style.transformOrigin = geo.tilted
+      ? cfg.vertical
+        ? `50% ${L / 2}px`
+        : `${L / 2}px 50%`
+      : "";
     if (copies !== st.layout.copies || primary !== st.layout.primary) {
       st.layout = { copies, primary };
       setLayout(st.layout);
@@ -284,9 +300,9 @@ const createEngine = (root, track, config, setLayout) => {
         root.style.height = `${Math.ceil(parentHeight)}px`;
       }
     } else if (root.style.height) {
-      root.style.height = '';
+      root.style.height = "";
     }
-    track.style.transform = 'none';
+    track.style.transform = "none";
     clearItems();
     const rootRect = root.getBoundingClientRect();
     const k = root.offsetWidth ? rootRect.width / root.offsetWidth || 1 : 1;
@@ -306,7 +322,9 @@ const createEngine = (root, track, config, setLayout) => {
     }
     const a = lists[0].getBoundingClientRect();
     const b = lists[1] ? lists[1].getBoundingClientRect() : null;
-    st.period = (b ? (cfg.vertical ? b.top - a.top : b.left - a.left) : cfg.vertical ? a.height : a.width) / k;
+    st.period =
+      (b ? (cfg.vertical ? b.top - a.top : b.left - a.left) : cfg.vertical ? a.height : a.width) /
+      k;
     const cs = getComputedStyle(root);
     st.box = [root.offsetWidth, root.offsetHeight];
     st.length = cfg.vertical
@@ -315,9 +333,9 @@ const createEngine = (root, track, config, setLayout) => {
     st.crossMax = crossMax;
     st.sizeMax = sizeMax;
     st.tipMax = tipMax + crossMax * 0.25;
-    const first = st.items.filter(it => it.copy === 0);
+    const first = st.items.filter((it) => it.copy === 0);
     st.pitch = first.length ? st.period / first.length : st.period;
-    st.snaps = first.map(it => it.center);
+    st.snaps = first.map((it) => it.center);
     st.itemMode = false;
     if (st.period <= 0) return;
     geometry();
@@ -336,8 +354,8 @@ const createEngine = (root, track, config, setLayout) => {
       sy = p[1];
     }
     const s = cfg.vertical ? sy : sx;
-    if (geo.mode === 'arc' && geo.R) return geo.R * Math.asin(clamp(s / geo.R, -1, 1));
-    if (geo.mode === 'orbit') return Math.asin(clamp(s / (geo.R * geo.pf), -1, 1));
+    if (geo.mode === "arc" && geo.R) return geo.R * Math.asin(clamp(s / geo.R, -1, 1));
+    if (geo.mode === "orbit") return Math.asin(clamp(s / (geo.R * geo.pf), -1, 1));
     return s;
   };
 
@@ -347,13 +365,16 @@ const createEngine = (root, track, config, setLayout) => {
     let best = null;
     for (const c of st.snaps) {
       const s = c - base;
-      const candidate = dir > 0 ? s + P * Math.ceil((from + 0.5 - s) / P) : s + P * Math.floor((from - 0.5 - s) / P);
+      const candidate =
+        dir > 0
+          ? s + P * Math.ceil((from + 0.5 - s) / P)
+          : s + P * Math.floor((from - 0.5 - s) / P);
       if (best === null || (dir > 0 ? candidate < best : candidate > best)) best = candidate;
     }
     return best ?? from;
   };
 
-  const nearestSnap = value => {
+  const nearestSnap = (value) => {
     const P = st.period;
     const base = st.length / 2 + (st.geo?.lead ?? 0);
     let best = value;
@@ -373,7 +394,7 @@ const createEngine = (root, track, config, setLayout) => {
     st.move = { from: st.offset, delta: target - st.offset, t: 0, dur: duration };
   };
 
-  const stepTiming = speed => {
+  const stepTiming = (speed) => {
     const cycle = st.pitch / Math.max(1, Math.abs(speed));
     const move = clamp(cycle * 0.55, 0.35, 0.9);
     return { move, hold: Math.max(0.35, cycle - move) };
@@ -386,7 +407,7 @@ const createEngine = (root, track, config, setLayout) => {
     }
   };
 
-  const render = now => {
+  const render = (now) => {
     const cfg = config.current;
     const geo = st.geo;
     const L = st.length;
@@ -395,19 +416,21 @@ const createEngine = (root, track, config, setLayout) => {
     const lineT = cfg.vertical
       ? `translate3d(0px, ${T.toFixed(2)}px, 0px)`
       : `translate3d(${T.toFixed(2)}px, 0px, 0px)`;
-    track.style.transform = geo.tilted ? `rotateX(${geo.tiltX}deg) rotateY(${geo.tiltY}deg) ${lineT}` : lineT;
+    track.style.transform = geo.tilted
+      ? `rotateX(${geo.tiltX}deg) rotateY(${geo.tiltY}deg) ${lineT}`
+      : lineT;
     const introRunning = st.introStart >= 0;
     const elapsed = introRunning ? (now - st.introStart) / 1000 : 0;
-    const lensFocus = geo.mode === 'orbit' ? clamp(cfg.focus, 0, 1) * 0.9 : geo.focus;
+    const lensFocus = geo.mode === "orbit" ? clamp(cfg.focus, 0, 1) * 0.9 : geo.focus;
     const lensMag = geo.magnify * st.mag;
-    const cursorActive = lensMag > 0 && st.mag > 0.5 && geo.mode !== 'orbit';
+    const cursorActive = lensMag > 0 && st.mag > 0.5 && geo.mode !== "orbit";
     const wantsActive = cfg.focus > 0 || cfg.step || cursorActive;
-    const needItems = geo.mode !== 'line' || lensFocus > 0 || lensMag > 0.0005 || introRunning;
+    const needItems = geo.mode !== "line" || lensFocus > 0 || lensMag > 0.0005 || introRunning;
     if (!needItems && st.itemMode) clearItems();
     st.itemMode = needItems;
     if (!needItems && !wantsActive) {
       if (st.active) {
-        st.active.el.removeAttribute('data-active');
+        st.active.el.removeAttribute("data-active");
         st.active = null;
       }
       return;
@@ -421,10 +444,10 @@ const createEngine = (root, track, config, setLayout) => {
       let rot = 0;
       let scale = 1;
       let opacity = 1;
-      let z = '';
+      let z = "";
       let hidden = false;
       let dist = Math.abs(u);
-      if (geo.mode === 'orbit') {
+      if (geo.mode === "orbit") {
         if (u < -geo.C / 2 || u >= geo.C / 2) {
           hidden = true;
         } else {
@@ -437,7 +460,8 @@ const createEngine = (root, track, config, setLayout) => {
           if (lensFocus > 0) scale *= 1 + lensFocus * Math.exp(-((th / 0.55) ** 2));
           if (lensMag > 0) {
             const span = (geo.magSigma * 2 * Math.PI) / geo.C;
-            scale *= 1 + lensMag * Math.max(0, Math.cos(th)) * Math.exp(-(((th - st.magU) / span) ** 2));
+            scale *=
+              1 + lensMag * Math.max(0, Math.cos(th)) * Math.exp(-(((th - st.magU) / span) ** 2));
           }
           const facing = (Math.cos(th) + 1) / 2;
           opacity = 0.25 + 0.75 * facing * facing;
@@ -459,10 +483,10 @@ const createEngine = (root, track, config, setLayout) => {
           w += lensMag * geo.magSigma * HALF_SQRT_PI * erf(km);
         }
         x = w;
-        if (geo.mode === 'wave') {
+        if (geo.mode === "wave") {
           y = geo.amp * Math.sin(geo.k * w);
           rot = (Math.atan(geo.amp * geo.k * Math.cos(geo.k * w)) * 90) / Math.PI;
-        } else if (geo.mode === 'arc' && geo.R) {
+        } else if (geo.mode === "arc" && geo.R) {
           const phi = w / geo.R;
           if (Math.abs(phi) > geo.limit) hidden = true;
           x = geo.R * Math.sin(phi);
@@ -484,40 +508,46 @@ const createEngine = (root, track, config, setLayout) => {
       if (!needItems) continue;
       const along = x - u;
       const t = hidden
-        ? ''
+        ? ""
         : `${cfg.vertical ? `translate3d(${y.toFixed(2)}px, ${along.toFixed(2)}px, 0px)` : `translate3d(${along.toFixed(2)}px, ${y.toFixed(2)}px, 0px)`}${
-            rot ? ` rotate(${(cfg.vertical ? -rot : rot).toFixed(2)}deg)` : ''
+            rot ? ` rotate(${(cfg.vertical ? -rot : rot).toFixed(2)}deg)` : ""
           }`;
-      write(it, 't', 'transform', t, it.el);
-      write(it, 'o', 'opacity', hidden ? '0' : opacity > 0.999 ? '' : opacity.toFixed(3), it.el);
-      write(it, 'v', 'visibility', hidden ? 'hidden' : '', it.el);
-      write(it, 'z', 'zIndex', z, it.el);
+      write(it, "t", "transform", t, it.el);
+      write(it, "o", "opacity", hidden ? "0" : opacity > 0.999 ? "" : opacity.toFixed(3), it.el);
+      write(it, "v", "visibility", hidden ? "hidden" : "", it.el);
+      write(it, "z", "zIndex", z, it.el);
       if (it.content)
-        write(it, 's', 'transform', Math.abs(scale - 1) < 0.0005 ? '' : `scale(${scale.toFixed(4)})`, it.content);
+        write(
+          it,
+          "s",
+          "transform",
+          Math.abs(scale - 1) < 0.0005 ? "" : `scale(${scale.toFixed(4)})`,
+          it.content,
+        );
       if (it.tip) {
         const lift = ((scale - 1) * it.cross) / 2;
         write(
           it,
-          'p',
-          'transform',
+          "p",
+          "transform",
           Math.abs(lift) < 0.05
-            ? ''
+            ? ""
             : cfg.vertical
               ? `translateX(${lift.toFixed(2)}px)`
               : `translateY(${lift.toFixed(2)}px)`,
-          it.tip
+          it.tip,
         );
       }
     }
     const active = best && bestDist < Math.max(best.size, st.pitch) / 2 + 1 ? best : null;
     if (active !== st.active) {
-      st.active?.el.removeAttribute('data-active');
-      active?.el.setAttribute('data-active', '');
+      st.active?.el.removeAttribute("data-active");
+      active?.el.setAttribute("data-active", "");
       st.active = active;
     }
   };
 
-  const frame = now => {
+  const frame = (now) => {
     st.raf = 0;
     if (st.destroyed || !st.geo || st.period <= 0) return;
     const cfg = config.current;
@@ -531,7 +561,7 @@ const createEngine = (root, track, config, setLayout) => {
       } else {
         st.introDone = true;
       }
-      root.removeAttribute('data-intro');
+      root.removeAttribute("data-intro");
     }
     if (st.introStart >= 0) {
       if ((now - st.introStart) / 1000 >= INTRO_TIME + INTRO_STAGGER) {
@@ -544,7 +574,11 @@ const createEngine = (root, track, config, setLayout) => {
     const travel = Math.sign(cfg.speed) || 1;
     const paused = st.focused || (st.hovered && cfg.hoverValue !== undefined);
     const pausedSpeed = st.focused ? 0 : (cfg.hoverValue ?? 0);
-    let target = st.reduced ? 0 : paused ? pausedSpeed * travel * cfg.dirSign : cfg.speed * cfg.dirSign;
+    let target = st.reduced
+      ? 0
+      : paused
+        ? pausedSpeed * travel * cfg.dirSign
+        : cfg.speed * cfg.dirSign;
     if (cfg.scrollBoost > 0 && !st.reduced) {
       st.scrollVel *= Math.exp(-dt / 0.18);
       if (Math.abs(st.scrollVel) > 1) busy = true;
@@ -619,7 +653,7 @@ const createEngine = (root, track, config, setLayout) => {
     st.raf = requestAnimationFrame(frame);
   };
 
-  const local = e => {
+  const local = (e) => {
     const r = root.getBoundingClientRect();
     const k = root.offsetWidth ? r.width / root.offsetWidth || 1 : 1;
     return [(e.clientX - r.left) / k, (e.clientY - r.top) / k];
@@ -628,16 +662,16 @@ const createEngine = (root, track, config, setLayout) => {
   const dragScale = () => {
     const geo = st.geo;
     if (!geo) return 1;
-    if (geo.mode === 'orbit') return geo.C / (2 * Math.PI * geo.R * geo.pf);
+    if (geo.mode === "orbit") return geo.C / (2 * Math.PI * geo.R * geo.pf);
     const pu = pointerU();
     if (pu === null || geo.focus <= 0) return 1;
     const kf = pu / geo.focusSigma;
     return 1 / (1 + geo.focus * Math.exp(-kf * kf));
   };
 
-  const onEnter = e => {
+  const onEnter = (e) => {
     st.hovered = true;
-    if (e.pointerType !== 'touch') {
+    if (e.pointerType !== "touch") {
       st.pointerInside = true;
       st.pointer = local(e);
     }
@@ -650,17 +684,26 @@ const createEngine = (root, track, config, setLayout) => {
     wake();
   };
 
-  const onDown = e => {
+  const onDown = (e) => {
     st.pressedAt = performance.now();
-    if (!config.current.draggable || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if (!config.current.draggable || (e.pointerType === "mouse" && e.button !== 0)) return;
     const [x, y] = local(e);
-    if (e.pointerType !== 'touch') st.pointer = [x, y];
-    st.drag = { id: e.pointerId, x, y, active: false, samples: [], scale: dragScale(), anchor: 0, offset: 0 };
+    if (e.pointerType !== "touch") st.pointer = [x, y];
+    st.drag = {
+      id: e.pointerId,
+      x,
+      y,
+      active: false,
+      samples: [],
+      scale: dragScale(),
+      anchor: 0,
+      offset: 0,
+    };
   };
 
-  const onMove = e => {
+  const onMove = (e) => {
     const cfg = config.current;
-    if (e.pointerType !== 'touch') {
+    if (e.pointerType !== "touch") {
       st.pointer = local(e);
       st.pointerInside = true;
     }
@@ -685,7 +728,7 @@ const createEngine = (root, track, config, setLayout) => {
         try {
           root.setPointerCapture(e.pointerId);
         } catch {}
-        root.setAttribute('data-dragging', '');
+        root.setAttribute("data-dragging", "");
       }
       const next = d.offset - (along - d.anchor) * d.scale;
       const P = st.period || 1;
@@ -703,7 +746,7 @@ const createEngine = (root, track, config, setLayout) => {
     if (!d || e.pointerId !== d.id) return;
     st.drag = null;
     if (!d.active) return;
-    root.removeAttribute('data-dragging');
+    root.removeAttribute("data-dragging");
     try {
       root.releasePointerCapture(e.pointerId);
     } catch {}
@@ -715,7 +758,8 @@ const createEngine = (root, track, config, setLayout) => {
     if (!cancelled && s.length > 1) {
       const [t0, a0] = s[0];
       const [t1, a1] = s[s.length - 1];
-      if (t1 > t0 && now - t1 < 80) v = clamp((-(a1 - a0) / (t1 - t0)) * 1000 * d.scale, -MAX_FLING, MAX_FLING);
+      if (t1 > t0 && now - t1 < 80)
+        v = clamp((-(a1 - a0) / (t1 - t0)) * 1000 * d.scale, -MAX_FLING, MAX_FLING);
     }
     if (cfg.step && !st.reduced) {
       const target = nearestSnap(st.offset + v * 0.35);
@@ -728,10 +772,10 @@ const createEngine = (root, track, config, setLayout) => {
     wake();
   };
 
-  const onUp = e => endDrag(e, false);
-  const onCancel = e => endDrag(e, true);
+  const onUp = (e) => endDrag(e, false);
+  const onCancel = (e) => endDrag(e, true);
 
-  const onClick = e => {
+  const onClick = (e) => {
     if (performance.now() < st.suppressUntil) {
       e.preventDefault();
       e.stopPropagation();
@@ -739,27 +783,32 @@ const createEngine = (root, track, config, setLayout) => {
     }
   };
 
-  const onDragStart = e => {
+  const onDragStart = (e) => {
     if (config.current.draggable) e.preventDefault();
   };
 
-  const onFocusIn = e => {
+  const onFocusIn = (e) => {
     const target = e.target;
     if (performance.now() - st.pressedAt < 800) return;
     st.focused = true;
-    const it = st.items.find(item => item.el.contains(target));
+    const it = st.items.find((item) => item.el.contains(target));
     if (it && st.geo) {
       const u = -st.offset - st.geo.lead + it.center - st.length / 2;
-      const comfortable = st.geo.mode === 'orbit' ? 1 : Math.max(0, st.length / 2 - it.size);
+      const comfortable = st.geo.mode === "orbit" ? 1 : Math.max(0, st.length / 2 - it.size);
       if (Math.abs(u) > comfortable) {
         st.move = null;
-        st.seek = { from: st.offset, delta: u, t: 0, dur: clamp(0.35 + Math.abs(u) / 2000, 0.35, 0.8) };
+        st.seek = {
+          from: st.offset,
+          delta: u,
+          t: 0,
+          dur: clamp(0.35 + Math.abs(u) / 2000, 0.35, 0.8),
+        };
       }
     }
     wake();
   };
 
-  const onFocusOut = e => {
+  const onFocusOut = (e) => {
     if (root.contains(e.relatedTarget)) return;
     st.focused = false;
     wake();
@@ -789,20 +838,20 @@ const createEngine = (root, track, config, setLayout) => {
     wake();
   };
 
-  root.addEventListener('pointerenter', onEnter);
-  root.addEventListener('pointerleave', onLeave);
-  root.addEventListener('pointerdown', onDown);
-  root.addEventListener('pointermove', onMove);
-  root.addEventListener('pointerup', onUp);
-  root.addEventListener('pointercancel', onCancel);
-  root.addEventListener('lostpointercapture', onCancel);
-  root.addEventListener('click', onClick, true);
-  root.addEventListener('dragstart', onDragStart);
-  root.addEventListener('focusin', onFocusIn);
-  root.addEventListener('focusout', onFocusOut);
-  root.addEventListener('scroll', onRootScroll);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  query?.addEventListener?.('change', onMotion);
+  root.addEventListener("pointerenter", onEnter);
+  root.addEventListener("pointerleave", onLeave);
+  root.addEventListener("pointerdown", onDown);
+  root.addEventListener("pointermove", onMove);
+  root.addEventListener("pointerup", onUp);
+  root.addEventListener("pointercancel", onCancel);
+  root.addEventListener("lostpointercapture", onCancel);
+  root.addEventListener("click", onClick, true);
+  root.addEventListener("dragstart", onDragStart);
+  root.addEventListener("focusin", onFocusIn);
+  root.addEventListener("focusout", onFocusOut);
+  root.addEventListener("scroll", onRootScroll);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  query?.addEventListener?.("change", onMotion);
 
   let resizeObserver = null;
   const observed = new Set();
@@ -824,25 +873,25 @@ const createEngine = (root, track, config, setLayout) => {
     if (st.geo && st.period > 0) frame(performance.now());
   };
 
-  if (typeof ResizeObserver !== 'undefined') {
+  if (typeof ResizeObserver !== "undefined") {
     resizeObserver = new ResizeObserver(() => {
       measure();
       if (st.geo && st.period > 0) render(performance.now());
       wake();
     });
   } else {
-    window.addEventListener('resize', refresh);
+    window.addEventListener("resize", refresh);
   }
 
   let intersection = null;
-  if (typeof IntersectionObserver !== 'undefined') {
+  if (typeof IntersectionObserver !== "undefined") {
     intersection = new IntersectionObserver(
-      entries => {
+      (entries) => {
         const entry = entries[entries.length - 1];
         st.visible = entry.isIntersecting;
         if (st.visible) wake();
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
     intersection.observe(root);
   }
@@ -850,27 +899,27 @@ const createEngine = (root, track, config, setLayout) => {
   const onVisibility = () => {
     if (!document.hidden) wake();
   };
-  document.addEventListener('visibilitychange', onVisibility);
+  document.addEventListener("visibilitychange", onVisibility);
 
   const destroy = () => {
     st.destroyed = true;
     if (st.raf) cancelAnimationFrame(st.raf);
-    root.removeEventListener('pointerenter', onEnter);
-    root.removeEventListener('pointerleave', onLeave);
-    root.removeEventListener('pointerdown', onDown);
-    root.removeEventListener('pointermove', onMove);
-    root.removeEventListener('pointerup', onUp);
-    root.removeEventListener('pointercancel', onCancel);
-    root.removeEventListener('lostpointercapture', onCancel);
-    root.removeEventListener('click', onClick, true);
-    root.removeEventListener('dragstart', onDragStart);
-    root.removeEventListener('focusin', onFocusIn);
-    root.removeEventListener('focusout', onFocusOut);
-    root.removeEventListener('scroll', onRootScroll);
-    window.removeEventListener('scroll', onScroll);
-    window.removeEventListener('resize', refresh);
-    document.removeEventListener('visibilitychange', onVisibility);
-    query?.removeEventListener?.('change', onMotion);
+    root.removeEventListener("pointerenter", onEnter);
+    root.removeEventListener("pointerleave", onLeave);
+    root.removeEventListener("pointerdown", onDown);
+    root.removeEventListener("pointermove", onMove);
+    root.removeEventListener("pointerup", onUp);
+    root.removeEventListener("pointercancel", onCancel);
+    root.removeEventListener("lostpointercapture", onCancel);
+    root.removeEventListener("click", onClick, true);
+    root.removeEventListener("dragstart", onDragStart);
+    root.removeEventListener("focusin", onFocusIn);
+    root.removeEventListener("focusout", onFocusOut);
+    root.removeEventListener("scroll", onRootScroll);
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", refresh);
+    document.removeEventListener("visibilitychange", onVisibility);
+    query?.removeEventListener?.("change", onMotion);
     resizeObserver?.disconnect();
     intersection?.disconnect();
   };
@@ -881,7 +930,7 @@ const createEngine = (root, track, config, setLayout) => {
 export interface LogoLoopProps {
   logos: any[];
   speed?: number;
-  direction?: 'left' | 'right' | 'up' | 'down';
+  direction?: "left" | "right" | "up" | "down";
   width?: string | number;
   logoHeight?: number;
   gap?: number;
@@ -890,7 +939,7 @@ export interface LogoLoopProps {
   fadeOut?: boolean;
   fadeOutWidth?: number;
   scaleOnHover?: boolean;
-  layout?: 'line' | 'wave' | 'circle';
+  layout?: "line" | "wave" | "circle";
   bend?: number;
   focus?: number;
   magnify?: number;
@@ -898,7 +947,7 @@ export interface LogoLoopProps {
   tiltY?: number;
   step?: boolean;
   muted?: number;
-  labels?: 'none' | 'hover' | 'always';
+  labels?: "none" | "hover" | "always";
   draggable?: boolean;
   scrollBoost?: number;
   intro?: boolean;
@@ -912,8 +961,8 @@ export const LogoLoop = memo<LogoLoopProps>(
   ({
     logos,
     speed = 120,
-    direction = 'left',
-    width = '100%',
+    direction = "left",
+    width = "100%",
     logoHeight = 28,
     gap = 32,
     pauseOnHover,
@@ -921,7 +970,7 @@ export const LogoLoop = memo<LogoLoopProps>(
     fadeOut = true,
     fadeOutWidth = 0.12,
     scaleOnHover = false,
-    layout = 'line',
+    layout = "line",
     bend = 0.5,
     focus = 0,
     magnify = 0,
@@ -929,14 +978,14 @@ export const LogoLoop = memo<LogoLoopProps>(
     tiltY = 0,
     step = false,
     muted = 0,
-    labels = 'none',
+    labels = "none",
     draggable = true,
     scrollBoost = 0,
     intro = true,
     renderItem,
-    ariaLabel = 'Partner logos',
+    ariaLabel = "Partner logos",
     className,
-    style
+    style,
   }) => {
     const rootRef = useRef(null);
     const trackRef = useRef(null);
@@ -944,11 +993,11 @@ export const LogoLoop = memo<LogoLoopProps>(
     const [{ copies, primary }, setLayout] = useState({ copies: 3, primary: 1 });
     const [introPending] = useState(intro);
 
-    const vertical = direction === 'up' || direction === 'down';
+    const vertical = direction === "up" || direction === "down";
     const config = useRef(null);
     config.current = {
       speed,
-      dirSign: (vertical ? direction === 'up' : direction !== 'right') ? 1 : -1,
+      dirSign: (vertical ? direction === "up" : direction !== "right") ? 1 : -1,
       hoverValue: hoverSpeed !== undefined ? hoverSpeed : pauseOnHover === false ? undefined : 0,
       vertical,
       layout,
@@ -963,7 +1012,7 @@ export const LogoLoop = memo<LogoLoopProps>(
       intro,
       scaleOnHover,
       labels,
-      links: logos.some(item => item.href)
+      links: logos.some((item) => item.href),
     };
 
     useIsomorphicLayoutEffect(() => {
@@ -991,7 +1040,7 @@ export const LogoLoop = memo<LogoLoopProps>(
       magnify,
       tiltX,
       tiltY,
-      scaleOnHover
+      scaleOnHover,
     ]);
 
     useEffect(() => {
@@ -1003,10 +1052,15 @@ export const LogoLoop = memo<LogoLoopProps>(
         Array.from({ length: copies }, (_, copyIndex) => {
           const isPrimary = copyIndex === primary;
           return (
-            <ul className="logoloop__list" key={copyIndex} role="list" aria-hidden={isPrimary ? undefined : true}>
+            <ul
+              className="logoloop__list"
+              key={copyIndex}
+              role="list"
+              aria-hidden={isPrimary ? undefined : true}
+            >
               {logos.map((item, itemIndex) => {
                 const key = `${copyIndex}-${itemIndex}`;
-                const isNode = 'node' in item;
+                const isNode = "node" in item;
                 const visual = renderItem ? (
                   renderItem(item, key)
                 ) : isNode ? (
@@ -1020,14 +1074,15 @@ export const LogoLoop = memo<LogoLoopProps>(
                     sizes={item.sizes}
                     width={item.width}
                     height={item.height}
-                    alt={item.alt ?? ''}
+                    alt={item.alt ?? ""}
                     title={item.title}
                     loading="lazy"
                     decoding="async"
                     draggable={false}
                   />
                 );
-                const text = (labels === 'inline' || labels === 'below') && item.title ? item.title : null;
+                const text =
+                  (labels === "inline" || labels === "below") && item.title ? item.title : null;
                 const inner = (
                   <>
                     {visual}
@@ -1044,14 +1099,16 @@ export const LogoLoop = memo<LogoLoopProps>(
                     className="logoloop__item"
                     key={key}
                     role="listitem"
-                    data-color={item.hoverColor ? '' : undefined}
-                    style={item.hoverColor ? { '--logoloop-item-color': item.hoverColor } : undefined}
+                    data-color={item.hoverColor ? "" : undefined}
+                    style={
+                      item.hoverColor ? { "--logoloop-item-color": item.hoverColor } : undefined
+                    }
                   >
                     {item.href ? (
                       <a
                         className="logoloop__content"
                         href={item.href}
-                        aria-label={name || 'logo link'}
+                        aria-label={name || "logo link"}
                         target="_blank"
                         rel="noreferrer noopener"
                         draggable={false}
@@ -1062,7 +1119,7 @@ export const LogoLoop = memo<LogoLoopProps>(
                     ) : (
                       <div className="logoloop__content">{inner}</div>
                     )}
-                    {labels === 'hover' && item.title && (
+                    {labels === "hover" && item.title && (
                       <span className="logoloop__tip" aria-hidden="true">
                         {item.title}
                       </span>
@@ -1073,7 +1130,7 @@ export const LogoLoop = memo<LogoLoopProps>(
             </ul>
           );
         }),
-      [copies, primary, logos, renderItem, labels]
+      [copies, primary, logos, renderItem, labels],
     );
 
     const mask = fadeOut ? fadeMask(fadeOutWidth, vertical) : undefined;
@@ -1081,28 +1138,28 @@ export const LogoLoop = memo<LogoLoopProps>(
 
     const containerStyle = {
       width: vertical
-        ? toCssLength(width) === '100%'
+        ? toCssLength(width) === "100%"
           ? undefined
           : toCssLength(width)
-        : (toCssLength(width) ?? '100%'),
-      '--logoloop-gap': `${gap}px`,
-      '--logoloop-logoHeight': `${logoHeight}px`,
+        : (toCssLength(width) ?? "100%"),
+      "--logoloop-gap": `${gap}px`,
+      "--logoloop-logoHeight": `${logoHeight}px`,
       ...(amount > 0 && {
-        '--logoloop-gray': Math.min(1, amount * 2).toFixed(3),
-        '--logoloop-dim': (1 - amount * 0.6).toFixed(3)
+        "--logoloop-gray": Math.min(1, amount * 2).toFixed(3),
+        "--logoloop-dim": (1 - amount * 0.6).toFixed(3),
       }),
       ...(mask && { WebkitMaskImage: mask, maskImage: mask }),
-      ...style
+      ...style,
     };
 
     const rootClassName = [
-      'logoloop',
-      vertical ? 'logoloop--vertical' : 'logoloop--horizontal',
-      scaleOnHover && 'logoloop--scale-hover',
-      className
+      "logoloop",
+      vertical ? "logoloop--vertical" : "logoloop--horizontal",
+      scaleOnHover && "logoloop--scale-hover",
+      className,
     ]
       .filter(Boolean)
-      .join(' ');
+      .join(" ");
 
     return (
       <div
@@ -1111,19 +1168,19 @@ export const LogoLoop = memo<LogoLoopProps>(
         style={containerStyle}
         role="region"
         aria-label={ariaLabel}
-        data-intro={introPending ? '' : undefined}
-        data-draggable={draggable ? '' : undefined}
-        data-muted={amount > 0 ? '' : undefined}
-        data-labels={labels !== 'none' ? labels : undefined}
+        data-intro={introPending ? "" : undefined}
+        data-draggable={draggable ? "" : undefined}
+        data-muted={amount > 0 ? "" : undefined}
+        data-labels={labels !== "none" ? labels : undefined}
       >
         <div className="logoloop__track" ref={trackRef}>
           {lists}
         </div>
       </div>
     );
-  }
+  },
 );
 
-LogoLoop.displayName = 'LogoLoop';
+LogoLoop.displayName = "LogoLoop";
 
 export default LogoLoop;

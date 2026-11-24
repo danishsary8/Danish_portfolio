@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type AnchorHTMLAttributes, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import Lanyard from "@/components/ui/Lanyard";
-import { drawBadgeBack, drawBadgeFront, getCachedBadgeFaces, preloadBadgeFaces } from "@/lib/badge-faces";
+import {
+  drawBadgeBack,
+  drawBadgeFront,
+  getCachedBadgeFaces,
+  preloadBadgeFaces,
+} from "@/lib/badge-faces";
 import { PROFILE } from "@/content/portfolio";
 import { ASSETS } from "@/lib/assets";
-import { CV_HREF } from "@/lib/cv-link";
+import { CV_HREF, getCvLinkProps } from "@/lib/cv-link";
 import { useLocalTime } from "@/lib/use-local-time";
 import { useTheme } from "@/lib/use-theme";
 import { ArrowUpRight, Check, Copy, FileText, Linkedin, Mail, Move, Phone } from "lucide-react";
@@ -34,7 +39,7 @@ function Tile({ className, children }: { className: string; children: ReactNode 
 }
 
 const ROW =
-  "flex min-h-11 w-full items-center gap-3.5 px-4 py-1.5 text-left transition-colors duration-150 lg:[@media(max-height:740px)]:min-h-10 lg:[@media(max-height:740px)]:py-1";
+  "flex min-h-10.5 w-full items-center gap-3.5 px-4 py-1 text-left transition-colors duration-150 lg:[@media(max-height:780px)]:min-h-[38px] lg:[@media(max-height:780px)]:py-0.5";
 
 function RowText({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
   return (
@@ -54,6 +59,7 @@ function RowText({ label, value, mono = false }: { label: string; value: string;
 function LinkRow({
   href,
   external = false,
+  linkProps,
   label,
   value,
   mono,
@@ -61,6 +67,7 @@ function LinkRow({
 }: {
   href: string;
   external?: boolean;
+  linkProps?: AnchorHTMLAttributes<HTMLAnchorElement>;
   label: string;
   value: string;
   mono?: boolean;
@@ -71,6 +78,7 @@ function LinkRow({
       <a
         href={href}
         {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...linkProps}
         className={`group ${ROW} hover:bg-surface-1 ${FOCUS} focus-visible:-outline-offset-2`}
       >
         {tile}
@@ -89,7 +97,9 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const { dark } = useTheme();
   const time = useLocalTime(PROFILE.timezone);
   const [copied, setCopied] = useState(false);
-  const [faces, setFaces] = useState<{ front: string; back: string } | null>(() => getCachedBadgeFaces());
+  const [faces, setFaces] = useState<{ front: string; back: string } | null>(() =>
+    getCachedBadgeFaces(),
+  );
   const [lanyardVisible, setLanyardVisible] = useState(false);
   const [mobileTab, setMobileTab] = useState<"profile" | "badge">("profile");
   const timer = useRef<number | undefined>(undefined);
@@ -100,7 +110,9 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   // (or when the user hovers over the portrait card), so they are already ready in memory.
   useEffect(() => {
     const run = () => {
-      preloadBadgeFaces().then(setFaces).catch(() => {});
+      preloadBadgeFaces()
+        .then(setFaces)
+        .catch(() => {});
     };
     const idle = window.requestIdleCallback
       ? window.requestIdleCallback(run, { timeout: 2500 })
@@ -117,7 +129,9 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
       return;
     }
     setMobileTab("profile");
-    preloadBadgeFaces().then(setFaces).catch(() => {});
+    preloadBadgeFaces()
+      .then(setFaces)
+      .catch(() => {});
     // Allow the modal dialog popup animation to complete smoothly first at 60fps,
     // then mount the 3D Lanyard so the card drops down smoothly without initial lag.
     const t = window.setTimeout(() => {
@@ -141,10 +155,10 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] h-[min(90dvh,820px)] lg:h-[min(780px,calc(100dvh-2rem))] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0 transform-gpu will-change-[transform,opacity]">
+      <DialogContent className="squircle [--r:26px] w-[94vw] max-w-[1040px] h-[min(90dvh,820px)] lg:h-[min(780px,calc(100dvh-1.5rem))] gap-0 overflow-hidden border-[var(--edge)] bg-surface-2 p-0 transform-gpu will-change-[transform,opacity]">
         <DialogDescription className="sr-only">
-          Goal, personal details and contact options for {PROFILE.name}, with an interactive
-          lanyard badge that shows the same card as the home page.
+          Goal, personal details and contact options for {PROFILE.name}, with an interactive lanyard
+          badge that shows the same card as the home page.
         </DialogDescription>
 
         <div className="flex h-full w-full flex-col lg:flex-row overflow-hidden">
@@ -166,9 +180,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                 type="button"
                 onClick={() => setMobileTab("badge")}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-[12px] font-semibold transition-all ${
-                  mobileTab === "badge"
-                    ? "bg-fg text-bg shadow-xs"
-                    : "text-fg-muted hover:text-fg"
+                  mobileTab === "badge" ? "bg-fg text-bg shadow-xs" : "text-fg-muted hover:text-fg"
                 }`}
               >
                 <span>3D Badge</span>
@@ -239,7 +251,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
           {/* Panel: only what the badge and the page do not already say. */}
           <div
-            className={`min-h-0 w-full flex-col overflow-y-auto p-4.5 sm:p-7 lg:w-[60%] lg:px-10 lg:py-8 lg:[@media(max-height:740px)]:py-6 ${
+            className={`min-h-0 w-full flex-col overflow-y-auto p-4.5 sm:p-7 lg:w-[60%] lg:px-9 lg:py-6 lg:[@media(max-height:780px)]:py-5 ${
               mobileTab === "profile" ? "flex flex-1 h-full" : "hidden lg:flex"
             }`}
           >
@@ -282,32 +294,49 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               </span>
             </div>
 
-            <DialogTitle className="mt-3.5 sm:mt-4 text-[28px] sm:text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
+            <DialogTitle className="mt-3 sm:mt-3.5 text-[28px] sm:text-[32px] font-semibold leading-[1.05] tracking-[-0.03em] text-fg">
               {PROFILE.name}
             </DialogTitle>
-            <p className="mt-1 text-[14px] sm:text-[15px] text-fg-muted">
-              Software Development student at Norton University
+            <p className="mt-1 text-[14px] sm:text-[14.5px] text-fg-muted">
+              4th-year Software Development student · Norton University
             </p>
 
             {/* Where he is heading: the one bio line no section repeats. */}
-            <figure className="mt-3 sm:mt-3.5 shrink-0">
-              <blockquote className="text-pretty text-[13px] sm:text-[13.5px] leading-[1.55] tracking-[-0.005em] text-fg">
-                <span aria-hidden="true" className="mr-0.5 text-fg-subtle">
+            <figure className="mt-2.5 sm:mt-3 shrink-0">
+              <blockquote className="text-pretty text-[13px] sm:text-[13.5px] leading-[1.5] tracking-[-0.005em] text-fg">
+                <span
+                  aria-hidden="true"
+                  className="mr-0.5 font-serif text-[15px] leading-none text-gold"
+                >
                   “
                 </span>
-                {GOAL}
-                <span aria-hidden="true" className="ml-0.5 text-fg-subtle">
+                {GOAL.includes("real-world") ? (
+                  <>
+                    {GOAL.split("real-world")[0]}
+                    <span className="whitespace-nowrap">real-world</span>
+                    {GOAL.split("real-world")[1]}
+                  </>
+                ) : (
+                  GOAL
+                )}
+                <span
+                  aria-hidden="true"
+                  className="ml-0.5 font-serif text-[15px] leading-none text-gold"
+                >
                   ”
                 </span>
               </blockquote>
             </figure>
 
             {/* Personal details as an ID data page */}
-            <section aria-labelledby="profile-details" className="mt-4 sm:mt-5 shrink-0">
-              <h3 id="profile-details" className="text-[12.5px] sm:text-[13px] font-medium text-fg-muted">
+            <section aria-labelledby="profile-details" className="mt-3.5 sm:mt-4 shrink-0">
+              <h3
+                id="profile-details"
+                className="text-[11px] font-semibold uppercase tracking-[0.08em] text-fg-subtle"
+              >
                 Details
               </h3>
-              <div className="id-datapage squircle [--r:16px] relative mt-2 px-4 sm:px-5 py-3.5">
+              <div className="id-datapage squircle [--r:16px] relative mt-1.5 px-4 sm:px-5 py-3">
                 <span
                   aria-hidden="true"
                   className="card-holo absolute bottom-3.5 right-3.5 sm:bottom-4 sm:right-4 grid h-8 w-8 place-items-center rounded-[8px]"
@@ -349,9 +378,11 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             </section>
 
             {/* Contact console: one grouped list, every way to reach him. */}
-            <h3 className="mt-4 sm:mt-5 text-[12.5px] sm:text-[13px] font-medium text-fg-muted">Reach me</h3>
-            <ul className="tactile squircle [--r:16px] mt-2 grid shrink-0 divide-y divide-[var(--line)] overflow-hidden pb-1">
-              <li className={`${ROW}`}>
+            <h3 className="mt-3.5 sm:mt-4 text-[11px] font-semibold uppercase tracking-[0.08em] text-fg-subtle">
+              Reach me
+            </h3>
+            <ul className="tactile squircle [--r:16px] mt-1.5 grid shrink-0 divide-y divide-[var(--line)] overflow-hidden">
+              <li className={`${ROW} hover:bg-surface-1`}>
                 <Tile className="icon-tile">
                   <Mail className="h-4 w-4" strokeWidth={1.75} />
                 </Tile>
@@ -411,7 +442,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               {hasCv ? (
                 <LinkRow
                   href={CV_HREF}
-                  external
+                  linkProps={getCvLinkProps()}
                   label="Résumé"
                   value="Download CV (PDF)"
                   tile={
@@ -422,7 +453,6 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                 />
               ) : null}
             </ul>
-
           </div>
         </div>
       </DialogContent>

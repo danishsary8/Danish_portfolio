@@ -135,7 +135,9 @@ export function SlingButton({
       dot.animate(
         [
           { transform: `translate(${cx * wellR}px, ${cy * wellR}px) scale(${scale})` },
-          { transform: `translate(${cx * to - cy * drift}px, ${cy * to + cx * drift}px) scale(${shrink})` },
+          {
+            transform: `translate(${cx * to - cy * drift}px, ${cy * to + cx * drift}px) scale(${shrink})`,
+          },
         ],
         { duration, delay, easing: EASE_OUT, fill: "none" },
       );
@@ -234,8 +236,18 @@ export function SlingButton({
       }, 200);
       return;
     }
-    animX.current = animate(px, 0, { type: "spring", duration: 0.4, bounce: recoil, velocity: v0.x });
-    animY.current = animate(py, 0, { type: "spring", duration: 0.4, bounce: recoil, velocity: v0.y });
+    animX.current = animate(px, 0, {
+      type: "spring",
+      duration: 0.4,
+      bounce: recoil,
+      velocity: v0.x,
+    });
+    animY.current = animate(py, 0, {
+      type: "spring",
+      duration: 0.4,
+      bounce: recoil,
+      velocity: v0.y,
+    });
   };
 
   const onPointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
@@ -327,7 +339,9 @@ export function SlingButton({
       if (tapSends && !cancelled) onSend?.();
     } else {
       const fire = armedRef.current && !cancelled;
-      const launch = fire ? launchSpeed * Math.min(p, POWER_CAP) : CANCEL * launchSpeed * Math.min(p, 1);
+      const launch = fire
+        ? launchSpeed * Math.min(p, POWER_CAP)
+        : CANCEL * launchSpeed * Math.min(p, 1);
       let v0x = vx - ux * launch;
       let v0y = vy - uy * launch;
       const m = Math.hypot(v0x, v0y);
@@ -369,21 +383,27 @@ export function SlingButton({
       className={`sling-button${className ? ` ${className}` : ""}`}
       data-armed={armed ? "" : undefined}
       data-sent={sent ? "" : undefined}
-      style={{
-        "--sl-size": `${size}px`,
-        "--sl-svg": `${2 * H}px`,
-        "--sl-pad": padColor,
-        "--sl-icon": iconColor,
-        "--sl-accent": accentColor,
-        "--sl-well": wellColor,
-        "--sl-band": bandColor,
-        "--sl-stroke": `${strokeWidth}px`,
-        "--sl-dot": `${DOT}px`,
-        ...(shadow ? { "--sl-shadow": shadow } : {}),
-        ...style,
-      } as CSSProperties}
+      style={
+        {
+          "--sl-size": `${size}px`,
+          "--sl-svg": `${2 * H}px`,
+          "--sl-pad": padColor,
+          "--sl-icon": iconColor,
+          "--sl-accent": accentColor,
+          "--sl-well": wellColor,
+          "--sl-band": bandColor,
+          "--sl-stroke": `${strokeWidth}px`,
+          "--sl-dot": `${DOT}px`,
+          ...(shadow ? { "--sl-shadow": shadow } : {}),
+          ...style,
+        } as CSSProperties
+      }
     >
-      <svg className="sling-button__fx" viewBox={`${-H} ${-H} ${2 * H} ${2 * H}`} aria-hidden="true">
+      <svg
+        className="sling-button__fx"
+        viewBox={`${-H} ${-H} ${2 * H} ${2 * H}`}
+        aria-hidden="true"
+      >
         <g ref={fxRef} className="sling-button__tension" style={{ opacity: 0 }}>
           <path ref={bandRef} className="sling-button__band" />
           <path ref={hotRef} className="sling-button__band sling-button__band--hot" />

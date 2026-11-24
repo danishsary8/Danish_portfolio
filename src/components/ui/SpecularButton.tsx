@@ -3,8 +3,10 @@
 import React, { useRef, useState, useCallback, type CSSProperties, type ReactNode } from "react";
 import "./SpecularButton.css";
 
-export interface SpecularButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement>, "onClick"> {
+export interface SpecularButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement>,
+  "onClick"
+> {
   size?: "sm" | "md" | "lg";
   radius?: number;
   tint?: string;
@@ -68,7 +70,7 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
       const y = e.clientY - rect.top;
       setCoords({ x, y });
     },
-    [followMouse, disabled]
+    [followMouse, disabled],
   );
 
   const handlePointerEnter = useCallback(
@@ -76,7 +78,7 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
       setIsHovered(true);
       handlePointerMove(e);
     },
-    [handlePointerMove]
+    [handlePointerMove],
   );
 
   const handlePointerLeave = useCallback(() => {
@@ -84,11 +86,7 @@ export const SpecularButton: React.FC<SpecularButtonProps> = ({
     setCoords(null);
   }, []);
 
-  const buttonClasses = [
-    "specular-button",
-    `specular-button--${size}`,
-    className,
-  ]
+  const buttonClasses = ["specular-button", `specular-button--${size}`, className]
     .filter(Boolean)
     .join(" ");
 

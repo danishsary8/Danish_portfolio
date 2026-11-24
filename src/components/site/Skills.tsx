@@ -100,7 +100,15 @@ const SOURCE: Record<string, string> = {
 const group = (title: string) => SKILL_GROUPS.find((g) => g.title === title)!;
 
 /** One bento cell: tactile card that lifts on hover. */
-function Cell({ className = "", i, children }: { className?: string | undefined; i: number; children: ReactNode }) {
+function Cell({
+  className = "",
+  i,
+  children,
+}: {
+  className?: string | undefined;
+  i: number;
+  children: ReactNode;
+}) {
   return (
     <div
       className={`skills-cell tactile squircle [--r:22px] relative overflow-hidden bg-surface-2 px-[var(--cell-px)] py-[var(--cell-py)] ${className}`}
@@ -111,7 +119,17 @@ function Cell({ className = "", i, children }: { className?: string | undefined;
   );
 }
 
-function GroupCell({ title, i, className, note }: { title: string; i: number; className?: string | undefined; note?: string }) {
+function GroupCell({
+  title,
+  i,
+  className,
+  note,
+}: {
+  title: string;
+  i: number;
+  className?: string | undefined;
+  note?: string;
+}) {
   const g = group(title);
   return (
     <Cell i={i} className={className}>
@@ -127,7 +145,9 @@ function GroupCell({ title, i, className, note }: { title: string; i: number; cl
             <Logo name={skill} size="var(--logo)" />
             {skill}
             {SOURCE[skill] ? (
-              <span className="-mr-1 ml-0.5 border-l border-line pl-2 text-[11.5px] text-fg-subtle">{SOURCE[skill]}</span>
+              <span className="-mr-1 ml-0.5 border-l border-line pl-2 text-[11.5px] text-fg-subtle">
+                {SOURCE[skill]}
+              </span>
             ) : null}
           </li>
         ))}
@@ -157,7 +177,10 @@ export function Skills() {
       <Reveal className="skills-bento grid grid-cols-12 gap-3">
         {/* Core stack: tall card, the three layers stacked with a connecting rail */}
         <Cell i={0} className="col-span-12 flex flex-col lg:col-span-5 lg:row-span-2">
-          <div aria-hidden="true" className="skills-core-glow pointer-events-none absolute inset-0" />
+          <div
+            aria-hidden="true"
+            className="skills-core-glow pointer-events-none absolute inset-0"
+          />
           <p className="relative text-[15px] font-medium tracking-[-0.01em] text-fg">Core stack</p>
           <p className="relative mt-1 text-[13px] text-fg-muted">
             A React interface on a secure Laravel API, backed by PostgreSQL.
@@ -173,7 +196,10 @@ export function Skills() {
                   <Logo name={tool} size="var(--core-logo)" />
                 </span>
                 <div>
-                  <p className="skills-core-name text-[length:var(--core-name)] font-semibold leading-tight tracking-[-0.02em] text-fg" data-label={tool} />
+                  <p
+                    className="skills-core-name text-[length:var(--core-name)] font-semibold leading-tight tracking-[-0.02em] text-fg"
+                    data-label={tool}
+                  />
                   <p className="text-[12.5px] text-fg-subtle">{layer}</p>
                 </div>
               </div>
@@ -185,7 +211,12 @@ export function Skills() {
         <GroupCell title="Back-End" i={2} className="col-span-12 lg:col-span-4" />
         <GroupCell title="Databases" i={3} className="col-span-12 lg:col-span-3" />
         <GroupCell title="Tools & DevOps" i={4} className="col-span-12 lg:col-span-4" />
-        <GroupCell title="Also used" i={5} className="col-span-12 lg:col-span-3" note="Learned at uni, used in projects." />
+        <GroupCell
+          title="Also used"
+          i={5}
+          className="col-span-12 lg:col-span-3"
+          note="Learned at uni, used in projects."
+        />
         <Cell i={6} className="col-span-12 lg:col-span-5">
           <h3 className="text-[15px] font-medium tracking-[-0.01em] text-fg">Soft skills</h3>
           {/* div list (not ul/li): the Skills test counts one svg per tech skill li */}
@@ -197,7 +228,10 @@ export function Skills() {
                 className="soft-pill inline-flex h-[var(--pill-h)] items-center gap-2 rounded-full pl-1 pr-3.5 text-[length:var(--pill-fs)] font-medium text-fg"
                 style={{ "--hue": hue } as CSSProperties}
               >
-                <span aria-hidden="true" className="soft-pill-dot grid aspect-square h-[calc(var(--pill-h)-8px)] place-items-center rounded-full">
+                <span
+                  aria-hidden="true"
+                  className="soft-pill-dot grid aspect-square h-[calc(var(--pill-h)-8px)] place-items-center rounded-full"
+                >
                   <Icon strokeWidth={2} className="h-[55%] w-[55%]" />
                 </span>
                 {name}

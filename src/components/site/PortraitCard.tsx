@@ -99,7 +99,12 @@ export function PortraitCard({ onView }: { onView: () => void }) {
           className={`absolute inset-0 backface-hidden ${FACE_SWAP} ${flipped ? "invisible" : "visible"}`}
           inert={flipped}
         >
-          <button ref={frontFlip} type="button" onClick={() => flip(true, true)} className={KEY_FLIP}>
+          <button
+            ref={frontFlip}
+            type="button"
+            onClick={() => flip(true, true)}
+            className={KEY_FLIP}
+          >
             Flip card
           </button>
           <CardFront onView={onView} />
@@ -109,7 +114,12 @@ export function PortraitCard({ onView }: { onView: () => void }) {
           className={`absolute inset-0 rotate-y-180 backface-hidden ${FACE_SWAP} ${flipped ? "visible" : "invisible"}`}
           inert={!flipped}
         >
-          <button ref={backFlip} type="button" onClick={() => flip(false, true)} className={KEY_FLIP}>
+          <button
+            ref={backFlip}
+            type="button"
+            onClick={() => flip(false, true)}
+            className={KEY_FLIP}
+          >
             Flip back
           </button>
           <CardBack />
@@ -144,21 +154,25 @@ function CardBack() {
             decoding="async"
             draggable={false}
             // Multiply drops the photo's white paper so only the ink sits on the panel.
-            className="absolute left-1/2 top-1/2 h-[105px] w-auto max-w-none -translate-x-1/2 -translate-y-[52%] -rotate-2 mix-blend-multiply"
+            className="absolute left-1/2 top-1/2 h-[82px] w-auto max-w-none -translate-x-1/2 -translate-y-[48%] -rotate-2 mix-blend-multiply"
           />
         </div>
-        <p className="mt-0.5 text-[9px] tracking-[0.02em] text-white/40">Authorized signature</p>
+        <p className="mt-1 text-[9px] tracking-[0.03em] text-white/50">Authorized signature</p>
       </div>
 
       {/* Card data on the left, Telegram QR on the right. */}
-      <div className="mt-2 flex items-start justify-between gap-3 px-4">
-        <dl className="grid min-w-0 gap-y-1">
+      <div className="mt-2.5 flex items-start justify-between gap-2.5 px-4">
+        <dl className="grid min-w-0 gap-y-2">
           {CARD_DATA.map(({ label, value, mono }) => (
             <div key={label} className="min-w-0">
-              <dt className="text-[9px] leading-none tracking-[0.02em] text-white/45">{label}</dt>
+              <dt className="text-[8.5px] font-medium uppercase leading-none tracking-[0.08em] text-white/55">
+                {label}
+              </dt>
               <dd
-                className={`skeuo-engrave mt-0.5 truncate text-[10.5px] leading-tight text-white/85 ${
-                  mono ? "font-mono tabular-nums tracking-[0.02em]" : "font-medium tracking-[-0.005em]"
+                className={`skeuo-engrave mt-0.5 truncate text-[10.5px] leading-tight text-white/90 ${
+                  mono
+                    ? "font-mono tabular-nums tracking-[0.02em]"
+                    : "font-medium tracking-[-0.005em]"
                 }`}
               >
                 {value}
@@ -174,13 +188,13 @@ function CardBack() {
               viewBox={`-2 -2 ${TELEGRAM_QR.size + 4} ${TELEGRAM_QR.size + 4}`}
               role="img"
               aria-label={`QR code: Telegram ${PROFILE.telegramHandle}`}
-              className="block h-[66px] w-[66px]"
+              className="block h-[60px] w-[60px]"
               shapeRendering="crispEdges"
             >
               <path d={TELEGRAM_QR.path} fill="#162447" />
             </svg>
           </div>
-          <figcaption className="mt-0.5 inline-flex items-center gap-1 text-[9px] tracking-[0.02em] text-white/55">
+          <figcaption className="mt-1 inline-flex items-center gap-1 text-[9px] tracking-[0.02em] text-white/60">
             <SiTelegram aria-hidden="true" className="h-2.5 w-2.5 text-[#26A5E4]" />
             Scan for Telegram
           </figcaption>
@@ -188,7 +202,7 @@ function CardBack() {
       </div>
 
       {/* Fine print. */}
-      <p className="skeuo-engrave mt-1.5 px-4 text-[9.5px] leading-snug">
+      <p className="skeuo-engrave mx-4 mt-3 border-t border-white/10 pt-2.5 text-[9.5px] leading-[1.45] text-white/65">
         The holder builds full-stack web apps with secure REST APIs, using React, Laravel and
         PostgreSQL. Designed by {PROFILE.shortName} in Cambodia.
       </p>
@@ -197,7 +211,7 @@ function CardBack() {
       <div className="mt-auto flex items-end justify-between gap-2 px-4 pb-3.5">
         <p className="inline-flex items-center gap-1.5 text-[10.5px] font-medium tracking-[0.01em] text-[#c9973a] [text-shadow:0_-1px_0_rgba(0,0,0,0.55)]">
           <Award aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5" />
-          2026 Award Winner · Team
+          1st Place · 2026 Award Winner
         </p>
         <div
           aria-hidden="true"
@@ -285,7 +299,10 @@ function CardFront({ onView }: { onView: () => void }) {
                     {brand === "telegram" ? (
                       // The Simple Icons mark cuts the plane out of the disc; a white dot behind it
                       // fills the cut-out so it reads as the real app icon on the navy.
-                      <span aria-hidden="true" className="relative grid h-3.5 w-3.5 shrink-0 place-items-center">
+                      <span
+                        aria-hidden="true"
+                        className="relative grid h-3.5 w-3.5 shrink-0 place-items-center"
+                      >
                         <span className="absolute inset-[2.5px] rounded-full bg-white" />
                         <Icon className="relative h-3.5 w-3.5 text-[#26A5E4]" />
                       </span>

@@ -19,7 +19,16 @@ type Props = {
  * A real certificate shown as a small tilted sheet of paper. Hover straightens and lifts it;
  * clicking opens the full certificate in a dialog.
  */
-export function CertificateThumb({ src, width, height, title, caption, size, tilt = 0, className = "" }: Props) {
+export function CertificateThumb({
+  src,
+  width,
+  height,
+  title,
+  caption,
+  size,
+  tilt = 0,
+  className = "",
+}: Props) {
   const [open, setOpen] = useState(false);
   const landscape = width > height;
   return (
@@ -29,7 +38,13 @@ export function CertificateThumb({ src, width, height, title, caption, size, til
         onClick={() => setOpen(true)}
         aria-label={`View certificate: ${title}`}
         className={`cert-thumb group relative block shrink-0 rounded-[6px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-fg ${className}`}
-        style={{ width: size, aspectRatio: `${width} / ${height}`, "--tilt": `${tilt}deg` } as CSSProperties}
+        style={
+          {
+            width: size,
+            aspectRatio: `${width} / ${height}`,
+            "--tilt": `${tilt}deg`,
+          } as CSSProperties
+        }
       >
         <img
           src={src}
@@ -50,10 +65,20 @@ export function CertificateThumb({ src, width, height, title, caption, size, til
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className={landscape ? "max-w-[min(1000px,calc(100vw-4rem))]" : "max-w-[min(560px,calc(100vw-4rem))]"}>
+        <DialogContent
+          className={
+            landscape
+              ? "max-w-[min(1000px,calc(100vw-4rem))]"
+              : "max-w-[min(560px,calc(100vw-4rem))]"
+          }
+        >
           <div className="pr-10">
-            <DialogTitle className="text-[17px] font-semibold tracking-[-0.015em] text-fg">{title}</DialogTitle>
-            <DialogDescription className="mt-0.5 text-[13.5px] text-fg-muted">{caption}</DialogDescription>
+            <DialogTitle className="text-[17px] font-semibold tracking-[-0.015em] text-fg">
+              {title}
+            </DialogTitle>
+            <DialogDescription className="mt-0.5 text-[13.5px] text-fg-muted">
+              {caption}
+            </DialogDescription>
           </div>
           <img
             src={src}

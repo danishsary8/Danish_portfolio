@@ -1,9 +1,9 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-import './ElasticMesh.css';
+import "./ElasticMesh.css";
 
 const VERTEX = `#version 300 es
 in vec2 aPosition;
@@ -255,10 +255,10 @@ const link = (gl, fragmentSource) => {
   if (!vertex || !fragment || !program) return null;
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
-  gl.bindAttribLocation(program, 0, 'aPosition');
-  gl.bindAttribLocation(program, 1, 'aRest');
-  gl.bindAttribLocation(program, 2, 'aStrain');
-  gl.bindAttribLocation(program, 3, 'aDent');
+  gl.bindAttribLocation(program, 0, "aPosition");
+  gl.bindAttribLocation(program, 1, "aRest");
+  gl.bindAttribLocation(program, 2, "aStrain");
+  gl.bindAttribLocation(program, 3, "aDent");
   gl.linkProgram(program);
   gl.deleteShader(vertex);
   gl.deleteShader(fragment);
@@ -458,14 +458,16 @@ const blurField = (source, width, height, radius) => {
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       let sum = 0;
-      for (let i = -r; i <= r; i++) sum += source[y * width + clamp(x + i, 0, width - 1)] * kernel[i + r];
+      for (let i = -r; i <= r; i++)
+        sum += source[y * width + clamp(x + i, 0, width - 1)] * kernel[i + r];
       temp[y * width + x] = sum;
     }
   }
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       let sum = 0;
-      for (let i = -r; i <= r; i++) sum += temp[clamp(y + i, 0, height - 1) * width + x] * kernel[i + r];
+      for (let i = -r; i <= r; i++)
+        sum += temp[clamp(y + i, 0, height - 1) * width + x] * kernel[i + r];
       out[y * width + x] = sum;
     }
   }
@@ -473,13 +475,13 @@ const blurField = (source, width, height, radius) => {
 };
 
 const ElasticMesh = ({
-  text = 'Squish',
-  src = '',
-  fontFamily = 'system-ui, sans-serif',
+  text = "Squish",
+  src = "",
+  fontFamily = "system-ui, sans-serif",
   fontWeight = 900,
-  color = '#3b5bff',
+  color = "#3b5bff",
   imageColors = true,
-  material = 'balloon',
+  material = "balloon",
   inflate = 1,
   stiffness = 0.5,
   wobble = 0.6,
@@ -488,9 +490,9 @@ const ElasticMesh = ({
   press = 0.5,
   shadow = 0.5,
   intro = true,
-  theme = 'dark',
+  theme = "dark",
   dpr,
-  className = '',
+  className = "",
   style,
   ...rest
 }) => {
@@ -500,7 +502,7 @@ const ElasticMesh = ({
   const contentRef = useRef(null);
   const settings = {
     text: String(text),
-    src: String(src || ''),
+    src: String(src || ""),
     fontFamily: String(fontFamily),
     fontWeight,
     color: String(color),
@@ -514,8 +516,8 @@ const ElasticMesh = ({
     press: clamp(press, 0, 1),
     shadow: clamp(shadow, 0, 1),
     intro,
-    light: theme === 'light',
-    dpr
+    light: theme === "light",
+    dpr,
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -525,12 +527,12 @@ const ElasticMesh = ({
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    const gl = canvas?.getContext('webgl2', {
+    const gl = canvas?.getContext("webgl2", {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       depth: false,
-      stencil: false
+      stencil: false,
     });
     if (!container || !canvas || !gl) return undefined;
 
@@ -538,28 +540,28 @@ const ElasticMesh = ({
     const shadowProgram = link(gl, SHADOW);
     if (!surfaceProgram || !shadowProgram) return undefined;
     const surface = locate(gl, surfaceProgram, [
-      'uViewport',
-      'uOffset',
-      'uField',
-      'uPaint',
-      'uSlope',
-      'uColor',
-      'uPaintMix',
-      'uMaterial',
-      'uLight',
-      'uInflate',
-      'uTurn',
-      'uClock',
-      'uParts'
+      "uViewport",
+      "uOffset",
+      "uField",
+      "uPaint",
+      "uSlope",
+      "uColor",
+      "uPaintMix",
+      "uMaterial",
+      "uLight",
+      "uInflate",
+      "uTurn",
+      "uClock",
+      "uParts",
     ]);
     const shade = locate(gl, shadowProgram, [
-      'uViewport',
-      'uOffset',
-      'uField',
-      'uShadowColor',
-      'uShadow',
-      'uClock',
-      'uParts'
+      "uViewport",
+      "uOffset",
+      "uField",
+      "uShadowColor",
+      "uShadow",
+      "uClock",
+      "uParts",
     ]);
 
     const fieldTexture = gl.createTexture();
@@ -571,7 +573,17 @@ const ElasticMesh = ({
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        1,
+        1,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        new Uint8Array(4),
+      );
     }
 
     const vao = gl.createVertexArray();
@@ -592,8 +604,8 @@ const ElasticMesh = ({
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bindVertexArray(null);
 
-    const probe = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const probe = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     const partData = new Float32Array(256);
     const turnMatrix = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
     const mesh = {
@@ -621,7 +633,7 @@ const ElasticMesh = ({
       indexType: gl.UNSIGNED_SHORT,
       activeCount: 0,
       width: 1,
-      height: 1
+      height: 1,
     };
     const state = {
       width: 1,
@@ -633,14 +645,23 @@ const ElasticMesh = ({
       sdf: new Float32Array(0),
       parts: [],
       clock: settingsRef.current.intro && !reduce ? 0 : 10,
-      colorKey: '',
+      colorKey: "",
       color: [0.31, 0.42, 1],
-      pointer: { x: 0, y: 0, inside: false, down: false, startX: 0, startY: 0, startTime: 0, dragging: false },
+      pointer: {
+        x: 0,
+        y: 0,
+        inside: false,
+        down: false,
+        startX: 0,
+        startY: 0,
+        startTime: 0,
+        dragging: false,
+      },
       hover: { x: 0, y: 0, vx: 0, vy: 0, power: 0 },
       turn: { x: 0, y: 0, vx: 0, vy: 0 },
       accumulator: 0,
       energy: 1,
-      buildToken: 0
+      buildToken: 0,
     };
     let raf = 0;
     let last = 0;
@@ -648,9 +669,9 @@ const ElasticMesh = ({
     let alive = true;
     let resizeTimer = 0;
 
-    const toRgb = value => {
+    const toRgb = (value) => {
       if (!probe || !value) return [0.31, 0.42, 1];
-      probe.fillStyle = '#000000';
+      probe.fillStyle = "#000000";
       probe.fillStyle = /^[0-9a-f]{3,8}$/i.test(value) ? `#${value}` : value;
       probe.fillRect(0, 0, 1, 1);
       const [r, g, b] = probe.getImageData(0, 0, 1, 1).data;
@@ -715,7 +736,7 @@ const ElasticMesh = ({
         [-1, -1],
         [1, -1],
         [-1, 1],
-        [1, 1]
+        [1, 1],
       ];
       for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
@@ -734,7 +755,8 @@ const ElasticMesh = ({
       mesh.activeCount = mesh.active.reduce((total, flag) => total + flag, 0);
       const margin = -(Math.min(width, height) * 0.14 + mesh.spacing * 3);
       const near = new Uint8Array(count);
-      for (let k = 0; k < count; k++) near[k] = state.ready && sampleSdf(mesh.restX[k], mesh.restY[k]) > margin ? 1 : 0;
+      for (let k = 0; k < count; k++)
+        near[k] = state.ready && sampleSdf(mesh.restX[k], mesh.restY[k]) > margin ? 1 : 0;
       const quads = [];
       for (let j = 0; j < rows - 1; j++) {
         for (let i = 0; i < cols - 1; i++) {
@@ -791,16 +813,16 @@ const ElasticMesh = ({
       const scale = Math.min(1, MAX_FIELD / Math.max(width, height));
       const fw = Math.max(8, Math.round(width * scale));
       const fh = Math.max(8, Math.round(height * scale));
-      const canvas2d = document.createElement('canvas');
+      const canvas2d = document.createElement("canvas");
       canvas2d.width = fw;
       canvas2d.height = fh;
-      const ctx = canvas2d.getContext('2d', { willReadFrequently: true });
+      const ctx = canvas2d.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
       let drawn = false;
       if (s.src) {
         const image = new Image();
-        image.crossOrigin = 'anonymous';
-        image.decoding = 'async';
+        image.crossOrigin = "anonymous";
+        image.decoding = "async";
         image.src = s.src;
         try {
           await image.decode();
@@ -816,15 +838,16 @@ const ElasticMesh = ({
       } else {
         const family = s.fontFamily;
         const weight = s.fontWeight;
-        if (document.fonts) await document.fonts.load(`${weight} 100px ${family}`).catch(() => null);
+        if (document.fonts)
+          await document.fonts.load(`${weight} 100px ${family}`).catch(() => null);
         if (token !== state.buildToken) return;
-        const lines = s.text.split('\n');
+        const lines = s.text.split("\n");
         ctx.font = `${weight} 100px ${family}`;
         let widest = 1;
         let ascent = 0;
         let descent = 0;
         for (const line of lines) {
-          const m = ctx.measureText(line || ' ');
+          const m = ctx.measureText(line || " ");
           widest = Math.max(widest, m.actualBoundingBoxLeft + m.actualBoundingBoxRight);
           ascent = Math.max(ascent, m.actualBoundingBoxAscent);
           descent = Math.max(descent, m.actualBoundingBoxDescent);
@@ -833,13 +856,13 @@ const ElasticMesh = ({
         const blockHeight = ascent + descent + lineHeight * (lines.length - 1);
         const size = Math.min((fw * 0.8) / widest, (fh * 0.7) / blockHeight) * 100;
         ctx.font = `${weight} ${size}px ${family}`;
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
         const k = size / 100;
         const top = (fh - blockHeight * k) / 2 + ascent * k;
         lines.forEach((line, index) => {
-          const m = ctx.measureText(line || ' ');
+          const m = ctx.measureText(line || " ");
           const shift = (m.actualBoundingBoxLeft - m.actualBoundingBoxRight) / 2;
           ctx.fillText(line, fw / 2 + shift, top + index * lineHeight * k);
         });
@@ -865,7 +888,11 @@ const ElasticMesh = ({
       for (let i = 0; i < count; i++) {
         binary[i] = mask[i] > 0.5 ? 1 : 0;
         signed[i] =
-          mask[i] > 0.02 && mask[i] < 0.98 ? mask[i] - 0.5 : inside[i] > 0 ? inside[i] - 0.5 : 0.5 - outside[i];
+          mask[i] > 0.02 && mask[i] < 0.98
+            ? mask[i] - 0.5
+            : inside[i] > 0
+              ? inside[i] - 0.5
+              : 0.5 - outside[i];
       }
       const labels = new Int32Array(count);
       const parts = [];
@@ -904,7 +931,13 @@ const ElasticMesh = ({
             queue[tail++] = i + fw;
           }
         }
-        parts.push({ x: sumX / tail / scale, y: sumY / tail / scale, left: minX, size: tail, delay: 0 });
+        parts.push({
+          x: sumX / tail / scale,
+          y: sumY / tail / scale,
+          left: minX,
+          size: tail,
+          delay: 0,
+        });
       }
       const order = [...parts].sort((a, b) => a.left - b.left);
       const gap = order.length > 1 ? Math.min(0.07, 0.5 / (order.length - 1)) : 0;
@@ -931,8 +964,14 @@ const ElasticMesh = ({
       for (let y = 0; y < fh; y++) {
         for (let x = 0; x < fw; x++) {
           const i = y * fw + x;
-          let gx = (heights[y * fw + Math.min(fw - 1, x + 1)] - heights[y * fw + Math.max(0, x - 1)]) * 0.5 * scale;
-          let gy = (heights[Math.min(fh - 1, y + 1) * fw + x] - heights[Math.max(0, y - 1) * fw + x]) * 0.5 * scale;
+          let gx =
+            (heights[y * fw + Math.min(fw - 1, x + 1)] - heights[y * fw + Math.max(0, x - 1)]) *
+            0.5 *
+            scale;
+          let gy =
+            (heights[Math.min(fh - 1, y + 1) * fw + x] - heights[Math.max(0, y - 1) * fw + x]) *
+            0.5 *
+            scale;
           const steep = Math.hypot(gx, gy);
           if (steep > 7) {
             gx *= 7 / steep;
@@ -966,7 +1005,23 @@ const ElasticMesh = ({
     };
 
     const solve = (dt, s) => {
-      const { count, x, y, vx, vy, restX, restY, dent, dentV, active, neighbors, grip, gripX, gripY, spacing } = mesh;
+      const {
+        count,
+        x,
+        y,
+        vx,
+        vy,
+        restX,
+        restY,
+        dent,
+        dentV,
+        active,
+        neighbors,
+        grip,
+        gripX,
+        gripY,
+        spacing,
+      } = mesh;
       const firm = 0.4 + s.stiffness * 1.2;
       const anchor = 350 * firm * firm;
       const couple = anchor * (52 / Math.sqrt(firm) / spacing) ** 2;
@@ -1026,7 +1081,7 @@ const ElasticMesh = ({
       return energy;
     };
 
-    const updateGrip = s => {
+    const updateGrip = (s) => {
       const { pointer } = state;
       const { count, grip, gripX, gripY } = mesh;
       if (!pointer.dragging) return;
@@ -1102,7 +1157,9 @@ const ElasticMesh = ({
         }
       }
       if (bestK < 0) return false;
-      return sampleSdf(mesh.restX[bestK] + (px - x[bestK]), mesh.restY[bestK] + (py - y[bestK])) > -4;
+      return (
+        sampleSdf(mesh.restX[bestK] + (px - x[bestK]), mesh.restY[bestK] + (py - y[bestK])) > -4
+      );
     };
 
     const resize = () => {
@@ -1191,7 +1248,7 @@ const ElasticMesh = ({
       gl.bindVertexArray(null);
     };
 
-    const frame = now => {
+    const frame = (now) => {
       raf = 0;
       if (!alive || !visible || document.hidden) return;
       const s = settingsRef.current;
@@ -1199,12 +1256,14 @@ const ElasticMesh = ({
       last = now;
 
       if (reduce || !s.intro) state.clock = 10;
-      else if (state.ready && state.clock < 10) state.clock = state.clock + dt > 1.8 ? 10 : state.clock + dt;
+      else if (state.ready && state.clock < 10)
+        state.clock = state.clock + dt > 1.8 ? 10 : state.clock + dt;
 
       const hover = state.hover;
       const pointer = state.pointer;
       const pressing =
-        state.ready && (pointer.dragging || (pointer.inside && !pointer.down && onSurface(pointer.x, pointer.y)));
+        state.ready &&
+        (pointer.dragging || (pointer.inside && !pointer.down && onSurface(pointer.x, pointer.y)));
       const follow = 1 - Math.exp(-dt / 0.05);
       const nextX = hover.x + (pointer.x - hover.x) * follow;
       const nextY = hover.y + (pointer.y - hover.y) * follow;
@@ -1217,8 +1276,10 @@ const ElasticMesh = ({
       hover.power += (goal - hover.power) * (1 - Math.exp(-dt / (pressing ? 0.12 : 0.25)));
 
       const turn = state.turn;
-      const aimX = pointer.inside && !reduce ? (pointer.x / Math.max(1, mesh.width) - 0.5) * 0.7 : 0;
-      const aimY = pointer.inside && !reduce ? (pointer.y / Math.max(1, mesh.height) - 0.5) * 0.4 : 0;
+      const aimX =
+        pointer.inside && !reduce ? (pointer.x / Math.max(1, mesh.width) - 0.5) * 0.7 : 0;
+      const aimY =
+        pointer.inside && !reduce ? (pointer.y / Math.max(1, mesh.height) - 0.5) * 0.4 : 0;
       turn.vx += (28 * (aimX - turn.x) - 10 * turn.vx) * dt;
       turn.vy += (28 * (aimY - turn.y) - 10 * turn.vy) * dt;
       turn.x += turn.vx * dt;
@@ -1261,20 +1322,23 @@ const ElasticMesh = ({
       if (!raf && alive && visible && !document.hidden) raf = requestAnimationFrame(frame);
     };
 
-    const locatePointer = event => {
+    const locatePointer = (event) => {
       const rect = container.getBoundingClientRect();
       state.pointer.x = event.clientX - rect.left;
       state.pointer.y = event.clientY - rect.top;
       state.pointer.inside =
-        state.pointer.x >= 0 && state.pointer.y >= 0 && state.pointer.x <= rect.width && state.pointer.y <= rect.height;
+        state.pointer.x >= 0 &&
+        state.pointer.y >= 0 &&
+        state.pointer.x <= rect.width &&
+        state.pointer.y <= rect.height;
     };
 
-    const onPointerMove = event => {
+    const onPointerMove = (event) => {
       locatePointer(event);
       wake();
     };
 
-    const onPointerDown = event => {
+    const onPointerDown = (event) => {
       locatePointer(event);
       if (!state.ready || !onSurface(state.pointer.x, state.pointer.y)) return;
       const s = settingsRef.current;
@@ -1287,11 +1351,14 @@ const ElasticMesh = ({
       wake();
     };
 
-    const onPointerUp = event => {
+    const onPointerUp = (event) => {
       if (!state.pointer.down) return;
       locatePointer(event);
       const s = settingsRef.current;
-      const moved = Math.hypot(state.pointer.x - state.pointer.startX, state.pointer.y - state.pointer.startY);
+      const moved = Math.hypot(
+        state.pointer.x - state.pointer.startX,
+        state.pointer.y - state.pointer.startY,
+      );
       const quick = performance.now() - state.pointer.startTime < 260;
       release();
       if (moved < 8 && quick) poke(state.pointer.x, state.pointer.y, s);
@@ -1311,20 +1378,20 @@ const ElasticMesh = ({
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
-    const intersection = new IntersectionObserver(entries => {
-      visible = entries.some(entry => entry.isIntersecting);
+    const intersection = new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
       if (visible) {
         last = 0;
         wake();
       }
     });
     intersection.observe(container);
-    container.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointercancel', onPointerUp);
-    container.addEventListener('pointerleave', onPointerLeave);
-    document.addEventListener('visibilitychange', onVisibility);
+    container.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("pointercancel", onPointerUp);
+    container.addEventListener("pointerleave", onPointerLeave);
+    document.addEventListener("visibilitychange", onVisibility);
     resize();
 
     contentRef.current = () => {
@@ -1346,12 +1413,12 @@ const ElasticMesh = ({
       contentRef.current = null;
       resizeObserver.disconnect();
       intersection.disconnect();
-      container.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-      container.removeEventListener('pointerleave', onPointerLeave);
-      document.removeEventListener('visibilitychange', onVisibility);
+      container.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerUp);
+      container.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
       gl.deleteBuffer(restBuffer);
       gl.deleteBuffer(dynamicBuffer);
       gl.deleteBuffer(indexBuffer);
@@ -1377,10 +1444,10 @@ const ElasticMesh = ({
   return (
     <div
       ref={containerRef}
-      className={`elastic-mesh${className ? ` ${className}` : ''}`}
+      className={`elastic-mesh${className ? ` ${className}` : ""}`}
       style={style}
       role="img"
-      aria-label={settings.src ? 'Elastic logo' : settings.text}
+      aria-label={settings.src ? "Elastic logo" : settings.text}
       {...rest}
     >
       <canvas ref={canvasRef} className="elastic-mesh-canvas" aria-hidden="true" />

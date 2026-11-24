@@ -172,7 +172,7 @@ export const AWARDS = [
 export const SKILLS = [
   {
     area: "Frontend",
-    items: ["React", "JavaScript", "Tailwind CSS", "Framer Motion", "Bootstrap", "HTML", "CSS"],
+    items: ["React", "TypeScript", "JavaScript", "Tailwind CSS", "Bootstrap", "HTML", "CSS"],
   },
   { area: "Backend", items: ["Laravel", "PHP", "Flask", "Python", "Java", "REST APIs"] },
   { area: "Databases", items: ["PostgreSQL", "Supabase", "Oracle"] },
@@ -197,7 +197,6 @@ export const SKILLS = [
 
 /** Tools Danish has NOT used professionally. Jarvis must never claim them. */
 export const NOT_ON_CV = [
-  "TypeScript",
   "Node.js",
   "Next.js",
   "Vue",
@@ -317,7 +316,7 @@ export const PROJECTS = [
     name: "Loomora",
     kind: "routine and habit planner",
     oneLiner: "a routine and habit planner with reminders",
-    stack: ["React", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL"],
+    stack: ["React", "TypeScript", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL"],
     hosting: "Hosted on Render",
     features: [
       "routine and habit planning",
@@ -486,10 +485,7 @@ const PLAYBOOK = [
         "Strongest tools?",
         "React for the screens people see, Laravel for the server side, and PostgreSQL for data.",
       ],
-      [
-        "Frontend skills?",
-        "React, JavaScript, Tailwind CSS, Framer Motion, Bootstrap, HTML and CSS.",
-      ],
+      ["Frontend skills?", "React, TypeScript, JavaScript, Tailwind CSS, Bootstrap, HTML and CSS."],
       [
         "Backend skills?",
         "Laravel and PHP, Flask and Python, and REST APIs. Java is also on his CV.",
@@ -1353,7 +1349,7 @@ export const LOCAL_FALLBACK_QA = [
       "bootstrap",
     ],
     answer:
-      "For the part of an app people see and click, Danish uses **React**, **JavaScript**, **Tailwind CSS** and **Framer Motion** (for smooth animations), plus Bootstrap, HTML and CSS.\n\nYou can see it in Bookly, Loomora and the Diabetes Expert System. Want to try one of them?",
+      "For the part of an app people see and click, Danish uses **React**, **TypeScript**, **JavaScript** and **Tailwind CSS**, plus Bootstrap, HTML and CSS.\n\nYou can see it in Bookly, Loomora and the Diabetes Expert System. Want to try one of them?",
   },
   {
     id: "backend",
@@ -1769,7 +1765,6 @@ export const LOCAL_FALLBACK_QA = [
     id: "unknown-tech",
     topic: "unknown_tech",
     keywords: [
-      "typescript",
       "next.js",
       "nextjs",
       "node",

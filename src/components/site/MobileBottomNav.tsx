@@ -31,7 +31,9 @@ export function MobileBottomNav({ activeSection }: MobileBottomNavProps) {
     <nav
       aria-label="Mobile Navigation"
       className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-40 md:hidden transition-all duration-300 ease-[var(--ease-out)] mb-[env(safe-area-inset-bottom,0px)] ${
-        visible ? "translate-y-0 opacity-100 scale-100" : "translate-y-6 opacity-0 scale-95 pointer-events-none"
+        visible
+          ? "translate-y-0 opacity-100 scale-100"
+          : "translate-y-6 opacity-0 scale-95 pointer-events-none"
       }`}
     >
       <div className="flex items-center gap-1 p-1.5 rounded-full border border-[var(--edge)] bg-surface-1/90 backdrop-blur-2xl shadow-float ring-1 ring-black/5 dark:ring-white/5">

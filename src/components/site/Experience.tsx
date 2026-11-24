@@ -1,5 +1,12 @@
 import type { CSSProperties } from "react";
-import { ArrowRight, BadgeCheck, GitPullRequest, LayoutDashboard, MessagesSquare, Trophy } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  GitPullRequest,
+  LayoutDashboard,
+  MessagesSquare,
+  Trophy,
+} from "lucide-react";
 import { EXPERIENCE } from "@/content/portfolio";
 import { OrgLogo } from "./OrgLogo";
 import { CertificateThumb } from "./CertificateThumb";
@@ -32,18 +39,25 @@ function Timeline() {
             {
               left: `${m.at}%`,
               "--i": i,
-              transform: m.at === 100 ? "translateX(-100%)" : m.at === 0 ? "none" : "translateX(-50%)",
+              transform:
+                m.at === 100 ? "translateX(-100%)" : m.at === 0 ? "none" : "translateX(-50%)",
               alignItems: m.at === 100 ? "flex-end" : m.at === 0 ? "flex-start" : "center",
             } as CSSProperties
           }
         >
           <span
             className={`relative block h-[15px] w-[15px] rounded-full border-2 shadow-[0_0_0_4px_var(--bg)] ${
-              "gold" in m ? "border-gold bg-gold" : "live" in m ? "border-[#34C759] bg-[#34C759] about-live-dot" : "border-fg bg-bg"
+              "gold" in m
+                ? "border-gold bg-gold"
+                : "live" in m
+                  ? "border-[#34C759] bg-[#34C759] about-live-dot"
+                  : "border-fg bg-bg"
             }`}
           />
           <span className="mt-2 font-mono text-[12px] tabular-nums text-fg">{m.date}</span>
-          <span className="hidden sm:inline whitespace-nowrap text-[12px] text-fg-subtle">{m.label}</span>
+          <span className="hidden sm:inline whitespace-nowrap text-[12px] text-fg-subtle">
+            {m.label}
+          </span>
         </div>
       ))}
     </div>
@@ -78,54 +92,84 @@ export function Experience() {
             <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6 px-5 sm:px-8 pb-6 pt-6 sm:pt-7">
               <div className="flex w-full items-center justify-between sm:w-auto">
                 <div className="flex shrink-0 items-center">
-                <OrgLogo org="etec" size={52} />
-                <OrgLogo org="kru" size={52} className="-ml-2.5 ring-[3px] ring-surface-2" />
+                  <OrgLogo org="etec" size={52} />
+                  <OrgLogo org="kru" size={52} className="-ml-2.5 ring-[3px] ring-surface-2" />
                 </div>
                 <span className="inline-flex sm:hidden shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                  <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                  <span
+                    aria-hidden="true"
+                    className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+                  />
                   {INTERN.period}
                 </span>
               </div>
               <div className="min-w-0 flex-1 w-full">
-                <h3 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-fg">{INTERN.title}</h3>
+                <h3 className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] text-fg">
+                  {INTERN.title}
+                </h3>
                 <p className="mt-1 text-[14px] text-fg-muted">
                   <span className="font-medium text-fg">{INTERN.org}</span> · {INTERN.detail}
                 </p>
-                <p className="mt-3 max-w-[66ch] text-pretty text-[15.5px] leading-[1.6] text-fg-muted">{INTERN.summary}</p>
+                <p className="mt-3 max-w-[66ch] text-pretty text-[15.5px] leading-[1.6] text-fg-muted">
+                  {INTERN.summary}
+                </p>
                 <div className="mt-4 flex flex-wrap gap-1.5" aria-label="Skills used">
                   {WORKED_WITH.map((w) => (
-                    <span key={w} className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted">
+                    <span
+                      key={w}
+                      className="rounded-[8px] border border-line bg-surface-1 px-2.5 py-1 text-[12.5px] text-fg-muted"
+                    >
                       {w}
                     </span>
                   ))}
                 </div>
               </div>
               <span className="hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                <span
+                  aria-hidden="true"
+                  className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+                />
                 {INTERN.period}
               </span>
             </header>
 
             <div className="grid gap-4 px-5 sm:px-8 pb-6 sm:pb-8 lg:grid-cols-2">
               {/* Frontend: done, with its certificate */}
-              <section aria-label="Frontend stage" className="flex flex-col rounded-[20px] border border-line bg-surface-1 px-5 py-4 sm:px-6 sm:py-5">
+              <section
+                aria-label="Frontend stage"
+                className="flex flex-col rounded-[20px] border border-line bg-surface-1 px-5 py-4 sm:px-6 sm:py-5"
+              >
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
-                    <span aria-hidden="true" className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg">
+                    <span
+                      aria-hidden="true"
+                      className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg"
+                    >
                       <LayoutDashboard strokeWidth={1.75} className="h-[18px] w-[18px]" />
                     </span>
-                    <span className="text-[18px] font-semibold tracking-[-0.02em] text-fg">Frontend</span>
+                    <span className="text-[18px] font-semibold tracking-[-0.02em] text-fg">
+                      Frontend
+                    </span>
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-1 text-[12px] font-medium text-fg">
-                    <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-3.5 w-3.5 text-[#34C759]" />
+                    <BadgeCheck
+                      aria-hidden="true"
+                      strokeWidth={2}
+                      className="h-3.5 w-3.5 text-[#34C759]"
+                    />
                     Certified
                   </span>
                 </div>
-                <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">Jul – Oct 2026</p>
+                <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">
+                  Jul – Oct 2026
+                </p>
                 <ul className="mb-4 mt-3 grid gap-2">
                   {INTERN.frontend.map((p) => (
                     <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
-                      <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-fg-subtle" />
+                      <span
+                        aria-hidden="true"
+                        className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-fg-subtle"
+                      />
                       {p}
                     </li>
                   ))}
@@ -154,39 +198,58 @@ export function Experience() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex items-center gap-2.5">
-                    <span aria-hidden="true" className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg">
+                    <span
+                      aria-hidden="true"
+                      className="icon-tile-light squircle [--r:10px] grid h-9 w-9 place-items-center text-fg"
+                    >
                       <GitPullRequest strokeWidth={1.75} className="h-[18px] w-[18px]" />
                     </span>
-                    <span className="text-[18px] font-semibold tracking-[-0.02em] text-fg">Backend</span>
+                    <span className="text-[18px] font-semibold tracking-[-0.02em] text-fg">
+                      Backend
+                    </span>
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-2.5 py-1 text-[12px] font-medium text-fg">
-                    <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                    <span
+                      aria-hidden="true"
+                      className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+                    />
                     In progress
                   </span>
                 </div>
-                <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">Oct 2026 – now</p>
+                <p className="mt-1.5 font-mono text-[12px] tabular-nums text-fg-subtle">
+                  Oct 2026 – now
+                </p>
                 <ul className="mb-4 mt-3 grid gap-2">
                   {INTERN.backend.map((p) => (
                     <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
-                      <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#34C759]" />
+                      <span
+                        aria-hidden="true"
+                        className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#34C759]"
+                      />
                       {p}
                     </li>
                   ))}
                 </ul>
                 <div className="mt-auto flex items-center gap-3 border-t border-line pt-4 text-[13px] text-fg-muted">
-                  <MessagesSquare aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
+                  <MessagesSquare
+                    aria-hidden="true"
+                    strokeWidth={1.75}
+                    className="h-4 w-4 text-fg-subtle"
+                  />
                   Frontend experience helps me design APIs that are easy to use
                 </div>
               </section>
             </div>
-
           </article>
         </Reveal>
 
         {/* Competition: evidence left, story right */}
         <Reveal as="li" index={1} className="slide-from-right">
           <article className="exp-card exp-award tactile squircle [--r:28px] relative grid overflow-hidden bg-surface-2 lg:grid-cols-[300px_minmax(0,1fr)]">
-            <div aria-hidden="true" className="exp-award-wash pointer-events-none absolute inset-0" />
+            <div
+              aria-hidden="true"
+              className="exp-award-wash pointer-events-none absolute inset-0"
+            />
             <aside className="relative order-2 flex flex-col items-center justify-center gap-3 border-t border-line bg-surface-1 p-5 sm:p-8 lg:order-none lg:border-r lg:border-t-0">
               <CertificateThumb
                 src={certAward}
@@ -197,18 +260,28 @@ export function Experience() {
                 title="Certificate of Achievement: 1st Place"
                 caption="AI Expert System and Innovation 2026 · Norton University, Department of Computer Studies · September 26, 2026"
               />
-              <p className="text-center text-[12.5px] text-fg-subtle">1st place certificate · click to view</p>
+              <p className="text-center text-[12.5px] text-fg-subtle">
+                1st place certificate · click to view
+              </p>
             </aside>
 
             <div className="relative flex flex-col p-5 sm:p-8">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <span className="icon-tile-gold squircle [--r:14px] grid h-11 w-11 sm:h-12 sm:w-12 shrink-0 place-items-center">
-                    <Trophy aria-hidden="true" strokeWidth={1.75} className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <Trophy
+                      aria-hidden="true"
+                      strokeWidth={1.75}
+                      className="h-5 w-5 sm:h-6 sm:w-6"
+                    />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13.5px] sm:text-[14px] font-medium text-fg truncate">Innovation Competition</p>
-                    <p className="text-[12px] sm:text-[13px] text-fg-subtle truncate">Department of Computer Studies</p>
+                    <p className="text-[13.5px] sm:text-[14px] font-medium text-fg truncate">
+                      Innovation Competition
+                    </p>
+                    <p className="text-[12px] sm:text-[13px] text-fg-subtle truncate">
+                      Department of Computer Studies
+                    </p>
                   </div>
                 </div>
                 <span className="rounded-full border border-line-strong px-3 py-1 font-mono text-[12px] tabular-nums text-fg shrink-0">
@@ -217,18 +290,24 @@ export function Experience() {
               </div>
 
               <h3 className="mt-5 sm:mt-7 text-[26px] sm:text-[34px] font-semibold leading-[1.12] sm:leading-[1.08] tracking-[-0.035em] text-fg">
-                Joined a project competition, won <span className="text-gold-ink dark:text-gold">1st place</span>
+                Joined a project competition, won{" "}
+                <span className="text-gold-ink dark:text-gold">1st place</span>
               </h3>
               <p className="mt-2 text-[15px] text-fg-muted">
                 <span className="text-fg-subtle">Competition · </span>
                 <span className="font-medium text-fg">{AWARD.title}</span>
               </p>
-              <p className="mt-3 max-w-[60ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">{AWARD.summary}</p>
+              <p className="mt-3 max-w-[60ch] text-pretty text-[16px] leading-[1.6] text-fg-muted">
+                {AWARD.summary}
+              </p>
 
               <ul className="mt-5 grid gap-2.5">
                 {AWARD.points.map((p) => (
                   <li key={p} className="flex gap-3 text-[15px] leading-[1.55] text-fg">
-                    <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                    <span
+                      aria-hidden="true"
+                      className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-gold"
+                    />
                     {p}
                   </li>
                 ))}
@@ -242,7 +321,11 @@ export function Experience() {
                     className="group inline-flex items-center gap-1.5 text-[14px] font-medium text-fg underline decoration-line-strong underline-offset-4 hover:decoration-fg"
                   >
                     See the project
-                    <ArrowRight aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5" />
+                    <ArrowRight
+                      aria-hidden="true"
+                      strokeWidth={1.75}
+                      className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:translate-x-0.5"
+                    />
                   </a>
                 </div>
               </div>

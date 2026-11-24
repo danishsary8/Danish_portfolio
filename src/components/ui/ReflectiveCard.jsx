@@ -1,38 +1,39 @@
-'use client';
+"use client";
 
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { CheckmarkBadge01Icon, FingerPrintIcon } from '@hugeicons/core-free-icons';
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { CheckmarkBadge01Icon, FingerPrintIcon } from "@hugeicons/core-free-icons";
 
-import './ReflectiveCard.css';
+import "./ReflectiveCard.css";
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const THEMES = {
   dark: {
-    '--rc-base': '#1d1c22',
-    '--rc-shadow': '0 22px 44px -20px rgba(0, 0, 0, 0.8), 0 6px 16px -8px rgba(0, 0, 0, 0.5)',
-    '--rc-ink': '#f4f4f5',
-    '--rc-muted': 'rgba(244, 244, 245, 0.6)',
-    '--rc-tile': 'linear-gradient(180deg, #3a3644 0%, #27242f 100%)',
-    '--rc-tile-edge': 'rgba(255, 255, 255, 0.07)',
-    '--rc-tile-highlight': 'rgba(255, 255, 255, 0.12)',
-    '--rc-tile-shadow': '0 4px 10px -4px rgba(0, 0, 0, 0.7)',
-    '--rc-rim': 'rgba(255, 255, 255, 0.07)',
-    '--rc-rim-highlight': 'rgba(255, 255, 255, 0.1)'
+    "--rc-base": "#1d1c22",
+    "--rc-shadow": "0 22px 44px -20px rgba(0, 0, 0, 0.8), 0 6px 16px -8px rgba(0, 0, 0, 0.5)",
+    "--rc-ink": "#f4f4f5",
+    "--rc-muted": "rgba(244, 244, 245, 0.6)",
+    "--rc-tile": "linear-gradient(180deg, #3a3644 0%, #27242f 100%)",
+    "--rc-tile-edge": "rgba(255, 255, 255, 0.07)",
+    "--rc-tile-highlight": "rgba(255, 255, 255, 0.12)",
+    "--rc-tile-shadow": "0 4px 10px -4px rgba(0, 0, 0, 0.7)",
+    "--rc-rim": "rgba(255, 255, 255, 0.07)",
+    "--rc-rim-highlight": "rgba(255, 255, 255, 0.1)",
   },
   light: {
-    '--rc-base': '#e7e7ea',
-    '--rc-shadow': '0 22px 44px -22px rgba(24, 24, 27, 0.3), 0 6px 16px -10px rgba(24, 24, 27, 0.16)',
-    '--rc-ink': '#18181b',
-    '--rc-muted': 'rgba(24, 24, 27, 0.6)',
-    '--rc-tile': 'linear-gradient(180deg, #ffffff 0%, #f6f6f8 100%)',
-    '--rc-tile-edge': 'rgba(24, 24, 27, 0.08)',
-    '--rc-tile-highlight': 'rgba(255, 255, 255, 1)',
-    '--rc-tile-shadow': '0 4px 10px -5px rgba(24, 24, 27, 0.25)',
-    '--rc-rim': 'rgba(24, 24, 27, 0.08)',
-    '--rc-rim-highlight': 'rgba(255, 255, 255, 0.8)'
-  }
+    "--rc-base": "#e7e7ea",
+    "--rc-shadow":
+      "0 22px 44px -22px rgba(24, 24, 27, 0.3), 0 6px 16px -10px rgba(24, 24, 27, 0.16)",
+    "--rc-ink": "#18181b",
+    "--rc-muted": "rgba(24, 24, 27, 0.6)",
+    "--rc-tile": "linear-gradient(180deg, #ffffff 0%, #f6f6f8 100%)",
+    "--rc-tile-edge": "rgba(24, 24, 27, 0.08)",
+    "--rc-tile-highlight": "rgba(255, 255, 255, 1)",
+    "--rc-tile-shadow": "0 4px 10px -5px rgba(24, 24, 27, 0.25)",
+    "--rc-rim": "rgba(24, 24, 27, 0.08)",
+    "--rc-rim-highlight": "rgba(255, 255, 255, 0.8)",
+  },
 };
 
 const VIEW_DISTANCE = 900;
@@ -301,20 +302,20 @@ void main() {
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const toPx = value => {
-  if (typeof value === 'number') return `${value}px`;
+const toPx = (value) => {
+  if (typeof value === "number") return `${value}px`;
   return value;
 };
 
-const parseColor = value => {
-  const text = String(value || '').trim();
+const parseColor = (value) => {
+  const text = String(value || "").trim();
   const hex = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(text);
   if (hex) {
-    const full = hex[1].length === 3 ? hex[1].replace(/./g, digit => digit + digit) : hex[1];
-    return [0, 2, 4].map(index => parseInt(full.slice(index, index + 2), 16) / 255);
+    const full = hex[1].length === 3 ? hex[1].replace(/./g, (digit) => digit + digit) : hex[1];
+    return [0, 2, 4].map((index) => parseInt(full.slice(index, index + 2), 16) / 255);
   }
   const rgb = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(text);
-  if (rgb) return [rgb[1], rgb[2], rgb[3]].map(channel => clamp(parseFloat(channel) / 255, 0, 1));
+  if (rgb) return [rgb[1], rgb[2], rgb[3]].map((channel) => clamp(parseFloat(channel) / 255, 0, 1));
   return [1, 1, 1];
 };
 
@@ -342,7 +343,7 @@ const link = (gl, fragmentSource) => {
   }
   gl.attachShader(program, vertex);
   gl.attachShader(program, fragment);
-  gl.bindAttribLocation(program, 0, 'aPosition');
+  gl.bindAttribLocation(program, 0, "aPosition");
   gl.linkProgram(program);
   gl.deleteShader(vertex);
   gl.deleteShader(fragment);
@@ -374,14 +375,14 @@ const lodFor = (width, height, envWidth, aspect) => {
   return Math.max(0, Math.log2(Math.max(1, visible / Math.max(1, envWidth))) - 0.5);
 };
 
-const createRenderer = canvas => {
-  const gl = canvas.getContext('webgl2', {
+const createRenderer = (canvas) => {
+  const gl = canvas.getContext("webgl2", {
     alpha: true,
     premultipliedAlpha: true,
     antialias: false,
     depth: false,
     stencil: false,
-    powerPreference: 'default'
+    powerPreference: "default",
   });
   if (!gl) return null;
   const captureProgram = link(gl, CAPTURE);
@@ -397,11 +398,25 @@ const createRenderer = canvas => {
   const createTexture = (mipmaps, wrap) => {
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mipmaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+    gl.texParameteri(
+      gl.TEXTURE_2D,
+      gl.TEXTURE_MIN_FILTER,
+      mipmaps ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
+    );
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 255]));
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      1,
+      1,
+      0,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      new Uint8Array([0, 0, 0, 255]),
+    );
     return texture;
   };
 
@@ -432,7 +447,10 @@ const createRenderer = canvas => {
   gl.disable(gl.BLEND);
   gl.disable(gl.DEPTH_TEST);
 
-  const textures = { video: createTexture(true, gl.CLAMP_TO_EDGE), cam: createTexture(true, gl.CLAMP_TO_EDGE) };
+  const textures = {
+    video: createTexture(true, gl.CLAMP_TO_EDGE),
+    cam: createTexture(true, gl.CLAMP_TO_EDGE),
+  };
   const capture = createTarget();
   const blurX = createTarget();
   const blurY = createTarget();
@@ -479,13 +497,23 @@ const createRenderer = canvas => {
     bind(1, textures.cam);
     gl.uniform1i(u.uVideo, 0);
     gl.uniform1i(u.uCam, 1);
-    gl.uniform4fv(u.uVideoMap, video.ready ? coverMap(video.width, video.height, aspect, false) : [1, 1, 0, 0]);
-    gl.uniform4fv(u.uCamMap, cam.ready ? coverMap(cam.width, cam.height, aspect, true) : [1, 1, 0, 0]);
-    gl.uniform2f(u.uWeights, video.ready && total > 0 ? 1 - camWeight : 0, cam.ready ? camWeight : 0);
+    gl.uniform4fv(
+      u.uVideoMap,
+      video.ready ? coverMap(video.width, video.height, aspect, false) : [1, 1, 0, 0],
+    );
+    gl.uniform4fv(
+      u.uCamMap,
+      cam.ready ? coverMap(cam.width, cam.height, aspect, true) : [1, 1, 0, 0],
+    );
+    gl.uniform2f(
+      u.uWeights,
+      video.ready && total > 0 ? 1 - camWeight : 0,
+      cam.ready ? camWeight : 0,
+    );
     gl.uniform2f(
       u.uLod,
       video.ready ? lodFor(video.width, video.height, envWidth, aspect) : 0,
-      cam.ready ? lodFor(cam.width, cam.height, envWidth, aspect) : 0
+      cam.ready ? lodFor(cam.width, cam.height, envWidth, aspect) : 0,
     );
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -504,7 +532,17 @@ const createRenderer = canvas => {
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 
-  const renderPlate = ({ width, height, rotateX, rotateY, capture: amount, glare, pointerX, pointerY, settings }) => {
+  const renderPlate = ({
+    width,
+    height,
+    rotateX,
+    rotateY,
+    capture: amount,
+    glare,
+    pointerX,
+    pointerY,
+    settings,
+  }) => {
     const cx = Math.cos(rotateX);
     const sx = Math.sin(rotateX);
     const cy = Math.cos(rotateY);
@@ -552,19 +590,19 @@ const createRenderer = canvas => {
 };
 
 const ReflectiveCard = ({
-  name = 'Alexander Doe',
-  role = 'Senior Developer',
-  badge = 'Verified',
-  status = 'Active',
-  statusColor = '#22c55e',
-  idLabel = 'ID number',
-  idValue = '8901 2345 6789',
+  name = "Alexander Doe",
+  role = "Senior Developer",
+  badge = "Verified",
+  status = "Active",
+  statusColor = "#22c55e",
+  idLabel = "ID number",
+  idValue = "8901 2345 6789",
   children,
-  theme = 'dark',
+  theme = "dark",
   videoSrc,
   webcam = false,
   onWebcamError,
-  tint = '#ffffff',
+  tint = "#ffffff",
   metalness = 1,
   roughness = 0.3,
   blurStrength = 6,
@@ -580,8 +618,8 @@ const ReflectiveCard = ({
   width = 320,
   height = 500,
   radius = 24,
-  className = '',
-  style
+  className = "",
+  style,
 }) => {
   const rootRef = useRef(null);
   const bodyRef = useRef(null);
@@ -592,9 +630,9 @@ const ReflectiveCard = ({
   const errorRef = useRef(onWebcamError);
   const [generation, setGeneration] = useState(0);
 
-  const palette = theme === 'light' ? 'light' : 'dark';
+  const palette = theme === "light" ? "light" : "dark";
   const settings = {
-    tint: parseColor(tint).map(channel => Math.pow(channel, 2.2)),
+    tint: parseColor(tint).map((channel) => Math.pow(channel, 2.2)),
     metalness: clamp(metalness, 0, 1),
     roughness: clamp(roughness, 0, 1),
     blurStrength: clamp(blurStrength, 0, 40),
@@ -607,8 +645,8 @@ const ReflectiveCard = ({
     enableTilt,
     tiltStrength: clamp(tiltStrength, 0, 30),
     radius: Math.max(0, radius),
-    theme: palette === 'light' ? 1 : 0,
-    intro
+    theme: palette === "light" ? 1 : 0,
+    intro,
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -621,9 +659,9 @@ const ReflectiveCard = ({
   useIsomorphicLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || !settingsRef.current.intro) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    root.style.setProperty('--rc-presence', '0');
-    root.style.setProperty('--rc-lift', '14px');
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    root.style.setProperty("--rc-presence", "0");
+    root.style.setProperty("--rc-lift", "14px");
   }, []);
 
   useEffect(() => {
@@ -634,22 +672,22 @@ const ReflectiveCard = ({
     const camElement = camRef.current;
     if (!root || !body || !canvas || !videoElement || !camElement) return;
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const renderer = createRenderer(canvas);
     const x = { p: 0, v: 0, target: 0 };
     const y = { p: 0, v: 0, target: 0 };
     const light = { p: 0, target: 0 };
     const pointer = { x: 0, y: 0 };
     const size = { width: body.offsetWidth, height: body.offsetHeight, scale: 1 };
-    const makeSource = element => ({
+    const makeSource = (element) => ({
       element,
-      src: '',
+      src: "",
       time: -1,
       ready: false,
       failed: false,
       width: 0,
       height: 0,
-      mix: 0
+      mix: 0,
     });
     const sources = { video: makeSource(videoElement), cam: makeSource(camElement) };
     let presence = 1;
@@ -659,25 +697,25 @@ const ReflectiveCard = ({
     let raf = 0;
     let last = 0;
     let visible = true;
-    let pageVisible = document.visibilityState !== 'hidden';
+    let pageVisible = document.visibilityState !== "hidden";
     let lost = false;
-    let envKey = '';
+    let envKey = "";
     let envFresh = false;
 
     const write = () => {
       const { enableTilt: tiltOn, tiltStrength: strength } = settingsRef.current;
       const angle = tiltOn && !reduced ? strength : 0;
       const style = root.style;
-      style.setProperty('--rc-rotate-x', `${(y.p * angle).toFixed(3)}deg`);
-      style.setProperty('--rc-rotate-y', `${(-x.p * angle).toFixed(3)}deg`);
+      style.setProperty("--rc-rotate-x", `${(y.p * angle).toFixed(3)}deg`);
+      style.setProperty("--rc-rotate-y", `${(-x.p * angle).toFixed(3)}deg`);
       const eased = 1 - Math.pow(1 - presence, 3);
-      style.setProperty('--rc-presence', eased.toFixed(4));
-      style.setProperty('--rc-lift', `${((1 - eased) * 14).toFixed(2)}px`);
+      style.setProperty("--rc-presence", eased.toFixed(4));
+      style.setProperty("--rc-lift", `${((1 - eased) * 14).toFixed(2)}px`);
     };
 
     const refresh = (key, source) => {
       const element = source.element;
-      const src = element.srcObject ? 'stream' : element.currentSrc;
+      const src = element.srcObject ? "stream" : element.currentSrc;
       if (src !== source.src) {
         source.src = src;
         source.failed = false;
@@ -726,7 +764,7 @@ const ReflectiveCard = ({
       envFresh = true;
     };
 
-    const frame = now => {
+    const frame = (now) => {
       raf = 0;
       if (lost) return;
       const dt = Math.min(0.05, (now - last) / 1000 || 0);
@@ -764,8 +802,8 @@ const ReflectiveCard = ({
 
       let playing = false;
       if (renderer) {
-        if (sources.cam.mix < 1 && refresh('video', sources.video)) envFresh = true;
-        if (refresh('cam', sources.cam)) envFresh = true;
+        if (sources.cam.mix < 1 && refresh("video", sources.video)) envFresh = true;
+        if (refresh("cam", sources.cam)) envFresh = true;
         for (const source of [sources.video, sources.cam]) {
           if (source.src && !source.failed && !source.element.paused) playing = true;
           if (fade(source, dt)) envFresh = true;
@@ -785,7 +823,7 @@ const ReflectiveCard = ({
             blur: s.blurStrength,
             roughness: s.roughness,
             video: sources.video,
-            cam: sources.cam
+            cam: sources.cam,
           });
         }
         envFresh = false;
@@ -799,7 +837,7 @@ const ReflectiveCard = ({
           glare: s.glare * light.p,
           pointerX: pointer.x,
           pointerY: pointer.y,
-          settings: s
+          settings: s,
         });
       }
 
@@ -821,7 +859,7 @@ const ReflectiveCard = ({
       wake();
     };
 
-    const aimAt = event => {
+    const aimAt = (event) => {
       const rect = root.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -833,42 +871,42 @@ const ReflectiveCard = ({
 
     const release = () => aim(0, 0, false);
 
-    const onEnter = event => {
-      if (event.pointerType === 'mouse') aimAt(event);
+    const onEnter = (event) => {
+      if (event.pointerType === "mouse") aimAt(event);
     };
-    const onMove = event => {
-      if (event.pointerType === 'mouse' || event.pointerId === touchId) aimAt(event);
+    const onMove = (event) => {
+      if (event.pointerType === "mouse" || event.pointerId === touchId) aimAt(event);
     };
-    const onLeave = event => {
-      if (event.pointerType === 'mouse') release();
+    const onLeave = (event) => {
+      if (event.pointerType === "mouse") release();
     };
-    const onDown = event => {
-      if (event.pointerType === 'mouse') return;
+    const onDown = (event) => {
+      if (event.pointerType === "mouse") return;
       touchId = event.pointerId;
       aimAt(event);
     };
-    const onUp = event => {
+    const onUp = (event) => {
       if (event.pointerId !== touchId) return;
       touchId = null;
       release();
     };
 
-    root.addEventListener('pointerenter', onEnter);
-    root.addEventListener('pointermove', onMove);
-    root.addEventListener('pointerleave', onLeave);
-    root.addEventListener('pointerdown', onDown);
-    root.addEventListener('pointerup', onUp);
-    root.addEventListener('pointercancel', onUp);
+    root.addEventListener("pointerenter", onEnter);
+    root.addEventListener("pointermove", onMove);
+    root.addEventListener("pointerleave", onLeave);
+    root.addEventListener("pointerdown", onDown);
+    root.addEventListener("pointerup", onUp);
+    root.addEventListener("pointercancel", onUp);
 
-    const onLost = event => {
+    const onLost = (event) => {
       event.preventDefault();
       lost = true;
       cancelAnimationFrame(raf);
       raf = 0;
     };
-    const onRestored = () => setGeneration(value => value + 1);
-    canvas.addEventListener('webglcontextlost', onLost);
-    canvas.addEventListener('webglcontextrestored', onRestored);
+    const onRestored = () => setGeneration((value) => value + 1);
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
 
     const resizeObserver = new ResizeObserver(() => {
       resize();
@@ -877,8 +915,8 @@ const ReflectiveCard = ({
     resizeObserver.observe(body);
     resize();
 
-    const intersection = new IntersectionObserver(entries => {
-      visible = entries.some(entry => entry.isIntersecting);
+    const intersection = new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
       if (!reduced) {
         for (const element of [videoElement, camElement]) {
           if (visible && (element.currentSrc || element.srcObject)) element.play().catch(() => {});
@@ -890,13 +928,13 @@ const ReflectiveCard = ({
     intersection.observe(root);
 
     const onVisibility = () => {
-      pageVisible = document.visibilityState !== 'hidden';
+      pageVisible = document.visibilityState !== "hidden";
       wake();
     };
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener("visibilitychange", onVisibility);
 
     const onMedia = () => wake();
-    const mediaEvents = ['loadeddata', 'playing', 'seeked', 'emptied', 'error'];
+    const mediaEvents = ["loadeddata", "playing", "seeked", "emptied", "error"];
     for (const element of [videoElement, camElement]) {
       for (const type of mediaEvents) element.addEventListener(type, onMedia);
     }
@@ -919,15 +957,15 @@ const ReflectiveCard = ({
       wakeRef.current = null;
       resizeObserver.disconnect();
       intersection.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
-      root.removeEventListener('pointerenter', onEnter);
-      root.removeEventListener('pointermove', onMove);
-      root.removeEventListener('pointerleave', onLeave);
-      root.removeEventListener('pointerdown', onDown);
-      root.removeEventListener('pointerup', onUp);
-      root.removeEventListener('pointercancel', onUp);
-      canvas.removeEventListener('webglcontextlost', onLost);
-      canvas.removeEventListener('webglcontextrestored', onRestored);
+      document.removeEventListener("visibilitychange", onVisibility);
+      root.removeEventListener("pointerenter", onEnter);
+      root.removeEventListener("pointermove", onMove);
+      root.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("pointerdown", onDown);
+      root.removeEventListener("pointerup", onUp);
+      root.removeEventListener("pointercancel", onUp);
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
       for (const element of [videoElement, camElement]) {
         for (const type of mediaEvents) element.removeEventListener(type, onMedia);
       }
@@ -939,13 +977,14 @@ const ReflectiveCard = ({
     const video = videoRef.current;
     if (!video) return;
     if (!videoSrc) {
-      video.removeAttribute('src');
+      video.removeAttribute("src");
       video.load();
       wakeRef.current?.();
       return;
     }
     video.src = videoSrc;
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) video.play().catch(() => {});
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      video.play().catch(() => {});
     wakeRef.current?.();
     return () => video.pause();
   }, [videoSrc]);
@@ -955,16 +994,19 @@ const ReflectiveCard = ({
     if (!webcam || !cam) return;
     const media = navigator.mediaDevices;
     if (!media || !media.getUserMedia) {
-      errorRef.current?.(new Error('Camera access is not available in this browser.'));
+      errorRef.current?.(new Error("Camera access is not available in this browser."));
       return;
     }
     let stream = null;
     let cancelled = false;
     media
-      .getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false })
-      .then(result => {
+      .getUserMedia({
+        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: false,
+      })
+      .then((result) => {
         if (cancelled) {
-          result.getTracks().forEach(track => track.stop());
+          result.getTracks().forEach((track) => track.stop());
           return;
         }
         stream = result;
@@ -972,12 +1014,12 @@ const ReflectiveCard = ({
         cam.play().catch(() => {});
         wakeRef.current?.();
       })
-      .catch(error => {
+      .catch((error) => {
         if (!cancelled) errorRef.current?.(error);
       });
     return () => {
       cancelled = true;
-      stream?.getTracks().forEach(track => track.stop());
+      stream?.getTracks().forEach((track) => track.stop());
       cam.srcObject = null;
       wakeRef.current?.();
     };
@@ -986,16 +1028,20 @@ const ReflectiveCard = ({
   const corner = Math.max(0, radius);
   const cardStyle = {
     ...THEMES[palette],
-    '--rc-width': toPx(width),
-    '--rc-height': toPx(height),
-    '--rc-radius': `${corner}px`,
-    '--rc-pad': `${Math.round(clamp(corner * 0.8, 16, 22))}px`,
-    '--rc-tile-radius': `${Math.round(clamp(corner * 0.5, 8, 14))}px`,
-    '--rc-status': statusColor
+    "--rc-width": toPx(width),
+    "--rc-height": toPx(height),
+    "--rc-radius": `${corner}px`,
+    "--rc-pad": `${Math.round(clamp(corner * 0.8, 16, 22))}px`,
+    "--rc-tile-radius": `${Math.round(clamp(corner * 0.5, 8, 14))}px`,
+    "--rc-status": statusColor,
   };
 
   return (
-    <div ref={rootRef} className={`reflective-card ${className}`.trim()} style={{ ...cardStyle, ...style }}>
+    <div
+      ref={rootRef}
+      className={`reflective-card ${className}`.trim()}
+      style={{ ...cardStyle, ...style }}
+    >
       <div ref={bodyRef} className="reflective-card__body">
         <canvas ref={canvasRef} className="reflective-card__canvas" aria-hidden="true" />
         <div className="reflective-card__content">

@@ -64,7 +64,8 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--pn-strong": "#f5f0e8",
     "--pn-pill": "#c9973a",
     "--pn-pill-ink": "#0a0a0c",
-    "--pn-pill-shadow": "inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px -2px rgba(201, 151, 58, 0.45)",
+    "--pn-pill-shadow":
+      "inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 12px -2px rgba(201, 151, 58, 0.45)",
     "--pn-dot": "#c9973a",
     "--pn-ring": "#c9973a",
     "--pn-row-hover": "rgba(255, 255, 255, 0.08)",
@@ -83,13 +84,13 @@ const THEMES: Record<"dark" | "light", Record<string, string>> = {
     "--pn-strong": "#0a0a0a",
     "--pn-pill": "#b0822d",
     "--pn-pill-ink": "#ffffff",
-    "--pn-pill-shadow": "inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 10px -2px rgba(176, 130, 45, 0.35)",
+    "--pn-pill-shadow":
+      "inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 10px -2px rgba(176, 130, 45, 0.35)",
     "--pn-dot": "#b0822d",
     "--pn-ring": "#0a0a0a",
     "--pn-row-hover": "rgba(10, 10, 10, 0.05)",
     "--pn-tile": "rgba(255, 255, 255, 0.5)",
-    "--pn-tile-rim":
-      "inset 0 0 0 1px rgba(10, 10, 10, 0.07), inset 0 1px 0 rgba(255, 255, 255, 1)",
+    "--pn-tile-rim": "inset 0 0 0 1px rgba(10, 10, 10, 0.07), inset 0 1px 0 rgba(255, 255, 255, 1)",
   },
 };
 
@@ -269,7 +270,8 @@ export const PillNav: React.FC<PillNavProps> = ({
   if (highlightColor) {
     vars["--pn-pill"] = highlightColor;
     vars["--pn-dot"] = highlightColor;
-    vars["--pn-pill-shadow"] = "inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px -6px rgba(0, 0, 0, 0.45)";
+    vars["--pn-pill-shadow"] =
+      "inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px -6px rgba(0, 0, 0, 0.45)";
     vars["--pn-pill-ink"] = highlightTextColor || palette["--pn-pill-ink"] || "";
   } else if (highlightTextColor) {
     vars["--pn-pill-ink"] = highlightTextColor;
@@ -314,13 +316,17 @@ export const PillNav: React.FC<PillNavProps> = ({
       slotRefs.current.forEach((slot, index) => {
         if (!slot) return;
         const textSpan = slot.querySelector(`.${FACE} span`) as HTMLElement | null;
-        const textWidth = textSpan && textSpan.offsetWidth > 0 ? textSpan.offsetWidth : Math.round(slot.offsetWidth * 0.65);
+        const textWidth =
+          textSpan && textSpan.offsetWidth > 0
+            ? textSpan.offsetWidth
+            : Math.round(slot.offsetWidth * 0.65);
         rects[index] = {
           left: slot.offsetLeft,
           width: slot.offsetWidth,
           textWidth: Math.max(20, textWidth),
         };
-        const reach = Math.ceil(2 * Math.sqrt((slot.offsetWidth / 2) ** 2 + slot.offsetHeight ** 2)) + 2;
+        const reach =
+          Math.ceil(2 * Math.sqrt((slot.offsetWidth / 2) ** 2 + slot.offsetHeight ** 2)) + 2;
         slot.style.setProperty("--pn-fill", `${reach}px`);
       });
     };
@@ -343,7 +349,7 @@ export const PillNav: React.FC<PillNavProps> = ({
       root.toggleAttribute("data-focus", state.focus && state.hover >= 0);
       root.toggleAttribute(
         "data-dot-lit",
-        s.hoverEffect === "fill" && state.hover >= 0 && state.hover === s.activeIndex
+        s.hoverEffect === "fill" && state.hover >= 0 && state.hover === s.activeIndex,
       );
     };
 
@@ -443,7 +449,8 @@ export const PillNav: React.FC<PillNavProps> = ({
         state.pressVelocity += (-700 * (state.press - pressTarget) - 30 * state.pressVelocity) * dt;
         state.press += state.pressVelocity * dt;
       }
-      if (Math.abs(state.press - pressTarget) > 0.0005 || Math.abs(state.pressVelocity) > 0.01) busy = true;
+      if (Math.abs(state.press - pressTarget) > 0.0005 || Math.abs(state.pressVelocity) > 0.01)
+        busy = true;
 
       const dotTarget =
         (s.indicator === "dot" || s.indicator === "underline") && s.activeIndex >= 0
@@ -469,11 +476,15 @@ export const PillNav: React.FC<PillNavProps> = ({
           const h = dt / steps;
           for (let i = 0; i < steps; i++) {
             state.dotVelocity +=
-              (-k * (state.dotX - center) - 2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotVelocity) * h;
+              (-k * (state.dotX - center) -
+                2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotVelocity) *
+              h;
             state.dotX += state.dotVelocity * h;
 
             state.dotWidthVelocity +=
-              (-k * (state.dotWidth - targetWidth) - 2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotWidthVelocity) * h;
+              (-k * (state.dotWidth - targetWidth) -
+                2 * (1 - 0.5 * s.bounce) * Math.sqrt(k) * state.dotWidthVelocity) *
+              h;
             state.dotWidth += state.dotWidthVelocity * h;
           }
         }
@@ -607,7 +618,9 @@ export const PillNav: React.FC<PillNavProps> = ({
       const styles = getComputedStyle(parent);
       const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1200;
       const containerWidth =
-        parent.clientWidth - (parseFloat(styles.paddingLeft) || 0) - (parseFloat(styles.paddingRight) || 0);
+        parent.clientWidth -
+        (parseFloat(styles.paddingLeft) || 0) -
+        (parseFloat(styles.paddingRight) || 0);
       const available = containerWidth > 300 ? containerWidth : viewportWidth;
       if (available <= 0) return;
       const listWidth = measureListRef.current?.offsetWidth ?? 0;
@@ -644,7 +657,7 @@ export const PillNav: React.FC<PillNavProps> = ({
           { opacity: 0, transform: "scale(0.85)" },
           { opacity: 1, transform: "scale(1)" },
         ],
-        { duration: 500, delay, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)", fill: "backwards" }
+        { duration: 500, delay, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)", fill: "backwards" },
       );
     };
     pop(logoRef.current, 0);
@@ -660,7 +673,7 @@ export const PillNav: React.FC<PillNavProps> = ({
           { opacity: 0, transform: "translateX(-8px)" },
           { opacity: 1, transform: "translateX(0)" },
         ],
-        { duration: 420, delay: 150 + index * 40, easing: EASE_OUT, fill: "backwards" }
+        { duration: 420, delay: 150 + index * 40, easing: EASE_OUT, fill: "backwards" },
       );
     });
   }, [collapsed, joined]);
@@ -729,7 +742,12 @@ export const PillNav: React.FC<PillNavProps> = ({
     >
       {logo && (
         <span ref={logoRef} className={[LOGO, joined ? "" : SURFACE].filter(Boolean).join(" ")}>
-          <LinkComponent href={logoHref} className={LOGO_LINK} aria-label={logoAlt} onPointerEnter={spin}>
+          <LinkComponent
+            href={logoHref}
+            className={LOGO_LINK}
+            aria-label={logoAlt}
+            onPointerEnter={spin}
+          >
             <span ref={markRef} className={MARK}>
               {typeof logo === "string" ? <img src={logo} alt="" draggable={false} /> : logo}
             </span>
@@ -771,7 +789,7 @@ export const PillNav: React.FC<PillNavProps> = ({
                           {face(item)}
                         </span>
                       )}
-                    </>
+                    </>,
                   )}
                 </li>
               ))}
@@ -786,7 +804,9 @@ export const PillNav: React.FC<PillNavProps> = ({
                 ))}
               </div>
             )}
-            {(indicator === "dot" || indicator === "underline") && <span ref={dotRef} className={DOT} aria-hidden="true" />}
+            {(indicator === "dot" || indicator === "underline") && (
+              <span ref={dotRef} className={DOT} aria-hidden="true" />
+            )}
           </div>
           {!joined && <span className={RIM} />}
         </div>
@@ -830,7 +850,7 @@ export const PillNav: React.FC<PillNavProps> = ({
                       onMenuToggle?.(false);
                     },
                   },
-                  face(item)
+                  face(item),
                 )}
               </li>
             ))}

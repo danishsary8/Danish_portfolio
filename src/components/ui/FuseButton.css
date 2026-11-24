@@ -87,9 +87,9 @@
     background-color 160ms ease;
 }
 
-.fuse-button[data-phase='idle'] .fuse-button__idle,
-.fuse-button[data-phase='armed'] .fuse-button__undo,
-.fuse-button[data-phase='settled'] .fuse-button__settled {
+.fuse-button[data-phase="idle"] .fuse-button__idle,
+.fuse-button[data-phase="armed"] .fuse-button__undo,
+.fuse-button[data-phase="settled"] .fuse-button__settled {
   opacity: 1;
   filter: blur(0);
   visibility: visible;
@@ -105,7 +105,7 @@
   cursor: default;
 }
 
-.fuse-button[data-phase='idle']:has(.fuse-button__idle:disabled) {
+.fuse-button[data-phase="idle"]:has(.fuse-button__idle:disabled) {
   opacity: 0.55;
 }
 
@@ -127,7 +127,7 @@
   transition: transform var(--fb-fade) var(--fb-ease-out);
 }
 
-.fuse-button[data-phase='armed'] .fuse-button__icon--undo {
+.fuse-button[data-phase="armed"] .fuse-button__icon--undo {
   transform: rotate(0deg);
 }
 
@@ -143,7 +143,7 @@
   pointer-events: none;
 }
 
-.fuse-button[data-fuse='top'] .fuse-button__fuse {
+.fuse-button[data-fuse="top"] .fuse-button__fuse {
   bottom: auto;
   top: 0;
 }
@@ -160,7 +160,7 @@
   transition: opacity var(--fb-fade) ease;
 }
 
-.fuse-button[data-phase='armed'] .fuse-button__rim {
+.fuse-button[data-phase="armed"] .fuse-button__rim {
   opacity: 1;
 }
 

@@ -12,6 +12,7 @@ Personal portfolio of **Sary Danish** (goes by Danish), a Junior Web Developer i
 The codebase has completed recent deep polish on the **Hero** and **Profile Modal**. The user is continuing work with **Claude Code** or **Kiro** on the **About** section and subsequent sections.
 
 ### What is Completed & Approved:
+
 1. **Hero (`Hero.tsx`, `PortraitCard.tsx`)**:
    - Status badge: `"Available for Full-time Work"` with pinging gold dot.
    - Split-flap Phnom Penh clock with whole-pixel tiles and engraved well.
@@ -28,7 +29,9 @@ The codebase has completed recent deep polish on the **Hero** and **Profile Moda
    - Jarvis assistant (`JarvisChat.jsx`, `ChatbotWidget.tsx`) is clean, tested, and passing all tests. Experimental mascot/pet additions were cleanly removed.
 
 ### 🎯 Next Target: About Section (`src/components/site/About.tsx`)
+
 When Claude Code or Kiro takes over to edit or build the About section:
+
 - **Target File:** `src/components/site/About.tsx`.
 - **Content Authority:** `src/content/portfolio.ts` (`PROFILE`), `PRODUCT.md`, and `public/sary-danish-cv.pdf`.
 - **Workflow & Design Rules:**
@@ -38,6 +41,7 @@ When Claude Code or Kiro takes over to edit or build the About section:
   - Ensure all 39 tests (`npm test -- --run`) and TypeScript (`npx tsc --noEmit`) remain green.
 
 ## ⏰ Pending owner tasks (remind Danish at the start of a session)
+
 - Contact form: add the Web3Forms key (`VITE_WEB3FORMS_KEY` in Vercel) and redeploy. Steps in `docs/owner-notes.md` → "To do later".
 - Update the CV PDF to match the site (see the same note).
 
@@ -60,17 +64,17 @@ React 19 · TanStack Start + TanStack Router (file routes in `src/routes/`) · T
 
 ## Where things live
 
-| Path | What it holds |
-| --- | --- |
-| `src/routes/index.tsx` | Home page: composes the sections in order |
-| `src/routes/design-system.tsx` | Live `/design-system` showcase; keep it in sync with real tokens and classes |
-| `src/routes/__root.tsx` | Document shell, fonts, the inline `html.js` script |
-| `src/components/site/` | One file per section: `Hero`, `PortraitCard`, `About`, `Skills`, `Projects`, `Experience`, `Education`, `Contact` (+ `SiteFooter`), `SiteNav`, `ProfileModal` (3D lanyard), `Reveal` (scroll reveal, `SECTION`, `SectionHeader`) |
-| `src/components/ui/` | shadcn primitives plus React Bits components (`LogoLoop`, `SplitFlapText`, `VariableProximity`, `Lanyard`, …). Reuse these; do not reinstall them (local edits would be lost) |
-| `src/content/portfolio.ts` | All structured content: `PROFILE`, `PROJECTS`, `SKILL_GROUPS`, `EXPERIENCE`, `EDUCATION`, `CERTIFICATES` |
-| `src/lib/` | `assets.ts` (photo, project shots, CV path), `use-theme`, `use-local-time`, `motion.ts` springs, `cv-link` |
-| `src/styles.css` | Theme tokens (light `:root`, dark `.dark`), elevation `--elev-1..3`, `--sheen`, Apple layer classes, keyframes |
-| `src/test/` | `portfolio.test.tsx` asserts visible copy; `app-routing`, `cv-link` |
+| Path                           | What it holds                                                                                                                                                                                                                    |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/routes/index.tsx`         | Home page: composes the sections in order                                                                                                                                                                                        |
+| `src/routes/design-system.tsx` | Live `/design-system` showcase; keep it in sync with real tokens and classes                                                                                                                                                     |
+| `src/routes/__root.tsx`        | Document shell, fonts, the inline `html.js` script                                                                                                                                                                               |
+| `src/components/site/`         | One file per section: `Hero`, `PortraitCard`, `About`, `Skills`, `Projects`, `Experience`, `Education`, `Contact` (+ `SiteFooter`), `SiteNav`, `ProfileModal` (3D lanyard), `Reveal` (scroll reveal, `SECTION`, `SectionHeader`) |
+| `src/components/ui/`           | shadcn primitives plus React Bits components (`LogoLoop`, `SplitFlapText`, `VariableProximity`, `Lanyard`, …). Reuse these; do not reinstall them (local edits would be lost)                                                    |
+| `src/content/portfolio.ts`     | All structured content: `PROFILE`, `PROJECTS`, `SKILL_GROUPS`, `EXPERIENCE`, `EDUCATION`, `CERTIFICATES`                                                                                                                         |
+| `src/lib/`                     | `assets.ts` (photo, project shots, CV path), `use-theme`, `use-local-time`, `motion.ts` springs, `cv-link`                                                                                                                       |
+| `src/styles.css`               | Theme tokens (light `:root`, dark `.dark`), elevation `--elev-1..3`, `--sheen`, Apple layer classes, keyframes                                                                                                                   |
+| `src/test/`                    | `portfolio.test.tsx` asserts visible copy; `app-routing`, `cv-link`                                                                                                                                                              |
 
 ## Rules that bite
 

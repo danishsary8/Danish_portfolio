@@ -100,102 +100,107 @@ export function SiteNav() {
       </div>
 
       <header
-        className={`absolute md:fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-8 transition-all duration-200 pointer-events-none ${
-          scrolled ? "bg-transparent md:bg-bg/85 md:backdrop-blur-xl md:border-b md:border-line/40 md:shadow-xs" : "bg-transparent"
+        className={`absolute md:fixed inset-x-0 top-0 z-50 px-4 py-3 sm:px-6 sm:py-3.5 md:px-4 lg:px-8 transition-all duration-200 pointer-events-none ${
+          scrolled
+            ? "bg-transparent md:bg-bg/85 md:backdrop-blur-xl md:border-b md:border-line/40 md:shadow-xs"
+            : "bg-transparent"
         }`}
       >
         <nav
           aria-label="Primary"
-          className="mx-auto flex md:grid max-w-[1240px] md:grid-cols-[1fr_auto_1fr] items-center justify-between pointer-events-auto"
+          className="mx-auto flex max-w-[1240px] items-center justify-between md:gap-2 lg:grid lg:grid-cols-[1fr_auto_1fr] pointer-events-auto"
         >
-        {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow. */}
-        <div className="flex items-center justify-start">
-          <a
-            href="#home"
-            aria-label={`${PROFILE.name}, back to top`}
-            title={PROFILE.name}
-            className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
-          >
-            <span aria-hidden="true" className="nav-wordmark font-poster text-[17px] font-extrabold uppercase leading-none tracking-[0.14em] sm:text-[18px]">
-              {PROFILE.shortName}
-            </span>
-          </a>
-        </div>
-
-        {/* Center: Dedicated Floating Pill Navigation Capsule */}
-        <div className="hidden md:flex justify-center">
-          <PillNav
-            items={navItems}
-            activeHref={active ? `#${active}` : ""}
-            layout="joined"
-            surface="glass"
-            itemStyle="default"
-            hoverEffect="fill"
-            indicator="underline"
-            collapse="never"
-            ariaLabel="Sections"
-            theme="auto"
-            highlightColor="var(--gold)"
-            highlightTextColor="var(--nav-pill-ink)"
-            className={`transition-all duration-300 shadow-float ${scrolled ? "scale-[0.99] ring-1 ring-line/30" : ""}`}
-          />
-        </div>
-
-        {/* Right: Download CV & SlingButton Theme Toggle */}
-        <div className="flex items-center justify-end gap-2.5 sm:gap-3">
-          {/* Download CV Pill Button - Desktop Only */}
-          {CV_HREF ? (
-            <div className="hidden md:block">
-              <a
-                href={CV_HREF}
-                {...getCvLinkProps()}
-                className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 px-3.5 sm:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
-                aria-label="Download CV"
+          {/* Left: "DANISH" wordmark (owner request), with a crisp letterpress shadow. */}
+          <div className="flex items-center justify-start">
+            <a
+              href="#home"
+              aria-label={`${PROFILE.name}, back to top`}
+              title={PROFILE.name}
+              className="inline-flex items-center py-1.5 transition-opacity hover:opacity-80 select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-focus rounded-sm"
+            >
+              <span
+                aria-hidden="true"
+                className="nav-wordmark font-poster text-[17px] font-extrabold uppercase leading-none tracking-[0.14em] sm:text-[18px]"
               >
-                <FileText
-                  className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-gold"
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
-                <span>Download CV</span>
-              </a>
-            </div>
-          ) : null}
+                {PROFILE.shortName}
+              </span>
+            </a>
+          </div>
 
-          {/* ReactBits SlingButton Theme Toggle */}
-          <SlingButton
-            onSend={toggle}
-            ariaLabel={themeLabel}
-            size={38}
-            strokeWidth={2}
-            padColor="var(--sl-c-pad)"
-            iconColor="var(--sl-c-icon)"
-            accentColor="var(--gold)"
-            wellColor="var(--sl-c-well)"
-            bandColor="var(--sl-c-band)"
-            shadow="var(--sl-c-shadow)"
-            flight={70}
-            particles={8}
-            className="group"
-          >
-            {/* Both icons render; CSS picks one from the `dark` class so the first paint is right. */}
-            <Sun
-              className="hidden h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:block"
-              strokeWidth={2.2}
-              aria-hidden="true"
+          {/* Center: Dedicated Floating Pill Navigation Capsule */}
+          <div className="hidden md:flex justify-center md:max-lg:[&_.pill-nav\_\_item]:!px-1.5 md:max-lg:[&_.pill-nav]:!text-[11px]">
+            <PillNav
+              items={navItems}
+              activeHref={active ? `#${active}` : ""}
+              layout="joined"
+              surface="glass"
+              itemStyle="default"
+              hoverEffect="fill"
+              indicator="underline"
+              collapse="never"
+              ariaLabel="Sections"
+              theme="auto"
+              highlightColor="var(--gold)"
+              highlightTextColor="var(--nav-pill-ink)"
+              className={`transition-all duration-300 shadow-float ${scrolled ? "scale-[0.99] ring-1 ring-line/30" : ""}`}
             />
-            <Moon
-              className="h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:hidden"
-              strokeWidth={2.2}
-              aria-hidden="true"
-            />
-          </SlingButton>
-        </div>
-      </nav>
-    </header>
-    <MobileBottomNav activeSection={active} />
-  </>
-);
+          </div>
+
+          {/* Right: Download CV & SlingButton Theme Toggle */}
+          <div className="flex items-center justify-end gap-2.5 sm:gap-3 md:gap-1.5 lg:gap-3">
+            {/* Download CV Pill Button - Desktop Only */}
+            {CV_HREF ? (
+              <div className="hidden md:block">
+                <a
+                  href={CV_HREF}
+                  {...getCvLinkProps()}
+                  className="ios-glass-pill ios-glass-pill-interactive cursor-target group inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 whitespace-nowrap px-3.5 md:px-3 lg:px-4 text-[12.5px] sm:text-[13px] font-semibold text-fg tracking-tight select-none press shadow-2xs"
+                  aria-label="Download CV"
+                >
+                  <FileText
+                    className="h-3.5 w-3.5 text-fg-subtle transition-colors duration-150 group-hover:text-gold"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <span>Download CV</span>
+                </a>
+              </div>
+            ) : null}
+
+            {/* ReactBits SlingButton Theme Toggle */}
+            <SlingButton
+              onSend={toggle}
+              ariaLabel={themeLabel}
+              size={38}
+              strokeWidth={2}
+              padColor="var(--sl-c-pad)"
+              iconColor="var(--sl-c-icon)"
+              accentColor="var(--gold)"
+              wellColor="var(--sl-c-well)"
+              bandColor="var(--sl-c-band)"
+              shadow="var(--sl-c-shadow)"
+              flight={70}
+              particles={8}
+              className="group"
+            >
+              {/* Both icons render; CSS picks one from the `dark` class so the first paint is right. */}
+              <Sun
+                className="hidden h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:block"
+                strokeWidth={2.2}
+                aria-hidden="true"
+              />
+              <Moon
+                className="h-4.5 w-4.5 text-fg transition-transform duration-300 group-hover:rotate-12 group-hover:text-gold dark:hidden"
+                strokeWidth={2.2}
+                aria-hidden="true"
+              />
+            </SlingButton>
+          </div>
+        </nav>
+      </header>
+      <MobileBottomNav activeSection={active} />
+    </>
+  );
 }
 
 export default SiteNav;

@@ -22,6 +22,7 @@ This document serves as the immutable, permanent Master Architecture & Design Co
 Context is the scarcest resource. These rules keep each task focused, cheap, and consistent.
 
 ### A. Scope discipline
+
 1. **One task, one target.** Before starting, state the target file(s) and the single goal in one line. Anything outside that list is out of scope unless the user adds it.
 2. **Read narrowly.** Read the target file and only its direct imports when needed. No repo-wide `grep`/`glob` sweeps, no re-reading files already in context, no reading `src/routeTree.gen.ts` (generated).
 3. **This file is the design authority.** Do not re-derive tokens, fonts, or rules from CSS/components when §2–§4 already state them. Content comes only from §5; never invent copy or claims.
@@ -30,21 +31,23 @@ Context is the scarcest resource. These rules keep each task focused, cheap, and
 
 ### B. Skill routing (use the smallest skill that fits)
 
-| Need | Skill | Notes |
-| --- | --- | --- |
-| Find/install a capability not yet available | `/find-skills` | Install with `npx -y skills add <repo> -y` (non-interactive). Skills live in `.agents/skills/`, symlinked into `.claude/skills/`. |
-| Multi-file or multi-phase work | `/planning` | Split into small vertical slices; each slice ends green (tsc + tests). |
-| Any UI build, redesign, polish, audit | `/impeccable` | Windows launcher: `.claude/skills/impeccable/scripts/impeccable.cmd`. Run `context --target <file>` once per session, `detect --json <file>` once after edits. Product truth is in `PRODUCT.md`; design authority is this file. |
-| Aesthetic direction for a new layout | `/frontend-design`, `/taste-skill` | Only for new surfaces; refinements follow §2 directly. |
-| Codebase questions / onboarding | `/understand`, `/understand-explain`, `/understand-diff` | Prefer over manual broad scans. `understand-dashboard` and `understand-figma` were flagged High Risk at install — do not run without user approval. |
+| Need                                        | Skill                                                    | Notes                                                                                                                                                                                                                           |
+| ------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Find/install a capability not yet available | `/find-skills`                                           | Install with `npx -y skills add <repo> -y` (non-interactive). Skills live in `.agents/skills/`, symlinked into `.claude/skills/`.                                                                                               |
+| Multi-file or multi-phase work              | `/planning`                                              | Split into small vertical slices; each slice ends green (tsc + tests).                                                                                                                                                          |
+| Any UI build, redesign, polish, audit       | `/impeccable`                                            | Windows launcher: `.claude/skills/impeccable/scripts/impeccable.cmd`. Run `context --target <file>` once per session, `detect --json <file>` once after edits. Product truth is in `PRODUCT.md`; design authority is this file. |
+| Aesthetic direction for a new layout        | `/frontend-design`, `/taste-skill`                       | Only for new surfaces; refinements follow §2 directly.                                                                                                                                                                          |
+| Codebase questions / onboarding             | `/understand`, `/understand-explain`, `/understand-diff` | Prefer over manual broad scans. `understand-dashboard` and `understand-figma` were flagged High Risk at install — do not run without user approval.                                                                             |
 
 ### C. Verification (mandatory before reporting done)
+
 - Run `npx tsc --noEmit` then `npm test -- --run`. All tests must pass (currently 38; `src/test/jarvis.test.tsx` covers the Jarvis chat).
 - Tests assert visible copy (e.g. Hero must render the text `Junior Web Developer`, `Phnom Penh`, an `Email me` mailto link, a `View projects` link to `#projects`, and a GitHub link). Do not rename these strings.
 - Report honestly: what changed, what was verified, what was not (e.g. no browser check).
 - Shell is Windows PowerShell 5.1: chain with `;` + `if ($?) { … }`, not `&&`.
 
 ### D. Phase log (update when a phase completes)
+
 Product truth lives in `PRODUCT.md` (from the CV `public/sary-danish-cv.pdf`).
 
 **Autonomous mode (owner request):** do not stop for approval between phases or steps. Plan → build → verify (tsc + tests + screenshots) → fix → move on, then report once at the end with what changed and what was not verified. Ask only when a fact is missing from the CV/PRODUCT.md or a choice is irreversible. Work directly on `main` (owner request: no feature branches or PRs). When a change is done and verified, commit and push to `main`; Vercel deploys `main` automatically. Never force-push or rewrite pushed history (Lovable note at top).
@@ -74,6 +77,7 @@ Product truth lives in `PRODUCT.md` (from the CV `public/sary-danish-cv.pdf`).
 **Decisions:** role title "Junior Web Developer" (full-stack shown in pitch); availability "Open to Web Developer roles"; audience = local hiring teams in Phnom Penh; TypeScript: owner added it to Skills (Oct 2026); keep it out of other claims unless the owner asks.
 
 ### E. Output style
+
 - No narration of options you will not pursue. Final report: short bullets of changes + verification result.
 - Work on `main`; commit and push finished, verified work there (owner request). Never rewrite pushed history (see Lovable note above).
 

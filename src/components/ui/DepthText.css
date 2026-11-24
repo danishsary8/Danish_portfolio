@@ -1,5 +1,5 @@
 @property --depth-text-face-color {
-  syntax: '<color>';
+  syntax: "<color>";
   inherits: true;
   initial-value: #111113;
 }
@@ -25,7 +25,13 @@
 }
 
 .dark .depth-text__stage {
-  filter: var(--depth-text-filter, drop-shadow(0 4px 18px color-mix(in srgb, var(--depth-text-face-color, #C9973A) 24%, transparent)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45)));
+  filter: var(
+    --depth-text-filter,
+    drop-shadow(
+        0 4px 18px color-mix(in srgb, var(--depth-text-face-color, #c9973a) 24%, transparent)
+      )
+      drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))
+  );
 }
 
 .depth-text__layer,

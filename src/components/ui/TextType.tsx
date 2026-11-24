@@ -295,7 +295,9 @@ export function TextType({
           wait(0, () => setTypo(null));
         } else if (!typo.fixing) {
           if (typo.tail.length < typo.plan.length) {
-            wait(speed(), () => setTypo({ ...typo, tail: typo.plan.slice(0, typo.tail.length + 1) }));
+            wait(speed(), () =>
+              setTypo({ ...typo, tail: typo.plan.slice(0, typo.tail.length + 1) }),
+            );
           } else {
             wait(260 + Math.random() * 320, () => setTypo({ ...typo, fixing: true }));
           }
@@ -310,7 +312,9 @@ export function TextType({
         const lead = shown === 0 ? initialDelay : 0;
         const next = reverseMode ? total - shown - 1 : shown;
         const wrong =
-          mistakes > 0 && shown > 0 && lastTypo.current !== next ? typoFor(chars[next] ?? "") : null;
+          mistakes > 0 && shown > 0 && lastTypo.current !== next
+            ? typoFor(chars[next] ?? "")
+            : null;
 
         if (reduceMotion) {
           wait(lead, () => setCount(total));
@@ -429,7 +433,9 @@ export function TextType({
         </span>
       ) : null}
       {reverseMode && caret}
-      <span style={{ color }}>{reverseMode ? [...mistyped, ...correct] : [...correct, ...mistyped]}</span>
+      <span style={{ color }}>
+        {reverseMode ? [...mistyped, ...correct] : [...correct, ...mistyped]}
+      </span>
       {!reverseMode && caret}
     </span>,
     showCursor && (

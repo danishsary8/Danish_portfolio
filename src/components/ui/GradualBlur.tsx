@@ -10,8 +10,7 @@ import React, {
 } from "react";
 import "./GradualBlur.css";
 
-const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export type CurveType = "linear" | "bezier" | "ease-in" | "ease-out" | "ease-in-out";
 export type DirectionType = "top" | "bottom" | "left" | "right";
@@ -33,11 +32,9 @@ const DIRECTIONS: Record<DirectionType, string> = {
 
 const clamp01 = (value: number) => Math.min(Math.max(value, 0), 1);
 
-const toLength = (value: number | string) =>
-  typeof value === "number" ? `${value}px` : value;
+const toLength = (value: number | string) => (typeof value === "number" ? `${value}px` : value);
 
-const toTime = (value: number | string) =>
-  typeof value === "number" ? `${value}s` : value;
+const toTime = (value: number | string) => (typeof value === "number" ? `${value}s` : value);
 
 export interface GradualBlurProps {
   position?: DirectionType;
@@ -65,7 +62,7 @@ const findScroller = (
   container: string | HTMLElement | RefObject<HTMLElement | null> | null | undefined,
   root: HTMLElement,
   target: string,
-  vertical: boolean
+  vertical: boolean,
 ): Element | Window | null => {
   if (container) {
     if (typeof container === "string") return document.querySelector(container);
@@ -78,9 +75,7 @@ const findScroller = (
     const style = getComputedStyle(node);
     return /(auto|scroll|overlay)/.test(vertical ? style.overflowY : style.overflowX);
   };
-  const sibling = Array.from(parent.children).find(
-    (child) => child !== root && scrolls(child)
-  );
+  const sibling = Array.from(parent.children).find((child) => child !== root && scrolls(child));
   return sibling || (scrolls(parent) ? parent : null);
 };
 
@@ -208,9 +203,7 @@ export function GradualBlur({
     source.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     const observer =
-      element && typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(update)
-        : null;
+      element && typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
     if (observer && element) {
       observer.observe(element);
       if (element.firstElementChild) observer.observe(element.firstElementChild);
@@ -234,15 +227,12 @@ export function GradualBlur({
       if (!point) return;
       const box = root.getBoundingClientRect();
       const now =
-        point.x >= box.left &&
-        point.x <= box.right &&
-        point.y >= box.top &&
-        point.y <= box.bottom;
+        point.x >= box.left && point.x <= box.right && point.y >= box.top && point.y <= box.bottom;
       if (now === inside) return;
       inside = now;
       root.style.setProperty(
         "--gradual-blur-hover",
-        inside ? String(Math.max(hoverIntensity, 0)) : "1"
+        inside ? String(Math.max(hoverIntensity, 0)) : "1",
       );
     };
 

@@ -1,16 +1,16 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { SplitText } from 'gsap/SplitText';
-import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { SplitText } from "gsap/SplitText";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-import './ScrambledText.css';
+import "./ScrambledText.css";
 
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const PHYSICAL = { lift: true, blur: true, magnify: true };
 
@@ -24,29 +24,39 @@ const ScrambledText = ({
   radius = 100,
   duration = 1.2,
   speed = 0.5,
-  scrambleChars = '.:',
-  scrambleColor = '',
-  effect = 'scramble',
+  scrambleChars = ".:",
+  scrambleColor = "",
+  effect = "scramble",
   strength = 1,
   trail = 0.6,
   clickBurst = true,
   intro = true,
-  fontFamily = '',
-  color = '',
-  className = '',
+  fontFamily = "",
+  color = "",
+  className = "",
   style = {},
-  children
+  children,
 }) => {
   const rootRef = useRef(null);
   const textRef = useRef(null);
   const resetRef = useRef(() => {});
-  const settings = { radius, duration, speed, scrambleChars, scrambleColor, effect, strength, trail, clickBurst };
+  const settings = {
+    radius,
+    duration,
+    speed,
+    scrambleChars,
+    scrambleColor,
+    effect,
+    strength,
+    trail,
+    clickBurst,
+  };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
-  const textKey = typeof children === 'string' ? children : undefined;
+  const textKey = typeof children === "string" ? children : undefined;
 
   const [fontsReady, setFontsReady] = useState(
-    () => typeof document === 'undefined' || !document.fonts || document.fonts.status === 'loaded'
+    () => typeof document === "undefined" || !document.fonts || document.fonts.status === "loaded",
   );
 
   useEffect(() => {
@@ -69,21 +79,22 @@ const ScrambledText = ({
     const textEl = textRef.current;
     if (!root || !textEl || !fontsReady) return;
 
-    const split = SplitText.create(textEl, { type: 'chars', smartWrap: true, aria: 'none' });
+    const split = SplitText.create(textEl, { type: "chars", smartWrap: true, aria: "none" });
     const chars = split.chars;
-    const originals = chars.map(char => char.textContent ?? '');
+    const originals = chars.map((char) => char.textContent ?? "");
     const glyphs = chars.map((char, i) => {
-      const sizer = document.createElement('span');
-      const glyph = document.createElement('span');
+      const sizer = document.createElement("span");
+      const glyph = document.createElement("span");
       sizer.textContent = originals[i];
-      sizer.style.visibility = 'hidden';
+      sizer.style.visibility = "hidden";
       glyph.textContent = originals[i];
-      glyph.style.cssText = 'position:absolute;top:0;left:50%;transform:translateX(-50%);white-space:pre';
+      glyph.style.cssText =
+        "position:absolute;top:0;left:50%;transform:translateX(-50%);white-space:pre";
       char.replaceChildren(sizer, glyph);
       return glyph;
     });
     const points = chars.map(() => ({ x: 0, y: 0, energy: 0, dx: 0, dy: 0, shown: false }));
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const pointer = { x: 0, y: 0, sx: 0, sy: 0, inside: false };
     const waves = [];
     let measured = false;
@@ -100,11 +111,12 @@ const ScrambledText = ({
       return {
         overwrite: true,
         duration: length,
-        ease: 'none',
+        ease: "none",
         scrambleText: { text: originals[index], chars: scrambleChars, speed, revealDelay },
         onUpdate: () => {
-          glyph.style.color = scrambleColor && glyph.textContent !== originals[index] ? scrambleColor : '';
-        }
+          glyph.style.color =
+            scrambleColor && glyph.textContent !== originals[index] ? scrambleColor : "";
+        },
       };
     };
 
@@ -122,14 +134,14 @@ const ScrambledText = ({
           io.disconnect();
           timeline.play();
         },
-        { rootMargin: '0px 0px -10% 0px' }
+        { rootMargin: "0px 0px -10% 0px" },
       );
       io.observe(root);
       decode = timeline;
       observer = io;
     }
 
-    const offsetOf = el => {
+    const offsetOf = (el) => {
       let x = 0;
       let y = 0;
       for (let node = el; node; node = node.offsetParent) {
@@ -150,19 +162,19 @@ const ScrambledText = ({
       measured = true;
     };
 
-    const toLocal = e => {
+    const toLocal = (e) => {
       const rect = root.getBoundingClientRect();
       const scaleX = root.offsetWidth ? rect.width / root.offsetWidth : 1;
       const scaleY = root.offsetHeight ? rect.height / root.offsetHeight : 1;
       return [(e.clientX - rect.left) / (scaleX || 1), (e.clientY - rect.top) / (scaleY || 1)];
     };
 
-    const clear = i => {
+    const clear = (i) => {
       const char = chars[i];
-      char.style.transform = '';
-      char.style.filter = '';
-      char.style.opacity = '';
-      char.style.zIndex = '';
+      char.style.transform = "";
+      char.style.filter = "";
+      char.style.opacity = "";
+      char.style.zIndex = "";
       points[i].shown = false;
     };
 
@@ -175,9 +187,9 @@ const ScrambledText = ({
       }
       const char = chars[i];
       p.shown = true;
-      if (mode === 'lift') {
+      if (mode === "lift") {
         char.style.transform = `translate3d(0, ${(-e * fontPx * 0.75 * amount).toFixed(2)}px, 0)`;
-      } else if (mode === 'blur') {
+      } else if (mode === "blur") {
         char.style.filter = `blur(${(e * fontPx * 0.24 * amount).toFixed(2)}px)`;
         char.style.opacity = (1 - e * Math.min(0.7, 0.45 * amount)).toFixed(3);
         char.style.transform = `scale(${(1 + e * 0.15 * amount).toFixed(4)})`;
@@ -187,17 +199,17 @@ const ScrambledText = ({
       }
     };
 
-    const tick = now => {
+    const tick = (now) => {
       raf = 0;
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
       last = now;
       if (!measured) measure();
       const s = settingsRef.current;
-      const mode = PHYSICAL[s.effect] && !reduce ? s.effect : '';
+      const mode = PHYSICAL[s.effect] && !reduce ? s.effect : "";
       const amount = Math.max(0, s.strength);
       const reach = Math.max(1, s.radius);
       const width = Math.max(fontPx * 1.3, 16);
-      const swell = mode === 'magnify' ? 0.55 : 1;
+      const swell = mode === "magnify" ? 0.55 : 1;
       const follow = 1 - Math.exp(-dt / 0.06);
       const attack = 1 - Math.exp(-dt / 0.08);
       const release = 1 - Math.exp(-dt / Math.max(0.04, s.trail / 3));
@@ -211,7 +223,9 @@ const ScrambledText = ({
         wave.fade = t < 0.75 ? 1 : 1 - ((t - 0.75) / 0.25) ** 2;
       }
 
-      let busy = waves.length > 0 || Math.abs(pointer.x - pointer.sx) + Math.abs(pointer.y - pointer.sy) > 0.2;
+      let busy =
+        waves.length > 0 ||
+        Math.abs(pointer.x - pointer.sx) + Math.abs(pointer.y - pointer.sy) > 0.2;
       for (let i = 0; i < chars.length; i += 1) {
         const p = points[i];
         let target = 0;
@@ -246,7 +260,7 @@ const ScrambledText = ({
         const k = target > p.energy ? attack : release;
         p.energy += (target - p.energy) * k;
         if (Math.abs(target - p.energy) > 0.0005) busy = true;
-        if (mode === 'magnify') {
+        if (mode === "magnify") {
           p.dx += (tx - p.dx) * k;
           p.dy += (ty - p.dy) * k;
         }
@@ -284,7 +298,7 @@ const ScrambledText = ({
       measured = false;
     };
 
-    const handleMove = e => {
+    const handleMove = (e) => {
       const [x, y] = toLocal(e);
       pointer.x = x;
       pointer.y = y;
@@ -303,20 +317,29 @@ const ScrambledText = ({
       wake();
     };
 
-    const handleDown = e => {
-      if (!settingsRef.current.clickBurst || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const handleDown = (e) => {
+      if (!settingsRef.current.clickBurst || (e.pointerType === "mouse" && e.button !== 0)) return;
       if (!measured) measure();
       const [x, y] = toLocal(e);
       let reach = 0;
       for (const p of points) reach = Math.max(reach, Math.hypot(p.x - x, p.y - y));
       reach += fontPx;
       if (waves.length > 3) waves.shift();
-      waves.push({ x, y, age: 0, r: 0, fade: 1, reach, life: 0.45 + reach / 1100, hit: new Uint8Array(chars.length) });
+      waves.push({
+        x,
+        y,
+        age: 0,
+        r: 0,
+        fade: 1,
+        reach,
+        life: 0.45 + reach / 1100,
+        hit: new Uint8Array(chars.length),
+      });
       wake();
     };
 
     resetRef.current = () => {
-      points.forEach(p => {
+      points.forEach((p) => {
         p.energy = 0;
         p.dx = 0;
         p.dy = 0;
@@ -334,16 +357,16 @@ const ScrambledText = ({
       })
       .catch(() => {});
 
-    root.addEventListener('pointerenter', handleEnter);
-    root.addEventListener('pointermove', handleMove);
-    root.addEventListener('pointerleave', handleLeave);
-    root.addEventListener('pointerdown', handleDown);
+    root.addEventListener("pointerenter", handleEnter);
+    root.addEventListener("pointermove", handleMove);
+    root.addEventListener("pointerleave", handleLeave);
+    root.addEventListener("pointerdown", handleDown);
 
     return () => {
-      root.removeEventListener('pointerenter', handleEnter);
-      root.removeEventListener('pointermove', handleMove);
-      root.removeEventListener('pointerleave', handleLeave);
-      root.removeEventListener('pointerdown', handleDown);
+      root.removeEventListener("pointerenter", handleEnter);
+      root.removeEventListener("pointermove", handleMove);
+      root.removeEventListener("pointerleave", handleLeave);
+      root.removeEventListener("pointerdown", handleDown);
       resize.disconnect();
       cancelAnimationFrame(raf);
       cancelAnimationFrame(moveFrame);

@@ -40,7 +40,12 @@ const parseColor = (value: string): [number, number, number, number] | null => {
   if (trimmed.startsWith("rgb")) {
     const parts = trimmed.match(/[\d.]+/g);
     if (parts && parts.length >= 3) {
-      return [Number(parts[0]), Number(parts[1]), Number(parts[2]), parts.length > 3 ? Number(parts[3]) : 1];
+      return [
+        Number(parts[0]),
+        Number(parts[1]),
+        Number(parts[2]),
+        parts.length > 3 ? Number(parts[3]) : 1,
+      ];
     }
   }
   if (typeof document === "undefined") return null;
@@ -62,16 +67,26 @@ const parseColor = (value: string): [number, number, number, number] | null => {
     }
     const parts = resolved.match(/[\d.]+/g);
     if (!parts || parts.length < 3) return null;
-    return [Number(parts[0]), Number(parts[1]), Number(parts[2]), parts.length > 3 ? Number(parts[3]) : 1];
+    return [
+      Number(parts[0]),
+      Number(parts[1]),
+      Number(parts[2]),
+      parts.length > 3 ? Number(parts[3]) : 1,
+    ];
   } catch {
     return null;
   }
 };
 
-const blend = (from: [number, number, number, number], to: [number, number, number, number], amount: number) => {
+const blend = (
+  from: [number, number, number, number],
+  to: [number, number, number, number],
+  amount: number,
+) => {
   const channel = (a: number, b: number) =>
     Math.round(
-      Math.pow(Math.pow(a / 255, 2.2) * (1 - amount) + Math.pow(b / 255, 2.2) * amount, 1 / 2.2) * 255,
+      Math.pow(Math.pow(a / 255, 2.2) * (1 - amount) + Math.pow(b / 255, 2.2) * amount, 1 / 2.2) *
+        255,
     );
   const alpha = from[3] * (1 - amount) + to[3] * amount;
   if (alpha <= 0) return "rgba(0, 0, 0, 0)";
@@ -282,7 +297,8 @@ export const ShinyText = ({
       if (following) {
         if (state.pos === null) state.pos = nearest();
         const stiffness = 220;
-        state.vel += ((state.target - state.pos) * stiffness - state.vel * 2 * Math.sqrt(stiffness)) * dt;
+        state.vel +=
+          ((state.target - state.pos) * stiffness - state.vel * 2 * Math.sqrt(stiffness)) * dt;
         state.pos += state.vel * dt;
         state.phase = "follow";
         draw();
@@ -357,7 +373,8 @@ export const ShinyText = ({
       const dy = -Math.cos(radians);
       const length = Math.abs(rect.width * dx) + Math.abs(rect.height * dy) || 1;
       const along =
-        (event.clientX - rect.left - rect.width / 2) * dx + (event.clientY - rect.top - rect.height / 2) * dy;
+        (event.clientX - rect.left - rect.width / 2) * dx +
+        (event.clientY - rect.top - rect.height / 2) * dy;
       return 50 + (along / length) * 100;
     };
 

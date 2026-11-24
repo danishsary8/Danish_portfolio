@@ -1,40 +1,51 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import React, { useEffect, useRef, ElementType, ReactNode, CSSProperties, ComponentPropsWithoutRef } from 'react';
-import './StarBorder.css';
+import React, {
+  useEffect,
+  useRef,
+  ElementType,
+  ReactNode,
+  CSSProperties,
+  ComponentPropsWithoutRef,
+} from "react";
+import "./StarBorder.css";
 
 const THEMES = {
   dark: {
-    surface: '#0c0c0f',
-    text: '#fafafa',
-    track: 'rgba(255, 255, 255, 0.1)',
-    light: '#ffffff'
+    surface: "#0c0c0f",
+    text: "#fafafa",
+    track: "rgba(255, 255, 255, 0.1)",
+    light: "#ffffff",
   },
   light: {
-    surface: '#ffffff',
-    text: '#18181b',
-    track: 'rgba(24, 24, 27, 0.12)',
-    light: '#18181b'
-  }
+    surface: "#ffffff",
+    text: "#18181b",
+    track: "rgba(24, 24, 27, 0.12)",
+    light: "#18181b",
+  },
 };
 
-const HOVERS = ['lap', 'brighten', 'reveal', 'none'] as const;
-type HoverEffect = typeof HOVERS[number];
+const HOVERS = ["lap", "brighten", "reveal", "none"] as const;
+type HoverEffect = (typeof HOVERS)[number];
 
 const BLEED = 48;
 const LAP = 0.9;
 const TAU = Math.PI * 2;
 const WHITE: [number, number, number] = [255, 255, 255];
-const GLOBAL_START_TIME = typeof performance !== 'undefined' ? performance.now() : 0;
+const GLOBAL_START_TIME = typeof performance !== "undefined" ? performance.now() : 0;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const wrap = (value: number, total: number) => ((value % total) + total) % total;
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - (2 - 2 * t) ** 3 / 2);
-const mix = (a: [number, number, number], b: [number, number, number], t: number): [number, number, number] => [
+const mix = (
+  a: [number, number, number],
+  b: [number, number, number],
+  t: number,
+): [number, number, number] => [
   a[0] + (b[0] - a[0]) * t,
   a[1] + (b[1] - a[1]) * t,
-  a[2] + (b[2] - a[2]) * t
+  a[2] + (b[2] - a[2]) * t,
 ];
 const rgba = (rgb: [number, number, number], alpha: number) =>
   `rgba(${Math.round(rgb[0])}, ${Math.round(rgb[1])}, ${Math.round(rgb[2])}, ${clamp(alpha, 0, 1).toFixed(3)})`;
@@ -42,17 +53,24 @@ const rgba = (rgb: [number, number, number], alpha: number) =>
 let colorContext: CanvasRenderingContext2D | null = null;
 
 const toRgb = (color: string): [number, number, number] => {
-  if (typeof window !== 'undefined' && color && typeof color === 'string' && color.startsWith('var(')) {
+  if (
+    typeof window !== "undefined" &&
+    color &&
+    typeof color === "string" &&
+    color.startsWith("var(")
+  ) {
     const varName = color.slice(4, -1).trim();
     const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
     if (resolved) color = resolved;
   }
-  colorContext = colorContext ?? (typeof document !== 'undefined' ? document.createElement('canvas').getContext('2d') : null);
+  colorContext =
+    colorContext ??
+    (typeof document !== "undefined" ? document.createElement("canvas").getContext("2d") : null);
   if (!colorContext) return WHITE;
-  colorContext.fillStyle = '#000000';
+  colorContext.fillStyle = "#000000";
   colorContext.fillStyle = color;
   const value = String(colorContext.fillStyle);
-  if (value.startsWith('#')) {
+  if (value.startsWith("#")) {
     const hex = parseInt(value.slice(1, 7), 16);
     return [(hex >> 16) & 255, (hex >> 8) & 255, hex & 255];
   }
@@ -88,15 +106,15 @@ const outline = (width: number, height: number, radius: number): Shape => {
     { length: across, x: width - r, y: height, dx: -1, dy: 0, angle: null },
     { length: arc, x: r, y: height - r, dx: 0, dy: 0, angle: Math.PI / 2 },
     { length: down, x: 0, y: height - r, dx: 0, dy: -1, angle: null },
-    { length: arc, x: r, y: r, dx: 0, dy: 0, angle: Math.PI }
+    { length: arc, x: r, y: r, dx: 0, dy: 0, angle: Math.PI },
   ];
   return {
     r,
     segments,
     total: Math.max(
       1,
-      segments.reduce((sum, segment) => sum + segment.length, 0)
-    )
+      segments.reduce((sum, segment) => sum + segment.length, 0),
+    ),
   };
 };
 
@@ -134,7 +152,7 @@ const project = (shape: Shape, px: number, py: number) => {
   let best = Infinity;
   let found = 0;
   let offset = 0;
-  shape.segments.forEach(segment => {
+  shape.segments.forEach((segment) => {
     if (segment.length > 0) {
       let s = 0;
       let x = 0;
@@ -161,7 +179,7 @@ const project = (shape: Shape, px: number, py: number) => {
   return found;
 };
 
-export interface StarBorderProps<T extends ElementType = 'button'> {
+export interface StarBorderProps<T extends ElementType = "button"> {
   as?: T;
   children?: ReactNode;
   className?: string;
@@ -175,10 +193,10 @@ export interface StarBorderProps<T extends ElementType = 'button'> {
   stars?: number;
   glow?: number;
   sparkle?: boolean;
-  direction?: 'clockwise' | 'counterclockwise';
+  direction?: "clockwise" | "counterclockwise";
   hover?: HoverEffect;
   clickPulse?: boolean;
-  theme?: 'dark' | 'light';
+  theme?: "dark" | "light";
   backgroundColor?: string;
   textColor?: string;
   borderColor?: string;
@@ -186,13 +204,13 @@ export interface StarBorderProps<T extends ElementType = 'button'> {
   syncOffset?: number;
 }
 
-export type StarBorderComponentProps<T extends ElementType = 'button'> = StarBorderProps<T> &
+export type StarBorderComponentProps<T extends ElementType = "button"> = StarBorderProps<T> &
   Omit<ComponentPropsWithoutRef<T>, keyof StarBorderProps<T>>;
 
-export const StarBorder = <T extends ElementType = 'button'>({
+export const StarBorder = <T extends ElementType = "button">({
   as,
   children,
-  className = '',
+  className = "",
   style,
   color,
   trailColor,
@@ -203,10 +221,10 @@ export const StarBorder = <T extends ElementType = 'button'>({
   stars = 1,
   glow = 0.6,
   sparkle = false,
-  direction = 'clockwise',
-  hover = 'lap',
+  direction = "clockwise",
+  hover = "lap",
   clickPulse = true,
-  theme = 'dark',
+  theme = "dark",
   backgroundColor,
   textColor,
   borderColor,
@@ -214,14 +232,14 @@ export const StarBorder = <T extends ElementType = 'button'>({
   syncOffset = 0,
   ...rest
 }: StarBorderComponentProps<T>) => {
-  const Component = (as || 'button') as ElementType;
+  const Component = (as || "button") as ElementType;
   const rootRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wakeRef = useRef<(() => void) | null>(null);
   const palette = THEMES[theme] ?? THEMES.dark;
   const light = color ?? palette.light;
   const settings = {
-    light: theme === 'light',
+    light: theme === "light",
     color: light,
     trailColor: trailColor ?? light,
     duration: Math.max(0.3, duration),
@@ -231,11 +249,11 @@ export const StarBorder = <T extends ElementType = 'button'>({
     stars: clamp(Math.round(stars), 1, 6),
     glow: clamp(glow, 0, 1),
     sparkle,
-    direction: direction === 'counterclockwise' ? -1 : 1,
-    hover: (HOVERS as readonly string[]).includes(hover) ? hover : 'lap',
+    direction: direction === "counterclockwise" ? -1 : 1,
+    hover: (HOVERS as readonly string[]).includes(hover) ? hover : "lap",
     clickPulse,
     sync,
-    syncOffset: typeof syncOffset === 'number' ? syncOffset : 0
+    syncOffset: typeof syncOffset === "number" ? syncOffset : 0,
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -243,10 +261,10 @@ export const StarBorder = <T extends ElementType = 'button'>({
   useEffect(() => {
     const root = rootRef.current;
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
+    const ctx = canvas?.getContext("2d");
     if (!root || !canvas || !ctx) return undefined;
 
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     const point: Point = { x: 0, y: 0, nx: 0, ny: -1 };
     const state = {
       width: 0,
@@ -266,7 +284,7 @@ export const StarBorder = <T extends ElementType = 'button'>({
       focused: false,
       pointerX: 0,
       pointerY: 0,
-      visible: true
+      visible: true,
     };
     const pulses: { origin: number; age: number }[] = [];
     const dust: {
@@ -279,11 +297,12 @@ export const StarBorder = <T extends ElementType = 'button'>({
       size: number;
       seed: number;
     }[] = [];
-    const colors: { key: string; head: [number, number, number]; tail: [number, number, number] } = {
-      key: '',
-      head: WHITE,
-      tail: WHITE
-    };
+    const colors: { key: string; head: [number, number, number]; tail: [number, number, number] } =
+      {
+        key: "",
+        head: WHITE,
+        tail: WHITE,
+      };
     let raf = 0;
     let last = performance.now();
     let alive = true;
@@ -308,10 +327,17 @@ export const StarBorder = <T extends ElementType = 'button'>({
       outline(
         Math.max(1, state.width - s.thickness),
         Math.max(1, state.height - s.thickness),
-        s.radius - s.thickness / 2
+        s.radius - s.thickness / 2,
       );
 
-    const stroke = (x1: number, y1: number, x2: number, y2: number, width: number, style: string | CanvasGradient) => {
+    const stroke = (
+      x1: number,
+      y1: number,
+      x2: number,
+      y2: number,
+      width: number,
+      style: string | CanvasGradient,
+    ) => {
       ctx.lineWidth = width;
       ctx.strokeStyle = style;
       ctx.beginPath();
@@ -327,7 +353,7 @@ export const StarBorder = <T extends ElementType = 'button'>({
       length: number,
       sign: number,
       intensity: number,
-      tip = true
+      tip = true,
     ) => {
       if (length < 0.5 || intensity <= 0) return;
       const steps = clamp(Math.ceil(length / 2), 2, 90);
@@ -340,15 +366,28 @@ export const StarBorder = <T extends ElementType = 'button'>({
         const fade = u * u * intensity;
         let tone = mix(colors.tail, colors.head, u);
         if (!s.light) tone = mix(tone, WHITE, u ** 6 * 0.65);
-        ctx.lineCap = tip && i === 1 ? 'round' : 'butt';
-        stroke(px, py, point.x, point.y, 2 + 6 * s.glow, rgba(tone, fade * (s.light ? 0.1 : 0.2) * s.glow));
+        ctx.lineCap = tip && i === 1 ? "round" : "butt";
+        stroke(
+          px,
+          py,
+          point.x,
+          point.y,
+          2 + 6 * s.glow,
+          rgba(tone, fade * (s.light ? 0.1 : 0.2) * s.glow),
+        );
         stroke(px, py, point.x, point.y, s.thickness, rgba(tone, fade));
         px = point.x;
         py = point.y;
       }
     };
 
-    const drawHead = (s: typeof settings, x: number, y: number, intensity: number, twinkle: number) => {
+    const drawHead = (
+      s: typeof settings,
+      x: number,
+      y: number,
+      intensity: number,
+      twinkle: number,
+    ) => {
       if (intensity <= 0) return;
       const tone = colors.head;
       const reach = (12 + 40 * s.glow) * (s.light ? 0.6 : 1);
@@ -365,7 +404,10 @@ export const StarBorder = <T extends ElementType = 'button'>({
       const size = (1 + s.thickness * 0.6) * (s.light ? 0.85 : 1);
       const core = ctx.createRadialGradient(x, y, 0, x, y, size * 2.2);
       core.addColorStop(0, rgba(s.light ? tone : WHITE, intensity));
-      core.addColorStop(s.light ? 0.3 : 0.4, rgba(s.light ? tone : mix(tone, WHITE, 0.5), intensity * 0.9));
+      core.addColorStop(
+        s.light ? 0.3 : 0.4,
+        rgba(s.light ? tone : mix(tone, WHITE, 0.5), intensity * 0.9),
+      );
       core.addColorStop(s.light ? 0.55 : 1, rgba(tone, s.light ? intensity * 0.12 : 0));
       core.addColorStop(1, rgba(tone, 0));
       ctx.fillStyle = core;
@@ -399,19 +441,22 @@ export const StarBorder = <T extends ElementType = 'button'>({
         age: 0,
         life: 0.35 + Math.random() * 0.5,
         size: 0.45 + Math.random() * 0.7,
-        seed: Math.random() * TAU
+        seed: Math.random() * TAU,
       });
     };
 
     const draw = (base: typeof settings, shape: Shape) => {
-      const s = state.boost > 0.001 ? { ...base, glow: Math.min(1.5, base.glow + 0.4 * state.boost) } : base;
+      const s =
+        state.boost > 0.001
+          ? { ...base, glow: Math.min(1.5, base.glow + 0.4 * state.boost) }
+          : base;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (state.width < 2 || state.height < 2) return;
       const offset = (BLEED + s.thickness / 2) * state.dpr;
       ctx.setTransform(state.dpr, 0, 0, state.dpr, offset, offset);
-      ctx.globalCompositeOperation = s.light ? 'source-over' : 'lighter';
-      ctx.lineCap = 'butt';
+      ctx.globalCompositeOperation = s.light ? "source-over" : "lighter";
+      ctx.lineCap = "butt";
 
       const total = shape.total;
       const spacing = total / s.stars;
@@ -421,26 +466,34 @@ export const StarBorder = <T extends ElementType = 'button'>({
       const length = Math.min(speed * span, spacing * 0.92, total * 0.6);
       const intensity = state.reveal * (1 + 0.4 * state.boost + 0.6 * state.flash);
 
-      const ring = state.flash * (s.light ? 0.18 : 0.32) + state.boost * state.reveal * (s.light ? 0.07 : 0.12);
+      const ring =
+        state.flash * (s.light ? 0.18 : 0.32) +
+        state.boost * state.reveal * (s.light ? 0.07 : 0.12);
       if (ring > 0.005) {
         ctx.lineWidth = s.thickness + 2 * s.glow;
         ctx.strokeStyle = rgba(colors.head, ring);
         ctx.beginPath();
-        if (typeof ctx.roundRect === 'function') {
+        if (typeof ctx.roundRect === "function") {
           ctx.roundRect(
             0,
             0,
             Math.max(1, state.width - s.thickness),
             Math.max(1, state.height - s.thickness),
-            Math.max(0, shape.r)
+            Math.max(0, shape.r),
           );
         } else {
-          ctx.rect(0, 0, Math.max(1, state.width - s.thickness), Math.max(1, state.height - s.thickness));
+          ctx.rect(
+            0,
+            0,
+            Math.max(1, state.width - s.thickness),
+            Math.max(1, state.height - s.thickness),
+          );
         }
         ctx.stroke();
       }
 
-      const still = clamp(1 - speed / Math.max(1, (total / s.duration) * 0.6), 0, 1) * Math.min(1, intensity);
+      const still =
+        clamp(1 - speed / Math.max(1, (total / s.duration) * 0.6), 0, 1) * Math.min(1, intensity);
       if (still > 0.005) {
         for (let i = 0; i < s.stars; i++) {
           const stationary = state.phase + i * spacing;
@@ -454,14 +507,14 @@ export const StarBorder = <T extends ElementType = 'button'>({
         drawTrail(s, shape, state.phase + i * spacing, length, sign, intensity, true);
       }
 
-      pulses.forEach(pulse => {
+      pulses.forEach((pulse) => {
         const progress = pulse.age / 0.65;
         const wave = ease(progress);
         const fade = (1 - progress) ** 1.8 * (s.light ? 0.55 : 0.95);
         const reach = wave * total * 0.45;
         drawTrail(s, shape, pulse.origin + reach, 20 + 35 * s.glow, 1, fade * 0.7);
         drawTrail(s, shape, pulse.origin - reach, 20 + 35 * s.glow, -1, fade * 0.7);
-        [-reach, reach].forEach(dx => {
+        [-reach, reach].forEach((dx) => {
           pointAt(shape, pulse.origin + dx, point);
           drawHead(s, point.x, point.y, fade * 0.8, 0.8);
         });
@@ -469,11 +522,12 @@ export const StarBorder = <T extends ElementType = 'button'>({
 
       for (let i = 0; i < s.stars; i++) {
         pointAt(shape, state.phase + i * spacing, point);
-        const twinkle = 0.82 + 0.18 * Math.sin(state.time * 6.1 + i * 2.3) * Math.sin(state.time * 2.7 + i);
+        const twinkle =
+          0.82 + 0.18 * Math.sin(state.time * 6.1 + i * 2.3) * Math.sin(state.time * 2.7 + i);
         drawHead(s, point.x, point.y, Math.min(1.3, intensity), twinkle);
       }
 
-      dust.forEach(mote => {
+      dust.forEach((mote) => {
         const left = 1 - mote.age / mote.life;
         const shimmer = 0.45 + 0.55 * Math.sin(state.time * 20 + mote.seed);
         const alpha = left * shimmer * state.reveal * (s.light ? 0.35 : 0.9);
@@ -506,10 +560,14 @@ export const StarBorder = <T extends ElementType = 'button'>({
       const engaged = state.hovered || state.focused;
       const cruise = reduce ? 0 : (s.direction * total) / s.duration;
 
-      const revealTarget = s.hover === 'reveal' && !engaged ? 0 : 1;
-      state.reveal += (revealTarget - state.reveal) * (1 - Math.exp(-dt / (revealTarget > state.reveal ? 0.16 : 0.45)));
-      const boostTarget = s.hover === 'brighten' && engaged ? 1 : 0;
-      state.boost += (boostTarget - state.boost) * (1 - Math.exp(-dt / (boostTarget > state.boost ? 0.18 : 0.5)));
+      const revealTarget = s.hover === "reveal" && !engaged ? 0 : 1;
+      state.reveal +=
+        (revealTarget - state.reveal) *
+        (1 - Math.exp(-dt / (revealTarget > state.reveal ? 0.16 : 0.45)));
+      const boostTarget = s.hover === "brighten" && engaged ? 1 : 0;
+      state.boost +=
+        (boostTarget - state.boost) *
+        (1 - Math.exp(-dt / (boostTarget > state.boost ? 0.18 : 0.5)));
       state.flash *= Math.exp(-dt / 0.22);
 
       state.velocity += (cruise - state.velocity) * (1 - Math.exp(-dt / 0.45));
@@ -530,7 +588,10 @@ export const StarBorder = <T extends ElementType = 'button'>({
           : state.velocity + (state.lap >= 0 ? extra / dt : 0);
 
       if (s.sync && !reduce) {
-        const cycleProgress = wrap(((now - GLOBAL_START_TIME) / 1000 / s.duration) * s.direction + s.syncOffset, 1);
+        const cycleProgress = wrap(
+          ((now - GLOBAL_START_TIME) / 1000 / s.duration) * s.direction + s.syncOffset,
+          1,
+        );
         state.phase = wrap(cycleProgress * total + state.lapOffset, total);
       } else {
         state.phase = wrap(state.phase + state.velocity * dt + extra, total);
@@ -569,7 +630,8 @@ export const StarBorder = <T extends ElementType = 'button'>({
         dust.length > 0;
       const moving = Math.abs(state.motion) > 0.05 || cruise !== 0 || state.lap >= 0;
       const showing = state.reveal > 0.002 || revealTarget > 0;
-      if (state.visible && (settling || (moving && showing) || state.hovered)) raf = requestAnimationFrame(frame);
+      if (state.visible && (settling || (moving && showing) || state.hovered))
+        raf = requestAnimationFrame(frame);
     };
 
     const wake = () => {
@@ -583,11 +645,15 @@ export const StarBorder = <T extends ElementType = 'button'>({
       const s = settingsRef.current;
       [state.pointerX, state.pointerY] = local(event);
       state.hovered = true;
-      if (s.hover === 'reveal' && state.reveal < 0.15) {
-        state.phase = project(shapeFor(s), state.pointerX - s.thickness / 2, state.pointerY - s.thickness / 2);
+      if (s.hover === "reveal" && state.reveal < 0.15) {
+        state.phase = project(
+          shapeFor(s),
+          state.pointerX - s.thickness / 2,
+          state.pointerY - s.thickness / 2,
+        );
         state.velocity = 0;
       }
-      if (s.hover === 'lap' && state.lap < 0 && !reduce) state.lap = 0;
+      if (s.hover === "lap" && state.lap < 0 && !reduce) state.lap = 0;
       wake();
     };
     const onLeave = () => {
@@ -602,7 +668,7 @@ export const StarBorder = <T extends ElementType = 'button'>({
       wake();
     };
     const onDown = (event: PointerEvent) => {
-      if (event.button !== 0 && event.pointerType === 'mouse') return;
+      if (event.button !== 0 && event.pointerType === "mouse") return;
       const s = settingsRef.current;
       const [x, y] = local(event);
       pulse(project(shapeFor(s), x - s.thickness / 2, y - s.thickness / 2));
@@ -611,8 +677,9 @@ export const StarBorder = <T extends ElementType = 'button'>({
       if (event.detail === 0) pulse(state.phase);
     };
     const onFocus = () => {
-      state.focused = root.matches(':focus-visible');
-      if (state.focused && settingsRef.current.hover === 'lap' && state.lap < 0 && !reduce) state.lap = 0;
+      state.focused = root.matches(":focus-visible");
+      if (state.focused && settingsRef.current.hover === "lap" && state.lap < 0 && !reduce)
+        state.lap = 0;
       wake();
     };
     const onBlur = () => {
@@ -622,17 +689,17 @@ export const StarBorder = <T extends ElementType = 'button'>({
 
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(root);
-    const visibility = new IntersectionObserver(entries => {
-      state.visible = entries.some(entry => entry.isIntersecting);
+    const visibility = new IntersectionObserver((entries) => {
+      state.visible = entries.some((entry) => entry.isIntersecting);
       if (state.visible) wake();
     });
     visibility.observe(root);
-    root.addEventListener('pointerenter', onEnter as EventListener);
-    root.addEventListener('pointerleave', onLeave as EventListener);
-    root.addEventListener('pointerdown', onDown as EventListener);
-    root.addEventListener('click', onClick as EventListener);
-    root.addEventListener('focus', onFocus as EventListener);
-    root.addEventListener('blur', onBlur as EventListener);
+    root.addEventListener("pointerenter", onEnter as EventListener);
+    root.addEventListener("pointerleave", onLeave as EventListener);
+    root.addEventListener("pointerdown", onDown as EventListener);
+    root.addEventListener("click", onClick as EventListener);
+    root.addEventListener("focus", onFocus as EventListener);
+    root.addEventListener("blur", onBlur as EventListener);
     measure();
 
     return () => {
@@ -641,12 +708,12 @@ export const StarBorder = <T extends ElementType = 'button'>({
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       visibility.disconnect();
-      root.removeEventListener('pointerenter', onEnter as EventListener);
-      root.removeEventListener('pointerleave', onLeave as EventListener);
-      root.removeEventListener('pointerdown', onDown as EventListener);
-      root.removeEventListener('click', onClick as EventListener);
-      root.removeEventListener('focus', onFocus as EventListener);
-      root.removeEventListener('blur', onBlur as EventListener);
+      root.removeEventListener("pointerenter", onEnter as EventListener);
+      root.removeEventListener("pointerleave", onLeave as EventListener);
+      root.removeEventListener("pointerdown", onDown as EventListener);
+      root.removeEventListener("click", onClick as EventListener);
+      root.removeEventListener("focus", onFocus as EventListener);
+      root.removeEventListener("blur", onBlur as EventListener);
     };
   }, []);
 
@@ -657,16 +724,18 @@ export const StarBorder = <T extends ElementType = 'button'>({
   return (
     <Component
       ref={rootRef}
-      className={`star-border${className ? ` ${className}` : ''}`}
+      className={`star-border${className ? ` ${className}` : ""}`}
       style={{
-        '--star-border-radius': `${settings.radius}px`,
-        '--star-border-thickness': `${settings.thickness}px`,
-        '--star-border-surface': backgroundColor ?? palette.surface,
-        '--star-border-text': textColor ?? palette.text,
-        '--star-border-track': borderColor ?? palette.track,
-        ...style
+        "--star-border-radius": `${settings.radius}px`,
+        "--star-border-thickness": `${settings.thickness}px`,
+        "--star-border-surface": backgroundColor ?? palette.surface,
+        "--star-border-text": textColor ?? palette.text,
+        "--star-border-track": borderColor ?? palette.track,
+        ...style,
       }}
-      {...(Component === 'button' && (rest as { type?: string }).type === undefined ? { type: 'button' } : null)}
+      {...(Component === "button" && (rest as { type?: string }).type === undefined
+        ? { type: "button" }
+        : null)}
       {...rest}
     >
       <canvas ref={canvasRef} className="star-border__light" aria-hidden="true" />

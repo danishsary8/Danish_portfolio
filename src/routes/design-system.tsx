@@ -463,7 +463,9 @@ function SurfacesSection() {
         </ul>
       </div>
 
-      <h3 className="mb-4 mt-10 text-[13px] font-medium text-fg-muted">Elevation · --elev-1 / 2 / 3</h3>
+      <h3 className="mb-4 mt-10 text-[13px] font-medium text-fg-muted">
+        Elevation · --elev-1 / 2 / 3
+      </h3>
       <div className="grid gap-5 sm:grid-cols-3">
         {(["--elev-1", "--elev-2", "--elev-3"] as const).map((e) => (
           <div
@@ -473,7 +475,11 @@ function SurfacesSection() {
           >
             <p className="font-mono text-[12px] text-fg-subtle">{e}</p>
             <p className="mt-2 text-[14px] text-fg">
-              {e === "--elev-1" ? "Resting card" : e === "--elev-2" ? "Hover · floating chip" : "Portrait · project card"}
+              {e === "--elev-1"
+                ? "Resting card"
+                : e === "--elev-2"
+                  ? "Hover · floating chip"
+                  : "Portrait · project card"}
             </p>
           </div>
         ))}
@@ -483,17 +489,32 @@ function SurfacesSection() {
         Icon tiles · .icon-tile / .icon-tile-gold / .icon-tile-light · Field · .field
       </h3>
       <div className="flex flex-wrap items-center gap-4">
-        <span aria-hidden="true" className="icon-tile squircle [--r:9px] grid h-10 w-10 place-items-center">
+        <span
+          aria-hidden="true"
+          className="icon-tile squircle [--r:9px] grid h-10 w-10 place-items-center"
+        >
           <Globe className="h-[18px] w-[18px]" strokeWidth={1.75} />
         </span>
-        <span aria-hidden="true" className="icon-tile-gold squircle [--r:9px] grid h-10 w-10 place-items-center">
+        <span
+          aria-hidden="true"
+          className="icon-tile-gold squircle [--r:9px] grid h-10 w-10 place-items-center"
+        >
           <Award className="h-[18px] w-[18px]" strokeWidth={1.75} />
         </span>
-        <span aria-hidden="true" className="icon-tile-light squircle [--r:9px] grid h-10 w-10 place-items-center text-fg-muted">
+        <span
+          aria-hidden="true"
+          className="icon-tile-light squircle [--r:9px] grid h-10 w-10 place-items-center text-fg-muted"
+        >
           <Github className="h-[18px] w-[18px]" strokeWidth={1.5} />
         </span>
-        <label className="sr-only" htmlFor="ds-field">Sample field</label>
-        <input id="ds-field" placeholder="Filled field" className="field h-11 w-64 px-3.5 text-[15px] text-fg placeholder:text-fg-subtle" />
+        <label className="sr-only" htmlFor="ds-field">
+          Sample field
+        </label>
+        <input
+          id="ds-field"
+          placeholder="Filled field"
+          className="field h-11 w-64 px-3.5 text-[15px] text-fg placeholder:text-fg-subtle"
+        />
       </div>
     </Section>
   );
@@ -515,7 +536,9 @@ function AppleLayerSection() {
     >
       <div className="grid gap-4 lg:grid-cols-2">
         <div className="panel p-5 sm:p-6">
-          <h3 className="mb-4 text-[13px] font-medium text-fg-muted">Capsule buttons · .btn-apple</h3>
+          <h3 className="mb-4 text-[13px] font-medium text-fg-muted">
+            Capsule buttons · .btn-apple
+          </h3>
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
@@ -545,7 +568,9 @@ function AppleLayerSection() {
             <span className="font-medium text-fg">Open to Web Developer roles</span>
           </span>
 
-          <h3 className="mb-3 mt-9 text-[13px] font-medium text-fg-muted">Stack chips · .tactile</h3>
+          <h3 className="mb-3 mt-9 text-[13px] font-medium text-fg-muted">
+            Stack chips · .tactile
+          </h3>
           <ul className="flex flex-wrap gap-2">
             {["React", "Laravel", "PostgreSQL", "Docker"].map((tech) => (
               <li

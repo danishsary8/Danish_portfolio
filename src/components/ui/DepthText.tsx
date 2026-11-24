@@ -1,8 +1,8 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import './DepthText.css';
+import { useEffect, useMemo, useRef, useState } from "react";
+import "./DepthText.css";
 
 const MAX_LAYERS = 64;
 const INTRO_MS = 1200;
@@ -21,7 +21,7 @@ const getLayerColor = (faceColor, depthColor, index, total) => {
 };
 
 const getFadeColor = (depthColor, index, total, outline) => {
-  const reach = layer => Math.pow(clamp(1 - (layer - 0.5) / total, 0, 1), 1.6);
+  const reach = (layer) => Math.pow(clamp(1 - (layer - 0.5) / total, 0, 1), 1.6);
   const here = reach(index);
   const behind = index >= total ? 0 : reach(index + 1);
   const alpha = outline ? here : behind >= 1 ? 1 : 1 - (1 - here) / (1 - behind);
@@ -30,20 +30,20 @@ const getFadeColor = (depthColor, index, total, outline) => {
 
 const getTransform = (rotateX, rotateY, lift = 0, roll = 0, sink = 0) =>
   [
-    lift ? `translateY(${lift.toFixed(2)}px)` : '',
-    roll ? `rotateZ(${roll.toFixed(3)}deg)` : '',
+    lift ? `translateY(${lift.toFixed(2)}px)` : "",
+    roll ? `rotateZ(${roll.toFixed(3)}deg)` : "",
     `rotateX(${rotateX.toFixed(3)}deg) rotateY(${rotateY.toFixed(3)}deg)`,
-    sink ? `translateZ(${(-sink).toFixed(2)}px)` : ''
+    sink ? `translateZ(${(-sink).toFixed(2)}px)` : "",
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 
 const DepthText = ({
-  text = 'Elevate',
+  text = "Elevate",
   layers = 34,
   depth = 2.4,
-  faceColor = 'currentColor',
-  depthColor = '#7c3aed',
+  faceColor = "currentColor",
+  depthColor = "#7c3aed",
   gradientDepth = false,
   tilt = 7.5,
   pointerTracking = true,
@@ -53,13 +53,13 @@ const DepthText = ({
   orbitSpeed = 0.35,
   hoverPush = 0,
   float = false,
-  fontSize = 'clamp(3rem, 12vw, 7rem)',
+  fontSize = "clamp(3rem, 12vw, 7rem)",
   fontWeight = 900,
   shadow = true,
   outline = false,
   intro = true,
-  className = '',
-  style = {}
+  className = "",
+  style = {},
 }) => {
   const rootRef = useRef(null);
   const stageRef = useRef(null);
@@ -89,19 +89,19 @@ const DepthText = ({
           color: gradientDepth
             ? getFadeColor(depthColor, index, safeLayers, outline)
             : getLayerColor(faceColor, depthColor, index, safeLayers),
-          transform: `translateZ(calc(var(--depth-text-grow, 1) * ${(-index * safeDepth).toFixed(2)}px))`
+          transform: `translateZ(calc(var(--depth-text-grow, 1) * ${(-index * safeDepth).toFixed(2)}px))`,
         };
       }),
-    [safeLayers, safeDepth, faceColor, depthColor, gradientDepth, outline]
+    [safeLayers, safeDepth, faceColor, depthColor, gradientDepth, outline],
   );
 
   useEffect(() => {
     const root = rootRef.current;
     const stage = stageRef.current;
-    if (!root || !stage || typeof window === 'undefined') return undefined;
+    if (!root || !stage || typeof window === "undefined") return undefined;
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const canTrackPointer = pointerTracking && finePointer && !reducedMotion;
     const listensToHover = (safePush > 0 || float) && !reducedMotion;
 
@@ -128,7 +128,7 @@ const DepthText = ({
         current.y + (drift ? Math.sin(time * 0.86 + 2.1) * 4 * drift : 0),
         drift ? Math.sin(time * 1.43) * size * 0.045 * drift : 0,
         drift ? Math.sin(time * 1.03 + 0.8) * 1.6 * drift : 0,
-        sinkAmount() * extent
+        sinkAmount() * extent,
       );
     };
 
@@ -136,7 +136,7 @@ const DepthText = ({
       const progress = introRef.current;
       const grow = progress >= 1 ? 1 : 1 - Math.pow(1 - progress, 3);
       const value = grow * (1 - sinkAmount());
-      stage.style.setProperty('--depth-text-grow', value === 1 ? '1' : value.toFixed(4));
+      stage.style.setProperty("--depth-text-grow", value === 1 ? "1" : value.toFixed(4));
     };
 
     if (reducedMotion) {
@@ -157,7 +157,7 @@ const DepthText = ({
       frameId = 0;
     };
 
-    const tick = now => {
+    const tick = (now) => {
       const delta = lastTime ? Math.min(now - lastTime, 50) : 16;
       lastTime = now;
 
@@ -177,15 +177,20 @@ const DepthText = ({
       current.x += (target.x - current.x) * safeSmoothing;
       current.y += (target.y - current.y) * safeSmoothing;
 
-      const pushGoal = safePush > 0 && (hovered || pressed) ? Math.min(1, safePush + (pressed ? PRESS_EXTRA : 0)) : 0;
+      const pushGoal =
+        safePush > 0 && (hovered || pressed)
+          ? Math.min(1, safePush + (pressed ? PRESS_EXTRA : 0))
+          : 0;
       let remaining = delta / 1000;
       while (remaining > 0) {
         const step = Math.min(remaining, 1 / 120);
-        motion.velocity += (PUSH_STIFFNESS * (pushGoal - motion.push) - PUSH_DAMPING * motion.velocity) * step;
+        motion.velocity +=
+          (PUSH_STIFFNESS * (pushGoal - motion.push) - PUSH_DAMPING * motion.velocity) * step;
         motion.push += motion.velocity * step;
         remaining -= step;
       }
-      const springIdle = Math.abs(pushGoal - motion.push) < 0.0005 && Math.abs(motion.velocity) < 0.002;
+      const springIdle =
+        Math.abs(pushGoal - motion.push) < 0.0005 && Math.abs(motion.velocity) < 0.002;
       if (springIdle) {
         motion.push = pushGoal;
         motion.velocity = 0;
@@ -198,7 +203,8 @@ const DepthText = ({
       applyGrow();
       applyTransform(now);
 
-      const settled = Math.abs(target.x - current.x) < 0.001 && Math.abs(target.y - current.y) < 0.001;
+      const settled =
+        Math.abs(target.x - current.x) < 0.001 && Math.abs(target.y - current.y) < 0.001;
       if (!autoOrbit && !motion.float && settled && springIdle && introRef.current >= 1) {
         frameId = 0;
         return;
@@ -219,13 +225,21 @@ const DepthText = ({
     };
     updateRect();
 
-    const handlePointerMove = event => {
+    const handlePointerMove = (event) => {
       if (!cachedRect) updateRect();
       if (!cachedRect || !cachedRect.width || !cachedRect.height) return;
 
       activePointer = true;
-      const x = clamp((event.clientX - (cachedRect.left + cachedRect.width / 2)) / (cachedRect.width * 0.8), -1, 1);
-      const y = clamp((event.clientY - (cachedRect.top + cachedRect.height / 2)) / (cachedRect.height * 0.8), -1, 1);
+      const x = clamp(
+        (event.clientX - (cachedRect.left + cachedRect.width / 2)) / (cachedRect.width * 0.8),
+        -1,
+        1,
+      );
+      const y = clamp(
+        (event.clientY - (cachedRect.top + cachedRect.height / 2)) / (cachedRect.height * 0.8),
+        -1,
+        1,
+      );
 
       target.x = baseRotation.x - y * safeTilt;
       target.y = baseRotation.y + x * safeTilt;
@@ -239,13 +253,13 @@ const DepthText = ({
       start();
     };
 
-    const handlePointerOut = event => {
+    const handlePointerOut = (event) => {
       if (!event.relatedTarget) handlePointerLeave();
     };
 
-    const isHoverPointer = event => event.pointerType === 'mouse' || event.pointerType === 'pen';
+    const isHoverPointer = (event) => event.pointerType === "mouse" || event.pointerType === "pen";
 
-    const handleEnter = event => {
+    const handleEnter = (event) => {
       if (!isHoverPointer(event)) return;
       hovered = true;
       start();
@@ -262,28 +276,28 @@ const DepthText = ({
       start();
     };
 
-    const handleUp = event => {
+    const handleUp = (event) => {
       pressed = false;
       if (!isHoverPointer(event)) hovered = false;
       start();
     };
 
     if (canTrackPointer) {
-      window.addEventListener('pointermove', handlePointerMove);
-      window.addEventListener('pointerout', handlePointerOut);
-      window.addEventListener('blur', handlePointerLeave);
+      window.addEventListener("pointermove", handlePointerMove);
+      window.addEventListener("pointerout", handlePointerOut);
+      window.addEventListener("blur", handlePointerLeave);
     }
 
     if (listensToHover) {
-      root.addEventListener('pointerenter', handleEnter);
-      root.addEventListener('pointerleave', handleLeave);
-      root.addEventListener('pointerdown', handleDown);
-      root.addEventListener('pointerup', handleUp);
-      root.addEventListener('pointercancel', handleLeave);
+      root.addEventListener("pointerenter", handleEnter);
+      root.addEventListener("pointerleave", handleLeave);
+      root.addEventListener("pointerdown", handleDown);
+      root.addEventListener("pointerup", handleUp);
+      root.addEventListener("pointercancel", handleLeave);
     }
 
     const observer =
-      typeof IntersectionObserver === 'undefined'
+      typeof IntersectionObserver === "undefined"
         ? null
         : new IntersectionObserver(([entry]) => {
             visible = entry.isIntersecting;
@@ -293,76 +307,86 @@ const DepthText = ({
     observer?.observe(root);
 
     const resizeObserver =
-      typeof ResizeObserver === 'undefined'
+      typeof ResizeObserver === "undefined"
         ? null
         : new ResizeObserver(() => {
             size = root.offsetHeight;
             updateRect();
           });
     resizeObserver?.observe(root);
-    window.addEventListener('scroll', updateRect, { passive: true });
+    window.addEventListener("scroll", updateRect, { passive: true });
 
     applyGrow();
     applyTransform();
     start();
 
     return () => {
-      window.removeEventListener('scroll', updateRect);
+      window.removeEventListener("scroll", updateRect);
       if (canTrackPointer) {
-        window.removeEventListener('pointermove', handlePointerMove);
-        window.removeEventListener('pointerout', handlePointerOut);
-        window.removeEventListener('blur', handlePointerLeave);
+        window.removeEventListener("pointermove", handlePointerMove);
+        window.removeEventListener("pointerout", handlePointerOut);
+        window.removeEventListener("blur", handlePointerLeave);
       }
       if (listensToHover) {
-        root.removeEventListener('pointerenter', handleEnter);
-        root.removeEventListener('pointerleave', handleLeave);
-        root.removeEventListener('pointerdown', handleDown);
-        root.removeEventListener('pointerup', handleUp);
-        root.removeEventListener('pointercancel', handleLeave);
+        root.removeEventListener("pointerenter", handleEnter);
+        root.removeEventListener("pointerleave", handleLeave);
+        root.removeEventListener("pointerdown", handleDown);
+        root.removeEventListener("pointerup", handleUp);
+        root.removeEventListener("pointercancel", handleLeave);
       }
       observer?.disconnect();
       resizeObserver?.disconnect();
       stop();
     };
-  }, [autoOrbit, baseRotation, pointerTracking, safeOrbitSpeed, safeSmoothing, safeTilt, safePush, float, extent]);
+  }, [
+    autoOrbit,
+    baseRotation,
+    pointerTracking,
+    safeOrbitSpeed,
+    safeSmoothing,
+    safeTilt,
+    safePush,
+    float,
+    extent,
+  ]);
 
   const rootStyle = {
     ...style,
-    '--depth-text-perspective': `${safePerspective}px`,
-    '--depth-text-font-size': fontSize,
-    '--depth-text-font-weight': fontWeight,
-    '--depth-text-face-color': faceColor,
-    '--depth-text-shadow':
+    "--depth-text-perspective": `${safePerspective}px`,
+    "--depth-text-font-size": fontSize,
+    "--depth-text-font-weight": fontWeight,
+    "--depth-text-face-color": faceColor,
+    "--depth-text-shadow":
       shadow && !gradientDepth
         ? `0 1px 3px color-mix(in srgb, ${depthColor} 18%, rgba(0, 0, 0, 0.1))`
-        : 'none',
-    '--depth-text-face-shadow': shadow
-      ? '0 1px 1px rgba(0, 0, 0, 0.12)'
-      : 'none'
+        : "none",
+    "--depth-text-face-shadow": shadow ? "0 1px 1px rgba(0, 0, 0, 0.12)" : "none",
   };
 
   return (
     <span
       ref={rootRef}
-      className={`depth-text ${outline ? 'depth-text--outline' : ''} ${className}`.trim()}
+      className={`depth-text ${outline ? "depth-text--outline" : ""} ${className}`.trim()}
       style={rootStyle}
     >
       <span
         ref={stageRef}
         className="depth-text__stage"
-        style={{ transform: initialTransform, '--depth-text-grow': introDone ? 1 : 0 }}
+        style={{ transform: initialTransform, "--depth-text-grow": introDone ? 1 : 0 }}
       >
-        {depthLayers.map(layer => (
+        {depthLayers.map((layer) => (
           <span
             aria-hidden="true"
-            className={`depth-text__layer ${layer.index === safeLayers ? 'depth-text__layer--back' : ''}`.trim()}
+            className={`depth-text__layer ${layer.index === safeLayers ? "depth-text__layer--back" : ""}`.trim()}
             key={layer.index}
             style={{ color: layer.color, transform: layer.transform }}
           >
             {text}
           </span>
         ))}
-        <span className="depth-text__face" style={{ color: faceColor }}>{text}</span>
+        <span className="depth-text__face" style={{ color: faceColor }}>
+          {text}
+        </span>
       </span>
     </span>
   );

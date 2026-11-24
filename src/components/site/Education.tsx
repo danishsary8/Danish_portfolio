@@ -28,84 +28,165 @@ const MONTH_TICKS = Array.from({ length: SPAN }, (_, m) => ({
 const pct = (m: number) => `${(m / SPAN) * 100}%`;
 
 const LANES = [
-  [{ name: "Norton University", sub: "Software Development", when: "Jan 2024 – Present", from: 0, to: NOW, color: NORTON, live: true }],
-  [{ name: "ACE", sub: "General English", when: "2024 – Present", from: 0, to: NOW, color: ACE, live: true }],
   [
-    { name: "ETEC", sub: "Frontend course", when: "Jan – Aug 2025", from: 12, to: 20, color: ETEC, course: true },
-    { name: "ETEC", sub: "Backend course", when: "Oct 2025 – Mar 2026", from: 21, to: 27, color: BACKEND, course: true },
+    {
+      name: "Norton University",
+      sub: "Software Development",
+      when: "Jan 2024 – Present",
+      from: 0,
+      to: NOW,
+      color: NORTON,
+      live: true,
+    },
+  ],
+  [
+    {
+      name: "ACE",
+      sub: "General English",
+      when: "2024 – Present",
+      from: 0,
+      to: NOW,
+      color: ACE,
+      live: true,
+    },
+  ],
+  [
+    {
+      name: "ETEC",
+      sub: "Frontend course",
+      when: "Jan – Aug 2025",
+      from: 12,
+      to: 20,
+      color: ETEC,
+      course: true,
+    },
+    {
+      name: "ETEC",
+      sub: "Backend course",
+      when: "Oct 2025 – Mar 2026",
+      from: 21,
+      to: 27,
+      color: BACKEND,
+      course: true,
+    },
   ],
 ] as const;
 
 /** Year ruler with one thin colour track per school or course, labelled directly above it. */
 function StudyTimeline() {
   return (
-    <div aria-hidden="true" className="edu-card squircle [--r:24px] px-5 sm:px-8 pb-6 sm:pb-7 pt-5 sm:pt-6" style={{ "--c": "var(--fg-subtle)" } as CSSProperties}>
-      <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">My learning journey</p>
+    <div
+      aria-hidden="true"
+      className="edu-card squircle [--r:24px] px-5 sm:px-8 pb-6 sm:pb-7 pt-5 sm:pt-6"
+      style={{ "--c": "var(--fg-subtle)" } as CSSProperties}
+    >
+      <p className="mb-4 text-[15px] font-semibold tracking-[-0.01em] text-fg">
+        My learning journey
+      </p>
       <div className="overflow-x-auto scrollbar-none pb-2 -mx-1 px-1 sm:mx-0 sm:px-0">
         <div className="relative min-w-[560px] sm:min-w-0">
-        {/* Ruler: years, then quarter months, with a tick for every month */}
-        <div className="relative h-11 border-b border-line">
-          {YEARS.map((y) => (
-            <span key={y} className="absolute top-0 font-mono text-[12.5px] font-medium tabular-nums text-fg" style={{ left: pct((y - 2024) * 12) }}>
-              {y}
-            </span>
-          ))}
-          {MONTH_TICKS.map(({ m, label }) =>
-            label ? (
-              <span key={m} className="absolute top-[19px] -translate-x-1/2 font-mono text-[10.5px] text-fg-subtle" style={{ left: pct(m) }}>
-                {label}
+          {/* Ruler: years, then quarter months, with a tick for every month */}
+          <div className="relative h-11 border-b border-line">
+            {YEARS.map((y) => (
+              <span
+                key={y}
+                className="absolute top-0 font-mono text-[12.5px] font-medium tabular-nums text-fg"
+                style={{ left: pct((y - 2024) * 12) }}
+              >
+                {y}
               </span>
-            ) : null,
-          )}
-          {MONTH_TICKS.map(({ m, label }) => (
+            ))}
+            {MONTH_TICKS.map(({ m, label }) =>
+              label ? (
+                <span
+                  key={m}
+                  className="absolute top-[19px] -translate-x-1/2 font-mono text-[10.5px] text-fg-subtle"
+                  style={{ left: pct(m) }}
+                >
+                  {label}
+                </span>
+              ) : null,
+            )}
+            {MONTH_TICKS.map(({ m, label }) => (
+              <span
+                key={`t${m}`}
+                className={`absolute bottom-0 w-px ${m % 12 === 0 ? "h-3 bg-line-strong" : label ? "h-2 bg-line-strong" : "h-1 bg-line"}`}
+                style={{ left: pct(m) }}
+              />
+            ))}
             <span
-              key={`t${m}`}
-              className={`absolute bottom-0 w-px ${m % 12 === 0 ? "h-3 bg-line-strong" : label ? "h-2 bg-line-strong" : "h-1 bg-line"}`}
-              style={{ left: pct(m) }}
+              className="absolute top-0 -translate-x-1/2 rounded-full bg-[#34C759]/12 px-1.5 font-mono text-[11.5px] font-medium text-[#248a3d] dark:text-[#34C759]"
+              style={{ left: pct(NOW) }}
+            >
+              Now
+            </span>
+          </div>
+          {YEARS.slice(1).map((y) => (
+            <span
+              key={y}
+              className="absolute bottom-0 top-11 w-px bg-line"
+              style={{ left: pct((y - 2024) * 12) }}
             />
           ))}
-          <span className="absolute top-0 -translate-x-1/2 rounded-full bg-[#34C759]/12 px-1.5 font-mono text-[11.5px] font-medium text-[#248a3d] dark:text-[#34C759]" style={{ left: pct(NOW) }}>
-            Now
-          </span>
-        </div>
-        {YEARS.slice(1).map((y) => (
-          <span key={y} className="absolute bottom-0 top-11 w-px bg-line" style={{ left: pct((y - 2024) * 12) }} />
-        ))}
-        <span className="absolute bottom-0 top-11 w-px bg-[#34C759]/50" style={{ left: pct(NOW) }} />
+          <span
+            className="absolute bottom-0 top-11 w-px bg-[#34C759]/50"
+            style={{ left: pct(NOW) }}
+          />
 
-        <div className="relative grid gap-5 pb-2 pt-5">
-          {LANES.map((lane, li) => (
-            <div key={li} className="relative h-[44px]">
-              {lane.map((b, bi) => (
-                <div
-                  key={b.sub}
-                  className="edu-track absolute inset-y-0"
-                  style={{ left: pct(b.from), width: pct(b.to - b.from), "--c": b.color, "--i": li * 2 + bi } as CSSProperties}
-                >
-                  <p className="whitespace-nowrap text-[13.5px] leading-tight">
-                    <span className="font-semibold text-fg">{b.name}</span>
-                    {"course" in b ? (
-                      <span className="font-semibold" style={{ color: b.color }}> · {b.sub}</span>
+          <div className="relative grid gap-5 pb-2 pt-5">
+            {LANES.map((lane, li) => (
+              <div key={li} className="relative h-[44px]">
+                {lane.map((b, bi) => (
+                  <div
+                    key={b.sub}
+                    className="edu-track absolute inset-y-0"
+                    style={
+                      {
+                        left: pct(b.from),
+                        width: pct(b.to - b.from),
+                        "--c": b.color,
+                        "--i": li * 2 + bi,
+                      } as CSSProperties
+                    }
+                  >
+                    <p className="whitespace-nowrap text-[13.5px] leading-tight">
+                      <span className="font-semibold text-fg">{b.name}</span>
+                      {"course" in b ? (
+                        <span className="font-semibold" style={{ color: b.color }}>
+                          {" "}
+                          · {b.sub}
+                        </span>
+                      ) : (
+                        <span className="text-fg-muted"> · {b.sub}</span>
+                      )}
+                    </p>
+                    <p className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">
+                      {b.when}
+                    </p>
+                    <span className="edu-track-line absolute inset-x-0 bottom-[1px] h-[4px] rounded-full" />
+                    <span
+                      className="absolute bottom-[-3.5px] left-0 h-3 w-3 rounded-full border-2 bg-surface-2"
+                      style={{ borderColor: b.color }}
+                    />
+                    {"live" in b ? (
+                      <span className="absolute bottom-[-3.5px] right-0 translate-x-1/2">
+                        <span
+                          className="about-live-dot relative block h-3 w-3 rounded-full"
+                          style={{ background: NOW_GREEN }}
+                        />
+                      </span>
                     ) : (
-                      <span className="text-fg-muted"> · {b.sub}</span>
+                      <span
+                        className="absolute bottom-[-3.5px] right-0 h-3 w-3 rounded-full"
+                        style={{ background: b.color }}
+                      />
                     )}
-                  </p>
-                  <p className="mt-0.5 whitespace-nowrap font-mono text-[11.5px] tabular-nums text-fg-subtle">{b.when}</p>
-                  <span className="edu-track-line absolute inset-x-0 bottom-[1px] h-[4px] rounded-full" />
-                  <span className="absolute bottom-[-3.5px] left-0 h-3 w-3 rounded-full border-2 bg-surface-2" style={{ borderColor: b.color }} />
-                  {"live" in b ? (
-                    <span className="absolute bottom-[-3.5px] right-0 translate-x-1/2">
-                      <span className="about-live-dot relative block h-3 w-3 rounded-full" style={{ background: NOW_GREEN }} />
-                    </span>
-                  ) : (
-                    <span className="absolute bottom-[-3.5px] right-0 h-3 w-3 rounded-full" style={{ background: b.color }} />
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
@@ -128,21 +209,34 @@ export function Education() {
         {/* Education first */}
         <div className="grid grid-rows-[auto_1fr] gap-5">
           <Reveal className="slide-from-left">
-            <article className="edu-card squircle [--r:24px] p-5 sm:p-7" style={{ "--c": NORTON } as CSSProperties}>
+            <article
+              className="edu-card squircle [--r:24px] p-5 sm:p-7"
+              style={{ "--c": NORTON } as CSSProperties}
+            >
               <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                 <div className="flex items-center justify-between w-full sm:w-auto gap-3">
                   <OrgLogo org="norton" size={52} className="shrink-0" />
                   <span className="edu-pill sm:hidden inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                    <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                    <span
+                      aria-hidden="true"
+                      className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+                    />
                     {DEGREE.period}
                   </span>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-[22px] sm:text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">{DEGREE.title}</h3>
-                  <p className="mt-1 text-[14px] sm:text-[14.5px] text-fg-muted">{DEGREE.org} · Phnom Penh</p>
+                  <h3 className="text-[22px] sm:text-[24px] font-semibold leading-[1.15] tracking-[-0.03em] text-fg">
+                    {DEGREE.title}
+                  </h3>
+                  <p className="mt-1 text-[14px] sm:text-[14.5px] text-fg-muted">
+                    {DEGREE.org} · Phnom Penh
+                  </p>
                 </div>
                 <span className="edu-pill hidden sm:inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
-                  <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+                  <span
+                    aria-hidden="true"
+                    className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+                  />
                   {DEGREE.period}
                 </span>
               </div>
@@ -159,33 +253,51 @@ export function Education() {
                     <BookOpen aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
                     This year
                   </dt>
-                  <dd className="mt-1 font-medium text-fg">Software Security Technology · Business Intelligence</dd>
+                  <dd className="mt-1 font-medium text-fg">
+                    Software Security Technology · Business Intelligence
+                  </dd>
                 </div>
               </dl>
             </article>
           </Reveal>
 
           <Reveal index={1} className="slide-from-left h-full">
-            <article className="edu-card squircle [--r:24px] flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-5 sm:px-7 sm:py-6 h-full" style={{ "--c": ACE } as CSSProperties}>
+            <article
+              className="edu-card squircle [--r:24px] flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-5 sm:px-7 sm:py-6 h-full"
+              style={{ "--c": ACE } as CSSProperties}
+            >
               <div className="flex items-center justify-between w-full sm:w-auto gap-3">
                 <OrgLogo org="ace" size={44} className="shrink-0" />
-                <span className="edu-pill sm:hidden inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
+                <span className="edu-pill sm:hidden inline-block rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                  {ENGLISH.period}
+                </span>
               </div>
               <div className="min-w-0 flex-1">
-                <h3 className="text-[17px] sm:text-[18px] font-semibold tracking-[-0.02em] text-fg">{ENGLISH.title}</h3>
+                <h3 className="text-[17px] sm:text-[18px] font-semibold tracking-[-0.02em] text-fg">
+                  {ENGLISH.title}
+                </h3>
                 <p className="mt-0.5 flex items-center gap-1.5 text-[13px] sm:text-[13.5px] text-fg-muted">
-                  <Languages aria-hidden="true" strokeWidth={1.75} className="h-4 w-4 text-fg-subtle" />
+                  <Languages
+                    aria-hidden="true"
+                    strokeWidth={1.75}
+                    className="h-4 w-4 text-fg-subtle"
+                  />
                   {ENGLISH.org}
                 </p>
               </div>
-              <span className="edu-pill hidden sm:inline-block shrink-0 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">{ENGLISH.period}</span>
+              <span className="edu-pill hidden sm:inline-block shrink-0 rounded-full px-3 py-1 font-mono text-[12px] tabular-nums text-fg">
+                {ENGLISH.period}
+              </span>
             </article>
           </Reveal>
         </div>
 
         {/* Then the courses */}
         <Reveal index={2} className="slide-from-right">
-          <article className="edu-card squircle [--r:24px] flex h-full flex-col p-7" style={{ "--c": ETEC } as CSSProperties}>
+          <article
+            className="edu-card squircle [--r:24px] flex h-full flex-col p-7"
+            style={{ "--c": ETEC } as CSSProperties}
+          >
             <div className="flex items-center gap-3">
               <OrgLogo org="etec" size={44} />
               <div>
@@ -196,10 +308,15 @@ export function Education() {
 
             <ol className="mb-2.5 mt-5 grid gap-2.5">
               {CERTIFICATES.map((c) => (
-                <li key={c.title} className="edu-course rounded-[14px] border border-line bg-surface-1 px-4 py-3">
+                <li
+                  key={c.title}
+                  className="edu-course rounded-[14px] border border-line bg-surface-1 px-4 py-3"
+                >
                   <div className="flex items-baseline justify-between gap-3">
                     <p className="text-[15px] font-medium text-fg">{c.title}</p>
-                    <p className="shrink-0 font-mono text-[12px] tabular-nums text-fg-subtle">{c.date}</p>
+                    <p className="shrink-0 font-mono text-[12px] tabular-nums text-fg-subtle">
+                      {c.date}
+                    </p>
                   </div>
                   <p className="mt-1 text-[13.5px] leading-[1.5] text-fg-muted">{c.topics}</p>
                 </li>
@@ -218,10 +335,16 @@ export function Education() {
               />
               <div>
                 <p className="flex items-center gap-1.5 text-[14px] font-medium text-fg">
-                  <BadgeCheck aria-hidden="true" strokeWidth={2} className="h-4 w-4 text-[#34C759]" />
+                  <BadgeCheck
+                    aria-hidden="true"
+                    strokeWidth={2}
+                    className="h-4 w-4 text-[#34C759]"
+                  />
                   Frontend certificate
                 </p>
-                <p className="mt-0.5 text-[12.5px] text-fg-subtle">Granted Aug 15, 2025 · click to view</p>
+                <p className="mt-0.5 text-[12.5px] text-fg-subtle">
+                  Granted Aug 15, 2025 · click to view
+                </p>
               </div>
             </div>
           </article>

@@ -91,7 +91,7 @@
 }
 
 .sling-button__pad::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: -6px;
   border-radius: 50%;
@@ -101,7 +101,7 @@
   cursor: grabbing;
 }
 
-.sling-button__pad[aria-disabled='true'] {
+.sling-button__pad[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -116,23 +116,31 @@
   background: var(--sl-pad);
   color: var(--sl-icon);
   box-shadow: var(--sl-shadow, 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(125, 125, 125, 0.2));
-  transition: transform 160ms var(--sl-ease-out), box-shadow 160ms var(--sl-ease-out);
+  transition:
+    transform 160ms var(--sl-ease-out),
+    box-shadow 160ms var(--sl-ease-out);
 }
 
 .sling-button__pad[data-held] .sling-button__face {
   transform: scale(0.96);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 0 0 1.5px var(--sl-accent);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.18),
+    0 0 0 1.5px var(--sl-accent);
 }
 
 .sling-button__pad[data-armed] .sling-button__face {
   transform: scale(1.06);
-  box-shadow: 0 0 14px var(--sl-accent), 0 0 0 2px var(--sl-accent);
+  box-shadow:
+    0 0 14px var(--sl-accent),
+    0 0 0 2px var(--sl-accent);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .sling-button__pad:not([data-held]):not([aria-disabled='true']):hover .sling-button__face {
+  .sling-button__pad:not([data-held]):not([aria-disabled="true"]):hover .sling-button__face {
     transform: scale(1.04);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(125, 125, 125, 0.35);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.14),
+      0 0 0 1px rgba(125, 125, 125, 0.35);
   }
 }
 

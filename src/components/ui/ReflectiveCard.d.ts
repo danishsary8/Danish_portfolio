@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface ReflectiveCardProps {
   name?: string;
@@ -9,7 +9,7 @@ export interface ReflectiveCardProps {
   idLabel?: string;
   idValue?: string;
   children?: React.ReactNode;
-  theme?: 'dark' | 'light';
+  theme?: "dark" | "light";
   videoSrc?: string;
   webcam?: boolean;
   onWebcamError?: (error: Error) => void;

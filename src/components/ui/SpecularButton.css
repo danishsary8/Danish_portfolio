@@ -32,7 +32,10 @@
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
-  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .specular-button:active {
@@ -91,9 +94,13 @@
   padding: var(--sb-thickness);
   pointer-events: none;
   z-index: 1;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   background: radial-gradient(
     140px circle at var(--sb-x) var(--sb-y),

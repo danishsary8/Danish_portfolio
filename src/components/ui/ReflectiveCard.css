@@ -20,7 +20,8 @@
   border-radius: var(--rc-radius);
   background: var(--rc-base);
   box-shadow: var(--rc-shadow);
-  transform: translate3d(0, var(--rc-lift, 0px), 0) rotateX(var(--rc-rotate-x, 0deg)) rotateY(var(--rc-rotate-y, 0deg));
+  transform: translate3d(0, var(--rc-lift, 0px), 0) rotateX(var(--rc-rotate-x, 0deg))
+    rotateY(var(--rc-rotate-y, 0deg));
   opacity: var(--rc-presence, 1);
   isolation: isolate;
   will-change: transform;
@@ -145,7 +146,7 @@
 }
 
 .reflective-card__tile::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;

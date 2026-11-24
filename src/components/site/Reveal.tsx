@@ -32,11 +32,14 @@ export function Reveal({ children, as: Tag = "div", index = 0, className }: Reve
     );
     // Reset once the block has left the viewport in either direction (scrolling down or scrolling up),
     // so returning to it from either direction always triggers the entrance transition.
-    const reset = new IntersectionObserver(([entry]) => {
-      if (entry && !entry.isIntersecting) {
-        delete el.dataset["visible"];
-      }
-    }, { rootMargin: "20px 0px 20px 0px" });
+    const reset = new IntersectionObserver(
+      ([entry]) => {
+        if (entry && !entry.isIntersecting) {
+          delete el.dataset["visible"];
+        }
+      },
+      { rootMargin: "20px 0px 20px 0px" },
+    );
     show.observe(el);
     reset.observe(el);
     return () => {

@@ -1,37 +1,40 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import React, { useId, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useId, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
-const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import './StrokeText.css';
+import "./StrokeText.css";
 
-if (typeof window !== 'undefined' && !(typeof process !== 'undefined' && process.env?.NODE_ENV === 'test')) {
+if (
+  typeof window !== "undefined" &&
+  !(typeof process !== "undefined" && process.env?.NODE_ENV === "test")
+) {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const DEFAULT_TEXT = 'Draw Attention';
+const DEFAULT_TEXT = "Draw Attention";
 const SHADOW_OPACITY = 0.5;
 
 const getWipeFrames = (box, wipeFrom) => {
   const end = { x: box.x, y: box.y, width: box.width, height: box.height };
-  if (wipeFrom === 'right') return { start: { ...end, x: box.x + box.width, width: 0 }, end };
-  if (wipeFrom === 'top') return { start: { ...end, height: 0 }, end };
-  if (wipeFrom === 'bottom') return { start: { ...end, y: box.y + box.height, height: 0 }, end };
+  if (wipeFrom === "right") return { start: { ...end, x: box.x + box.width, width: 0 }, end };
+  if (wipeFrom === "top") return { start: { ...end, height: 0 }, end };
+  if (wipeFrom === "bottom") return { start: { ...end, y: box.y + box.height, height: 0 }, end };
   return { start: { ...end, width: 0 }, end };
 };
 
 const getDashPattern = (strokeStyle, dashLength, strokeWidth) => {
   const width = Math.max(Number(strokeWidth) || 0, 0.1);
   const length = Math.max(Number(dashLength) || 0, 1);
-  if (strokeStyle === 'dotted') {
+  if (strokeStyle === "dotted") {
     const gap = Math.max(length, width * 1.8);
     return { array: `0 ${gap}`, period: gap };
   }
-  if (strokeStyle === 'dashed') {
+  if (strokeStyle === "dashed") {
     const on = Math.max(length - width, 0.5);
     const off = length * 0.6 + width;
     return { array: `${on} ${off}`, period: on + off };
@@ -48,15 +51,15 @@ export interface StrokeTextProps extends React.HTMLAttributes<HTMLSpanElement> {
   fillDelay?: number;
   stagger?: number;
   ease?: string;
-  trigger?: 'mount' | 'scroll';
-  fillMode?: 'wipe' | 'none' | 'fade';
-  wipeFrom?: 'left' | 'right' | 'top' | 'bottom';
+  trigger?: "mount" | "scroll";
+  fillMode?: "wipe" | "none" | "fade";
+  wipeFrom?: "left" | "right" | "top" | "bottom";
   fontSize?: number;
   fontWeight?: number;
   fontFamily?: string;
   letterSpacing?: number;
   reverse?: boolean;
-  strokeStyle?: 'solid' | 'dashed' | 'dotted';
+  strokeStyle?: "solid" | "dashed" | "dotted";
   dashLength?: number;
   marching?: boolean;
   hoverRedraw?: boolean;
@@ -68,29 +71,29 @@ export interface StrokeTextProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 export const StrokeText: React.FC<StrokeTextProps> = ({
   text = DEFAULT_TEXT,
-  strokeColor = '#A78BFA',
-  fillColor = 'currentColor',
+  strokeColor = "#A78BFA",
+  fillColor = "currentColor",
   strokeWidth = 1.4,
   drawDuration = 1.6,
   fillDelay = 0.2,
   stagger = 0.05,
-  ease = 'power2.out',
-  trigger = 'mount',
-  fillMode = 'wipe',
-  wipeFrom = 'left',
+  ease = "power2.out",
+  trigger = "mount",
+  fillMode = "wipe",
+  wipeFrom = "left",
   fontSize = 128,
   fontWeight = 800,
-  fontFamily = 'inherit',
+  fontFamily = "inherit",
   letterSpacing = -4,
   reverse = false,
-  strokeStyle = 'solid',
+  strokeStyle = "solid",
   dashLength = 10,
   marching = false,
   hoverRedraw = false,
   shadow = false,
   shadowColor,
-  className = '',
-  style = {}
+  className = "",
+  style = {},
 }) => {
   const rootRef = useRef(null);
   const strokeTextRef = useRef(null);
@@ -99,13 +102,13 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
 
   const [box, setBox] = useState(null);
 
-  const baseId = useId().replace(/[^a-zA-Z0-9_-]/g, '');
+  const baseId = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const wipeId = `stroke-text-wipe-${baseId}`;
   const revealId = `stroke-text-reveal-${baseId}`;
   const erodeId = `stroke-text-erode-${baseId}`;
   const shadowId = `stroke-text-shadow-${baseId}`;
 
-  const characters = useMemo(() => Array.from(String(text ?? '')), [text]);
+  const characters = useMemo(() => Array.from(String(text ?? "")), [text]);
 
   const dash = Math.max(fontSize * 7, 200);
   const pattern = getDashPattern(strokeStyle, dashLength, strokeWidth);
@@ -113,16 +116,16 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
   const dashPeriod = pattern ? pattern.period : 0;
   const lift = fontSize * 0.06;
   const softness = fontSize * 0.016;
-  const castShadow = shadow && fillMode !== 'none';
+  const castShadow = shadow && fillMode !== "none";
 
   const fontStyle = useMemo(
     () => ({
       fontFamily,
       fontSize: `${fontSize}px`,
       fontWeight,
-      letterSpacing: `${letterSpacing}px`
+      letterSpacing: `${letterSpacing}px`,
     }),
-    [fontFamily, fontSize, fontWeight, letterSpacing]
+    [fontFamily, fontSize, fontWeight, letterSpacing],
   );
 
   useIsoLayoutEffect(() => {
@@ -140,7 +143,7 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
         bbox = null;
       }
       if (!bbox || !bbox.width) {
-        if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') {
+        if (typeof process !== "undefined" && process.env?.NODE_ENV === "test") {
           setBox({ x: 0, y: 0, width: 400, height: 100 });
         }
         return;
@@ -151,24 +154,24 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
         x: bbox.x - pad,
         y: bbox.y - pad,
         width: bbox.width + pad * 2,
-        height: bbox.height + pad * 2
+        height: bbox.height + pad * 2,
       };
 
-      setBox(prev =>
+      setBox((prev) =>
         prev &&
         Math.abs(prev.x - next.x) < 0.5 &&
         Math.abs(prev.width - next.width) < 0.5 &&
         Math.abs(prev.y - next.y) < 0.5 &&
         Math.abs(prev.height - next.height) < 0.5
           ? prev
-          : next
+          : next,
       );
     };
 
     measure();
     document.fonts?.ready?.then(measure).catch(() => {});
 
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure);
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
     observer?.observe(root);
 
     return () => {
@@ -179,23 +182,23 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
 
   useIsoLayoutEffect(() => {
     const root = rootRef.current;
-    if (typeof window === 'undefined' || !root || !box) return undefined;
-    if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'test') return undefined;
+    if (typeof window === "undefined" || !root || !box) return undefined;
+    if (typeof process !== "undefined" && process.env?.NODE_ENV === "test") return undefined;
 
-    const strokes = gsap.utils.toArray(root.querySelectorAll('[data-stroke-char]'));
-    const fills = gsap.utils.toArray(root.querySelectorAll('[data-fill-char]'));
+    const strokes = gsap.utils.toArray(root.querySelectorAll("[data-stroke-char]"));
+    const fills = gsap.utils.toArray(root.querySelectorAll("[data-fill-char]"));
     const wipe = wipeRectRef.current;
     const outline = strokeTextRef.current;
     const drop = shadowRef.current;
     if (!strokes.length) return undefined;
 
-    const fillEnabled = fillMode !== 'none';
-    const useWipe = fillEnabled && fillMode === 'wipe';
+    const fillEnabled = fillMode !== "none";
+    const useWipe = fillEnabled && fillMode === "wipe";
     const fillDuration = Math.max(0.4, drawDuration * 0.5);
-    const staggerConfig = reverse ? { each: stagger, from: 'end' } : stagger;
+    const staggerConfig = reverse ? { each: stagger, from: "end" } : stagger;
     const frames = getWipeFrames(box, wipeFrom);
-    const lifted = { dx: lift, dy: lift, 'flood-opacity': SHADOW_OPACITY };
-    const grounded = { dx: 0, dy: 0, 'flood-opacity': 0 };
+    const lifted = { dx: lift, dy: lift, "flood-opacity": SHADOW_OPACITY };
+    const grounded = { dx: 0, dy: 0, "flood-opacity": 0 };
     const targets = [...strokes, ...fills, wipe, drop].filter(Boolean);
 
     const setStart = () => {
@@ -214,7 +217,7 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
       if (drop) gsap.set(drop, { attr: fillEnabled ? lifted : grounded });
     };
 
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       setEnd();
       return () => gsap.killTweensOf(targets);
@@ -222,32 +225,40 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
 
     const build = () => {
       setStart();
-      const looping = trigger === 'loop';
+      const looping = trigger === "loop";
       const tl = gsap.timeline({
         paused: true,
         repeat: looping ? -1 : 0,
         repeatDelay: looping ? 0.9 : 0,
         yoyo: looping,
-        defaults: { overwrite: 'auto' }
+        defaults: { overwrite: "auto" },
       });
 
-      tl.to(strokes, { strokeDashoffset: 0, duration: drawDuration, ease, stagger: staggerConfig }, 0);
+      tl.to(
+        strokes,
+        { strokeDashoffset: 0, duration: drawDuration, ease, stagger: staggerConfig },
+        0,
+      );
 
       if (useWipe && wipe) {
-        tl.to(wipe, { attr: frames.end, duration: fillDuration, ease: 'power2.inOut' }, drawDuration + fillDelay);
+        tl.to(
+          wipe,
+          { attr: frames.end, duration: fillDuration, ease: "power2.inOut" },
+          drawDuration + fillDelay,
+        );
       } else if (fillEnabled) {
         tl.to(
           fills,
-          { opacity: 1, duration: fillDuration, ease: 'power2.out', stagger: staggerConfig },
-          drawDuration + fillDelay
+          { opacity: 1, duration: fillDuration, ease: "power2.out", stagger: staggerConfig },
+          drawDuration + fillDelay,
         );
       }
 
       if (drop && fillEnabled) {
         tl.to(
           drop,
-          { attr: lifted, duration: fillDuration * 1.4, ease: 'power3.out' },
-          drawDuration + fillDelay + fillDuration * 0.3
+          { attr: lifted, duration: fillDuration * 1.4, ease: "power3.out" },
+          drawDuration + fillDelay + fillDuration * 0.3,
         );
       }
 
@@ -259,12 +270,12 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
     let redraw = null;
     const listeners = [];
 
-    const listen = handler => {
-      root.addEventListener('pointerenter', handler);
+    const listen = (handler) => {
+      root.addEventListener("pointerenter", handler);
       listeners.push(handler);
     };
 
-    if (trigger === 'hover') {
+    if (trigger === "hover") {
       setEnd();
       listen(() => {
         timeline?.kill();
@@ -273,26 +284,31 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
       });
     } else {
       timeline = build();
-      if (trigger === 'scroll') {
+      if (trigger === "scroll") {
         scrollTrigger = ScrollTrigger.create({
           trigger: root,
-          start: 'top 82%',
+          start: "top 82%",
           once: true,
-          onEnter: () => timeline?.play(0)
+          onEnter: () => timeline?.play(0),
         });
       } else {
         timeline.play(0);
       }
 
-      if (hoverRedraw && trigger !== 'loop') {
+      if (hoverRedraw && trigger !== "loop") {
         listen(() => {
           if (!timeline || timeline.progress() < 1 || redraw?.isActive()) return;
           redraw?.kill();
           redraw = gsap
             .timeline()
-            .to(strokes, { strokeOpacity: 0, duration: 0.2, ease: 'power1.out' })
+            .to(strokes, { strokeOpacity: 0, duration: 0.2, ease: "power1.out" })
             .set(strokes, { strokeDashoffset: dash, strokeOpacity: 1 })
-            .to(strokes, { strokeDashoffset: 0, duration: drawDuration * 0.8, ease, stagger: staggerConfig });
+            .to(strokes, {
+              strokeDashoffset: 0,
+              duration: drawDuration * 0.8,
+              ease,
+              stagger: staggerConfig,
+            });
         });
       }
     }
@@ -302,12 +318,17 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
         ? gsap.fromTo(
             outline,
             { strokeDashoffset: 0 },
-            { strokeDashoffset: -dashPeriod, duration: dashPeriod / (fontSize * 0.22), ease: 'none', repeat: -1 }
+            {
+              strokeDashoffset: -dashPeriod,
+              duration: dashPeriod / (fontSize * 0.22),
+              ease: "none",
+              repeat: -1,
+            },
           )
         : null;
 
     return () => {
-      listeners.forEach(handler => root.removeEventListener('pointerenter', handler));
+      listeners.forEach((handler) => root.removeEventListener("pointerenter", handler));
       scrollTrigger?.kill();
       timeline?.kill();
       redraw?.kill();
@@ -331,18 +352,25 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
     hoverRedraw,
     castShadow,
     lift,
-    fontSize
+    fontSize,
   ]);
 
-  const viewBox = box ? `${box.x} ${box.y} ${box.width} ${box.height}` : `0 ${-fontSize} 600 ${fontSize * 1.3}`;
+  const viewBox = box
+    ? `${box.x} ${box.y} ${box.width} ${box.height}`
+    : `0 ${-fontSize} 600 ${fontSize * 1.3}`;
   const wipeStart = box ? getWipeFrames(box, wipeFrom).start : null;
   const region = box
-    ? { x: box.x - fontSize, y: box.y - fontSize, width: box.width + fontSize * 2, height: box.height + fontSize * 2 }
+    ? {
+        x: box.x - fontSize,
+        y: box.y - fontSize,
+        width: box.width + fontSize * 2,
+        height: box.height + fontSize * 2,
+      }
     : {};
 
   const outlineLayer = (
     <text
-      key={dashArray ? 'pattern' : 'solid'}
+      key={dashArray ? "pattern" : "solid"}
       ref={strokeTextRef}
       className="stroke-text__stroke"
       x="0"
@@ -367,20 +395,20 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
   return (
     <span
       ref={rootRef}
-      className={`stroke-text ${trigger === 'hover' ? 'stroke-text--hover' : ''} ${className}`.trim()}
-      style={{ ...style, '--stroke-text-width': `${box ? box.width : 600}px` }}
+      className={`stroke-text ${trigger === "hover" ? "stroke-text--hover" : ""} ${className}`.trim()}
+      style={{ ...style, "--stroke-text-width": `${box ? box.width : 600}px` }}
       role="img"
-      aria-label={String(text ?? '')}
+      aria-label={String(text ?? "")}
     >
       <svg
         className="stroke-text__svg"
         viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
-        style={box ? undefined : { visibility: 'hidden' }}
+        style={box ? undefined : { visibility: "hidden" }}
       >
         <defs>
-          {fillMode === 'wipe' && wipeStart && (
+          {fillMode === "wipe" && wipeStart && (
             <clipPath id={wipeId} clipPathUnits="userSpaceOnUse">
               <rect
                 ref={wipeRectRef}
@@ -416,7 +444,14 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
                   </tspan>
                 ))}
               </text>
-              <text x="0" y="0" fill="#000" stroke="none" filter={`url(#${erodeId})`} style={fontStyle}>
+              <text
+                x="0"
+                y="0"
+                fill="#000"
+                stroke="none"
+                filter={`url(#${erodeId})`}
+                style={fontStyle}
+              >
                 {characters.map((char, index) => (
                   <tspan key={`e-${index}`}>{char}</tspan>
                 ))}
@@ -425,7 +460,12 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
           )}
 
           {castShadow && (
-            <filter id={shadowId} filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB" {...region}>
+            <filter
+              id={shadowId}
+              filterUnits="userSpaceOnUse"
+              colorInterpolationFilters="sRGB"
+              {...region}
+            >
               <feDropShadow
                 ref={shadowRef}
                 dx={lift}
@@ -445,10 +485,10 @@ export const StrokeText: React.FC<StrokeTextProps> = ({
             className="stroke-text__fill"
             x="0"
             y="0"
-            fill={fillColor || strokeColor || 'currentColor'}
+            fill={fillColor || strokeColor || "currentColor"}
             stroke="none"
             style={fontStyle}
-            clipPath={fillMode === 'wipe' && wipeStart ? `url(#${wipeId})` : undefined}
+            clipPath={fillMode === "wipe" && wipeStart ? `url(#${wipeId})` : undefined}
           >
             {characters.map((char, index) => (
               <tspan data-fill-char key={`f-${index}`}>

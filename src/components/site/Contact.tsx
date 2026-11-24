@@ -1,6 +1,17 @@
 import { useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUp, ArrowUpRight, Check, Copy, FileText, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  Check,
+  Copy,
+  FileText,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+} from "lucide-react";
 import { SiFacebook, SiGithub, SiTelegram } from "react-icons/si";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +35,8 @@ function CopyEmail() {
       window.location.href = `mailto:${PROFILE.email}`;
     }
   };
-  const icon = "absolute h-4 w-4 transition-[opacity,transform] duration-150 ease-[var(--ease-out)]";
+  const icon =
+    "absolute h-4 w-4 transition-[opacity,transform] duration-150 ease-[var(--ease-out)]";
   return (
     <button
       type="button"
@@ -77,8 +89,14 @@ function Row({
   trailing?: ReactNode;
 }) {
   return (
-    <li className="contact-row group/row relative flex items-center gap-4 px-5 py-4" style={{ "--c": tint } as CSSProperties}>
-      <span aria-hidden="true" className="contact-channel-tile squircle [--r:12px] grid h-11 w-11 shrink-0 place-items-center text-white">
+    <li
+      className="contact-row group/row relative flex items-center gap-4 px-5 py-4"
+      style={{ "--c": tint } as CSSProperties}
+    >
+      <span
+        aria-hidden="true"
+        className="contact-channel-tile squircle [--r:12px] grid h-11 w-11 shrink-0 place-items-center text-white"
+      >
         {icon}
       </span>
       <span className="min-w-0 flex-1">
@@ -95,7 +113,10 @@ function Row({
         </a>
       </span>
       {trailing ? <span className="relative z-10">{trailing}</span> : null}
-      <span aria-hidden="true" className="contact-row-action hidden items-center gap-1 rounded-full border border-line-strong px-3 py-1 text-[12.5px] font-medium text-fg-muted sm:inline-flex">
+      <span
+        aria-hidden="true"
+        className="contact-row-action hidden items-center gap-1 rounded-full border border-line-strong px-3 py-1 text-[12.5px] font-medium text-fg-muted sm:inline-flex"
+      >
         {action}
         <ArrowUpRight strokeWidth={1.75} className="h-3.5 w-3.5" />
       </span>
@@ -161,12 +182,22 @@ function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="contact-card squircle [--r:26px] flex h-full flex-col items-center justify-center gap-4 p-7 text-center" role="status">
-        <span aria-hidden="true" className="grid h-14 w-14 place-items-center rounded-full bg-[#34C759] text-white">
+      <div
+        className="contact-card squircle [--r:26px] flex h-full flex-col items-center justify-center gap-4 p-7 text-center"
+        role="status"
+      >
+        <span
+          aria-hidden="true"
+          className="grid h-14 w-14 place-items-center rounded-full bg-[#34C759] text-white"
+        >
           <Check className="h-7 w-7" strokeWidth={2.25} />
         </span>
-        <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Message sent. Thank you!</p>
-        <p className="max-w-[26em] text-[14px] text-fg-muted">It’s in my inbox now. I’ll reply to the email you gave me.</p>
+        <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">
+          Message sent. Thank you!
+        </p>
+        <p className="max-w-[26em] text-[14px] text-fg-muted">
+          It’s in my inbox now. I’ll reply to the email you gave me.
+        </p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
@@ -180,10 +211,16 @@ function ContactForm() {
 
   const field = "field h-11 border-transparent px-3.5 text-[16px] sm:text-[15px]";
   return (
-    <form noValidate onSubmit={onSubmit} className="contact-card squircle [--r:26px] flex h-full flex-col gap-4 p-7">
+    <form
+      noValidate
+      onSubmit={onSubmit}
+      className="contact-card squircle [--r:26px] flex h-full flex-col gap-4 p-7"
+    >
       <div>
         <p className="text-[20px] font-semibold tracking-[-0.02em] text-fg">Send me a message</p>
-        <p className="mt-1 text-[13.5px] text-fg-subtle">It comes straight to my inbox, and I’ll reply by email.</p>
+        <p className="mt-1 text-[13.5px] text-fg-subtle">
+          It comes straight to my inbox, and I’ll reply by email.
+        </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="grid gap-2">
@@ -256,7 +293,11 @@ function ContactForm() {
         className={`btn-apple btn-apple-primary group inline-flex h-12 w-full items-center justify-center gap-2 rounded-full px-7 text-[15px] font-medium disabled:opacity-70 ${FOCUS}`}
       >
         {status === "sending" ? "Sending…" : "Send message"}
-        <Send className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-0.5" strokeWidth={1.75} aria-hidden="true" />
+        <Send
+          className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover:-translate-y-px group-hover:translate-x-0.5"
+          strokeWidth={1.75}
+          aria-hidden="true"
+        />
       </button>
     </form>
   );
@@ -294,7 +335,10 @@ export function Contact() {
         <Reveal index={2} className="slide-from-right">
           <div className="contact-card squircle [--r:22px] w-full max-w-[280px] sm:w-[264px] p-5">
             <p className="inline-flex items-center gap-2 text-[13px] font-medium text-fg">
-              <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+              <span
+                aria-hidden="true"
+                className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+              />
               Available for full-time work
             </p>
             <p className="mt-4 font-mono text-[34px] font-medium leading-none tabular-nums tracking-[-0.02em] text-fg">
@@ -317,14 +361,79 @@ export function Contact() {
               <p className="text-[12.5px] text-fg-subtle">Pick whatever suits you</p>
             </div>
             <ul className="divide-y divide-[var(--line)] p-1.5">
-              <Row icon={<Mail className="h-5 w-5" strokeWidth={1.75} />} tint="#EA4335" label="Email" note="best for job offers" href={`mailto:${PROFILE.email}`} value={PROFILE.email} action="Write" trailing={<CopyEmail />} />
-              <Row icon={<SiTelegram className="h-5 w-5" />} tint="#229ED9" label="Telegram" note="fastest reply" href={PROFILE.telegram} external value={PROFILE.telegramHandle} action="Chat" />
-              <Row icon={<Linkedin className="h-5 w-5" strokeWidth={1.75} />} tint="#0A66C2" label="LinkedIn" note="connect & network" href={PROFILE.linkedin} external value={PROFILE.linkedinHandle} linkLabel={`LinkedIn: ${PROFILE.linkedinHandle}`} action="Connect" />
-              <Row icon={<Phone className="h-5 w-5" strokeWidth={1.75} />} tint="#34C759" label="Phone" note="call or text" href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`} value={PROFILE.phone} action="Call" />
-              <Row icon={<SiFacebook className="h-5 w-5" />} tint="#1877F2" label="Facebook" note="say hi" href={PROFILE.facebook} external value={PROFILE.facebookHandle} linkLabel={`Facebook: ${PROFILE.facebookHandle}`} action="Message" />
-              <Row icon={<SiGithub className="h-5 w-5" />} tint="#24292F" label="GitHub" note="read my code" href={PROFILE.github} external value={PROFILE.githubHandle} linkLabel={`github.com/${PROFILE.githubHandle}`} action="Visit" />
+              <Row
+                icon={<Mail className="h-5 w-5" strokeWidth={1.75} />}
+                tint="#EA4335"
+                label="Email"
+                note="best for job offers"
+                href={`mailto:${PROFILE.email}`}
+                value={PROFILE.email}
+                action="Write"
+                trailing={<CopyEmail />}
+              />
+              <Row
+                icon={<SiTelegram className="h-5 w-5" />}
+                tint="#229ED9"
+                label="Telegram"
+                note="fastest reply"
+                href={PROFILE.telegram}
+                external
+                value={PROFILE.telegramHandle}
+                action="Chat"
+              />
+              <Row
+                icon={<Linkedin className="h-5 w-5" strokeWidth={1.75} />}
+                tint="#0A66C2"
+                label="LinkedIn"
+                note="connect & network"
+                href={PROFILE.linkedin}
+                external
+                value={PROFILE.linkedinHandle}
+                linkLabel={`LinkedIn: ${PROFILE.linkedinHandle}`}
+                action="Connect"
+              />
+              <Row
+                icon={<Phone className="h-5 w-5" strokeWidth={1.75} />}
+                tint="#34C759"
+                label="Phone"
+                note="call or text"
+                href={`tel:${PROFILE.phone.replace(/\s+/g, "")}`}
+                value={PROFILE.phone}
+                action="Call"
+              />
+              <Row
+                icon={<SiFacebook className="h-5 w-5" />}
+                tint="#1877F2"
+                label="Facebook"
+                note="say hi"
+                href={PROFILE.facebook}
+                external
+                value={PROFILE.facebookHandle}
+                linkLabel={`Facebook: ${PROFILE.facebookHandle}`}
+                action="Message"
+              />
+              <Row
+                icon={<SiGithub className="h-5 w-5" />}
+                tint="#24292F"
+                label="GitHub"
+                note="read my code"
+                href={PROFILE.github}
+                external
+                value={PROFILE.githubHandle}
+                linkLabel={`github.com/${PROFILE.githubHandle}`}
+                action="Visit"
+              />
               {hasCv ? (
-                <Row icon={<FileText className="h-5 w-5" strokeWidth={1.75} />} tint="#6B6B75" label="Résumé" note="one-page PDF" href={CV_HREF} external value="Download CV" action="Get" />
+                <Row
+                  icon={<FileText className="h-5 w-5" strokeWidth={1.75} />}
+                  tint="#6B6B75"
+                  label="Résumé"
+                  note="one-page PDF"
+                  href={CV_HREF}
+                  external
+                  value="Download CV"
+                  action="Get"
+                />
               ) : null}
             </ul>
           </div>
@@ -364,12 +473,16 @@ export function SiteFooter() {
             </a>
 
             <p className="mt-3.5 max-w-[42ch] text-[14.5px] leading-[1.6] text-fg-muted">
-              Junior Fullstack Web Developer and 4th-year Software Development student at Norton University.
-              Building reliable web applications with clean code, secure Laravel REST APIs, and PostgreSQL.
+              Junior Fullstack Web Developer and 4th-year Software Development student at Norton
+              University. Building reliable web applications with clean code, secure Laravel REST
+              APIs, and PostgreSQL.
             </p>
 
             <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface-2/80 px-3 py-1.5 text-[12.5px] font-medium text-fg shadow-2xs">
-              <span aria-hidden="true" className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]" />
+              <span
+                aria-hidden="true"
+                className="about-live-dot relative h-2 w-2 rounded-full bg-[#34C759]"
+              />
               <span>Available for Full-time Roles</span>
             </div>
           </div>
@@ -469,13 +582,12 @@ export function SiteFooter() {
 
         {/* Bottom dividing colophon bar */}
         <div className="mt-12 border-t border-line pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-[13px] text-fg-subtle">
-          <p>© {currentYear} {PROFILE.name}. Built with craft in Phnom Penh, Cambodia.</p>
+          <p>
+            © {currentYear} {PROFILE.name}. Built with craft in Phnom Penh, Cambodia.
+          </p>
 
           <div className="flex items-center gap-4">
-            <Link
-              to="/design-system"
-              className="transition-colors hover:text-fg"
-            >
+            <Link to="/design-system" className="transition-colors hover:text-fg">
               Design system
             </Link>
             <span aria-hidden="true" className="h-3 w-px bg-line-strong" />

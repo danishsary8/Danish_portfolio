@@ -17,11 +17,12 @@ interface ProjectGalleryProps {
 
 export function ProjectGallery({ project }: ProjectGalleryProps) {
   // Aggregate all available images for this project
-  const images = (project.images && project.images.length > 0)
-    ? project.images
-    : project.image
-      ? [project.image]
-      : [];
+  const images =
+    project.images && project.images.length > 0
+      ? project.images
+      : project.image
+        ? [project.image]
+        : [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
