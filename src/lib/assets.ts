@@ -30,6 +30,11 @@ const lm = import.meta.glob("@/assets/projects/loomora/*.webp", {
   import: "default",
 }) as Record<string, string>;
 const loomora = (name: string) => lm[`/src/assets/projects/loomora/${name}.webp`] ?? "";
+const dr = import.meta.glob("@/assets/projects/driving/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const driving = (name: string) => dr[`/src/assets/projects/driving/${name}.webp`] ?? "";
 
 export interface ProjectAsset {
   src: string;
@@ -62,6 +67,8 @@ export const ASSETS = {
     diabetesShot: diabetes,
     /** Loomora case-study screens and covers: `loomoraShot("week")`. */
     loomoraShot: loomora,
+    /** Driving Rules phone screens and covers: `drivingShot("m-home")`. */
+    drivingShot: driving,
     bookly: {
       src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",

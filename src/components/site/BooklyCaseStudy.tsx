@@ -13,6 +13,9 @@ import {
   LayoutDashboard,
   Rocket,
   ShieldCheck,
+  Languages,
+  ClipboardCheck,
+  Smartphone,
   WifiOff,
   RefreshCw,
   Timer,
@@ -42,6 +45,10 @@ import {
   SiVite,
   SiSqlalchemy,
   SiGoogle,
+  SiFlutter,
+  SiDart,
+  SiNetlify,
+  SiGithubactions,
   SiNeon,
   SiDocker,
   SiBrevo,
@@ -405,6 +412,9 @@ const GROUP = {
   Focus: { label: "Focus", hue: "#ea580c" },
   Review: { label: "Review", hue: "#7c3aed" },
   Account: { label: "Account", hue: "#0284c7" },
+  Learn: { label: "Learn", hue: "#15803d" },
+  Exam: { label: "Exam", hue: "#dc2626" },
+  Practice: { label: "Practice", hue: "#d97706" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -451,6 +461,129 @@ function Features({
   const s: Screen = screens[index]!;
   const g = GROUP[s.group];
   const hue = SCREEN_HUES[index % SCREEN_HUES.length]!;
+
+  // Phone-only apps: details and a screen list on the left, one large phone on the right.
+  if (!s.desktop) {
+    return (
+      <Rise>
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={`${name} screens`}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
+          className="grid gap-6 md:grid-cols-[minmax(0,1fr)_250px] md:items-center"
+        >
+          <div className="flex min-w-0 flex-col gap-5">
+            <div
+              className="min-w-0 border-l-[3px] pl-3.5 transition-colors duration-500"
+              style={{ borderColor: hue }}
+              aria-live={paused ? "polite" : "off"}
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[12px] font-medium"
+                  style={{
+                    color: g.hue,
+                    background: `color-mix(in oklab, ${g.hue} 14%, transparent)`,
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: g.hue }}
+                  />
+                  {g.label}
+                </span>
+                <span className="font-mono text-[12px] tabular-nums text-fg-subtle">
+                  <span style={{ color: hue }} className="font-semibold">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>{" "}
+                  / {screens.length}
+                </span>
+              </div>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={index}
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -14 }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                >
+                  <h5
+                    className="mt-2 text-[21px] font-semibold tracking-[-0.02em]"
+                    style={{ color: hue }}
+                  >
+                    {s.title}
+                  </h5>
+                  <p className="mt-1 text-[15px] leading-[1.55] text-fg">{s.text}</p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* every screen, grouped; click to jump */}
+            <ol className="grid gap-1 sm:grid-cols-2">
+              {screens.map((x, i) => {
+                const active = i === index;
+                const xh = GROUP[x.group].hue;
+                return (
+                  <li key={x.title}>
+                    <button
+                      type="button"
+                      onClick={() => go(i, i >= index ? 1 : -1)}
+                      aria-current={active ? "true" : undefined}
+                      className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-[13.5px] transition-colors duration-150 ${active ? "bg-surface-1 font-medium text-fg" : "text-fg-muted hover:bg-surface-1/60 hover:text-fg"} ${FOCUS}`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{
+                          background: active ? xh : `color-mix(in oklab, ${xh} 35%, transparent)`,
+                        }}
+                      />
+                      {x.title}
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => go(index - 1, -1)}
+                aria-label="Previous screen"
+                className={`grid h-10 w-10 place-items-center rounded-full border border-[var(--line-strong)] bg-surface-2 text-fg transition-colors hover:bg-surface-1 ${FOCUS}`}
+              >
+                <ChevronLeft aria-hidden="true" className="h-4 w-4" strokeWidth={1.75} />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(index + 1, 1)}
+                aria-label="Next screen"
+                className={`grid h-10 w-10 place-items-center rounded-full border border-[var(--line-strong)] bg-surface-2 text-fg transition-colors hover:bg-surface-1 ${FOCUS}`}
+              >
+                <ChevronRight aria-hidden="true" className="h-4 w-4" strokeWidth={1.75} />
+              </button>
+            </div>
+          </div>
+
+          <div
+            className="min-w-0 rounded-[28px] p-5 transition-[background] duration-700"
+            style={{
+              background: `radial-gradient(90% 80% at 50% 0%, color-mix(in oklab, ${hue} 18%, ${base}), ${base})`,
+            }}
+          >
+            <IPhone>
+              <SlideImage src={s.phone} alt={`${s.title}, on a phone`} dir={dir} k={`p-${index}`} />
+            </IPhone>
+          </div>
+        </div>
+      </Rise>
+    );
+  }
 
   return (
     <Rise>
@@ -711,12 +844,60 @@ const LM_SERVICES: Node[] = [
   { name: "Brevo", note: "Email codes", icon: SiBrevo, color: "#0b996e" },
 ];
 
+const DR_LANES: Lane[] = [
+  {
+    title: "App",
+    host: "Flutter",
+    hostIcon: SiFlutter,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "Flutter", note: "Phone, web, desktop", icon: SiFlutter, color: "#02569b" },
+      { name: "Dart", note: "Exam logic", icon: SiDart, color: "#0175c2" },
+      { name: "GetX", note: "State, routes, languages", icon: Layers, color: "#8b5cf6" },
+    ],
+  },
+  {
+    title: "On the phone",
+    host: "Offline",
+    hostIcon: Smartphone,
+    hue: "#10b981",
+    nodes: [
+      { name: "Question bank", note: "249 questions as JSON", icon: Layers, color: "#10b981" },
+      { name: "GetStorage", note: "Results, mistakes, settings", icon: Lock, color: "#f59e0b" },
+    ],
+  },
+  {
+    title: "Ship",
+    host: "Netlify",
+    hostIcon: SiNetlify,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "Web build", note: "Live on Netlify", icon: SiNetlify, color: "#00ad9f" },
+      { name: "GitHub Actions", note: "Analyze + test", icon: SiGithubactions, color: "#2088ff" },
+    ],
+  },
+];
+
+/** Dark backdrop behind the devices, in each project's own colour. */
+const BASE: Record<string, string> = {
+  bookly: "#0b1147",
+  diabetes: "#0b2a26",
+  loomora: "#0f2722",
+  driving: "#3d110b",
+};
+
 const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
   bookly: {
     lanes: LANES,
     services: SERVICES,
     caption:
       "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  driving: {
+    lanes: DR_LANES,
+    services: [],
+    caption:
+      "A Flutter app that carries its own question bank and saves progress on the phone, so it works offline. The web build is hosted on Netlify, and GitHub Actions runs the checks.",
   },
   loomora: {
     lanes: LM_LANES,
@@ -811,7 +992,9 @@ function Architecture({ id }: { id: string }) {
           <Connector />
           <Lane lane={a.lanes[2]!} />
         </div>
-        <div className="mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] p-3">
+        <div
+          className={`mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] p-3 ${a.services.length ? "" : "hidden"}`}
+        >
           <p className="px-1 text-[12px] text-fg-subtle">Also part of it</p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {a.services.map((s) => {
@@ -949,6 +1132,8 @@ const HL_ICON = {
   offline: WifiOff,
   sync: RefreshCw,
   timer: Timer,
+  lang: Languages,
+  exam: ClipboardCheck,
 } as const;
 const HL_HUES = ["#7c3aed", "#e11d48", "#0d9488", "#2563eb"];
 
@@ -1071,9 +1256,7 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
           cs={cs}
           name={project.title}
           url={project.id === "bookly" ? "bookly.site" : new URL(project.liveUrl).host}
-          base={
-            project.id === "diabetes" ? "#0b2a26" : project.id === "loomora" ? "#0f2722" : "#0b1147"
-          }
+          base={BASE[project.id] ?? "#0b1147"}
         />
       </Block>
       <Block

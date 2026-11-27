@@ -85,10 +85,14 @@ export type CaseStudy = {
       | "Plan"
       | "Focus"
       | "Review"
-      | "Account";
+      | "Account"
+      | "Learn"
+      | "Exam"
+      | "Practice";
     title: string;
     text: string;
-    desktop: string;
+    /** Leave out for phone-only apps. */
+    desktop?: string;
     phone: string;
   }[];
   stats: { value: number; suffix?: string; label: string }[];
@@ -99,7 +103,7 @@ export type CaseStudy = {
   /** "Try it yourself": short steps a visitor can do right now. */
   /** "Tech highlights": how the hardest parts work. */
   highlights?: {
-    icon: "ai" | "qr" | "shield" | "live" | "offline" | "sync" | "timer";
+    icon: "ai" | "qr" | "shield" | "live" | "offline" | "sync" | "timer" | "lang" | "exam";
     tag: string;
     title: string;
     text: string;
@@ -641,16 +645,173 @@ export const PROJECTS: Project[] = [
     id: "driving",
     title: "Driving Rules",
     coverLine: "Pass the driving theory exam",
-    kind: "Driving theory learning app",
+    kind: "Driving theory app · Flutter",
+    ai: "Practice exam with the real pass rules, offline",
     summary:
-      "An offline, bilingual Khmer/English app for Cambodia's driving theory exam, with road-sign lessons and practice exams.",
-    highlights: ["Built with Flutter and Dart", "Lessons and practice saved on the device"],
-    stack: ["Flutter", "Dart", "Local Storage"],
+      "An offline, bilingual Khmer/English app for Cambodia's driving theory exam: lessons for all 249 questions, road-sign flashcards, a timed practice exam with the real pass rules, a speed quiz and a mistakes bank.",
+    highlights: [
+      "Practice exam with the real rules: 45 questions, 45 minutes, 38 to pass",
+      "Every screen in Khmer and English",
+      "Works offline: questions and progress stay on the device",
+    ],
+    stack: ["Flutter", "Dart", "GetX", "GetStorage"],
     hosting: "Netlify",
     liveUrl: "https://drivingruletest.netlify.app/",
-    githubUrl: "https://github.com/danishsary8",
-    image: ASSETS.projects.driving.src,
-    imageAlt: "Driving Rules app showing a road-sign lesson",
+    githubUrl: "https://github.com/danishsary8/driving-rules",
+    repos: [{ label: "Source", url: "https://github.com/danishsary8/driving-rules" }],
+    image: ASSETS.projects.drivingShot("m-home"),
+    coverImage: ASSETS.projects.drivingShot("cover-card"),
+    bannerImage: ASSETS.projects.drivingShot("cover-banner"),
+    imageAlt: "Driving Rules home screen and a passed practice exam on two phones",
+    caseStudy: {
+      pitch:
+        "Learn Cambodia's road rules in Khmer or English, then take a practice exam that works like the real one: 45 questions, 45 minutes, and no mistakes allowed on right of way.",
+      facts: [
+        { label: "Role", value: "Solo, Flutter" },
+        { label: "Platform", value: "Phone-first, works offline" },
+        { label: "Languages", value: "English · ខ្មែរ" },
+        { label: "Exam", value: "45 questions · 38 to pass" },
+      ],
+      problem:
+        "Learners in Cambodia prepare for the theory exam from printed question lists. There's no easy way to practise under the real exam rules, and nothing shows which questions you keep getting wrong.",
+      solution:
+        "I built a phone app that works offline. It has lessons for every question, road-sign flashcards, a timed exam with the real pass rules, and a mistakes bank that brings back what you got wrong until you get it right.",
+      screens: [
+        {
+          group: "Learn",
+          title: "Home",
+          text: "Start learning, open the road signs or jump into an exam from one place.",
+          phone: ASSETS.projects.drivingShot("m-home"),
+        },
+        {
+          group: "Learn",
+          title: "In Khmer",
+          text: "Every screen switches to Khmer with one tap.",
+          phone: ASSETS.projects.drivingShot("m-home-km"),
+        },
+        {
+          group: "Learn",
+          title: "Lessons",
+          text: "All 249 questions with their answers, in five topics.",
+          phone: ASSETS.projects.drivingShot("m-lessons"),
+        },
+        {
+          group: "Learn",
+          title: "Road-sign flashcards",
+          text: "100 signs to learn, filtered by type.",
+          phone: ASSETS.projects.drivingShot("m-flashcards"),
+        },
+        {
+          group: "Learn",
+          title: "Card back",
+          text: "Flip a card to see what the sign means, then mark it mastered.",
+          phone: ASSETS.projects.drivingShot("m-flashcard-back"),
+        },
+        {
+          group: "Exam",
+          title: "Exam rules",
+          text: "Short slides explain the rules before the timer starts.",
+          phone: ASSETS.projects.drivingShot("m-exam-rules"),
+        },
+        {
+          group: "Exam",
+          title: "Priority question",
+          text: "Questions 26 to 30 test right of way. One mistake fails the exam.",
+          phone: ASSETS.projects.drivingShot("m-priority"),
+        },
+        {
+          group: "Exam",
+          title: "Result",
+          text: "Pass or not, your score, and how close you were.",
+          phone: ASSETS.projects.drivingShot("m-result"),
+        },
+        {
+          group: "Exam",
+          title: "Practice certificate",
+          text: "A pass earns a practice certificate to download. Not an official one.",
+          phone: ASSETS.projects.drivingShot("m-certificate"),
+        },
+        {
+          group: "Practice",
+          title: "Speed quiz",
+          text: "Ten questions, 15 seconds each, three lives.",
+          phone: ASSETS.projects.drivingShot("m-speed-quiz"),
+        },
+        {
+          group: "Practice",
+          title: "Mistakes bank",
+          text: "Every wrong answer waits here until you get it right.",
+          phone: ASSETS.projects.drivingShot("m-mistakes"),
+        },
+        {
+          group: "Practice",
+          title: "Progress",
+          text: "A readiness score from your last five exams.",
+          phone: ASSETS.projects.drivingShot("m-progress"),
+        },
+      ],
+      stats: [
+        { value: 249, label: "practice questions" },
+        { value: 100, label: "road-sign questions" },
+        { value: 333, label: "strings in Khmer" },
+        { value: 71, label: "automated tests" },
+      ],
+      practices: [
+        "GetX state + routing",
+        "Saved on the device",
+        "Session recovery",
+        "Keyboard support",
+        "CI on every push",
+      ],
+      highlights: [
+        {
+          icon: "exam",
+          tag: "Exam rules",
+          title: "Works like the real exam",
+          text: "45 questions in 45 minutes, 38 to pass. Questions 26 to 30 are about right of way, and one mistake there fails the exam.",
+        },
+        {
+          icon: "offline",
+          tag: "Offline-first",
+          title: "No internet needed",
+          text: "Questions and sign images ship with the app. Results, mistakes and settings are saved on the phone with GetStorage.",
+        },
+        {
+          icon: "timer",
+          tag: "Session recovery",
+          title: "An exam you can't lose",
+          text: "An exam in progress is saved as you go, so a refresh or a closed app doesn't throw away your answers.",
+        },
+        {
+          icon: "lang",
+          tag: "Two languages",
+          title: "Khmer that reads well",
+          text: "Every string exists in both languages, and a test checks nothing is missing. Khmer text gets extra size and spacing so it stays clear.",
+        },
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "On Google Play and the App Store",
+          text: "Publish the app so learners can install it from their phone's store.",
+        },
+        {
+          when: "Next",
+          title: "Checked by an instructor",
+          text: "A driving instructor reviews every answer and its explanation.",
+        },
+        {
+          when: "Later",
+          title: "Questions read aloud",
+          text: "Listen to each question in Khmer, for learners who prefer to hear it.",
+        },
+        {
+          when: "Later",
+          title: "Smart review",
+          text: "Mistakes come back on a schedule, so the hard questions stick.",
+        },
+      ],
+    },
   },
 ];
 
