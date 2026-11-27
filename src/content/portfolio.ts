@@ -47,6 +47,8 @@ export type Project = {
   liveUrl: string;
   githubUrl: string;
   apiDocsUrl?: string;
+  /** Short "AI-powered" line shown on the card. */
+  ai?: string;
   /** Working copy while the main domain is being finished. */
   demoUrl?: string;
   images?: string[];
@@ -89,6 +91,7 @@ export const PROJECTS: Project[] = [
     id: "bookly",
     title: "Bookly",
     kind: "Online bookstore · E-commerce",
+    ai: "AI-powered search by meaning and similar-book picks",
     summary:
       "A full online bookstore for Cambodia in English and Khmer: OTP and Google login, cart, checkout with cash on delivery or Bakong KHQR, order tracking, reviews, an admin dashboard, and Telegram order updates.",
     highlights: [
@@ -97,7 +100,7 @@ export const PROJECTS: Project[] = [
       "Live on its own domain with public API docs",
     ],
     stack: ["React", "TypeScript", "Laravel", "PostgreSQL", "Tailwind CSS", "REST APIs"],
-    hosting: "Vercel · Render · Neon",
+    hosting: "Vercel · Render · Supabase",
     liveUrl: "https://bookly.site/",
     demoUrl: "https://bookly-frontend-five.vercel.app/",
     githubUrl: "https://github.com/danishsary8/bookly_frontend",
@@ -111,7 +114,7 @@ export const PROJECTS: Project[] = [
     coverLine: "Books delivered across Cambodia",
     caseStudy: {
       pitch:
-        "A bookshop made for Cambodia. Khmer on every page, prices in riel or dollars, and you pay the way people here pay.",
+        "A bookshop made for Cambodia. Khmer on every page, prices in riel or dollars, AI search that understands what you mean, and you pay the way people here pay.",
       facts: [
         { label: "Role", value: "Solo, full-stack" },
         { label: "Status", value: "bookly.site · demo on Vercel" },
@@ -126,56 +129,49 @@ export const PROJECTS: Project[] = [
         {
           group: "Customer",
           title: "Storefront",
-          text: "The home page opens with this week's favourites and new arrivals.",
+          text: "Opens with this week's favourite books, new arrivals and offers.",
           desktop: ASSETS.projects.booklyShot("home"),
           phone: ASSETS.projects.booklyShot("m-home"),
         },
         {
           group: "Customer",
+          title: "Sign in",
+          text: "Sign in with an email code, Google, Facebook or Telegram.",
+          desktop: ASSETS.projects.booklyShot("login"),
+          phone: ASSETS.projects.booklyShot("m-login"),
+        },
+        {
+          group: "Customer",
           title: "Browse by category",
-          text: "Each category has its own topics, so readers narrow down fast.",
+          text: "Pick a category, then narrow it down by topic in one tap.",
           desktop: ASSETS.projects.booklyShot("category"),
           phone: ASSETS.projects.booklyShot("m-category"),
         },
         {
           group: "Customer",
-          title: "Every book, sorted",
-          text: "Filter by format, price or stock, and sort by best sellers.",
+          title: "All books",
+          text: "Filter by format, price or stock. Sort by best sellers.",
           desktop: ASSETS.projects.booklyShot("best"),
           phone: ASSETS.projects.booklyShot("m-best"),
         },
         {
           group: "Customer",
           title: "Book page",
-          text: "Pick a format and see the price, stock and delivery before you buy.",
+          text: "See the price, stock and delivery time before you buy.",
           desktop: ASSETS.projects.booklyShot("book"),
           phone: ASSETS.projects.booklyShot("m-book"),
         },
         {
           group: "Customer",
-          title: "Similar books",
-          text: "Books matched by theme, not just by genre.",
-          desktop: ASSETS.projects.booklyShot("similar"),
-          phone: ASSETS.projects.booklyShot("m-similar"),
-        },
-        {
-          group: "Customer",
-          title: "Sign in",
-          text: "Email code, Google, Facebook or Telegram. No password to remember.",
-          desktop: ASSETS.projects.booklyShot("login"),
-          phone: ASSETS.projects.booklyShot("m-login"),
-        },
-        {
-          group: "Customer",
           title: "Cart",
-          text: "Offers and free delivery are worked out as you shop.",
+          text: "Discounts and free delivery update as you add books.",
           desktop: ASSETS.projects.booklyShot("cart"),
           phone: ASSETS.projects.booklyShot("m-cart"),
         },
         {
           group: "Customer",
           title: "Checkout",
-          text: "Address, delivery and payment in a few clear steps.",
+          text: "Choose an address, delivery and payment in a few short steps.",
           desktop: ASSETS.projects.booklyShot("checkout"),
           phone: ASSETS.projects.booklyShot("m-checkout"),
         },
@@ -189,21 +185,21 @@ export const PROJECTS: Project[] = [
         {
           group: "Customer",
           title: "My orders",
-          text: "Every order with its status, from packed to delivered.",
+          text: "Follow every order, from packed to delivered.",
           desktop: ASSETS.projects.booklyShot("orders"),
           phone: ASSETS.projects.booklyShot("m-orders"),
         },
         {
           group: "Staff",
           title: "Today's tasks",
-          text: "Staff see what needs them today: orders to pack, returns, low stock.",
+          text: "Orders to pack, returns to check and books running low.",
           desktop: ASSETS.projects.booklyShot("staff-today"),
           phone: ASSETS.projects.booklyShot("m-staff-today"),
         },
         {
           group: "Staff",
           title: "Stock",
-          text: "Low and sold-out books first, restocked in one click.",
+          text: "Low and sold-out books come first. Restock in one click.",
           desktop: ASSETS.projects.booklyShot("staff-stock"),
           phone: ASSETS.projects.booklyShot("m-staff-stock"),
         },
@@ -241,7 +237,7 @@ export const PROJECTS: Project[] = [
       challenges: [
         {
           title: "The database ran out of hours",
-          fix: "The free plan kept running out of compute hours. I moved the data to Neon and added nightly encrypted backups, tested with a real restore.",
+          fix: "The free plan kept running out of compute hours. I moved the data to Supabase and added nightly encrypted backups, tested with a real restore.",
           result: "No downtime, no data lost",
         },
         {

@@ -2263,3 +2263,58 @@
     transform: none;
   }
 }
+
+/* Bookly cover: a few quiet loops so the card feels alive (off under reduced motion). */
+@media (prefers-reduced-motion: no-preference) {
+  .bookly-cover-float {
+    animation: bookly-float 6s var(--ease-in-out) infinite alternate;
+  }
+  .bookly-cover-sheen {
+    animation: bookly-sheen 7s var(--ease-out) infinite;
+  }
+  .bookly-cover-toast {
+    opacity: 0;
+    animation: bookly-toast 9s var(--ease-out) infinite;
+  }
+  .bookly-cover-toast-2 {
+    animation-delay: 4.5s;
+  }
+}
+@keyframes bookly-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+@keyframes bookly-sheen {
+  0%,
+  55% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(450%);
+  }
+}
+@keyframes bookly-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  6%,
+  42% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50%,
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bookly-cover-toast-2 {
+    display: none;
+  }
+}

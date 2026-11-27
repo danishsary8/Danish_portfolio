@@ -1,5 +1,5 @@
 import { useRef, useState, type CSSProperties } from "react";
-import { ArrowUpRight, Award, Check, FileText, Github } from "lucide-react";
+import { ArrowUpRight, Award, Check, FileText, Github, Sparkles } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -51,7 +51,14 @@ function StackChips({ stack }: { stack: string[] }) {
       {stack.map((s) => (
         <li
           key={s}
-          className="icon-tile-light squircle [--r:8px] inline-flex h-7 items-center gap-1.5 px-2.5 text-[12.5px] text-fg-muted"
+          className="squircle [--r:8px] inline-flex h-7 items-center gap-1.5 border px-2.5 text-[12.5px] font-medium text-fg transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--chip)_16%,transparent)]"
+          style={
+            {
+              "--chip": themedSkillColor(s),
+              background: "color-mix(in oklab, var(--chip) 9%, var(--surface-2))",
+              borderColor: "color-mix(in oklab, var(--chip) 30%, transparent)",
+            } as CSSProperties
+          }
         >
           {hasSkillIcon(s) ? (
             <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s) }} />
@@ -153,6 +160,12 @@ function DeckCard({
           </div>
           <div className={`min-w-0 ${flip ? "lg:order-1" : ""}`}>
             <ProjectTitle project={project} size="lg" />
+            {project.ai ? (
+              <p className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-[#8b5cf6]/30 bg-[#8b5cf6]/10 px-3 py-1 text-[12.5px] font-medium text-[#6d4fd6] dark:text-[#b9a6ff]">
+                <Sparkles aria-hidden="true" strokeWidth={1.75} className="h-3.5 w-3.5" />
+                {project.ai}
+              </p>
+            ) : null}
             <p className="mt-4 text-pretty text-[15.5px] leading-[1.65] text-fg-muted">
               {project.summary}
             </p>

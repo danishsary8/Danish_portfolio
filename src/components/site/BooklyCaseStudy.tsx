@@ -12,7 +12,6 @@ import {
   Layers,
   LayoutDashboard,
   Rocket,
-  Database,
   Lock,
   Target,
   QrCode,
@@ -28,6 +27,7 @@ import {
   SiReact,
   SiRender,
   SiResend,
+  SiSupabase,
   SiTailwindcss,
   SiTelegram,
   SiTypescript,
@@ -477,7 +477,7 @@ function Features({ cs }: { cs: CaseStudy }) {
                   >
                     {s.title}
                   </h5>
-                  <p className="mt-0.5 text-[14px] leading-[1.5] text-fg-muted">{s.text}</p>
+                  <p className="mt-1 text-[15px] leading-[1.55] text-fg">{s.text}</p>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -572,8 +572,8 @@ const LANES: { title: string; host: string; hostIcon: Icon; hue: string; nodes: 
   },
   {
     title: "Data",
-    host: "Neon",
-    hostIcon: Database,
+    host: "Supabase",
+    hostIcon: SiSupabase,
     hue: "#10b981",
     nodes: [
       { name: "PostgreSQL", note: "Books, orders, users", icon: SiPostgresql, color: "#4f8cc9" },
