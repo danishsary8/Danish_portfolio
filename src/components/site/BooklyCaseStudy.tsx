@@ -12,6 +12,8 @@ import {
   Layers,
   LayoutDashboard,
   Rocket,
+  ShieldCheck,
+  Activity,
   Store,
   Search,
   KeyRound,
@@ -881,6 +883,50 @@ function Future({ cs }: { cs: CaseStudy }) {
   );
 }
 
+/* ---------------- 8a. Tech highlights ---------------- */
+
+const HL_ICON = { ai: Sparkles, qr: QrCode, shield: ShieldCheck, live: Activity } as const;
+const HL_HUES = ["#7c3aed", "#e11d48", "#0d9488", "#2563eb"];
+
+function Highlights({ cs }: { cs: CaseStudy }) {
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2">
+      {(cs.highlights ?? []).map((h, i) => {
+        const I = HL_ICON[h.icon];
+        const hue = HL_HUES[i % HL_HUES.length]!;
+        return (
+          <Rise key={h.title} delay={i * 0.06}>
+            <li className="flex h-full items-start gap-4 rounded-2xl border border-[var(--edge)] bg-surface-2 p-4 shadow-[var(--elev-1)]">
+              <span
+                aria-hidden="true"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl"
+                style={{
+                  color: hue,
+                  background: `color-mix(in oklab, ${hue} 12%, transparent)`,
+                  boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${hue} 25%, transparent)`,
+                }}
+              >
+                <I className="h-5 w-5" strokeWidth={1.75} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="font-mono text-[12px]" style={{ color: hue }}>
+                  {h.tag}
+                </span>
+                <span className="mt-0.5 block text-[15.5px] font-semibold tracking-[-0.01em] text-fg">
+                  {h.title}
+                </span>
+                <span className="mt-1 block text-[14px] leading-[1.55] text-fg-muted">
+                  {h.text}
+                </span>
+              </span>
+            </li>
+          </Rise>
+        );
+      })}
+    </ul>
+  );
+}
+
 /* ---------------- 8b. Try it yourself ---------------- */
 
 const TRY_ICON = { store: Store, search: Search, key: KeyRound, qr: QrCode } as const;
@@ -975,6 +1021,11 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
       <Block id="cs-engineering" title="Built to last" icon={Lock} hue={HUE.engineering}>
         <Engineering cs={cs} />
       </Block>
+      {cs.highlights?.length ? (
+        <Block id="cs-highlights" title="Tech highlights" icon={Cpu} hue={HUE.overview}>
+          <Highlights cs={cs} />
+        </Block>
+      ) : null}
       {cs.tryIt?.length ? (
         <Block id="cs-try" title="Try it yourself" icon={MousePointerClick} hue={HUE.overview}>
           <TryIt cs={cs} />

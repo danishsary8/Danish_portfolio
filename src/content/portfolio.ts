@@ -88,6 +88,13 @@ export type CaseStudy = {
   /** "Future scale development": where the product grows next. */
   future?: { when: string; title: string; text: string }[];
   /** "Try it yourself": short steps a visitor can do right now. */
+  /** "Tech highlights": how the hardest parts work. */
+  highlights?: {
+    icon: "ai" | "qr" | "shield" | "live";
+    tag: string;
+    title: string;
+    text: string;
+  }[];
   tryIt?: {
     icon: "store" | "search" | "key" | "qr";
     title: string;
@@ -262,34 +269,30 @@ export const PROJECTS: Project[] = [
           result: "Checkout people trust",
         },
       ],
-      tryIt: [
+      highlights: [
         {
-          icon: "store",
-          title: "Open the shop",
-          text: "Browse books, switch to Khmer and change the price to riel.",
-          cta: "Open Bookly",
-          href: "https://bookly-frontend-five.vercel.app/",
-        },
-        {
-          icon: "search",
-          title: "Search with a typo",
-          text: "Type holms. Search still finds Sherlock Holmes.",
-          cta: "Try the search",
-          href: "https://bookly-frontend-five.vercel.app/search?q=holms",
-        },
-        {
-          icon: "key",
-          title: "Call the real API",
-          text: "Sign in as the demo customer in one click, then run a request.",
-          cta: "Open API docs",
-          href: "https://bookly-api-zasc.onrender.com/docs",
+          icon: "ai",
+          tag: "pgvector · Gemini",
+          title: "AI search by meaning",
+          text: "Each book is turned into an embedding, so readers can describe a book and find it. If the AI service fails, search falls back to normal search.",
         },
         {
           icon: "qr",
-          title: "Pay with KHQR",
-          text: "Check out to get a real KHQR code with a 15-minute timer.",
-          cta: "Go to checkout",
-          href: "https://bookly-frontend-five.vercel.app/",
+          tag: "Bakong KHQR",
+          title: "Payments the server checks",
+          text: "Checkout makes a real KHQR code with a 15-minute timer. The API asks Bakong if it was paid before the order is confirmed.",
+        },
+        {
+          icon: "shield",
+          tag: "Sanctum · 2FA",
+          title: "Staff sign-in with 2FA",
+          text: "Staff and admins use a second step to sign in, and each role only reaches its own endpoints. A customer token gets 403.",
+        },
+        {
+          icon: "live",
+          tag: "Order timeline",
+          title: "Orders that update live",
+          text: "When staff pack or ship an order, the customer's timeline updates by itself, without a page reload.",
         },
       ],
     },

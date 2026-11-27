@@ -72,7 +72,7 @@ function Actions({ project, onOpen }: { project: Project; onOpen: (p: Project) =
         target="_blank"
         rel="noreferrer"
         aria-label={`Visit ${project.title} (live site)`}
-        className={`btn-apple btn-apple-primary group/live inline-flex h-11 items-center sm:h-10 gap-1.5 rounded-full px-4 text-[13.5px] font-medium ${FOCUS}`}
+        className={`btn-apple btn-apple-secondary group/live inline-flex h-11 items-center sm:h-10 gap-1.5 rounded-full px-4 text-[13.5px] font-medium ${FOCUS}`}
       >
         Live site
         <ArrowUpRight
@@ -85,7 +85,7 @@ function Actions({ project, onOpen }: { project: Project; onOpen: (p: Project) =
         type="button"
         onClick={() => onOpen(project)}
         aria-label={`${project.title}: view details`}
-        className={`btn-apple btn-apple-secondary inline-flex h-11 items-center rounded-full px-4 sm:h-10 text-[13.5px] font-medium ${FOCUS}`}
+        className={`btn-apple btn-apple-primary inline-flex h-11 items-center rounded-full px-4 sm:h-10 text-[13.5px] font-medium ${FOCUS}`}
       >
         Details
       </button>
