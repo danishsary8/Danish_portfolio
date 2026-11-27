@@ -76,7 +76,16 @@ export type CaseStudy = {
   steps?: { title: string; text: string }[];
   /** One screen shown on the laptop and the phone at the same time. */
   screens: {
-    group: "Customer" | "Staff" | "Admin" | "Patient" | "Doctor";
+    group:
+      | "Customer"
+      | "Staff"
+      | "Admin"
+      | "Patient"
+      | "Doctor"
+      | "Plan"
+      | "Focus"
+      | "Review"
+      | "Account";
     title: string;
     text: string;
     desktop: string;
@@ -90,7 +99,7 @@ export type CaseStudy = {
   /** "Try it yourself": short steps a visitor can do right now. */
   /** "Tech highlights": how the hardest parts work. */
   highlights?: {
-    icon: "ai" | "qr" | "shield" | "live";
+    icon: "ai" | "qr" | "shield" | "live" | "offline" | "sync" | "timer";
     tag: string;
     title: string;
     text: string;
@@ -300,21 +309,177 @@ export const PROJECTS: Project[] = [
   {
     id: "loomora",
     title: "Loomora",
-    coverLine: "Plan your day, keep your routines",
-    kind: "Routine & habit planner",
+    coverLine: "Plan your day. Focus. See how it went.",
+    kind: "Day & focus planner · PWA",
+    ai: "Works offline, no account needed, syncs on sign-up",
     summary:
-      "A productivity app where people build daily routines and reminders, with secure login, Google sign-in, and email verification.",
+      "A mobile-first planner that puts your to-dos and your weekly routine on one Today screen, with a focus timer, notes and insights that show how the week really went. I built the React frontend and the Laravel API on my own.",
     highlights: [
-      "Laravel and PostgreSQL backend",
-      "Framer Motion for smooth transitions",
-      "Tailwind CSS layouts that adapt to any screen",
+      "Laravel REST API with 56 endpoints on PostgreSQL",
+      "Installable React app that works offline, no sign-up needed",
+      "985 frontend and 714 backend tests, all passing",
     ],
-    stack: ["React", "Tailwind CSS", "Framer Motion", "Laravel", "PostgreSQL"],
-    hosting: "Render",
-    liveUrl: "https://daycraft-vnid.onrender.com/",
-    githubUrl: "https://github.com/danishsary8",
-    image: ASSETS.projects.loomora.src,
-    imageAlt: "Loomora dashboard with a daily routine planner",
+    stack: ["React", "TypeScript", "Tailwind CSS", "Laravel", "PostgreSQL"],
+    hosting: "Vercel · Render · Neon",
+    liveUrl: "https://loomora-craft.vercel.app/",
+    githubUrl: "https://github.com/danishsary8/Loomora_front",
+    repos: [
+      { label: "Frontend", url: "https://github.com/danishsary8/Loomora_front" },
+      { label: "Backend API", url: "https://github.com/danishsary8/loomora_back" },
+    ],
+    image: ASSETS.projects.loomoraShot("today"),
+    coverImage: ASSETS.projects.loomoraShot("cover-card"),
+    bannerImage: ASSETS.projects.loomoraShot("cover-banner"),
+    imageAlt: "Loomora week view on a laptop and the Today screen on a phone",
+    caseStudy: {
+      pitch:
+        "Your to-dos and your weekly routine on one screen. Focus on what's next, then see how the week really went.",
+      facts: [
+        { label: "Role", value: "Solo, full-stack" },
+        { label: "Status", value: "Live on Vercel" },
+        { label: "Start", value: "No sign-up needed" },
+        { label: "Works", value: "Offline · installable" },
+      ],
+      problem:
+        "Most planners make you choose between a to-do list and a calendar. Your routine lives in one app, your tasks in another, and nothing tells you how the week actually went.",
+      solution:
+        "Loomora keeps both on one Today screen: to-dos next to a repeating weekly routine, with what's on now and next. A focus timer helps you start, and insights compare the plan with what really happened.",
+      screens: [
+        {
+          group: "Plan",
+          title: "Today",
+          text: "Today's progress, a one-line intention, and what's on now and next.",
+          desktop: ASSETS.projects.loomoraShot("today"),
+          phone: ASSETS.projects.loomoraShot("m-today"),
+        },
+        {
+          group: "Plan",
+          title: "To-dos",
+          text: "Each to-do has a category, priority, subtasks and repeat days.",
+          desktop: ASSETS.projects.loomoraShot("today-todos"),
+          phone: ASSETS.projects.loomoraShot("m-today-todos"),
+        },
+        {
+          group: "Plan",
+          title: "Add a to-do",
+          text: "Start with just a title. Category, due date and the rest can wait.",
+          desktop: ASSETS.projects.loomoraShot("new-task"),
+          phone: ASSETS.projects.loomoraShot("m-new-task"),
+        },
+        {
+          group: "Plan",
+          title: "Your week",
+          text: "The fixed weekly routine, colour-coded by category.",
+          desktop: ASSETS.projects.loomoraShot("week"),
+          phone: ASSETS.projects.loomoraShot("m-week"),
+        },
+        {
+          group: "Plan",
+          title: "Edit a block",
+          text: "Change the time, the days it repeats and its category.",
+          desktop: ASSETS.projects.loomoraShot("edit-block"),
+          phone: ASSETS.projects.loomoraShot("m-edit-block"),
+        },
+        {
+          group: "Focus",
+          title: "Focus timer",
+          text: "A countdown linked to a to-do, with four focus rounds and breaks.",
+          desktop: ASSETS.projects.loomoraShot("focus"),
+          phone: ASSETS.projects.loomoraShot("m-focus"),
+        },
+        {
+          group: "Review",
+          title: "Insights",
+          text: "Focus time, to-dos done and the streak for the week.",
+          desktop: ASSETS.projects.loomoraShot("insights"),
+          phone: ASSETS.projects.loomoraShot("m-insights"),
+        },
+        {
+          group: "Review",
+          title: "Plan vs reality",
+          text: "What you planned against what you really did, day by day.",
+          desktop: ASSETS.projects.loomoraShot("insights-review"),
+          phone: ASSETS.projects.loomoraShot("m-insights-review"),
+        },
+        {
+          group: "Review",
+          title: "Notes",
+          text: "Pinned, coloured and tagged notes, on their own or on a block.",
+          desktop: ASSETS.projects.loomoraShot("notes"),
+          phone: ASSETS.projects.loomoraShot("m-notes"),
+        },
+        {
+          group: "Account",
+          title: "Save your plan",
+          text: "Sign up with email or Google. Your guest plan moves to the account.",
+          desktop: ASSETS.projects.loomoraShot("sign-up"),
+          phone: ASSETS.projects.loomoraShot("m-sign-up"),
+        },
+      ],
+      stats: [
+        { value: 985, label: "frontend tests" },
+        { value: 714, label: "backend tests" },
+        { value: 56, label: "API endpoints" },
+        { value: 36, label: "end-to-end specs" },
+      ],
+      practices: [
+        "Sanctum tokens",
+        "Google sign-in",
+        "Email verification",
+        "OpenAPI contract",
+        "Pest + Larastan",
+        "Playwright E2E",
+        "CI on every push",
+      ],
+      highlights: [
+        {
+          icon: "offline",
+          tag: "PWA · IndexedDB",
+          title: "Use it without an account",
+          text: "Guests keep their plan in the browser with Dexie, and the app installs and opens offline. Nothing is lost if the connection drops.",
+        },
+        {
+          icon: "sync",
+          tag: "Guest → account",
+          title: "Sign up and keep everything",
+          text: "The same screens run on two storage layers: one in the browser, one on the API. When a guest signs up, their plan moves to the account.",
+        },
+        {
+          icon: "timer",
+          tag: "Focus timer",
+          title: "A timer that survives a reload",
+          text: "The countdown keeps running when you change pages and comes back after a refresh. Ending early still saves the time you did.",
+        },
+        {
+          icon: "shield",
+          tag: "Laravel · Sanctum",
+          title: "A tested REST API",
+          text: "56 endpoints under /api/v1, described in an OpenAPI file and covered by 714 tests on PostgreSQL in CI.",
+        },
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "Khmer language",
+          text: "Every screen in Khmer, so more people here can use it.",
+        },
+        {
+          when: "Next",
+          title: "Push reminders",
+          text: "Reminders that arrive even when the app is closed.",
+        },
+        {
+          when: "Later",
+          title: "Quick add by typing",
+          text: "Type \u201cGym tomorrow 6pm\u201d and the item is ready.",
+        },
+        {
+          when: "Later",
+          title: "Export your data",
+          text: "Download your plan, focus history and notes.",
+        },
+      ],
+    },
   },
   {
     id: "diabetes",

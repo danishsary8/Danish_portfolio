@@ -13,6 +13,9 @@ import {
   LayoutDashboard,
   Rocket,
   ShieldCheck,
+  WifiOff,
+  RefreshCw,
+  Timer,
   Activity,
   Store,
   Search,
@@ -39,6 +42,9 @@ import {
   SiVite,
   SiSqlalchemy,
   SiGoogle,
+  SiNeon,
+  SiDocker,
+  SiBrevo,
   SiTailwindcss,
   SiTelegram,
   SiTypescript,
@@ -395,6 +401,10 @@ const GROUP = {
   Admin: { label: "Admin", hue: "#f59e0b" },
   Patient: { label: "Patient", hue: "#0d9488" },
   Doctor: { label: "Doctor", hue: "#2563eb" },
+  Plan: { label: "Plan", hue: "#15803d" },
+  Focus: { label: "Focus", hue: "#ea580c" },
+  Review: { label: "Review", hue: "#7c3aed" },
+  Account: { label: "Account", hue: "#0284c7" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -661,12 +671,58 @@ const DX_SERVICES: Node[] = [
   { name: "Rule engine", note: "Forward chaining", icon: Cpu, color: "#8b5cf6" },
 ];
 
+const LM_LANES: Lane[] = [
+  {
+    title: "Frontend",
+    host: "Vercel",
+    hostIcon: SiVercel,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "React", note: "Installable PWA", icon: SiReact, color: "#58c4dc" },
+      { name: "TypeScript", note: "Strict mode", icon: SiTypescript, color: "#3178c6" },
+      { name: "Dexie", note: "Guest data offline", icon: Layers, color: "#10b981" },
+    ],
+  },
+  {
+    title: "Backend",
+    host: "Render",
+    hostIcon: SiRender,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "Laravel API", note: "REST /api/v1", icon: SiLaravel, color: "#ff2d20" },
+      { name: "Auth", note: "Sanctum · Google", icon: Lock, color: "#f59e0b" },
+      { name: "Docker", note: "Runs on Render", icon: SiDocker, color: "#2496ed" },
+    ],
+  },
+  {
+    title: "Data",
+    host: "Neon",
+    hostIcon: SiNeon,
+    hue: "#10b981",
+    nodes: [
+      { name: "PostgreSQL", note: "Plans, focus, notes", icon: SiPostgresql, color: "#4f8cc9" },
+      { name: "Migrations", note: "23 so far", icon: Layers, color: "#10b981" },
+    ],
+  },
+];
+
+const LM_SERVICES: Node[] = [
+  { name: "Google", note: "Sign-in", icon: SiGoogle, color: "#4285f4" },
+  { name: "Brevo", note: "Email codes", icon: SiBrevo, color: "#0b996e" },
+];
+
 const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
   bookly: {
     lanes: LANES,
     services: SERVICES,
     caption:
       "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  loomora: {
+    lanes: LM_LANES,
+    services: LM_SERVICES,
+    caption:
+      "React app on Vercel keeps guest data in the browser and calls the Laravel API on Render, which stores accounts in PostgreSQL on Neon. Sign-in also works with Google, and emails go through Brevo.",
   },
   diabetes: {
     lanes: DX_LANES,
@@ -885,7 +941,15 @@ function Future({ cs }: { cs: CaseStudy }) {
 
 /* ---------------- 8a. Tech highlights ---------------- */
 
-const HL_ICON = { ai: Sparkles, qr: QrCode, shield: ShieldCheck, live: Activity } as const;
+const HL_ICON = {
+  ai: Sparkles,
+  qr: QrCode,
+  shield: ShieldCheck,
+  live: Activity,
+  offline: WifiOff,
+  sync: RefreshCw,
+  timer: Timer,
+} as const;
 const HL_HUES = ["#7c3aed", "#e11d48", "#0d9488", "#2563eb"];
 
 function Highlights({ cs }: { cs: CaseStudy }) {
@@ -1007,7 +1071,9 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
           cs={cs}
           name={project.title}
           url={project.id === "bookly" ? "bookly.site" : new URL(project.liveUrl).host}
-          base={project.id === "diabetes" ? "#0b2a26" : "#0b1147"}
+          base={
+            project.id === "diabetes" ? "#0b2a26" : project.id === "loomora" ? "#0f2722" : "#0b1147"
+          }
         />
       </Block>
       <Block
