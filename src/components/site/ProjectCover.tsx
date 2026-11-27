@@ -224,6 +224,25 @@ export function ProjectCover({
     ? "transition-transform duration-700 ease-[var(--ease-out)] motion-safe:group-hover:-translate-y-3"
     : "";
 
+  const art = banner ? (project.bannerImage ?? project.coverImage) : project.coverImage;
+  if (art) {
+    return (
+      <div
+        className={`@container relative w-full overflow-hidden bg-[#0b2a26] ${banner ? "aspect-[16/10] sm:aspect-[2.4/1]" : "aspect-[16/10]"}`}
+        role="img"
+        aria-label={`${project.title} cover: ${project.coverLine ?? project.kind}`}
+      >
+        <img
+          src={art}
+          alt=""
+          decoding="async"
+          loading="lazy"
+          className={`absolute inset-0 h-full w-full object-cover ${banner ? "object-left" : ""} ${lift}`}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`@container relative w-full overflow-hidden ${banner ? "aspect-[16/10] sm:aspect-[2.4/1]" : "aspect-[16/10]"} ${t.stage}`}

@@ -49,6 +49,9 @@ export type Project = {
   apiDocsUrl?: string;
   /** Short "AI-powered" line shown on the card. */
   ai?: string;
+  /** Ready-made cover art (16:10) and case-study banner (2.4:1). */
+  coverImage?: string;
+  bannerImage?: string;
   /** Working copy while the main domain is being finished. */
   demoUrl?: string;
   images?: string[];
@@ -73,7 +76,7 @@ export type CaseStudy = {
   steps?: { title: string; text: string }[];
   /** One screen shown on the laptop and the phone at the same time. */
   screens: {
-    group: "Customer" | "Staff" | "Admin";
+    group: "Customer" | "Staff" | "Admin" | "Patient" | "Doctor";
     title: string;
     text: string;
     desktop: string;
@@ -81,9 +84,17 @@ export type CaseStudy = {
   }[];
   stats: { value: number; suffix?: string; label: string }[];
   practices: string[];
-  challenges: { title: string; fix: string; result: string }[];
+  challenges?: { title: string; fix: string; result: string }[];
   /** "Future scale development": where the product grows next. */
-  future: { when: string; title: string; text: string }[];
+  future?: { when: string; title: string; text: string }[];
+  /** "Try it yourself": short steps a visitor can do right now. */
+  tryIt?: {
+    icon: "store" | "search" | "key" | "qr";
+    title: string;
+    text: string;
+    cta: string;
+    href: string;
+  }[];
 };
 
 export const PROJECTS: Project[] = [
@@ -251,26 +262,34 @@ export const PROJECTS: Project[] = [
           result: "Checkout people trust",
         },
       ],
-      future: [
+      tryIt: [
         {
-          when: "Now",
-          title: "Launch on bookly.site",
-          text: "Move the shop from the test address to its own domain, ready for real customers.",
+          icon: "store",
+          title: "Open the shop",
+          text: "Browse books, switch to Khmer and change the price to riel.",
+          cta: "Open Bookly",
+          href: "https://bookly-frontend-five.vercel.app/",
         },
         {
-          when: "Next",
-          title: "Search by meaning for everyone",
-          text: "It is built and tested. Next it gets switched on for every reader.",
+          icon: "search",
+          title: "Search with a typo",
+          text: "Type holms. Search still finds Sherlock Holmes.",
+          cta: "Try the search",
+          href: "https://bookly-frontend-five.vercel.app/search?q=holms",
         },
         {
-          when: "Next",
-          title: "A faster phone experience",
-          text: "Install Bookly on the home screen and keep browsing on a weak connection.",
+          icon: "key",
+          title: "Call the real API",
+          text: "Sign in as the demo customer in one click, then run a request.",
+          cta: "Open API docs",
+          href: "https://bookly-api-zasc.onrender.com/docs",
         },
         {
-          when: "Later",
-          title: "More shops, one platform",
-          text: "Let other local book shops sell on Bookly, each with its own stock and staff.",
+          icon: "qr",
+          title: "Pay with KHQR",
+          text: "Check out to get a real KHQR code with a 15-minute timer.",
+          cta: "Go to checkout",
+          href: "https://bookly-frontend-five.vercel.app/",
         },
       ],
     },
@@ -299,19 +318,156 @@ export const PROJECTS: Project[] = [
     title: "Diabetes Expert System",
     coverLine: "Early diabetes screening, in two languages",
     kind: "Clinical assistant · Team project",
+    ai: "Expert system: 59 rules that explain every result",
     summary:
-      "A bilingual English/Khmer system for early diabetes screening, with explainable rule-based risk assessments and care plans. I contributed Google sign-in, UI improvements, and testing.",
+      "A bilingual English/Khmer system for early diabetes screening. Patients answer simple questions, a rule engine explains its result, and doctors review it and send a care plan. I contributed Google sign-in, UI improvements and testing.",
     highlights: [
-      "Flask API with PostgreSQL",
-      "Role-based access secured by JWT",
-      "Each risk result comes with a care plan",
+      "Explainable rule engine: 59 rules, each result shows why",
+      "Patient, doctor and admin apps in English and Khmer",
+      "Works on phone and laptop",
     ],
-    stack: ["React", "Flask", "PostgreSQL", "JWT", "RBAC"],
-    hosting: "Vercel & Railway",
-    liveUrl: "https://diabetes-expert-system-3nk38gik3-danishs-projects-79a48970.vercel.app/",
-    githubUrl: "https://github.com/danishsary8",
+    stack: ["React", "Flask", "PostgreSQL", "Tailwind CSS", "JWT", "RBAC"],
+    hosting: "Vercel · Railway · Supabase",
+    liveUrl: "https://diabetes-expert-system-chi.vercel.app/",
+    githubUrl: "https://github.com/danishsary8/diabetes_expert_system",
+    repos: [
+      { label: "Source", url: "https://github.com/danishsary8/diabetes_expert_system" },
+      { label: "Team repo", url: "https://github.com/dev-vichea/diabetes-expert-system-v2" },
+    ],
     award: "Award Winner · AI Expert System and Innovation 2026",
     team: true,
+    image: ASSETS.projects.diabetesShot("doctor-home"),
+    coverImage: ASSETS.projects.diabetesShot("cover-card"),
+    bannerImage: ASSETS.projects.diabetesShot("cover-banner"),
+    imageAlt: "Diabetes Expert System doctor dashboard and patient home on a phone",
+    caseStudy: {
+      pitch:
+        "Answer a few questions in English or Khmer, see your diabetes risk and the reasons behind it, and get a care plan your doctor has checked.",
+      facts: [
+        { label: "Role", value: "Team of 4" },
+        { label: "Award", value: "1st place, 2026" },
+        { label: "Languages", value: "English · ខ្មែរ" },
+        { label: "Engine", value: "59 explainable rules" },
+      ],
+      problem:
+        "Early diabetes is easy to miss. Most screening tools are in English only and give a score with no reason why. Doctors also have no quick way to see which patients need them first.",
+      solution:
+        "We built a screening assistant in both languages. Patients take a guided check-up and get a result that shows its evidence. Doctors work from a review queue, and patients follow a care plan their doctor has checked.",
+      screens: [
+        {
+          group: "Patient",
+          title: "Home",
+          text: "Today's fasting glucose on a colour band, so you see at a glance if you're on track.",
+          desktop: ASSETS.projects.diabetesShot("patient-home"),
+          phone: ASSETS.projects.diabetesShot("m-patient-home"),
+        },
+        {
+          group: "Patient",
+          title: "Result with reasons",
+          text: "A plain-language result, how sure the system is, and why.",
+          desktop: ASSETS.projects.diabetesShot("result"),
+          phone: ASSETS.projects.diabetesShot("m-result"),
+        },
+        {
+          group: "Patient",
+          title: "Care plan",
+          text: "Today's goals, medicine times and appointments, built from the latest result.",
+          desktop: ASSETS.projects.diabetesShot("care-plan"),
+          phone: ASSETS.projects.diabetesShot("m-care-plan"),
+        },
+        {
+          group: "Patient",
+          title: "Dr. Bot",
+          text: "A friendly assistant answers common diabetes questions.",
+          desktop: ASSETS.projects.diabetesShot("assistant"),
+          phone: ASSETS.projects.diabetesShot("m-assistant"),
+        },
+        {
+          group: "Patient",
+          title: "In Khmer",
+          text: "Every screen switches to Khmer with one tap.",
+          desktop: ASSETS.projects.diabetesShot("patient-home-km"),
+          phone: ASSETS.projects.diabetesShot("m-patient-home-km"),
+        },
+        {
+          group: "Doctor",
+          title: "Dashboard",
+          text: "Urgent patients, cases to review and care plans in one view.",
+          desktop: ASSETS.projects.diabetesShot("doctor-home"),
+          phone: ASSETS.projects.diabetesShot("m-doctor-home"),
+        },
+        {
+          group: "Doctor",
+          title: "Guided assessment",
+          text: "One question at a time, with pictures. Known answers are filled in.",
+          desktop: ASSETS.projects.diabetesShot("assessment"),
+          phone: ASSETS.projects.diabetesShot("m-assessment"),
+        },
+        {
+          group: "Doctor",
+          title: "Review queue",
+          text: "Check the result, add a note and flag urgent cases.",
+          desktop: ASSETS.projects.diabetesShot("review"),
+          phone: ASSETS.projects.diabetesShot("m-review"),
+        },
+        {
+          group: "Doctor",
+          title: "Patient record",
+          text: "Profile, visits, symptoms, lab results and every past result.",
+          desktop: ASSETS.projects.diabetesShot("patient-record"),
+          phone: ASSETS.projects.diabetesShot("m-patient-record"),
+        },
+        {
+          group: "Doctor",
+          title: "Rule editor",
+          text: "Doctors write rules as IF / AND / OR conditions. No code needed.",
+          desktop: ASSETS.projects.diabetesShot("rule-editor"),
+          phone: ASSETS.projects.diabetesShot("m-rule-editor"),
+        },
+        {
+          group: "Admin",
+          title: "Roles & permissions",
+          text: "Five built-in roles, plus custom roles from 19 permissions.",
+          desktop: ASSETS.projects.diabetesShot("admin-roles"),
+          phone: ASSETS.projects.diabetesShot("m-admin-roles"),
+        },
+      ],
+      stats: [
+        { value: 59, label: "clinical rules" },
+        { value: 99, label: "clinical facts" },
+        { value: 219, label: "backend tests" },
+        { value: 2695, label: "strings in Khmer" },
+      ],
+      practices: [
+        "JWT sign-in",
+        "Google sign-in",
+        "Role-based access",
+        "Rule versions",
+        "Audit log",
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "Dark mode",
+          text: "A calm dark theme on every screen, for night-time check-ins.",
+        },
+        {
+          when: "Next",
+          title: "Reminders on Telegram",
+          text: "A short message when it's time to log your glucose.",
+        },
+        {
+          when: "Later",
+          title: "Works offline",
+          text: "Install it on a phone and keep using it without internet.",
+        },
+        {
+          when: "Later",
+          title: "Checked by doctors",
+          text: "Test the rules with doctors on real, anonymised cases.",
+        },
+      ],
+    },
   },
   {
     id: "driving",

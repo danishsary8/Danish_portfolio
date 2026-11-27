@@ -12,6 +12,10 @@ import {
   Layers,
   LayoutDashboard,
   Rocket,
+  Store,
+  Search,
+  KeyRound,
+  MousePointerClick,
   Lock,
   Target,
   QrCode,
@@ -28,6 +32,11 @@ import {
   SiRender,
   SiResend,
   SiSupabase,
+  SiFlask,
+  SiRailway,
+  SiVite,
+  SiSqlalchemy,
+  SiGoogle,
   SiTailwindcss,
   SiTelegram,
   SiTypescript,
@@ -269,7 +278,7 @@ type Screen = CaseStudy["screens"][number];
 const SLIDE_MS = 4000;
 
 /** Browser window frame around a desktop screenshot. */
-function Browser({ children }: { children: ReactNode }) {
+function Browser({ children, url }: { children: ReactNode; url: string }) {
   return (
     <div className="w-full overflow-hidden rounded-[10px] bg-white shadow-[0_24px_48px_-18px_rgba(0,0,0,0.7)]">
       <div className="flex h-5 items-center gap-1 border-b border-black/5 bg-[#f4f4f6] px-2">
@@ -278,7 +287,7 @@ function Browser({ children }: { children: ReactNode }) {
         ))}
         <span className="mx-auto flex items-center gap-1 font-mono text-[8px] text-black/45">
           <Lock aria-hidden="true" className="h-2 w-2" strokeWidth={2} />
-          bookly.site
+          {url}
         </span>
       </div>
       <div className="relative aspect-[1440/900] overflow-hidden bg-white">{children}</div>
@@ -382,6 +391,8 @@ const GROUP = {
   Customer: { label: "Customer", hue: "#6366f1" },
   Staff: { label: "Staff", hue: "#0ea5e9" },
   Admin: { label: "Admin", hue: "#f59e0b" },
+  Patient: { label: "Patient", hue: "#0d9488" },
+  Doctor: { label: "Doctor", hue: "#2563eb" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -400,7 +411,17 @@ function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
   );
 }
 
-function Features({ cs }: { cs: CaseStudy }) {
+function Features({
+  cs,
+  name,
+  url,
+  base,
+}: {
+  cs: CaseStudy;
+  name: string;
+  url: string;
+  base: string;
+}) {
   const reduce = useReducedMotion();
   const screens = cs.screens;
   const [[index, dir], setState] = useState<[number, number]>([0, 1]);
@@ -424,7 +445,7 @@ function Features({ cs }: { cs: CaseStudy }) {
       <div
         role="region"
         aria-roledescription="carousel"
-        aria-label="Bookly screens"
+        aria-label={`${name} screens`}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocusCapture={() => setPaused(true)}
@@ -488,10 +509,10 @@ function Features({ cs }: { cs: CaseStudy }) {
             <div
               className="rounded-[20px] p-[4%] transition-[background] duration-700"
               style={{
-                background: `radial-gradient(90% 90% at 30% 10%, color-mix(in oklab, ${hue} 70%, #0b1147), #0b1147)`,
+                background: `radial-gradient(90% 90% at 30% 10%, color-mix(in oklab, ${hue} 70%, ${base}), ${base})`,
               }}
             >
-              <Browser>
+              <Browser url={url}>
                 <SlideImage
                   src={s.desktop}
                   alt={`${s.title}, on a laptop`}
@@ -547,7 +568,9 @@ function Features({ cs }: { cs: CaseStudy }) {
 
 type Node = { name: string; note: string; icon: Icon; color: string };
 
-const LANES: { title: string; host: string; hostIcon: Icon; hue: string; nodes: Node[] }[] = [
+type Lane = { title: string; host: string; hostIcon: Icon; hue: string; nodes: Node[] };
+
+const LANES: Lane[] = [
   {
     title: "Frontend",
     host: "Vercel",
@@ -591,6 +614,66 @@ const SERVICES: Node[] = [
   { name: "Turnstile", note: "Bot check", icon: SiCloudflare, color: "#f38020" },
 ];
 
+const DX_LANES: Lane[] = [
+  {
+    title: "Frontend",
+    host: "Vercel",
+    hostIcon: SiVercel,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "React", note: "Patient, doctor, admin", icon: SiReact, color: "#58c4dc" },
+      { name: "Tailwind", note: "shadcn/ui components", icon: SiTailwindcss, color: "#38bdf8" },
+      { name: "Vite", note: "Fast builds", icon: SiVite, color: "#8b5cf6" },
+    ],
+  },
+  {
+    title: "Backend",
+    host: "Railway",
+    hostIcon: SiRailway,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "Flask API", note: "REST + rule engine", icon: SiFlask, color: "currentColor" },
+      { name: "Auth", note: "JWT · roles · Google", icon: Lock, color: "#f59e0b" },
+      { name: "SQLAlchemy", note: "Models, migrations", icon: SiSqlalchemy, color: "#d71f00" },
+    ],
+  },
+  {
+    title: "Data",
+    host: "Supabase",
+    hostIcon: SiSupabase,
+    hue: "#10b981",
+    nodes: [
+      {
+        name: "PostgreSQL",
+        note: "Patients, results, rules",
+        icon: SiPostgresql,
+        color: "#4f8cc9",
+      },
+      { name: "Rule versions", note: "Every change saved", icon: Layers, color: "#10b981" },
+    ],
+  },
+];
+
+const DX_SERVICES: Node[] = [
+  { name: "Google", note: "Sign-in", icon: SiGoogle, color: "#4285f4" },
+  { name: "Rule engine", note: "Forward chaining", icon: Cpu, color: "#8b5cf6" },
+];
+
+const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
+  bookly: {
+    lanes: LANES,
+    services: SERVICES,
+    caption:
+      "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  diabetes: {
+    lanes: DX_LANES,
+    services: DX_SERVICES,
+    caption:
+      "React app on Vercel calls the Flask API on Railway, which runs the rule engine and stores data in PostgreSQL on Supabase. Sign-in also works with Google.",
+  },
+};
+
 function Connector() {
   const reduce = useReducedMotion();
   return (
@@ -608,7 +691,7 @@ function Connector() {
   );
 }
 
-function Lane({ lane }: { lane: (typeof LANES)[number] }) {
+function Lane({ lane }: { lane: Lane }) {
   const H = lane.hostIcon;
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--edge)] bg-surface-2 shadow-[var(--elev-1)]">
@@ -651,7 +734,9 @@ function Lane({ lane }: { lane: (typeof LANES)[number] }) {
   );
 }
 
-function Architecture() {
+function Architecture({ id }: { id: string }) {
+  const a = ARCH[id];
+  if (!a) return null;
   return (
     <Rise>
       <figure
@@ -662,16 +747,16 @@ function Architecture() {
         }}
       >
         <div className="grid items-stretch gap-0 md:grid-cols-[1fr_36px_1fr_36px_1fr]">
-          <Lane lane={LANES[0]!} />
+          <Lane lane={a.lanes[0]!} />
           <Connector />
-          <Lane lane={LANES[1]!} />
+          <Lane lane={a.lanes[1]!} />
           <Connector />
-          <Lane lane={LANES[2]!} />
+          <Lane lane={a.lanes[2]!} />
         </div>
         <div className="mt-4 rounded-2xl border border-dashed border-[var(--line-strong)] p-3">
-          <p className="px-1 text-[12px] text-fg-subtle">The API also talks to</p>
+          <p className="px-1 text-[12px] text-fg-subtle">Also part of it</p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
-            {SERVICES.map((s) => {
+            {a.services.map((s) => {
               const I = s.icon;
               return (
                 <li
@@ -691,10 +776,7 @@ function Architecture() {
             })}
           </ul>
         </div>
-        <figcaption className="sr-only">
-          React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on
-          Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.
-        </figcaption>
+        <figcaption className="sr-only">{a.caption}</figcaption>
       </figure>
     </Rise>
   );
@@ -733,7 +815,10 @@ function Engineering({ cs }: { cs: CaseStudy }) {
         </dl>
       </Rise>
       <Rise delay={0.08}>
-        <ul className="flex flex-wrap gap-1.5" aria-label="Security and quality">
+        <ul
+          className={`flex flex-wrap gap-1.5 ${cs.practices.length ? "" : "hidden"}`}
+          aria-label="Security and quality"
+        >
           {cs.practices.map((p) => (
             <li
               key={p}
@@ -763,7 +848,7 @@ function Future({ cs }: { cs: CaseStudy }) {
         aria-hidden="true"
         className="pointer-events-none absolute left-4 right-4 top-[22px] hidden h-[2px] rounded-full bg-[linear-gradient(90deg,#10b981,#0ea5e9,#8b5cf6)] opacity-40 md:block"
       />
-      {cs.future.map((f, i) => {
+      {(cs.future ?? []).map((f, i) => {
         const hue = WHEN_HUE[f.when] ?? "#6366f1";
         return (
           <Rise key={f.title} delay={i * 0.07}>
@@ -796,6 +881,70 @@ function Future({ cs }: { cs: CaseStudy }) {
   );
 }
 
+/* ---------------- 8b. Try it yourself ---------------- */
+
+const TRY_ICON = { store: Store, search: Search, key: KeyRound, qr: QrCode } as const;
+const TRY_HUES = ["#4f46e5", "#0d9488", "#d97706", "#e11d48"];
+
+function TryIt({ cs }: { cs: CaseStudy }) {
+  return (
+    <ol className="grid gap-3 sm:grid-cols-2">
+      {(cs.tryIt ?? []).map((t, i) => {
+        const I = TRY_ICON[t.icon];
+        const hue = TRY_HUES[i % TRY_HUES.length]!;
+        return (
+          <Rise key={t.title} delay={i * 0.06}>
+            <li className="h-full">
+              <a
+                href={t.href}
+                target="_blank"
+                rel="noreferrer"
+                className={`group/t flex h-full items-start gap-4 rounded-2xl border border-[var(--edge)] bg-surface-2 p-4 shadow-[var(--elev-1)] transition-[transform,box-shadow] duration-200 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:shadow-[var(--elev-2)] ${FOCUS}`}
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-xl"
+                  style={{
+                    color: hue,
+                    background: `color-mix(in oklab, ${hue} 12%, transparent)`,
+                    boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${hue} 25%, transparent)`,
+                  }}
+                >
+                  <I className="h-5 w-5" strokeWidth={1.75} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center gap-2">
+                    <span className="font-mono text-[12px] tabular-nums" style={{ color: hue }}>
+                      Step {i + 1}
+                    </span>
+                  </span>
+                  <span className="mt-0.5 block text-[15.5px] font-semibold tracking-[-0.01em] text-fg">
+                    {t.title}
+                  </span>
+                  <span className="mt-1 block text-[14px] leading-[1.5] text-fg-muted">
+                    {t.text}
+                  </span>
+                  <span
+                    className="mt-3 inline-flex items-center gap-1 text-[13px] font-medium"
+                    style={{ color: hue }}
+                  >
+                    {t.cta}
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      strokeWidth={2}
+                      className="h-3.5 w-3.5 transition-transform duration-150 ease-[var(--ease-out)] group-hover/t:-translate-y-px group-hover/t:translate-x-px"
+                    />
+                  </span>
+                </span>
+              </a>
+            </li>
+          </Rise>
+        );
+      })}
+    </ol>
+  );
+}
+
 export function BooklyCaseStudy({ project, header }: { project: Project; header: ReactNode }) {
   const cs = project.caseStudy!;
   return (
@@ -808,7 +957,12 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
         <Overview cs={cs} />
       </Block>
       <Block id="cs-features" title="What it does" icon={Sparkles} hue={HUE.features}>
-        <Features cs={cs} />
+        <Features
+          cs={cs}
+          name={project.title}
+          url={project.id === "bookly" ? "bookly.site" : new URL(project.liveUrl).host}
+          base={project.id === "diabetes" ? "#0b2a26" : "#0b1147"}
+        />
       </Block>
       <Block
         id="cs-architecture"
@@ -816,14 +970,21 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
         icon={Workflow}
         hue={HUE.architecture}
       >
-        <Architecture />
+        <Architecture id={project.id} />
       </Block>
       <Block id="cs-engineering" title="Built to last" icon={Lock} hue={HUE.engineering}>
         <Engineering cs={cs} />
       </Block>
-      <Block id="cs-results" title="Future scale development" icon={Rocket} hue={HUE.lessons}>
-        <Future cs={cs} />
-      </Block>
+      {cs.tryIt?.length ? (
+        <Block id="cs-try" title="Try it yourself" icon={MousePointerClick} hue={HUE.overview}>
+          <TryIt cs={cs} />
+        </Block>
+      ) : null}
+      {cs.future?.length ? (
+        <Block id="cs-results" title="Future scale development" icon={Rocket} hue={HUE.lessons}>
+          <Future cs={cs} />
+        </Block>
+      ) : null}
     </div>
   );
 }

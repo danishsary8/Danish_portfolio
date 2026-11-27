@@ -20,6 +20,11 @@ const bk = import.meta.glob("@/assets/projects/bookly/*.webp", {
   import: "default",
 }) as Record<string, string>;
 const bookly = (name: string) => bk[`/src/assets/projects/bookly/${name}.webp`] ?? "";
+const dx = import.meta.glob("@/assets/projects/diabetes/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const diabetes = (name: string) => dx[`/src/assets/projects/diabetes/${name}.webp`] ?? "";
 
 export interface ProjectAsset {
   src: string;
@@ -48,6 +53,8 @@ export const ASSETS = {
     },
     /** Raw lookup for the case-study screens: `booklyShot("book")`, `booklyShot("m-book")`. */
     booklyShot: bookly,
+    /** Diabetes case-study screens and covers: `diabetesShot("result")`. */
+    diabetesShot: diabetes,
     bookly: {
       src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",
