@@ -51,14 +51,8 @@ function StackChips({ stack }: { stack: string[] }) {
       {stack.map((s) => (
         <li
           key={s}
-          className="squircle [--r:8px] inline-flex h-7 items-center gap-1.5 border px-2.5 text-[12.5px] font-medium text-fg transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--chip)_16%,transparent)]"
-          style={
-            {
-              "--chip": themedSkillColor(s),
-              background: "color-mix(in oklab, var(--chip) 9%, var(--surface-2))",
-              borderColor: "color-mix(in oklab, var(--chip) 30%, transparent)",
-            } as CSSProperties
-          }
+          className="squircle [--r:8px] inline-flex h-7 items-center gap-1.5 border border-[var(--line-strong)] bg-surface-1 px-2.5 text-[12.5px] font-medium text-fg-muted transition-colors duration-150 hover:border-[color-mix(in_oklab,var(--chip)_35%,var(--line-strong))] hover:text-fg"
+          style={{ "--chip": themedSkillColor(s) } as CSSProperties}
         >
           {hasSkillIcon(s) ? (
             <SkillIcon name={s} className="h-3.5 w-3.5" style={{ color: themedSkillColor(s) }} />
