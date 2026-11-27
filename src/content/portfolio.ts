@@ -450,19 +450,19 @@ export const PROJECTS: Project[] = [
       ],
       future: [
         {
-          when: "Next",
+          when: "Now",
           title: "Dark mode",
-          text: "A calm dark theme on every screen, for night-time check-ins.",
+          text: "A calm dark theme for every screen, easy on the eyes at night.",
         },
         {
           when: "Next",
           title: "Reminders on Telegram",
-          text: "A short message when it's time to log your glucose.",
+          text: "A short message when it's time to check your glucose.",
         },
         {
-          when: "Later",
-          title: "Works offline",
-          text: "Install it on a phone and keep using it without internet.",
+          when: "Next",
+          title: "Smartwatch sync",
+          text: "Steps, heart rate and sleep from a smartwatch flow into the care plan.",
         },
         {
           when: "Later",

@@ -854,9 +854,9 @@ function Future({ cs }: { cs: CaseStudy }) {
         const hue = WHEN_HUE[f.when] ?? "#6366f1";
         return (
           <Rise key={f.title} delay={i * 0.07}>
-            <li className="relative h-full">
+            <li className="relative flex h-full flex-col">
               <span
-                className="relative z-10 inline-flex h-[44px] items-center gap-2 rounded-full border bg-surface-2 px-3.5 text-[12.5px] font-semibold"
+                className="relative z-10 inline-flex h-[44px] self-start items-center gap-2 rounded-full border bg-surface-2 px-3.5 text-[12.5px] font-semibold"
                 style={{ color: hue, borderColor: `color-mix(in oklab, ${hue} 35%, transparent)` }}
               >
                 <span
@@ -867,7 +867,7 @@ function Future({ cs }: { cs: CaseStudy }) {
                 {f.when}
               </span>
               <div
-                className="mt-3 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4"
+                className="mt-3 flex-1 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4"
                 style={{ boxShadow: `inset 0 3px 0 ${hue}` }}
               >
                 <p className="text-[15px] font-semibold tracking-[-0.01em] text-fg">{f.title}</p>
