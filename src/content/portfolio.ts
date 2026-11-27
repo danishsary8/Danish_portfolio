@@ -47,6 +47,8 @@ export type Project = {
   liveUrl: string;
   githubUrl: string;
   apiDocsUrl?: string;
+  /** Working copy while the main domain is being finished. */
+  demoUrl?: string;
   images?: string[];
   image?: string;
   imageAlt?: string;
@@ -65,8 +67,8 @@ export type CaseStudy = {
   facts: { label: string; value: string }[];
   problem: string;
   solution: string;
-  /** "How I built it": the real order the work happened in. */
-  steps: { title: string; text: string }[];
+  /** "How I built it" (no longer shown). */
+  steps?: { title: string; text: string }[];
   /** One screen shown on the laptop and the phone at the same time. */
   screens: {
     group: "Customer" | "Staff" | "Admin";
@@ -78,8 +80,8 @@ export type CaseStudy = {
   stats: { value: number; suffix?: string; label: string }[];
   practices: string[];
   challenges: { title: string; fix: string; result: string }[];
-  lessons: string[];
-  next: string[];
+  /** "Future scale development": where the product grows next. */
+  future: { when: string; title: string; text: string }[];
 };
 
 export const PROJECTS: Project[] = [
@@ -95,8 +97,9 @@ export const PROJECTS: Project[] = [
       "Live on its own domain with public API docs",
     ],
     stack: ["React", "TypeScript", "Laravel", "PostgreSQL", "Tailwind CSS", "REST APIs"],
-    hosting: "Vercel · Render · Supabase",
+    hosting: "Vercel · Render · Neon",
     liveUrl: "https://bookly.site/",
+    demoUrl: "https://bookly-frontend-five.vercel.app/",
     githubUrl: "https://github.com/danishsary8/bookly_frontend",
     repos: [
       { label: "Frontend", url: "https://github.com/danishsary8/bookly_frontend" },
@@ -111,57 +114,35 @@ export const PROJECTS: Project[] = [
         "A bookshop made for Cambodia. Khmer on every page, prices in riel or dollars, and you pay the way people here pay.",
       facts: [
         { label: "Role", value: "Solo, full-stack" },
-        { label: "Status", value: "Live on bookly.site" },
+        { label: "Status", value: "bookly.site · demo on Vercel" },
         { label: "Languages", value: "English · ខ្មែរ" },
         { label: "Payments", value: "KHQR · Cash" },
       ],
       problem:
-        "Most shops here are a Facebook page and a chat. No search, no tracking, no easy way to pay.",
+        "In Cambodia, most book shops sell through a Facebook page and a chat. You can't search for a title, you don't know if it's in stock, and after you pay you just wait and hope. Paying by bank app means sending a screenshot and waiting for a reply.",
       solution:
-        "A real store: search, cart, checkout, order tracking and a staff dashboard, in both languages.",
-      steps: [
-        { title: "Plan", text: "Pages mapped to endpoints" },
-        { title: "Database", text: "Schema first, as migrations" },
-        { title: "API + tests", text: "Laravel REST, tested in CI" },
-        { title: "Design system", text: "Colour, type, motion" },
-        { title: "Frontend", text: "React, built in phases" },
-        { title: "Ship + run", text: "Domain, email, backups" },
-      ],
+        "So I built a real online bookshop. You search in English or Khmer, see the price and stock right away, pay with KHQR or cash on delivery, and follow your order step by step. Staff run everything from one dashboard: orders, stock and reports.",
       screens: [
         {
           group: "Customer",
           title: "Storefront",
-          text: "The home page opens with the books people love this week.",
+          text: "The home page opens with this week's favourites and new arrivals.",
           desktop: ASSETS.projects.booklyShot("home"),
           phone: ASSETS.projects.booklyShot("m-home"),
         },
         {
           group: "Customer",
-          title: "Bookshelf",
-          text: "Pull a book off a real-looking shelf: best sellers, new arrivals, education.",
-          desktop: ASSETS.projects.booklyShot("shelf"),
-          phone: ASSETS.projects.booklyShot("m-shelf"),
-        },
-        {
-          group: "Customer",
           title: "Browse by category",
-          text: "Every category has its own topics, so readers narrow down fast.",
+          text: "Each category has its own topics, so readers narrow down fast.",
           desktop: ASSETS.projects.booklyShot("category"),
           phone: ASSETS.projects.booklyShot("m-category"),
         },
         {
           group: "Customer",
-          title: "Best sellers",
-          text: "Sort the whole catalogue by what sells, what's new or what's rated.",
+          title: "Every book, sorted",
+          text: "Filter by format, price or stock, and sort by best sellers.",
           desktop: ASSETS.projects.booklyShot("best"),
           phone: ASSETS.projects.booklyShot("m-best"),
-        },
-        {
-          group: "Customer",
-          title: "Author page",
-          text: "Every book by one writer, with filters and prices in one place.",
-          desktop: ASSETS.projects.booklyShot("author"),
-          phone: ASSETS.projects.booklyShot("m-author"),
         },
         {
           group: "Customer",
@@ -172,17 +153,31 @@ export const PROJECTS: Project[] = [
         },
         {
           group: "Customer",
-          title: "Similar books, by AI",
-          text: "Gemini matches books by theme, not just by genre.",
+          title: "Similar books",
+          text: "Books matched by theme, not just by genre.",
           desktop: ASSETS.projects.booklyShot("similar"),
           phone: ASSETS.projects.booklyShot("m-similar"),
         },
         {
           group: "Customer",
-          title: "Search by meaning",
-          text: "Describe the book you want, and search finds the topic.",
-          desktop: ASSETS.projects.booklyShot("search"),
-          phone: ASSETS.projects.booklyShot("m-search"),
+          title: "Sign in",
+          text: "Email code, Google, Facebook or Telegram. No password to remember.",
+          desktop: ASSETS.projects.booklyShot("login"),
+          phone: ASSETS.projects.booklyShot("m-login"),
+        },
+        {
+          group: "Customer",
+          title: "Cart",
+          text: "Offers and free delivery are worked out as you shop.",
+          desktop: ASSETS.projects.booklyShot("cart"),
+          phone: ASSETS.projects.booklyShot("m-cart"),
+        },
+        {
+          group: "Customer",
+          title: "Checkout",
+          text: "Address, delivery and payment in a few clear steps.",
+          desktop: ASSETS.projects.booklyShot("checkout"),
+          phone: ASSETS.projects.booklyShot("m-checkout"),
         },
         {
           group: "Customer",
@@ -190,6 +185,13 @@ export const PROJECTS: Project[] = [
           text: "Scan with any Cambodian bank app. The order confirms itself.",
           desktop: ASSETS.projects.booklyShot("khqr"),
           phone: ASSETS.projects.booklyShot("m-khqr"),
+        },
+        {
+          group: "Customer",
+          title: "My orders",
+          text: "Every order with its status, from packed to delivered.",
+          desktop: ASSETS.projects.booklyShot("orders"),
+          phone: ASSETS.projects.booklyShot("m-orders"),
         },
         {
           group: "Staff",
@@ -221,10 +223,10 @@ export const PROJECTS: Project[] = [
         },
       ],
       stats: [
-        { value: 1041, label: "API tests" },
-        { value: 708, label: "app tests" },
-        { value: 101, label: "migrations" },
-        { value: 250, suffix: "+", label: "API routes" },
+        { value: 1058, label: "API tests" },
+        { value: 746, label: "app tests" },
+        { value: 104, label: "migrations" },
+        { value: 316, label: "API endpoints" },
       ],
       practices: [
         "Sanctum tokens",
@@ -239,7 +241,7 @@ export const PROJECTS: Project[] = [
       challenges: [
         {
           title: "The database ran out of hours",
-          fix: "An uptime check kept it awake. I moved the check, then moved the data to Supabase.",
+          fix: "The free plan kept running out of compute hours. I moved the data to Neon and added nightly encrypted backups, tested with a real restore.",
           result: "No downtime, no data lost",
         },
         {
@@ -253,12 +255,28 @@ export const PROJECTS: Project[] = [
           result: "Checkout people trust",
         },
       ],
-      lessons: [
-        "Design the database first. Every shortcut came back as a migration.",
-        "Small branches and tests make big changes feel safe.",
-        "Running a real site teaches what tutorials don't.",
+      future: [
+        {
+          when: "Now",
+          title: "Launch on bookly.site",
+          text: "Move the shop from the test address to its own domain, ready for real customers.",
+        },
+        {
+          when: "Next",
+          title: "Search by meaning for everyone",
+          text: "It is built and tested. Next it gets switched on for every reader.",
+        },
+        {
+          when: "Next",
+          title: "A faster phone experience",
+          text: "Install Bookly on the home screen and keep browsing on a weak connection.",
+        },
+        {
+          when: "Later",
+          title: "More shops, one platform",
+          text: "Let other local book shops sell on Bookly, each with its own stock and staff.",
+        },
       ],
-      next: ["Gift offers in the cart", "Ask how people found us", "Facebook sign-in"],
     },
   },
   {

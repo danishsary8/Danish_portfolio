@@ -281,21 +281,43 @@ export function ProjectCover({
           </>
         ) : project.id === "bookly" ? (
           <>
-            <Window
-              url={project.liveUrl}
-              className={`absolute bottom-[-6%] right-[-4%] w-[62%] @max-md:bottom-[-22%] ${lift}`}
-            >
-              <Shot src={ASSETS.projects.booklyShots.home} alt="" className="block w-full" />
-            </Window>
+            {/* warm reading light + a thin shelf line under the devices */}
+            <div className="pointer-events-none absolute -bottom-[30%] right-[8%] h-[80%] w-[70%] rounded-full bg-[#f5c451]/25 blur-3xl" />
+            <div className="pointer-events-none absolute bottom-[14%] left-[32%] right-0 h-px bg-gradient-to-r from-transparent via-[#f5c451]/50 to-transparent @max-md:bottom-[6%]" />
             <div
-              className={`absolute bottom-[-10%] left-[30%] w-[17%] @max-md:bottom-[-26%] overflow-hidden rounded-[14px] border-[3px] border-[#0b0f2e] bg-[#0b0f2e] shadow-[0_24px_40px_-14px_rgba(0,0,0,0.65)] ${liftSlow}`}
+              className={`absolute bottom-[-4%] right-[-6%] w-[60%] [perspective:1400px] @max-md:bottom-[-20%] ${lift}`}
             >
-              <Shot
-                src={ASSETS.projects.booklyShots.phoneHome}
-                alt=""
-                className="block w-full rounded-[10px]"
-              />
+              <div className="origin-right [transform:rotateY(-16deg)_rotateX(5deg)]">
+                <Window url="bookly.site">
+                  <Shot src={ASSETS.projects.booklyShot("book")} alt="" className="block w-full" />
+                </Window>
+              </div>
             </div>
+            <div
+              className={`absolute bottom-[-12%] left-[34%] w-[17%] @max-md:bottom-[-28%] rounded-[18px] bg-[linear-gradient(145deg,#8d8a83,#3d3b37)] p-[2px] shadow-[0_28px_44px_-14px_rgba(0,0,0,0.7)] ${liftSlow}`}
+            >
+              <div className="overflow-hidden rounded-[16px] border-[3px] border-black bg-black">
+                <Shot
+                  src={ASSETS.projects.booklyShots.phoneHome}
+                  alt=""
+                  className="block w-full rounded-[12px]"
+                />
+              </div>
+            </div>
+            {/* three real features, as small chips */}
+            <div className="absolute left-[6%] bottom-[10%] flex flex-wrap gap-1.5 w-[30%] @max-md:hidden">
+              {["KHQR · Cash", "English · ខ្មែរ", "$ · ៛"].map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[clamp(0.55rem,1.5cqw,0.72rem)] font-medium text-white/85 backdrop-blur-sm"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+            <span className="absolute left-[30%] top-[46%] flex items-center gap-1 rounded-full bg-[#10b981] px-2 py-0.5 text-[clamp(0.5rem,1.4cqw,0.7rem)] font-semibold text-white shadow-[0_10px_24px_-8px_rgba(16,185,129,0.7)] @max-md:hidden">
+              <Check className="h-[1em] w-[1em]" strokeWidth={3} /> Paid with KHQR
+            </span>
           </>
         ) : (
           <Window

@@ -11,11 +11,11 @@ import {
   Github,
   Layers,
   LayoutDashboard,
-  Lightbulb,
+  Rocket,
+  Database,
   Lock,
   Target,
   QrCode,
-  Route,
   Sparkles,
   Workflow,
   Wrench,
@@ -28,7 +28,6 @@ import {
   SiReact,
   SiRender,
   SiResend,
-  SiSupabase,
   SiTailwindcss,
   SiTelegram,
   SiTypescript,
@@ -206,6 +205,12 @@ function Hero({ project, cs }: { project: Project; cs: CaseStudy }) {
               className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover/l:-translate-y-px group-hover/l:translate-x-px"
             />
           </LinkKey>
+          {project.demoUrl ? (
+            <LinkKey href={project.demoUrl} label={`Open the ${project.title} demo site`}>
+              Demo site
+              <ArrowUpRight aria-hidden="true" strokeWidth={1.75} className="h-4 w-4" />
+            </LinkKey>
+          ) : null}
           {repos.map((r, i) => (
             <LinkKey
               key={r.url}
@@ -258,51 +263,6 @@ function Overview({ cs }: { cs: CaseStudy }) {
   );
 }
 
-/* ---------------- 3. How I built it ---------------- */
-
-const STEP_HUES = ["#6366f1", "#0ea5e9", "#10b981", "#f59e0b", "#f43f5e", "#8b5cf6"];
-
-function Built({ cs }: { cs: CaseStudy }) {
-  const reduce = useReducedMotion();
-  return (
-    <div className="relative">
-      {/* the track that draws itself across the steps (desktop) */}
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-[8%] right-[8%] top-[15px] hidden h-[2px] origin-left rounded-full md:block"
-        style={{ background: `linear-gradient(90deg, ${STEP_HUES.join(",")})`, opacity: 0.5 }}
-        initial={{ scaleX: reduce ? 1 : 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 1.1, ease: EASE }}
-      />
-      <ol className="relative grid gap-4 md:grid-cols-6 md:gap-2">
-        {cs.steps.map((s, i) => (
-          <motion.li
-            key={s.title}
-            className="flex items-center gap-3 md:flex-col md:items-center md:text-center"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
-            whileInView={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.45, delay: 0.1 + i * 0.09, ease: EASE }}
-          >
-            <span
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-full font-mono text-[12.5px] font-semibold text-white shadow-[0_6px_14px_-6px_rgba(0,0,0,0.5)]"
-              style={{ background: STEP_HUES[i % STEP_HUES.length] }}
-            >
-              {i + 1}
-            </span>
-            <span className="min-w-0">
-              <span className="block text-[14px] font-semibold text-fg md:mt-2.5">{s.title}</span>
-              <span className="block text-[12.5px] leading-[1.45] text-fg-muted">{s.text}</span>
-            </span>
-          </motion.li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
 /* ---------------- 4. Features: one synced showcase (laptop + iPhone) ---------------- */
 
 type Screen = CaseStudy["screens"][number];
@@ -350,11 +310,32 @@ function IPhone({ children }: { children: ReactNode }) {
       />
       <div className="rounded-[44px] bg-[linear-gradient(145deg,#8d8a83,#4a4843_40%,#7b7872_70%,#3d3b37)] p-[3px] shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)]">
         <div className="rounded-[41px] bg-black p-[7px]">
-          <div className="relative overflow-hidden rounded-[34px] bg-black [aspect-ratio:430/932]">
-            {children}
+          <div className="relative overflow-hidden rounded-[34px] bg-white [aspect-ratio:430/932]">
+            {/* status bar: the app starts below it, so the Dynamic Island never covers the page */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 z-30 flex h-[6.2%] items-center justify-between bg-white px-[9%] text-[9px] font-semibold text-[#111]"
+            >
+              <span className="tabular-nums">9:41</span>
+              <span className="flex items-center gap-[3px]">
+                <span className="flex items-end gap-[1.5px]">
+                  {[3, 4.5, 6, 7.5].map((h) => (
+                    <span
+                      key={h}
+                      className="w-[2px] rounded-[1px] bg-[#111]"
+                      style={{ height: h }}
+                    />
+                  ))}
+                </span>
+                <span className="ml-[3px] h-[7px] w-[14px] rounded-[2.5px] border border-[#111]/60 p-[1px]">
+                  <span className="block h-full w-[75%] rounded-[1px] bg-[#111]" />
+                </span>
+              </span>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 top-[6.2%] overflow-hidden">{children}</div>
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-[1.6%] z-40 h-[3.4%] w-[32%] -translate-x-1/2 rounded-full bg-black"
+              className="pointer-events-none absolute left-1/2 top-[1.4%] z-40 h-[3.4%] w-[32%] -translate-x-1/2 rounded-full bg-black"
             />
           </div>
         </div>
@@ -384,6 +365,18 @@ function SlideImage({ src, alt, dir, k }: { src: string; alt: string; dir: numbe
     </AnimatePresence>
   );
 }
+
+// Each screen gets its own calm accent, so the change of page is easy to notice.
+const SCREEN_HUES = [
+  "#4f46e5",
+  "#0284c7",
+  "#0d9488",
+  "#059669",
+  "#d97706",
+  "#e11d48",
+  "#7c3aed",
+  "#2563eb",
+];
 
 const GROUP = {
   Customer: { label: "Customer", hue: "#6366f1" },
@@ -424,6 +417,7 @@ function Features({ cs }: { cs: CaseStudy }) {
 
   const s: Screen = screens[index]!;
   const g = GROUP[s.group];
+  const hue = SCREEN_HUES[index % SCREEN_HUES.length]!;
 
   return (
     <Rise>
@@ -443,7 +437,10 @@ function Features({ cs }: { cs: CaseStudy }) {
             className="flex items-end justify-between gap-4 px-1"
             aria-live={paused ? "polite" : "off"}
           >
-            <div className="min-w-0">
+            <div
+              className="min-w-0 border-l-[3px] pl-3.5 transition-colors duration-500"
+              style={{ borderColor: hue }}
+            >
               <div className="flex items-center gap-2">
                 <span
                   className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[12px] font-medium"
@@ -460,19 +457,40 @@ function Features({ cs }: { cs: CaseStudy }) {
                   {g.label} view
                 </span>
                 <span className="font-mono text-[12px] tabular-nums text-fg-subtle">
-                  {String(index + 1).padStart(2, "0")} / {screens.length}
+                  <span style={{ color: hue }} className="font-semibold">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>{" "}
+                  / {screens.length}
                 </span>
               </div>
-              <h5 className="mt-2 text-[19px] font-semibold tracking-[-0.02em] text-fg">
-                {s.title}
-              </h5>
-              <p className="mt-0.5 text-[14px] leading-[1.5] text-fg-muted">{s.text}</p>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={index}
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -14 }}
+                  transition={{ duration: 0.3, ease: EASE }}
+                >
+                  <h5
+                    className="mt-2 text-[19px] font-semibold tracking-[-0.02em]"
+                    style={{ color: hue }}
+                  >
+                    {s.title}
+                  </h5>
+                  <p className="mt-0.5 text-[14px] leading-[1.5] text-fg-muted">{s.text}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
 
           {/* laptop, with the arrows on its sides */}
           <div className="relative">
-            <div className="rounded-[20px] bg-[radial-gradient(90%_90%_at_30%_10%,#2a3bb8,#0b1147)] p-[4%]">
+            <div
+              className="rounded-[20px] p-[4%] transition-[background] duration-700"
+              style={{
+                background: `radial-gradient(90% 90% at 30% 10%, color-mix(in oklab, ${hue} 70%, #0b1147), #0b1147)`,
+              }}
+            >
               <Browser>
                 <SlideImage
                   src={s.desktop}
@@ -554,12 +572,13 @@ const LANES: { title: string; host: string; hostIcon: Icon; hue: string; nodes: 
   },
   {
     title: "Data",
-    host: "Supabase",
-    hostIcon: SiSupabase,
+    host: "Neon",
+    hostIcon: Database,
     hue: "#10b981",
     nodes: [
       { name: "PostgreSQL", note: "Books, orders, users", icon: SiPostgresql, color: "#4f8cc9" },
       { name: "pgvector", note: "Similar books", icon: Layers, color: "#10b981" },
+      { name: "Cloudflare R2", note: "Covers, ebooks", icon: SiCloudflare, color: "#f38020" },
     ],
   },
 ];
@@ -751,40 +770,48 @@ function Challenges({ cs }: { cs: CaseStudy }) {
   );
 }
 
-/* ---------------- 8. Lessons + next ---------------- */
+/* ---------------- 8. Future scale development ---------------- */
 
-function Lessons({ cs }: { cs: CaseStudy }) {
+const WHEN_HUE: Record<string, string> = { Now: "#10b981", Next: "#0ea5e9", Later: "#8b5cf6" };
+
+function Future({ cs }: { cs: CaseStudy }) {
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-2.5 md:grid-cols-3">
-        {cs.lessons.map((l, i) => (
-          <Rise key={l} delay={i * 0.06}>
-            <blockquote className="relative h-full rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4 pt-7">
+    <ol className="relative grid gap-3 md:grid-cols-4">
+      {/* the road ahead, drawn behind the cards on wide screens */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-4 right-4 top-[22px] hidden h-[2px] rounded-full bg-[linear-gradient(90deg,#10b981,#0ea5e9,#8b5cf6)] opacity-40 md:block"
+      />
+      {cs.future.map((f, i) => {
+        const hue = WHEN_HUE[f.when] ?? "#6366f1";
+        return (
+          <Rise key={f.title} delay={i * 0.07}>
+            <li className="relative h-full">
               <span
-                aria-hidden="true"
-                className="absolute left-4 top-1 font-serif text-[34px] leading-none text-[#eab308]"
+                className="relative z-10 inline-flex h-[44px] items-center gap-2 rounded-full border bg-surface-2 px-3.5 text-[12.5px] font-semibold"
+                style={{ color: hue, borderColor: `color-mix(in oklab, ${hue} 35%, transparent)` }}
               >
-                “
+                <span
+                  aria-hidden="true"
+                  className="h-2 w-2 rounded-full"
+                  style={{ background: hue }}
+                />
+                {f.when}
               </span>
-              <p className="text-[14.5px] leading-[1.5] text-fg">{l}</p>
-            </blockquote>
+              <div
+                className="mt-3 rounded-2xl border border-[var(--edge)] bg-surface-1/50 p-4"
+                style={{ boxShadow: `inset 0 3px 0 ${hue}` }}
+              >
+                <p className="text-[15px] font-semibold tracking-[-0.01em] text-fg">{f.title}</p>
+                <p className="mt-1.5 text-pretty text-[13.5px] leading-[1.55] text-fg-muted">
+                  {f.text}
+                </p>
+              </div>
+            </li>
           </Rise>
-        ))}
-      </div>
-      <Rise delay={0.1}>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="mr-1 text-[12.5px] text-fg-subtle">Up next</span>
-          {cs.next.map((n) => (
-            <span
-              key={n}
-              className="inline-flex h-8 items-center rounded-full border border-dashed border-[var(--line-strong)] px-3 text-[12.5px] text-fg-muted"
-            >
-              {n}
-            </span>
-          ))}
-        </div>
-      </Rise>
-    </div>
+        );
+      })}
+    </ol>
   );
 }
 
@@ -798,9 +825,6 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
       </div>
       <Block id="cs-overview" title="Why I built it" icon={Target} hue={HUE.overview}>
         <Overview cs={cs} />
-      </Block>
-      <Block id="cs-built" title="How I built it" icon={Route} hue={HUE.built}>
-        <Built cs={cs} />
       </Block>
       <Block id="cs-features" title="What it does" icon={Sparkles} hue={HUE.features}>
         <Features cs={cs} />
@@ -819,8 +843,8 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
       <Block id="cs-challenges" title="What went wrong" icon={Wrench} hue={HUE.challenges}>
         <Challenges cs={cs} />
       </Block>
-      <Block id="cs-results" title="What I learned" icon={Lightbulb} hue={HUE.lessons}>
-        <Lessons cs={cs} />
+      <Block id="cs-results" title="Future scale development" icon={Rocket} hue={HUE.lessons}>
+        <Future cs={cs} />
       </Block>
     </div>
   );
