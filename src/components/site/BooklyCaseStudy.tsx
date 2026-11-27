@@ -751,25 +751,6 @@ function Engineering({ cs }: { cs: CaseStudy }) {
 
 /* ---------------- 7. Challenges ---------------- */
 
-function Challenges({ cs }: { cs: CaseStudy }) {
-  return (
-    <div className="grid gap-2.5 md:grid-cols-3">
-      {cs.challenges.map((c, i) => (
-        <Rise key={c.title} delay={i * 0.06}>
-          <article className="flex h-full flex-col rounded-2xl border border-[var(--edge)] bg-surface-2 p-4 shadow-[var(--elev-1)]">
-            <h5 className="text-[14.5px] font-semibold leading-snug text-fg">{c.title}</h5>
-            <p className="mt-2 flex-1 text-[13.5px] leading-[1.5] text-fg-muted">{c.fix}</p>
-            <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-[#10b981]/12 px-2.5 py-1 text-[12px] font-medium text-[#0f9b6e] dark:text-[#34d399]">
-              <Check aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.25} />
-              {c.result}
-            </p>
-          </article>
-        </Rise>
-      ))}
-    </div>
-  );
-}
-
 /* ---------------- 8. Future scale development ---------------- */
 
 const WHEN_HUE: Record<string, string> = { Now: "#10b981", Next: "#0ea5e9", Later: "#8b5cf6" };
@@ -839,9 +820,6 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
       </Block>
       <Block id="cs-engineering" title="Built to last" icon={Lock} hue={HUE.engineering}>
         <Engineering cs={cs} />
-      </Block>
-      <Block id="cs-challenges" title="What went wrong" icon={Wrench} hue={HUE.challenges}>
-        <Challenges cs={cs} />
       </Block>
       <Block id="cs-results" title="Future scale development" icon={Rocket} hue={HUE.lessons}>
         <Future cs={cs} />
