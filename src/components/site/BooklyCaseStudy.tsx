@@ -13,6 +13,8 @@ import {
   LayoutDashboard,
   Rocket,
   ShieldCheck,
+  ShieldAlert,
+  Clock,
   Languages,
   ClipboardCheck,
   Smartphone,
@@ -1122,6 +1124,72 @@ function Future({ cs }: { cs: CaseStudy }) {
   );
 }
 
+/* ---------------- 7b. Security ---------------- */
+
+const SEC = {
+  auth: { icon: KeyRound, hue: "#4f46e5" },
+  access: { icon: ShieldCheck, hue: "#0d9488" },
+  session: { icon: Clock, hue: "#d97706" },
+  guard: { icon: ShieldAlert, hue: "#e11d48" },
+} as const;
+
+function Security({ cs }: { cs: CaseStudy }) {
+  return (
+    <Rise>
+      <dl className="divide-y divide-[var(--edge)] overflow-hidden rounded-2xl border border-[var(--edge)] bg-surface-2 shadow-[var(--elev-1)]">
+        {(cs.security ?? []).map((row) => {
+          const { icon: I, hue } = SEC[row.kind];
+          return (
+            <div
+              key={row.title}
+              className="grid gap-3 p-4 sm:grid-cols-[190px_minmax(0,1fr)] sm:items-center sm:gap-5"
+            >
+              <dt className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
+                  style={{
+                    color: hue,
+                    background: `color-mix(in oklab, ${hue} 12%, transparent)`,
+                    boxShadow: `inset 0 0 0 1px color-mix(in oklab, ${hue} 25%, transparent)`,
+                  }}
+                >
+                  <I className="h-[18px] w-[18px]" strokeWidth={1.75} />
+                </span>
+                <span className="text-[15px] font-semibold tracking-[-0.01em] text-fg">
+                  {row.title}
+                </span>
+              </dt>
+              <dd className="flex flex-wrap gap-1.5">
+                {row.points.map((p) => (
+                  <span
+                    key={p.label}
+                    className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[var(--line-strong)] bg-surface-1 px-3 text-[13px] text-fg"
+                  >
+                    {p.brand === "cloudflare" ? (
+                      <SiCloudflare aria-hidden="true" className="h-3.5 w-3.5 text-[#f38020]" />
+                    ) : p.brand === "google" ? (
+                      <SiGoogle aria-hidden="true" className="h-3 w-3 text-[#4285f4]" />
+                    ) : (
+                      <Check
+                        aria-hidden="true"
+                        className="h-3.5 w-3.5"
+                        style={{ color: hue }}
+                        strokeWidth={2.25}
+                      />
+                    )}
+                    {p.label}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </Rise>
+  );
+}
+
 /* ---------------- 8a. Tech highlights ---------------- */
 
 const HL_ICON = {
@@ -1267,6 +1335,11 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
       >
         <Architecture id={project.id} />
       </Block>
+      {cs.security?.length ? (
+        <Block id="cs-security" title="Security" icon={ShieldCheck} hue={HUE.challenges}>
+          <Security cs={cs} />
+        </Block>
+      ) : null}
       <Block id="cs-engineering" title="Built to last" icon={Lock} hue={HUE.engineering}>
         <Engineering cs={cs} />
       </Block>

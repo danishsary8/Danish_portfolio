@@ -101,6 +101,12 @@ export type CaseStudy = {
   /** "Future scale development": where the product grows next. */
   future?: { when: string; title: string; text: string }[];
   /** "Try it yourself": short steps a visitor can do right now. */
+  /** "Security": sign-in, access, sessions and protection, each point backed by the repo. */
+  security?: {
+    kind: "auth" | "access" | "session" | "guard";
+    title: string;
+    points: { label: string; brand?: "cloudflare" | "google" }[];
+  }[];
   /** "Tech highlights": how the hardest parts work. */
   highlights?: {
     icon: "ai" | "qr" | "shield" | "live" | "offline" | "sync" | "timer" | "lang" | "exam";
@@ -249,6 +255,47 @@ export const PROJECTS: Project[] = [
           phone: ASSETS.projects.booklyShot("m-admin-reports"),
         },
       ],
+      security: [
+        {
+          kind: "auth",
+          title: "Authentication",
+          points: [
+            { label: "Email code (OTP)" },
+            { label: "Google, Facebook, Telegram", brand: "google" },
+            { label: "Leaked-password check" },
+            { label: "Staff 2FA with an authenticator app" },
+          ],
+        },
+        {
+          kind: "access",
+          title: "Authorization",
+          points: [
+            { label: "Separate customer and staff tokens" },
+            { label: "Permission check on every staff route" },
+            { label: "Admin actions audited" },
+          ],
+        },
+        {
+          kind: "session",
+          title: "Sessions",
+          points: [
+            { label: "Laravel Sanctum bearer tokens" },
+            { label: "Customer sessions last 7 days" },
+            { label: "Tokens expire on their own" },
+          ],
+        },
+        {
+          kind: "guard",
+          title: "Protection",
+          points: [
+            { label: "Cloudflare Turnstile bot check", brand: "cloudflare" },
+            { label: "Private ebook files on Cloudflare R2", brand: "cloudflare" },
+            { label: "Rate limits on sign-in and checkout" },
+            { label: "Payments checked with Bakong" },
+            { label: "No double orders (idempotency)" },
+          ],
+        },
+      ],
       stats: [
         { value: 1058, label: "API tests" },
         { value: 746, label: "app tests" },
@@ -256,14 +303,10 @@ export const PROJECTS: Project[] = [
         { value: 316, label: "API endpoints" },
       ],
       practices: [
-        "Sanctum tokens",
-        "Email OTP",
-        "Google sign-in",
-        "Staff 2FA",
-        "Rate limits",
-        "Turnstile",
         "CI on every push",
-        "Nightly backups",
+        "Nightly encrypted backups",
+        "Restore drill tested",
+        "Public API docs",
       ],
       challenges: [
         {
@@ -420,21 +463,50 @@ export const PROJECTS: Project[] = [
           phone: ASSETS.projects.loomoraShot("m-sign-up"),
         },
       ],
+      security: [
+        {
+          kind: "auth",
+          title: "Authentication",
+          points: [
+            { label: "Email sign-up with verification" },
+            { label: "Google sign-in", brand: "google" },
+            { label: "Password reset by email" },
+          ],
+        },
+        {
+          kind: "access",
+          title: "Authorization",
+          points: [
+            { label: "Every data route needs a signed-in token" },
+            { label: "Delete account with re-confirmation" },
+          ],
+        },
+        {
+          kind: "session",
+          title: "Sessions",
+          points: [
+            { label: "Laravel Sanctum bearer tokens" },
+            { label: "Sessions last 30 days" },
+            { label: "Signed out after a 401" },
+            { label: "Guests stay in the browser" },
+          ],
+        },
+        {
+          kind: "guard",
+          title: "Protection",
+          points: [
+            { label: "Rate limits on sign-in and the API" },
+            { label: "CORS locked to the app's domain" },
+          ],
+        },
+      ],
       stats: [
         { value: 985, label: "frontend tests" },
         { value: 714, label: "backend tests" },
         { value: 56, label: "API endpoints" },
         { value: 36, label: "end-to-end specs" },
       ],
-      practices: [
-        "Sanctum tokens",
-        "Google sign-in",
-        "Email verification",
-        "OpenAPI contract",
-        "Pest + Larastan",
-        "Playwright E2E",
-        "CI on every push",
-      ],
+      practices: ["OpenAPI contract", "Pest + Larastan", "Playwright E2E", "CI on every push"],
       highlights: [
         {
           icon: "offline",
@@ -604,19 +676,51 @@ export const PROJECTS: Project[] = [
           phone: ASSETS.projects.diabetesShot("m-admin-roles"),
         },
       ],
+      security: [
+        {
+          kind: "auth",
+          title: "Authentication",
+          points: [
+            { label: "Email and password" },
+            { label: "Google sign-in", brand: "google" },
+            { label: "JWT access tokens" },
+          ],
+        },
+        {
+          kind: "access",
+          title: "Authorization",
+          points: [
+            { label: "Role-based access (RBAC)" },
+            { label: "5 roles from 19 permissions" },
+            { label: "Separate patient, doctor and admin apps" },
+            { label: "Audit log" },
+          ],
+        },
+        {
+          kind: "session",
+          title: "Sessions",
+          points: [
+            { label: "Short-lived access tokens" },
+            { label: "Refresh tokens" },
+            { label: "Tokens can be revoked" },
+          ],
+        },
+        {
+          kind: "guard",
+          title: "Protection",
+          points: [
+            { label: "Rate limits on the API" },
+            { label: "Strict checks on medical inputs" },
+          ],
+        },
+      ],
       stats: [
         { value: 59, label: "clinical rules" },
         { value: 99, label: "clinical facts" },
         { value: 219, label: "backend tests" },
         { value: 2695, label: "strings in Khmer" },
       ],
-      practices: [
-        "JWT sign-in",
-        "Google sign-in",
-        "Role-based access",
-        "Rule versions",
-        "Audit log",
-      ],
+      practices: ["Rule versions", "Alembic migrations", "Backend tests"],
       future: [
         {
           when: "Now",
