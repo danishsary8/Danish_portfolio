@@ -16,7 +16,7 @@ import { ProjectCover } from "./ProjectCover";
 import { BooklyCaseStudy } from "./BooklyCaseStudy";
 
 // Deck order: flagship first, award second, then the two lighter apps.
-const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "pitchkh", "driving"];
+const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "sport", "pitchkh", "driving"];
 
 const FOCUS =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
@@ -71,10 +71,14 @@ function Actions({ project, onOpen }: { project: Project; onOpen: (p: Project) =
         href={project.liveUrl}
         target="_blank"
         rel="noreferrer"
-        aria-label={`Visit ${project.title} (live site)`}
+        aria-label={
+          project.notLive
+            ? `${project.title} source on GitHub`
+            : `Visit ${project.title} (live site)`
+        }
         className={`btn-apple btn-apple-secondary group/live inline-flex h-11 items-center sm:h-10 gap-1.5 rounded-full px-4 text-[13.5px] font-medium ${FOCUS}`}
       >
-        Live site
+        {project.notLive ? "GitHub" : "Live site"}
         <ArrowUpRight
           aria-hidden="true"
           strokeWidth={1.75}
@@ -170,7 +174,7 @@ function DeckCard({
               <Actions project={project} onOpen={onOpen} />
               <span className="inline-flex items-center gap-2 font-mono text-[12px] text-fg-subtle">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-gold" />
-                Live · {project.hosting}
+                {project.notLive ? project.hosting : `Live · ${project.hosting}`}
               </span>
             </div>
           </div>

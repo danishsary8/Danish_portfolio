@@ -40,6 +40,11 @@ const pk = import.meta.glob("@/assets/projects/pitchkh/*.webp", {
   import: "default",
 }) as Record<string, string>;
 const pitchkh = (name: string) => pk[`/src/assets/projects/pitchkh/${name}.webp`] ?? "";
+const sh = import.meta.glob("@/assets/projects/sport/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const sport = (name: string) => sh[`/src/assets/projects/sport/${name}.webp`] ?? "";
 
 export interface ProjectAsset {
   src: string;
@@ -76,6 +81,8 @@ export const ASSETS = {
     drivingShot: driving,
     /** PitchKH phone screens and covers: `pitchkhShot("m-pitch")`. */
     pitchkhShot: pitchkh,
+    /** Sport Heaven case-study screens and covers: `sportShot("home")`. */
+    sportShot: sport,
     bookly: {
       src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",

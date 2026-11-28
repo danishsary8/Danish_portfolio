@@ -37,7 +37,7 @@ export const FACTS = [
 ] as const;
 
 export type Project = {
-  id: "bookly" | "loomora" | "diabetes" | "driving" | "pitchkh";
+  id: "bookly" | "loomora" | "diabetes" | "driving" | "pitchkh" | "sport";
   title: string;
   kind: string;
   summary: string;
@@ -47,6 +47,8 @@ export type Project = {
   liveUrl: string;
   githubUrl: string;
   apiDocsUrl?: string;
+  /** Not deployed yet: hide "Live site" and show the repo instead. */
+  notLive?: boolean;
   /** Short "AI-powered" line shown on the card. */
   ai?: string;
   /** Ready-made cover art (16:10) and case-study banner (2.4:1). */
@@ -90,7 +92,9 @@ export type CaseStudy = {
       | "Exam"
       | "Practice"
       | "Booking"
-      | "Owner";
+      | "Owner"
+      | "Shop"
+      | "Back office";
     title: string;
     text: string;
     /** Leave out for phone-only apps. */
@@ -743,6 +747,212 @@ export const PROJECTS: Project[] = [
           when: "Later",
           title: "Checked by doctors",
           text: "Test the rules with doctors on real, anonymised cases.",
+        },
+      ],
+    },
+  },
+  {
+    id: "sport",
+    title: "Sport Heaven",
+    coverLine: "Boots, jerseys and match gear",
+    kind: "Sports shop · E-commerce",
+    ai: "A Node.js commerce API that can't oversell or lose a payment",
+    summary:
+      "An online shop for a demo sports store in Phnom Penh: football boots, national-team jerseys and match gear, with name and number printing, KHQR and card payments, and pickup at three stores. I built the React shop and the Node.js API that runs it, including the back office.",
+    highlights: [
+      "The server prices every cart; prices from the browser are ignored",
+      "Stock per store that can't oversell, load-tested at 50 checkouts at once",
+      "Every payment is checked again with Bakong or ABA PayWay",
+    ],
+    stack: ["React", "TypeScript", "Node.js", "Express", "PostgreSQL", "Tailwind CSS"],
+    hosting: "Demo store · not live yet",
+    notLive: true,
+    liveUrl: "https://github.com/danishsary8/sport-heaven",
+    githubUrl: "https://github.com/danishsary8/sport-heaven",
+    repos: [
+      { label: "Shop", url: "https://github.com/danishsary8/sport-heaven" },
+      { label: "Backend API", url: "https://github.com/danishsary8/sport-backend" },
+    ],
+    image: ASSETS.projects.sportShot("home"),
+    coverImage: ASSETS.projects.sportShot("cover-card"),
+    bannerImage: ASSETS.projects.sportShot("cover-banner"),
+    imageAlt: "Sport Heaven home page on a laptop and a football boot product page on a phone",
+    caseStudy: {
+      pitch:
+        "A sports shop for Phnom Penh: pick your boots or your national-team jersey, print your name on it, pay with any Cambodian bank app, and collect it at one of three stores.",
+      facts: [
+        { label: "Role", value: "Solo, full-stack" },
+        { label: "Status", value: "Demo store, not live yet" },
+        { label: "Payments", value: "KHQR · Card · Cash" },
+        { label: "Stores", value: "3 for pickup" },
+      ],
+      problem:
+        "Small sports shops here sell through social media posts. Customers can't see which sizes are in stock at which store, prices change by chat, and payments are checked by hand from screenshots.",
+      solution:
+        "I built a full online shop and the API behind it. Customers see live stock per size and store, the server sets every price, and payments are confirmed with the bank before an order counts. Staff run orders, stock and products from one back office.",
+      screens: [
+        {
+          group: "Shop",
+          title: "Home",
+          text: "National-team jerseys up front, then best sellers and collections.",
+          desktop: ASSETS.projects.sportShot("home"),
+          phone: ASSETS.projects.sportShot("m-home"),
+        },
+        {
+          group: "Shop",
+          title: "Shop all",
+          text: "Filter 80 products by brand, size and price.",
+          desktop: ASSETS.projects.sportShot("shop"),
+          phone: ASSETS.projects.sportShot("m-shop"),
+        },
+        {
+          group: "Shop",
+          title: "Product page",
+          text: "Sizes with live stock, delivery and pickup info before you buy.",
+          desktop: ASSETS.projects.sportShot("product"),
+          phone: ASSETS.projects.sportShot("m-product"),
+        },
+        {
+          group: "Shop",
+          title: "Name and number printing",
+          text: "Pick a jersey and add your own name and number.",
+          desktop: ASSETS.projects.sportShot("custom"),
+          phone: ASSETS.projects.sportShot("m-custom"),
+        },
+        {
+          group: "Shop",
+          title: "Bag",
+          text: "The server works out every price, discount and delivery fee.",
+          desktop: ASSETS.projects.sportShot("bag"),
+          phone: ASSETS.projects.sportShot("m-bag"),
+        },
+        {
+          group: "Shop",
+          title: "Checkout",
+          text: "Delivery or pickup, then KHQR, card or cash on pickup.",
+          desktop: ASSETS.projects.sportShot("checkout"),
+          phone: ASSETS.projects.sportShot("m-checkout"),
+        },
+        {
+          group: "Back office",
+          title: "Overview",
+          text: "Takings by day, best sellers and sales by category.",
+          desktop: ASSETS.projects.sportShot("admin-overview"),
+          phone: ASSETS.projects.sportShot("m-admin-overview"),
+        },
+        {
+          group: "Back office",
+          title: "Orders",
+          text: "Every order with its store and status, from paid to picked up.",
+          desktop: ASSETS.projects.sportShot("admin-orders"),
+          phone: ASSETS.projects.sportShot("m-admin-orders"),
+        },
+        {
+          group: "Back office",
+          title: "Products",
+          text: "Stock across three stores, bulk changes and CSV import.",
+          desktop: ASSETS.projects.sportShot("admin-products"),
+          phone: ASSETS.projects.sportShot("m-admin-products"),
+        },
+      ],
+      security: [
+        {
+          kind: "auth",
+          title: "Authentication",
+          points: [
+            { label: "Phone sign-in with a code (Firebase Auth)" },
+            { label: "Google sign-in", brand: "google" },
+            { label: "Tokens verified on the server" },
+          ],
+        },
+        {
+          kind: "access",
+          title: "Authorization",
+          points: [
+            { label: "Customer, staff and admin roles" },
+            { label: "Staff see only their own store" },
+            { label: "Admin-only settings and users" },
+          ],
+        },
+        {
+          kind: "session",
+          title: "Sessions",
+          points: [
+            { label: "Short-lived Firebase ID tokens" },
+            { label: "Signed bag cookie for guests" },
+          ],
+        },
+        {
+          kind: "guard",
+          title: "Protection",
+          points: [
+            { label: "Server-side prices only" },
+            { label: "Payments re-checked with the bank" },
+            { label: "No double orders (idempotency)" },
+            { label: "Rate limits per route" },
+            { label: "Phone numbers hidden in logs" },
+            { label: "Config checked at start-up" },
+          ],
+        },
+      ],
+      stats: [
+        { value: 660, suffix: "+", label: "API tests" },
+        { value: 260, suffix: "+", label: "shop tests" },
+        { value: 80, label: "products" },
+        { value: 16, label: "migrations" },
+      ],
+      practices: [
+        "OpenAPI contract in CI",
+        "Accessibility checks (axe)",
+        "JavaScript size budget",
+        "Load test: 50 checkouts",
+      ],
+      highlights: [
+        {
+          icon: "shield",
+          tag: "PostgreSQL · Drizzle",
+          title: "Stock that can't oversell",
+          text: "Stock is held per store while someone pays. Two shoppers racing for the last pair: exactly one wins, tested with 50 checkouts at once.",
+        },
+        {
+          icon: "qr",
+          tag: "Bakong KHQR · ABA PayWay",
+          title: "Payments it never loses",
+          text: "A webhook, the shop's own polling and a job that runs every minute all confirm payments. A late payment re-holds stock or flags a refund.",
+        },
+        {
+          icon: "exam",
+          tag: "Express · zod",
+          title: "The server sets the price",
+          text: "The shop only sends product and quantity. Discounts, member perks, promo codes, delivery and the riel total are all worked out by the API.",
+        },
+        {
+          icon: "live",
+          tag: "Back office",
+          title: "One back office, three stores",
+          text: "Sales charts, an order desk with pick lists, stock per store and CSV price import. Staff only see their own store.",
+        },
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "Go live",
+          text: "Connect the real payment accounts and open the shop on its own domain.",
+        },
+        {
+          when: "Next",
+          title: "Khmer product details",
+          text: "Product names and sizes written in Khmer, not just the menus.",
+        },
+        {
+          when: "Later",
+          title: "Delivery tracking",
+          text: "Follow the rider on a map from the store to your door.",
+        },
+        {
+          when: "Later",
+          title: "Loyalty app",
+          text: "Points, member prices and order history in a phone app.",
         },
       ],
     },

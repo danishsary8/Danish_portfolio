@@ -47,6 +47,9 @@ import {
   SiVite,
   SiSqlalchemy,
   SiGoogle,
+  SiExpress,
+  SiNodedotjs,
+  SiFirebase,
   SiNextdotjs,
   SiFlutter,
   SiDart,
@@ -224,14 +227,16 @@ function Hero({ project, cs }: { project: Project; cs: CaseStudy }) {
 
       <Rise delay={0.14}>
         <div className="flex flex-wrap gap-2">
-          <LinkKey href={project.liveUrl} label={`Open the live ${project.title} site`} primary>
-            Live site
-            <ArrowUpRight
-              aria-hidden="true"
-              strokeWidth={1.75}
-              className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover/l:-translate-y-px group-hover/l:translate-x-px"
-            />
-          </LinkKey>
+          {project.notLive ? null : (
+            <LinkKey href={project.liveUrl} label={`Open the live ${project.title} site`} primary>
+              Live site
+              <ArrowUpRight
+                aria-hidden="true"
+                strokeWidth={1.75}
+                className="h-4 w-4 transition-transform duration-150 ease-[var(--ease-out)] group-hover/l:-translate-y-px group-hover/l:translate-x-px"
+              />
+            </LinkKey>
+          )}
           {project.demoUrl ? (
             <LinkKey href={project.demoUrl} label={`Open the ${project.title} demo site`}>
               Demo site
@@ -420,6 +425,8 @@ const GROUP = {
   Practice: { label: "Practice", hue: "#d97706" },
   Booking: { label: "Booking", hue: "#15803d" },
   Owner: { label: "Owner", hue: "#2563eb" },
+  Shop: { label: "Shop", hue: "#e11d48" },
+  "Back office": { label: "Back office", hue: "#2563eb" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -890,6 +897,7 @@ const BASE: Record<string, string> = {
   loomora: "#0f2722",
   driving: "#3d110b",
   pitchkh: "#062616",
+  sport: "#0d1430",
 };
 
 const PK_LANES: Lane[] = [
@@ -927,12 +935,59 @@ const PK_LANES: Lane[] = [
   },
 ];
 
+const SH_LANES: Lane[] = [
+  {
+    title: "Shop",
+    host: "Static",
+    hostIcon: Layers,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "React", note: "Shop + back office", icon: SiReact, color: "#58c4dc" },
+      { name: "TypeScript", note: "Typed API client", icon: SiTypescript, color: "#3178c6" },
+      { name: "TanStack Query", note: "Data + caching", icon: Layers, color: "#ef4444" },
+    ],
+  },
+  {
+    title: "API",
+    host: "Render",
+    hostIcon: SiRender,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "Express 5", note: "REST /v1", icon: SiExpress, color: "currentColor" },
+      { name: "Node.js", note: "TypeScript, strict", icon: SiNodedotjs, color: "#5fa04e" },
+      { name: "Sweeper job", note: "Every minute", icon: Cpu, color: "#8b5cf6" },
+    ],
+  },
+  {
+    title: "Data",
+    host: "PostgreSQL",
+    hostIcon: SiPostgresql,
+    hue: "#10b981",
+    nodes: [
+      { name: "PostgreSQL 16", note: "Orders, stock, users", icon: SiPostgresql, color: "#4f8cc9" },
+      { name: "Drizzle ORM", note: "16 migrations", icon: Layers, color: "#10b981" },
+    ],
+  },
+];
+
 const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
   bookly: {
     lanes: LANES,
     services: SERVICES,
     caption:
       "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  sport: {
+    lanes: SH_LANES,
+    services: [
+      { name: "Firebase Auth", note: "Phone + Google", icon: SiFirebase, color: "#ffca28" },
+      { name: "Bakong KHQR", note: "Bank apps", icon: QrCode, color: "#e11d48" },
+      { name: "ABA PayWay", note: "KHQR + card", icon: QrCode, color: "#0ea5e9" },
+      { name: "Telegram", note: "Staff alerts", icon: SiTelegram, color: "#26a5e4" },
+      { name: "Resend", note: "Email", icon: SiResend, color: "currentColor" },
+    ],
+    caption:
+      "The React shop calls the Express API, which stores orders and stock in PostgreSQL with Drizzle. It signs people in with Firebase, takes payments through Bakong KHQR and ABA PayWay, and alerts staff on Telegram.",
   },
   pitchkh: {
     lanes: PK_LANES,
@@ -1368,7 +1423,13 @@ export function BooklyCaseStudy({ project, header }: { project: Project; header:
         <Features
           cs={cs}
           name={project.title}
-          url={project.id === "bookly" ? "bookly.site" : new URL(project.liveUrl).host}
+          url={
+            project.id === "bookly"
+              ? "bookly.site"
+              : project.notLive
+                ? `${project.title} · demo`
+                : new URL(project.liveUrl).host
+          }
           base={BASE[project.id] ?? "#0b1147"}
         />
       </Block>
