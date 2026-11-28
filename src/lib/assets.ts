@@ -35,6 +35,11 @@ const dr = import.meta.glob("@/assets/projects/driving/*.webp", {
   import: "default",
 }) as Record<string, string>;
 const driving = (name: string) => dr[`/src/assets/projects/driving/${name}.webp`] ?? "";
+const pk = import.meta.glob("@/assets/projects/pitchkh/*.webp", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+const pitchkh = (name: string) => pk[`/src/assets/projects/pitchkh/${name}.webp`] ?? "";
 
 export interface ProjectAsset {
   src: string;
@@ -69,6 +74,8 @@ export const ASSETS = {
     loomoraShot: loomora,
     /** Driving Rules phone screens and covers: `drivingShot("m-home")`. */
     drivingShot: driving,
+    /** PitchKH phone screens and covers: `pitchkhShot("m-pitch")`. */
+    pitchkhShot: pitchkh,
     bookly: {
       src: bookly("home") || booklyShot.url,
       alt: "Bookly — Full-Stack Bookstore & REST API Architecture",

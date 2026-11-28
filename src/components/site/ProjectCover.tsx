@@ -31,6 +31,12 @@ const THEMES: Record<Project["id"], Theme> = {
     sub: "text-white/70",
     dot: "bg-[#f5c451]",
   },
+  pitchkh: {
+    stage: "bg-[radial-gradient(120%_90%_at_15%_10%,#1f7a46_0%,#0f4d2b_50%,#062616_100%)]",
+    ink: "text-white",
+    sub: "text-white/75",
+    dot: "bg-[#f5c451]",
+  },
   driving: {
     stage: "bg-[radial-gradient(120%_90%_at_15%_10%,#c2412d_0%,#7d2418_50%,#3d110b_100%)]",
     ink: "text-white",

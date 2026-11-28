@@ -16,7 +16,7 @@ import { ProjectCover } from "./ProjectCover";
 import { BooklyCaseStudy } from "./BooklyCaseStudy";
 
 // Deck order: flagship first, award second, then the two lighter apps.
-const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "driving"];
+const ORDER: Project["id"][] = ["bookly", "diabetes", "loomora", "pitchkh", "driving"];
 
 const FOCUS =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";

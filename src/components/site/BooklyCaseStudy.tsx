@@ -47,6 +47,7 @@ import {
   SiVite,
   SiSqlalchemy,
   SiGoogle,
+  SiNextdotjs,
   SiFlutter,
   SiDart,
   SiNetlify,
@@ -417,6 +418,8 @@ const GROUP = {
   Learn: { label: "Learn", hue: "#15803d" },
   Exam: { label: "Exam", hue: "#dc2626" },
   Practice: { label: "Practice", hue: "#d97706" },
+  Booking: { label: "Booking", hue: "#15803d" },
+  Owner: { label: "Owner", hue: "#2563eb" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -886,7 +889,43 @@ const BASE: Record<string, string> = {
   diabetes: "#0b2a26",
   loomora: "#0f2722",
   driving: "#3d110b",
+  pitchkh: "#062616",
 };
+
+const PK_LANES: Lane[] = [
+  {
+    title: "App",
+    host: "Vercel",
+    hostIcon: SiVercel,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "Next.js", note: "Website + Mini App", icon: SiNextdotjs, color: "currentColor" },
+      { name: "React", note: "Booking screens", icon: SiReact, color: "#58c4dc" },
+      { name: "TypeScript", note: "Shared types + zod", icon: SiTypescript, color: "#3178c6" },
+    ],
+  },
+  {
+    title: "API",
+    host: "Vercel",
+    hostIcon: SiVercel,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "REST routes", note: "7 endpoints", icon: Layers, color: "#8b5cf6" },
+      { name: "Staff check", note: "Telegram HMAC", icon: Lock, color: "#f59e0b" },
+      { name: "Bot messages", note: "Alerts + replies", icon: SiTelegram, color: "#26a5e4" },
+    ],
+  },
+  {
+    title: "Data",
+    host: "Neon",
+    hostIcon: SiNeon,
+    hue: "#10b981",
+    nodes: [
+      { name: "PostgreSQL", note: "Bookings, branches", icon: SiPostgresql, color: "#4f8cc9" },
+      { name: "No overlaps", note: "Exclusion rule", icon: Layers, color: "#10b981" },
+    ],
+  },
+];
 
 const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
   bookly: {
@@ -894,6 +933,12 @@ const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }>
     services: SERVICES,
     caption:
       "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  pitchkh: {
+    lanes: PK_LANES,
+    services: [{ name: "Telegram", note: "Mini App + bot", icon: SiTelegram, color: "#26a5e4" }],
+    caption:
+      "One Next.js app on Vercel serves the booking screens and the REST API. It stores bookings in PostgreSQL on Neon and talks to customers and staff through a Telegram bot.",
   },
   driving: {
     lanes: DR_LANES,

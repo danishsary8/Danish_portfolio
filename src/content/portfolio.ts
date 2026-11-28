@@ -32,12 +32,12 @@ export const PROFILE = {
 
 export const FACTS = [
   { value: "4th", label: "year at Norton University" },
-  { value: "4", label: "projects live in production" },
+  { value: "5", label: "projects live in production" },
   { value: "2026", label: "AI Expert System award" },
 ] as const;
 
 export type Project = {
-  id: "bookly" | "loomora" | "diabetes" | "driving";
+  id: "bookly" | "loomora" | "diabetes" | "driving" | "pitchkh";
   title: string;
   kind: string;
   summary: string;
@@ -88,7 +88,9 @@ export type CaseStudy = {
       | "Account"
       | "Learn"
       | "Exam"
-      | "Practice";
+      | "Practice"
+      | "Booking"
+      | "Owner";
     title: string;
     text: string;
     /** Leave out for phone-only apps. */
@@ -741,6 +743,190 @@ export const PROJECTS: Project[] = [
           when: "Later",
           title: "Checked by doctors",
           text: "Test the rules with doctors on real, anonymised cases.",
+        },
+      ],
+    },
+  },
+  {
+    id: "pitchkh",
+    title: "PitchKH",
+    coverLine: "Book a pitch, confirmed on Telegram",
+    kind: "Pitch booking · Telegram Mini App",
+    ai: "Runs inside Telegram as a Mini App",
+    summary:
+      "A booking app for a demo sports business with three branches in Phnom Penh. Customers pick a time and a pitch on a map of the venue and send their name and phone, with no account. The owner gets each request on Telegram, confirms it in one tap and sees every pitch on a timeline.",
+    highlights: [
+      "Book in about a minute: day, time, pitch on a map, name and phone",
+      "Staff are recognised by Telegram, no passwords",
+      "The database itself refuses double bookings",
+    ],
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL"],
+    hosting: "Vercel · Neon",
+    liveUrl: "https://pitchkh.vercel.app/",
+    githubUrl: "https://github.com/danishsary8/pitchkh",
+    repos: [{ label: "Source", url: "https://github.com/danishsary8/pitchkh" }],
+    image: ASSETS.projects.pitchkhShot("m-pitch"),
+    coverImage: ASSETS.projects.pitchkhShot("cover-card"),
+    bannerImage: ASSETS.projects.pitchkhShot("cover-banner"),
+    imageAlt: "PitchKH pitch map on a phone next to the owner's Telegram booking alerts",
+    caseStudy: {
+      pitch:
+        "Pick a time, tap a pitch on the map, send your name. The pitch is held for you, and the owner confirms it on Telegram.",
+      facts: [
+        { label: "Role", value: "Solo, full-stack" },
+        { label: "Business", value: "Demo, 3 branches" },
+        { label: "Languages", value: "English · ខ្មែរ" },
+        { label: "Sign-up", value: "None needed" },
+      ],
+      problem:
+        "Booking a pitch here usually means messaging the owner and waiting. Nobody can see which pitches are free, two teams can be promised the same slot, and the owner keeps the whole day in a chat history.",
+      solution:
+        "I built a booking app that also runs inside Telegram. Customers see what's free and book in about a minute. The owner gets every request as a Telegram message, confirms it in one tap, and sees the whole day on one timeline.",
+      screens: [
+        {
+          group: "Booking",
+          title: "Choose a branch",
+          text: "Three branches, each showing if it's open now and its lowest price.",
+          phone: ASSETS.projects.pitchkhShot("m-home"),
+        },
+        {
+          group: "Booking",
+          title: "Branch page",
+          text: "Photo, address and hours, then the booking steps: day, time and pitch.",
+          phone: ASSETS.projects.pitchkhShot("m-branch"),
+        },
+        {
+          group: "Booking",
+          title: "Pick a pitch on the map",
+          text: "Tap a pitch on a top-down plan of the venue. Taken ones are dark.",
+          phone: ASSETS.projects.pitchkhShot("m-pitch"),
+        },
+        {
+          group: "Booking",
+          title: "Your details",
+          text: "Just a name and phone number. No account needed.",
+          phone: ASSETS.projects.pitchkhShot("m-form"),
+        },
+        {
+          group: "Booking",
+          title: "Request sent",
+          text: "The pitch is held, with a booking code and the price to pay at the venue.",
+          phone: ASSETS.projects.pitchkhShot("m-ticket"),
+        },
+        {
+          group: "Booking",
+          title: "In Khmer",
+          text: "Every screen switches to Khmer with one tap.",
+          phone: ASSETS.projects.pitchkhShot("m-home-km"),
+        },
+        {
+          group: "Owner",
+          title: "Requests to confirm",
+          text: "Every new request in one list: confirm, decline, call or chat.",
+          phone: ASSETS.projects.pitchkhShot("m-staff-requests"),
+        },
+        {
+          group: "Owner",
+          title: "The day at a glance",
+          text: "Every pitch on a timeline. Waiting in brown, confirmed in green.",
+          phone: ASSETS.projects.pitchkhShot("m-staff-schedule"),
+        },
+        {
+          group: "Owner",
+          title: "Add a walk-in",
+          text: "Tap a free slot to add a phone or walk-in booking.",
+          phone: ASSETS.projects.pitchkhShot("m-staff-walkin"),
+        },
+      ],
+      security: [
+        {
+          kind: "auth",
+          title: "Authentication",
+          points: [
+            { label: "Customers book without an account" },
+            { label: "Staff signed in by their Telegram identity" },
+          ],
+        },
+        {
+          kind: "access",
+          title: "Authorization",
+          points: [
+            { label: "Telegram signature checked (HMAC)" },
+            { label: "Only listed staff IDs open /admin" },
+          ],
+        },
+        {
+          kind: "session",
+          title: "Sessions",
+          points: [
+            { label: "No passwords to store" },
+            { label: "Each staff request re-checks the Telegram signature" },
+          ],
+        },
+        {
+          kind: "guard",
+          title: "Protection",
+          points: [
+            { label: "Database blocks overlapping bookings" },
+            { label: "Rate limits on booking requests" },
+            { label: "No personal data in public endpoints" },
+            { label: "Security headers on every page" },
+          ],
+        },
+      ],
+      stats: [
+        { value: 24, label: "pitches on the map" },
+        { value: 3, label: "branches" },
+        { value: 104, label: "automated tests" },
+        { value: 241, label: "strings in Khmer" },
+      ],
+      practices: ["Shared zod schema", "CI on every push", "Translation check"],
+      highlights: [
+        {
+          icon: "sync",
+          tag: "Telegram Mini App",
+          title: "One app, two ways in",
+          text: "The same Next.js app works as a website and inside Telegram, where the name fills itself in.",
+        },
+        {
+          icon: "shield",
+          tag: "PostgreSQL",
+          title: "No double bookings",
+          text: "An exclusion rule in the database refuses two bookings that overlap. If a slot was just taken, the API answers 409.",
+        },
+        {
+          icon: "live",
+          tag: "Telegram Bot API",
+          title: "The owner hears it first",
+          text: "Each request arrives as a bot message, and the customer is told on Telegram when it's confirmed or cancelled.",
+        },
+        {
+          icon: "exam",
+          tag: "zod · TypeScript",
+          title: "One set of rules",
+          text: "The booking form and the API check requests with the same schema, so the screen and the server always agree.",
+        },
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "Real branch details",
+          text: "Real photos, prices and opening hours for each branch.",
+        },
+        {
+          when: "Next",
+          title: "KHQR deposit",
+          text: "Pay a small deposit with KHQR to hold a slot.",
+        },
+        {
+          when: "Later",
+          title: "Match-day reminders",
+          text: "The Telegram bot reminds the team before the game.",
+        },
+        {
+          when: "Later",
+          title: "My bookings + reports",
+          text: "Booking history for customers and weekly reports for the owner.",
         },
       ],
     },
