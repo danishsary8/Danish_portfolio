@@ -32,12 +32,12 @@ export const PROFILE = {
 
 export const FACTS = [
   { value: "4th", label: "year at Norton University" },
-  { value: "5", label: "projects live in production" },
+  { value: "6", label: "projects live in production" },
   { value: "2026", label: "AI Expert System award" },
 ] as const;
 
 export type Project = {
-  id: "bookly" | "loomora" | "diabetes" | "driving" | "pitchkh" | "sport";
+  id: "bookly" | "loomora" | "diabetes" | "driving" | "pitchkh" | "sport" | "silou";
   title: string;
   kind: string;
   summary: string;
@@ -94,7 +94,9 @@ export type CaseStudy = {
       | "Booking"
       | "Owner"
       | "Shop"
-      | "Back office";
+      | "Back office"
+      | "Atelier"
+      | "After you buy";
     title: string;
     text: string;
     /** Leave out for phone-only apps. */
@@ -1280,6 +1282,161 @@ export const PROJECTS: Project[] = [
           title: "Smart review",
           text: "Mistakes come back on a schedule, so the hard questions stick.",
         },
+      ],
+    },
+  },
+  {
+    id: "silou",
+    title: "SILOU",
+    coverLine: "Fashion & streetwear, from first look to doorstep",
+    kind: "Fashion shopping app · Flutter",
+    ai: "Built API-ready: swap the mock for a real backend",
+    summary:
+      "A fashion and streetwear shopping app built in Flutter for iOS, Android and the web. Shoppers browse, search, try pieces on, personalise them, check out and track the order. The frontend is complete and runs on demo data; the backend comes next.",
+    highlights: [
+      "Full shopping flow: home, search, product, bag, checkout, tracking",
+      "Premium extras: 360° view, monogram studio, salon booking, VIP club",
+      "Mock API behind a repository layer, ready to swap for a real backend",
+    ],
+    stack: ["Flutter", "Dart", "GetX", "GetStorage"],
+    hosting: "Netlify",
+    liveUrl: "https://silou-fashion.netlify.app/",
+    githubUrl: "https://github.com/danishsary8/siluo",
+    repos: [{ label: "Source", url: "https://github.com/danishsary8/siluo" }],
+    image: ASSETS.projects.silouShot("m-home"),
+    coverImage: ASSETS.projects.silouShot("cover-card"),
+    bannerImage: ASSETS.projects.silouShot("cover-banner"),
+    imageAlt: "SILOU home screen and product page on phones",
+    caseStudy: {
+      pitch:
+        "A shopping app that feels like a fashion magazine: find a piece, see it from every side, make it yours, and watch it come to your door.",
+      facts: [
+        { label: "Role", value: "Solo, frontend" },
+        { label: "Status", value: "Frontend done · backend next" },
+        { label: "Platforms", value: "iOS · Android · Web" },
+        { label: "Brand", value: "Demo brand" },
+      ],
+      problem:
+        "Most small fashion shops sell through a feed and a chat. Shoppers can't search properly, can't tell if a size will fit, and don't know where their order is after they pay.",
+      solution:
+        "I designed and built the whole shop on the phone first: search and filters, rich product pages, a size helper that uses your own measurements, a three-step checkout and live order tracking. It runs on demo data today, behind a layer that a real API can plug into.",
+      screens: [
+        {
+          group: "Shop",
+          title: "Home",
+          text: "Stories, campaigns, a flash-deal timer and brand filters in one feed.",
+          phone: ASSETS.projects.silouShot("m-home"),
+        },
+        {
+          group: "Shop",
+          title: "Search",
+          text: "Live search with quick chips, visual search and a link to try pieces on.",
+          phone: ASSETS.projects.silouShot("m-search"),
+        },
+        {
+          group: "Shop",
+          title: "Product page",
+          text: "Price, stock, colours, sizes and every extra tool for the piece.",
+          phone: ASSETS.projects.silouShot("m-product"),
+        },
+        {
+          group: "Atelier",
+          title: "360° view",
+          text: "Drag to turn the piece all the way around, frame by frame.",
+          phone: ASSETS.projects.silouShot("m-turntable-360"),
+        },
+        {
+          group: "Atelier",
+          title: "Monogram studio",
+          text: "Pick initials, lettering, thread colour and where it's stitched.",
+          phone: ASSETS.projects.silouShot("m-monogram"),
+        },
+        {
+          group: "Shop",
+          title: "Bag",
+          text: "Change quantities, add a promo code and see the total with tax.",
+          phone: ASSETS.projects.silouShot("m-bag"),
+        },
+        {
+          group: "Shop",
+          title: "Checkout",
+          text: "Address, gift packaging and payment in three clear steps.",
+          phone: ASSETS.projects.silouShot("m-checkout"),
+        },
+        {
+          group: "After you buy",
+          title: "Courier map",
+          text: "The courier's route, arrival time and a handover passcode.",
+          phone: ASSETS.projects.silouShot("m-courier-map"),
+        },
+        {
+          group: "After you buy",
+          title: "My measurements",
+          text: "Six body measurements and a fit choice give a live size suggestion.",
+          phone: ASSETS.projects.silouShot("m-measurements"),
+        },
+        {
+          group: "Atelier",
+          title: "VIP club",
+          text: "A membership card, points progress and member perks.",
+          phone: ASSETS.projects.silouShot("m-vip-club"),
+        },
+      ],
+      stats: [
+        { value: 23, label: "demo products" },
+        { value: 10, label: "brands" },
+        { value: 57, label: "tests passing" },
+        { value: 19, label: "screens smoke-tested" },
+      ],
+      practices: [
+        "Light and dark themes",
+        "Typed errors (Result<T>)",
+        "Skeletons + retry panels",
+        "REST contract written",
+      ],
+      highlights: [
+        {
+          icon: "sync",
+          tag: "Repository layer",
+          title: "Ready for a real backend",
+          text: "Screens talk to controllers, controllers to repositories, repositories to an API client. Today that client is a mock; a REST API can replace it without touching the screens.",
+        },
+        {
+          icon: "shield",
+          tag: "Result<T>",
+          title: "Errors that never crash",
+          text: "Every request returns a result. Network, server and parsing problems become plain messages with a Try again button.",
+        },
+        {
+          icon: "exam",
+          tag: "Smoke tests",
+          title: "19 screens, two themes",
+          text: "A test opens 19 screens in light and dark mode and fails on any layout overflow or error.",
+        },
+        {
+          icon: "timer",
+          tag: "Size helper",
+          title: "A size that fits",
+          text: "Six body measurements and a preferred fit turn into a live size suggestion on every product.",
+        },
+      ],
+      future: [
+        {
+          when: "Next",
+          title: "Real backend",
+          text: "Accounts, catalogue and orders on a real REST API.",
+        },
+        {
+          when: "Next",
+          title: "Real payments",
+          text: "Real payment and order processing at checkout.",
+        },
+        {
+          when: "Later",
+          title: "Push notifications",
+          text: "Alerts for new drops and deliveries.",
+        },
+        { when: "Later", title: "App stores", text: "Publish on the App Store and Google Play." },
       ],
     },
   },

@@ -427,6 +427,8 @@ const GROUP = {
   Owner: { label: "Owner", hue: "#2563eb" },
   Shop: { label: "Shop", hue: "#e11d48" },
   "Back office": { label: "Back office", hue: "#2563eb" },
+  Atelier: { label: "Atelier", hue: "#7c3aed" },
+  "After you buy": { label: "After you buy", hue: "#0d9488" },
 } as const;
 
 function Arrow({ dir, onClick }: { dir: -1 | 1; onClick: () => void }) {
@@ -898,6 +900,7 @@ const BASE: Record<string, string> = {
   driving: "#3d110b",
   pitchkh: "#062616",
   sport: "#0d1430",
+  silou: "#16112f",
 };
 
 const PK_LANES: Lane[] = [
@@ -970,12 +973,53 @@ const SH_LANES: Lane[] = [
   },
 ];
 
+const SI_LANES: Lane[] = [
+  {
+    title: "App",
+    host: "Flutter",
+    hostIcon: SiFlutter,
+    hue: "#0ea5e9",
+    nodes: [
+      { name: "Flutter", note: "iOS, Android, web", icon: SiFlutter, color: "#02569b" },
+      { name: "GetX", note: "State + routes", icon: Layers, color: "#8b5cf6" },
+      { name: "Controllers", note: "Loading, ready, error", icon: Cpu, color: "#f59e0b" },
+    ],
+  },
+  {
+    title: "Data layer",
+    host: "Mock API",
+    hostIcon: Layers,
+    hue: "#10b981",
+    nodes: [
+      { name: "Repositories", note: "Catalogue, account", icon: Layers, color: "#10b981" },
+      { name: "Mock API client", note: "Stands in for REST", icon: Lock, color: "#f43f5e" },
+      { name: "GetStorage", note: "Saved on the device", icon: Layers, color: "#0ea5e9" },
+    ],
+  },
+  {
+    title: "Ship",
+    host: "Netlify",
+    hostIcon: SiNetlify,
+    hue: "#f43f5e",
+    nodes: [
+      { name: "Web build", note: "Live demo", icon: SiNetlify, color: "#00ad9f" },
+      { name: "Dart", note: "57 tests", icon: SiDart, color: "#0175c2" },
+    ],
+  },
+];
+
 const ARCH: Record<string, { lanes: Lane[]; services: Node[]; caption: string }> = {
   bookly: {
     lanes: LANES,
     services: SERVICES,
     caption:
       "React app on Vercel calls the Laravel API on Render, which stores data in PostgreSQL on Supabase. The API also uses Bakong KHQR, Resend, Telegram, Gemini and Turnstile.",
+  },
+  silou: {
+    lanes: SI_LANES,
+    services: [],
+    caption:
+      "A Flutter app where screens talk to GetX controllers, controllers to repositories, and repositories to an API client. Today the client is a mock with demo data; a REST API can take its place. The web build is live on Netlify.",
   },
   sport: {
     lanes: SH_LANES,

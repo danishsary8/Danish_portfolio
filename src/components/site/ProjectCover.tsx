@@ -31,6 +31,12 @@ const THEMES: Record<Project["id"], Theme> = {
     sub: "text-white/70",
     dot: "bg-[#f5c451]",
   },
+  silou: {
+    stage: "bg-[radial-gradient(120%_90%_at_15%_10%,#2a2250_0%,#16112f_50%,#0c0a19_100%)]",
+    ink: "text-white",
+    sub: "text-white/75",
+    dot: "bg-[#ff4d3d]",
+  },
   sport: {
     stage: "bg-[radial-gradient(120%_90%_at_15%_10%,#1d2b5c_0%,#0d1430_50%,#070a18_100%)]",
     ink: "text-white",

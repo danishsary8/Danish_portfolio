@@ -525,7 +525,7 @@ function AppleLayerSection() {
   const focus =
     "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]";
   const proofRows = [
-    { icon: Globe, title: "5 live projects", meta: "Vercel · Render · Netlify", gold: false },
+    { icon: Globe, title: "6 live projects", meta: "Vercel · Render · Netlify", gold: false },
     { icon: Award, title: "Award Winner (Team)", meta: "Sep 2026", gold: true },
   ];
   return (
